@@ -1,0 +1,22 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "dev-combine": "npm run dev --env.combine",
+        "development": "mix",
+        "prod": "npm run production",
+        "prod-combine": "npm run prod --env.combine",
+        "production": "mix --production",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot"
+    },
+    "devDependencies": {
+        "axios": "^0.28",
+        "cross-env": "^7.0",
+        "jquery": "^3.2",
+        "laravel-mix": "^6.0",
+        "lodash": "^4.17",
+        "postcss": "^8.4"
+    }
+}
