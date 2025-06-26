@@ -37,14 +37,14 @@ CREATE TABLE `order_settlement_log` (
   KEY `order_id` (`order_id`),
   KEY `ru_id` (`ru_id`),
   KEY `is_settlement` (`is_settlement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='账单结算记录（用于统计已计算和未结算金额）表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='账单结算记录表';
 
 -- ----------------------------
 -- Table structure for seller_bill_back_order
 -- ----------------------------
 DROP TABLE IF EXISTS `seller_bill_back_order`;
 CREATE TABLE `seller_bill_back_order` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `order_id` int NOT NULL DEFAULT '0' COMMENT '账单订单ID',
   `ret_id` int NOT NULL DEFAULT '0' COMMENT '单品退单ID',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `seller_bill_back_order` (
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `ret_id` (`ret_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单退单关联表';
 
 -- ----------------------------
 -- Table structure for seller_negative_bill
@@ -133,7 +133,7 @@ CREATE TABLE `seller_bill_goods` (
   KEY `order_id` (`order_id`),
   KEY `goods_id` (`goods_id`),
   KEY `cat_id` (`cat_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家账单订单商品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家账单订单商品表';
 
 -- ----------------------------
 -- Table structure for seller_bill_order
@@ -183,7 +183,7 @@ CREATE TABLE `seller_bill_order` (
   KEY `shipping_status` (`shipping_status`),
   KEY `confirm_take_time` (`confirm_take_time`),
   KEY `chargeoff_status` (`chargeoff_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家账单订单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家账单订单表';
 
 -- ----------------------------
 -- Table structure for seller_commission_bill
@@ -233,7 +233,7 @@ CREATE TABLE `seller_commission_bill` (
   KEY `chargeoff_status` (`chargeoff_status`),
   KEY `bill_cycle` (`bill_cycle`),
   KEY `bill_apply` (`bill_apply`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家账单';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家账单表';
 
 -- ----------------------------
 -- Table structure for back_order
@@ -292,7 +292,7 @@ CREATE TABLE `back_order` (
   PRIMARY KEY (`back_id`),
   KEY `negative_id` (`negative_id`),
   KEY `chargeoff_status` (`chargeoff_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='售后单表';
 
 -- ----------------------------
 -- Table structure for order_info
@@ -410,7 +410,7 @@ CREATE TABLE `order_info` (
   `is_settlement` tinyint unsigned DEFAULT '0' COMMENT '账单结算状态：0 未结算 1 已结算',
   `chargeoff_status` tinyint unsigned DEFAULT '0' COMMENT '账单 (0:未结账 1:已出账 2:已结账单)',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单表';
 
 -- ----------------------------
 -- Table structure for order_action
@@ -432,7 +432,7 @@ CREATE TABLE `order_action` (
   KEY `order_status` (`order_status`),
   KEY `shipping_status` (`shipping_status`),
   KEY `pay_status` (`pay_status`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单操作记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单操作记录表';
 
 -- ----------------------------
 -- Table structure for order_goods
@@ -486,7 +486,7 @@ CREATE TABLE `order_goods` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`record_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单商品表';
 
 -- ----------------------------
 -- Table structure for order_pay
@@ -508,6 +508,6 @@ CREATE TABLE `order_pay` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`pay_id`),
   UNIQUE KEY `order_pay_pay_no_unique` (`pay_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单支付表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单支付表';
 
 SET FOREIGN_KEY_CHECKS = 1;
