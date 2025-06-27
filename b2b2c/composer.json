@@ -109,15 +109,6 @@
 			"symfony/thanks": true
 		}
 	},
-	"repositories": [
-		{
-			"packagist": false
-		},
-		{
-			"type": "composer",
-			"url": "https://mirrors.aliyun.com/composer/"
-		}
-	],
 	"minimum-stability": "dev",
 	"prefer-stable": true
 }
