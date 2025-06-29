@@ -1,1 +1,0 @@
-<textarea id="systemconfigmodel-user_protocol" class="form-control" name="SystemConfigModel[user_protocol]" rows="5" ></textarea>
