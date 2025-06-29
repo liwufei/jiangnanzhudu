@@ -13,7 +13,7 @@
 		"alibabacloud/live": "^1.8",
 		"aliyunmq/mq-http-sdk": "^1.0",
 		"barryvdh/laravel-debugbar": "^3.15",
-		"doctrine/dbal": "^4.2",
+		"doctrine/dbal": "^3.9",
 		"elasticsearch/elasticsearch": "^8.18",
 		"firebase/php-jwt": "^6.11",
 		"getuilaboratory/getui-pushapi-php-client-v2": "dev-master",
@@ -21,21 +21,21 @@
 		"ifsnop/mysqldump-php": "^2.11",
 		"jaeger/querylist": "^4.4",
 		"jpush/jpush": "^3.7",
-		"laravel/framework": "^10.48",
+		"laravel/framework": "^10.47",
 		"laravel/helpers": "^1.7",
 		"laravel/horizon": "^5.33",
 		"laravel/legacy-factories": "^1.4",
-		"laravel/octane": "^2.10",
-		"laravel/sanctum": "^4.1",
+		"laravel/octane": "^1.5",
+		"laravel/sanctum": "^3.3",
 		"laravel/ui": "^4.6",
 		"laravelvip/kdniao": "^1.0",
 		"luoyy/ali-oss-storage": "^4.0",
 		"maatwebsite/excel": "^3.1",
 		"orhanerday/open-ai": "^5.3",
 		"overtrue/easy-sms": "^3.1",
-		"overtrue/laravel-pinyin": "^5.2",
+		"overtrue/laravel-pinyin": "^4.0",
 		"overtrue/socialite": "^4.11",
-		"phpoffice/phpspreadsheet": "^4.4",
+		"phpoffice/phpspreadsheet": "^1.29",
 		"predis/predis": "^3.0",
 		"pusher/pusher-php-server": "^7.2",
 		"simplesoftwareio/simple-qrcode": "^4.2",
@@ -45,11 +45,11 @@
 		"yansongda/pay": "^3.7"
 	},
 	"require-dev": {
-		"brianium/paratest": "^7.10",
+		"brianium/paratest": "^6.11",
 		"filp/whoops": "^2.18",
 		"mockery/mockery": "^1.6",
-		"nunomaduro/collision": "^8.8",
-		"phpunit/phpunit": "^9.6",
+		"nunomaduro/collision": "^7.12",
+		"phpunit/phpunit": "^9.5",
 		"symfony/thanks": "^1.4"
 	},
 	"autoload": {
@@ -100,6 +100,7 @@
 		"optimize-autoloader": true,
 		"allow-plugins": {
 			"easywechat-composer/easywechat-composer": true,
+			"php-http/discovery": true,
 			"symfony/thanks": true
 		}
 	},
