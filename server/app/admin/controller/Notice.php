@@ -1,26 +1,19 @@
 <?php
+
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 消息通知
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 消息通知
  */
 class Notice extends AdminControl
 {
     public function initialize()
     {
         parent::initialize();
-        Lang::load(base_path().'admin/lang/'.config('lang.default_lang').'/notice.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/notice.lang.php');
     }
 
     /**
@@ -31,19 +24,21 @@ class Notice extends AdminControl
         $special_condition = array();
         $special_condition['message_type'] = 1;
         $message_model = model('message');
-        $message_list = $message_model->getMessageList($special_condition,10);
-        foreach($message_list as $key=>$val){
-            $message_list[$key]['message_body'] = preg_replace("/<a[^>]*>(.*?)<\/a>/is","$1", htmlspecialchars_decode($val['message_body']));
-        } 
+        $message_list = $message_model->getMessageList($special_condition, 10);
+        foreach ($message_list as $key => $val) {
+            $message_list[$key]['message_body'] = preg_replace("/<a[^>]*>(.*?)<\/a>/is", "$1", htmlspecialchars_decode($val['message_body']));
+        }
         View::assign('message_list', $message_list);
         View::assign('show_page', $message_model->page_info->render());
         $this->setAdminCurItem('index');
         return View::fetch();
     }
+
     /**
      * 会员通知
      */
-    public function notice(){
+    public function notice()
+    {
         //提交
         if (request()->isPost()) {
             $notice_validate = ds_validate('notice');
@@ -82,7 +77,7 @@ class Notice extends AdminControl
                             $tmp[$k] = trim($v);
                         }
                         //查询会员列表
-                        $member_list = $member_model->getMemberList(array(array('member_name' ,'in', $tmp)));
+                        $member_list = $member_model->getMemberList(array(array('member_name', 'in', $tmp)));
                         unset($membername_str);
                         if (!empty($member_list)) {
                             foreach ($member_list as $k => $v) {
@@ -117,20 +112,25 @@ class Notice extends AdminControl
                 //跳转
                 $this->log(lang('notice_index_send'), 1);
                 dsLayerOpenSuccess(lang('notice_index_send_succ'));
-//                $this->success(lang('notice_index_send_succ'), 'notice/notice');
+                //                $this->success(lang('notice_index_send_succ'), 'notice/notice');
             }
         } else {
             return View::fetch('notice_add');
         }
     }
+
     protected function getAdminItemList()
     {
-        $menu_array=array(
+        $menu_array = array(
             array(
-                'name'=>'index','text'=>lang('notice_index_member_notice'),'url'=>(string)url('Notice/index')
+                'name' => 'index',
+                'text' => lang('notice_index_member_notice'),
+                'url' => (string)url('Notice/index')
             ),
             array(
-                'name'=>'notice','text'=>lang('notice_index_send'),'url'=>"javascript:dsLayerOpen('".(string)url('Notice/notice')."','".lang('notice_index_send')."')"
+                'name' => 'notice',
+                'text' => lang('notice_index_send'),
+                'url' => "javascript:dsLayerOpen('" . (string)url('Notice/notice') . "','" . lang('notice_index_send') . "')"
             )
         );
         return $menu_array;

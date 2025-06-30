@@ -1,33 +1,24 @@
 <?php
 
-/**
- * 商品管理
- */
-
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSKMS多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 直播设置
  */
-class LiveSetting extends AdminControl {
+class LiveSetting extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/live_setting.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $config_model = model('config');
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
@@ -35,7 +26,7 @@ class LiveSetting extends AdminControl {
             $this->setAdminCurItem('index');
             return View::fetch();
         } else {
-            $update_array=array();
+            $update_array = array();
             $update_array['live_type'] = input('post.live_type');
             $update_array['vod_tencent_play_key'] = input('post.vod_tencent_play_key');
             $update_array['vod_tencent_appid'] = input('post.vod_tencent_appid');
@@ -63,10 +54,12 @@ class LiveSetting extends AdminControl {
             }
         }
     }
+
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -76,7 +69,4 @@ class LiveSetting extends AdminControl {
         );
         return $menu_array;
     }
-
 }
-
-?>

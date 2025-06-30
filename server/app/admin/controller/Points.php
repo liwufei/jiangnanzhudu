@@ -1,42 +1,38 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 积分管理
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 积分
  */
-class Points extends AdminControl {
+class Points extends AdminControl
+{
     const EXPORT_SIZE = 5000;
-    public function initialize() {
+
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/points.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/points.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         if (!request()->isPost()) {
             $condition_arr = array();
             $mname = input('param.mname');
             if (!empty($mname)) {
-                $condition_arr[] = array('pl_membername','like', '%' . $mname . '%');
+                $condition_arr[] = array('pl_membername', 'like', '%' . $mname . '%');
             }
             $aname = input('param.aname');
             if (!empty($aname)) {
-                $condition_arr[] = array('pl_adminname','like', '%' . $aname . '%');
+                $condition_arr[] = array('pl_adminname', 'like', '%' . $aname . '%');
             }
             $stage = input('get.stage');
             if ($stage) {
-                $condition_arr[]=array('pl_stage','=',trim($stage));
+                $condition_arr[] = array('pl_stage', '=', trim($stage));
             }
             $stime = input('get.stime');
             $etime = input('get.etime');
@@ -45,18 +41,17 @@ class Points extends AdminControl {
             $start_unixtime = $if_start_time ? strtotime($stime) : null;
             $end_unixtime = $if_end_time ? strtotime($etime) : null;
             if ($start_unixtime) {
-                $condition_arr[] = array('pl_addtime','>=', $start_unixtime);
+                $condition_arr[] = array('pl_addtime', '>=', $start_unixtime);
             }
             if ($end_unixtime) {
-                $end_unixtime=$end_unixtime+86399;
-                $condition_arr[] = array('pl_addtime','<=', $end_unixtime);
-            }
-            
-            $search_desc = trim(input('param.description'));
-            if (!empty($search_desc)) {
-                $condition_arr[] = array('pl_desc','like', "%" . $search_desc . "%");
+                $end_unixtime = $end_unixtime + 86399;
+                $condition_arr[] = array('pl_addtime', '<=', $end_unixtime);
             }
 
+            $search_desc = trim(input('param.description'));
+            if (!empty($search_desc)) {
+                $condition_arr[] = array('pl_desc', 'like', "%" . $search_desc . "%");
+            }
 
             $points_model = model('points');
             $list_log = $points_model->getPointslogList($condition_arr, 10, '*', '');
@@ -69,7 +64,8 @@ class Points extends AdminControl {
     }
 
     //积分规则设置
-    public function setting(){
+    public function setting()
+    {
         $config_model = model('config');
         if (request()->isPost()) {
             $update_array = array();
@@ -94,9 +90,10 @@ class Points extends AdminControl {
             return View::fetch('setting');
         }
     }
-    
+
     //修改积分
-    public function pointslog() {
+    public function pointslog()
+    {
         if (!request()->isPost()) {
             return View::fetch();
         } else {
@@ -106,7 +103,7 @@ class Points extends AdminControl {
                 'points_num' => intval(input('post.points_num')),
                 'points_desc' => input('post.points_desc'),
             ];
-            
+
             $this->validate($data, 'app\common\validate\Point.edit_points');
 
             $member_name = $data['member_name'];
@@ -137,7 +134,8 @@ class Points extends AdminControl {
         }
     }
 
-    public function checkmember() {
+    public function checkmember()
+    {
         $name = trim(input('param.name'));
         if (!$name) {
             exit(json_encode(array('id' => 0)));
@@ -151,25 +149,25 @@ class Points extends AdminControl {
         }
     }
 
-
-	/**
+    /**
      * 积分日志列表导出
      */
-    public function export_step1() {
+    public function export_step1()
+    {
         $condition_arr = array();
-        
+
         $mname = input('param.mname');
         if (!empty($mname)) {
-            $condition_arr[] = array('pl_membername','like', '%' . $mname . '%');
+            $condition_arr[] = array('pl_membername', 'like', '%' . $mname . '%');
         }
         $aname = input('param.aname');
         if (!empty($aname)) {
-            $condition_arr[] = array('pl_adminname','like', '%' . $aname . '%');
+            $condition_arr[] = array('pl_adminname', 'like', '%' . $aname . '%');
         }
-        
+
         $stage = input('get.stage');
         if ($stage) {
-            $condition_arr[]=array('pl_stage','=',trim($stage));
+            $condition_arr[] = array('pl_stage', '=', trim($stage));
         }
         $stime = input('get.stime');
         $etime = input('get.etime');
@@ -178,16 +176,15 @@ class Points extends AdminControl {
         $start_unixtime = $if_start_time ? strtotime($stime) : null;
         $end_unixtime = $if_end_time ? strtotime($etime) : null;
         if ($start_unixtime || $end_unixtime) {
-            $condition_arr[] = array('pl_addtime','between', array($start_unixtime, $end_unixtime));
+            $condition_arr[] = array('pl_addtime', 'between', array($start_unixtime, $end_unixtime));
         }
         $search_desc = trim(input('param.description'));
         if (!empty($search_desc)) {
-            $condition_arr[] = array('pl_desc','like', "%" . $search_desc . "%");
+            $condition_arr[] = array('pl_desc', 'like', "%" . $search_desc . "%");
         }
-        
-        
+
         $points_model = model('points');
-        
+
         if (!is_numeric(input('param.page'))) {
             $count = $points_model->getPointsCount($condition_arr);
             $array = array();
@@ -214,11 +211,10 @@ class Points extends AdminControl {
 
     /**
      * 生成excel
-     *
-     * @param array $data
      */
-    private function createExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -248,7 +244,8 @@ class Points extends AdminControl {
         $excel_obj->generateXML($excel_obj->charset(lang('exp_pi_jfmx'), CHARSET) . input('param.page') . '-' . date('Y-m-d-H', TIMESTAMP));
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -258,7 +255,7 @@ class Points extends AdminControl {
             array(
                 'name' => 'pointslog',
                 'text' => lang('pointslog'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Points/pointslog')."','".lang('pointslog')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Points/pointslog') . "','" . lang('pointslog') . "')"
             ),
             array(
                 'name' => 'setting',
@@ -268,5 +265,4 @@ class Points extends AdminControl {
         );
         return $menu_array;
     }
-
 }

@@ -6,28 +6,19 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 支付方式
  */
-class Payment extends AdminControl {
+class Payment extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/payment.lang.php');
     }
 
-    /**
-     * 支付方式
-     */
-    public function index() {
+    public function index()
+    {
         $payment_model = model('payment');
         //获取数据库中已安装的支付方式
         $install_payment_list = $payment_model->getPaymentList(array(array('payment_code', '<>', 'predeposit')));
@@ -64,7 +55,8 @@ class Payment extends AdminControl {
     /**
      * 安装支付方式
      */
-    function install() {
+    function install()
+    {
         $payment_code = input('param.payment_code');
         $payment_mod = model('payment');
         //如果是小程序支付、微信JS支付、微信H5支付、微信APP支付则必须先开启微信扫码支付
@@ -81,7 +73,6 @@ class Payment extends AdminControl {
                 ds_json_encode('10001', lang('please_open_alipay_payment'));
             }
         }
-
 
         $payment = model('payment')->getPaymentInfo(array('payment_code' => $payment_code));
         if (empty($payment)) {
@@ -105,7 +96,8 @@ class Payment extends AdminControl {
     /**
      * 编辑
      */
-    public function edit() {
+    public function edit()
+    {
         $payment_model = model('payment');
         $payment_code = trim(input('param.payment_code'));
         $install_payment = $payment_model->getPaymentInfo(array('payment_code' => $payment_code));
@@ -123,7 +115,6 @@ class Payment extends AdminControl {
             }
         }
         if (!(request()->isPost())) {
-
             View::assign('payment', $install_payment);
             return View::fetch();
         } else {
@@ -161,7 +152,7 @@ class Payment extends AdminControl {
                         config($file_config, 'filesystem');
                         try {
                             validate(['image' => 'fileSize:' . ALLOW_IMG_SIZE . '|fileExt:pfx'])
-                                    ->check(['image' => $file]);
+                                ->check(['image' => $file]);
                             $file_name = \think\facade\Filesystem::putFile('', $file);
                             $cfg_value2 = $file_name;
                         } catch (\Exception $e) {
@@ -180,7 +171,8 @@ class Payment extends AdminControl {
     /**
      * 删除支付方式,卸载
      */
-    public function del() {
+    public function del()
+    {
         $payment_model = model('payment');
         $payment_code = trim(input('param.payment_code'));
         $condition = array();
@@ -196,7 +188,8 @@ class Payment extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index_pc',
@@ -217,5 +210,3 @@ class Payment extends AdminControl {
         return $menu_array;
     }
 }
-
-?>

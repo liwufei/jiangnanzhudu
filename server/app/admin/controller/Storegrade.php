@@ -1,31 +1,23 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Storegrade extends AdminControl {
+class Storegrade extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/storegrade.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/storegrade.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $like_storegrade_name = trim(input('param.like_storegrade_name'));
-        $condition[]=array('storegrade_name','like', "%" . $like_storegrade_name . "%");
+        $condition[] = array('storegrade_name', 'like', "%" . $like_storegrade_name . "%");
         $storegrade_list = model('storegrade')->getStoregradeList($condition);
         // 获取分页显示
         View::assign('storegrade_list', $storegrade_list);
@@ -34,7 +26,8 @@ class Storegrade extends AdminControl {
         return View::fetch();
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             return View::fetch('form');
         } else {
@@ -47,26 +40,27 @@ class Storegrade extends AdminControl {
                 'storegrade_description' => input('post.storegrade_description'),
                 'storegrade_sort' => intval(input('post.storegrade_sort')),
             );
-            
+
             $this->validate($data, 'app\common\validate\Storegrade.add');
-            
+
             $result = model('storegrade')->addStoregrade($data);
             if ($result) {
-                dsLayerOpenSuccess(lang('ds_common_op_succ'),(string)url('Storegrade/index'));
+                dsLayerOpenSuccess(lang('ds_common_op_succ'), (string)url('Storegrade/index'));
             } else {
                 $this->error(lang('ds_common_op_fail'));
             }
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         //注：pathinfo地址参数不能通过get方法获取，查看“获取PARAM变量”
         $storegrade_id = input('param.storegrade_id');
         if (empty($storegrade_id)) {
             $this->error(lang('param_error'));
         }
         $storegrade = model('storegrade')->getOneStoregrade($storegrade_id);
-        if(empty($storegrade)){
+        if (empty($storegrade)) {
             ds_json_encode(10001, lang('param_error'));
         }
         if (!request()->isPost()) {
@@ -75,7 +69,7 @@ class Storegrade extends AdminControl {
         } else {
 
             $data = array(
-                'storegrade_id'=>$storegrade_id,
+                'storegrade_id' => $storegrade_id,
                 'storegrade_name' => input('post.storegrade_name'),
                 'storegrade_goods_limit' => intval(input('post.storegrade_goods_limit')),
                 'storegrade_album_limit' => intval(input('post.storegrade_album_limit')),
@@ -84,22 +78,23 @@ class Storegrade extends AdminControl {
                 'storegrade_description' => input('post.storegrade_description'),
                 'storegrade_sort' => intval(input('post.storegrade_sort')),
             );
-            
+
             $this->validate($data, 'app\common\validate\Storegrade.edit');
-            
-            $result = model('storegrade')->editStoregrade($storegrade_id,$data);
-            if ($result>=0) {
-                dsLayerOpenSuccess(lang('ds_common_op_succ'),(string)url('Storegrade/index'));
+
+            $result = model('storegrade')->editStoregrade($storegrade_id, $data);
+            if ($result >= 0) {
+                dsLayerOpenSuccess(lang('ds_common_op_succ'), (string)url('Storegrade/index'));
             } else {
                 $this->error(lang('ds_common_op_fail'));
             }
         }
     }
 
-    public function drop() {
+    public function drop()
+    {
         //注：pathinfo地址参数不能通过get方法获取，查看“获取PARAM变量”
         $storegrade_id = intval(input('param.storegrade_id'));
-        if ($storegrade_id<=0) {
+        if ($storegrade_id <= 0) {
             ds_json_encode(10001, lang('param_error'));
         }
         if ($storegrade_id == '1') {
@@ -117,12 +112,11 @@ class Storegrade extends AdminControl {
         }
     }
 
-
-
     /**
      * 判断店铺等级是否能删除
      */
-    public function isable_delStoregrade($storegrade_id) {
+    public function isable_delStoregrade($storegrade_id)
+    {
         //判断该等级下是否存在店铺，存在的话不能删除
         $store_model = model('store');
         $store_list = $store_model->getStoreList(array('grade_id' => $storegrade_id));
@@ -135,7 +129,8 @@ class Storegrade extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -148,12 +143,9 @@ class Storegrade extends AdminControl {
             $menu_array[] = array(
                 'name' => 'add',
                 'text' => lang('ds_new'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Storegrade/add')."','".lang('ds_new')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Storegrade/add') . "','" . lang('ds_new') . "')"
             );
         }
         return $menu_array;
     }
-
 }
-
-?>

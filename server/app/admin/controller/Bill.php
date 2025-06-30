@@ -1,21 +1,14 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
 use app\common\model\Storemoneylog;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 销量账单
  */
 class Bill extends AdminControl
 {
@@ -23,12 +16,11 @@ class Bill extends AdminControl
     public function initialize()
     {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/bill.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/bill.lang.php');
     }
 
     /**
      * 所有月份销量账单
-     *
      */
     public function index()
     {
@@ -36,7 +28,7 @@ class Bill extends AdminControl
         $condition = array();
         $query_year = input('get.query_year');
         if (preg_match('/^\d{4}$/', $query_year, $match)) {
-            $condition[]=array('os_month','like',$query_year.'%');
+            $condition[] = array('os_month', 'like', $query_year . '%');
         }
         $bill_model = model('bill');
         $bill_list = $bill_model->getOrderstatisList($condition, '*', 12, 'os_month desc');
@@ -51,28 +43,26 @@ class Bill extends AdminControl
 
     /**
      * 某月所有店铺销量账单
-     *
      */
     public function show_statis()
     {
-
         $bill_model = model('bill');
         $condition = array();
 
         $bill_state = input('get.bill_state');
         if (is_numeric($bill_state)) {
-            $condition[] = array('ob_state','=',intval($bill_state));
+            $condition[] = array('ob_state', '=', intval($bill_state));
         }
         $query_store = input('get.query_store');
         if (preg_match('/^\d{1,8}$/', $query_store)) {
-            $condition[] = array('ob_store_id','=',$query_store);
+            $condition[] = array('ob_store_id', '=', $query_store);
         } elseif ($query_store != '') {
-            $condition[] = array('ob_store_name','=',$query_store);
+            $condition[] = array('ob_store_name', '=', $query_store);
         }
         $os_month = input('get.os_month');
-        if($os_month){
-            $condition[]=array('ob_startdate','>=',strtotime($os_month.'01 0:0:0'));
-            $condition[]=array('ob_enddate','<',strtotime($os_month.'01 23:59:59 +1 month -1 day'));
+        if ($os_month) {
+            $condition[] = array('ob_startdate', '>=', strtotime($os_month . '01 0:0:0'));
+            $condition[] = array('ob_enddate', '<', strtotime($os_month . '01 23:59:59 +1 month -1 day'));
         }
         $bill_list = $bill_model->getOrderbillList($condition, '*', 30, 'ob_no desc');
         View::assign('bill_list', $bill_list);
@@ -84,7 +74,6 @@ class Bill extends AdminControl
 
     /**
      * 某店铺某月订单列表
-     *
      */
     public function show_bill()
     {
@@ -99,9 +88,9 @@ class Bill extends AdminControl
         }
 
         $order_condition = array();
-        $order_condition[] = array('ob_no','=',$ob_no);
-        $order_condition[] = array('order_state','=',ORDER_STATE_SUCCESS);
-        $order_condition[] = array('store_id','=',$bill_info['ob_store_id']);
+        $order_condition[] = array('ob_no', '=', $ob_no);
+        $order_condition[] = array('order_state', '=', ORDER_STATE_SUCCESS);
+        $order_condition[] = array('store_id', '=', $bill_info['ob_store_id']);
 
         $query_start_date = input('get.query_start_date');
         $query_end_date = input('get.query_end_date');
@@ -112,11 +101,11 @@ class Bill extends AdminControl
 
         $end_unixtime = $if_end_date ? $end_unixtime + 86400 - 1 : null;
         if ($if_start_date || $if_end_date) {
-            if($if_start_date){
-                $order_condition[]=array('finnshed_time','>=', $start_unixtime);
+            if ($if_start_date) {
+                $order_condition[] = array('finnshed_time', '>=', $start_unixtime);
             }
-            if($if_end_date){
-                $order_condition[]=array('finnshed_time','<=', $end_unixtime);
+            if ($if_end_date) {
+                $order_condition[] = array('finnshed_time', '<=', $end_unixtime);
             }
         }
 
@@ -126,8 +115,8 @@ class Bill extends AdminControl
             //店铺费用
             $storecost_model = model('storecost');
             $cost_condition = array();
-            $cost_condition[] = array('storecost_store_id','=',$bill_info['ob_store_id']);
-            $cost_condition[] = array('storecost_time','between',[$bill_info['ob_startdate'],$bill_info['ob_enddate']]);
+            $cost_condition[] = array('storecost_store_id', '=', $bill_info['ob_store_id']);
+            $cost_condition[] = array('storecost_time', 'between', [$bill_info['ob_startdate'], $bill_info['ob_enddate']]);
             $store_cost_list = $storecost_model->getStorecostList($cost_condition, 20);
             //取得店铺名字
             $store_info = model('store')->getStoreInfoByID($bill_info['ob_store_id']);
@@ -135,19 +124,19 @@ class Bill extends AdminControl
             View::assign('store_info', $store_info);
             View::assign('show_page', $storecost_model->page_info->render());
             $sub_tpl_name = 'show_cost_list';
-        }elseif ($query_type == 'vrorder') {
+        } elseif ($query_type == 'vrorder') {
 
             //店铺费用
             $vrorder_model = model('vrorder');
-            $order_list = $vrorder_model->getVrorderList($order_condition, 20,'(ROUND(order_amount*commis_rate/100,2)) AS commis_amount,(ROUND(refund_amount*commis_rate/100,2)) AS return_commis_amount,order_amount,refund_amount,order_sn,buyer_name,add_time,finnshed_time,order_id');
-            foreach($order_list as $key => $val){
-                if(!$val['order_id']){
-                    $order_list=array();
+            $order_list = $vrorder_model->getVrorderList($order_condition, 20, '(ROUND(order_amount*commis_rate/100,2)) AS commis_amount,(ROUND(refund_amount*commis_rate/100,2)) AS return_commis_amount,order_amount,refund_amount,order_sn,buyer_name,add_time,finnshed_time,order_id');
+            foreach ($order_list as $key => $val) {
+                if (!$val['order_id']) {
+                    $order_list = array();
                     break;
                 }
                 //分销佣金
-                $inviter_info=Db::name('orderinviter')->where(array('orderinviter_order_id' => $key, 'orderinviter_valid' => 1, 'orderinviter_order_type' => 1))->field('SUM(orderinviter_money) AS ob_inviter_totals')->find();
-                $order_list[$key]['inviter_amount']= ds_price_format($inviter_info['ob_inviter_totals']);
+                $inviter_info = Db::name('orderinviter')->where(array('orderinviter_order_id' => $key, 'orderinviter_valid' => 1, 'orderinviter_order_type' => 1))->field('SUM(orderinviter_money) AS ob_inviter_totals')->find();
+                $order_list[$key]['inviter_amount'] = ds_price_format($inviter_info['ob_inviter_totals']);
             }
             View::assign('order_list', $order_list);
             View::assign('show_page', $vrorder_model->page_info->render());
@@ -166,20 +155,20 @@ class Bill extends AdminControl
                 }
             }
             $order_goods_condition = array();
-            $order_goods_condition[] = array('order_id','in',$order_id_array);
+            $order_goods_condition[] = array('order_id', 'in', $order_id_array);
             $field = 'SUM(ROUND(goods_pay_price*commis_rate/100,2)) as commis_amount,order_id';
             $commis_list = $order_model->getOrdergoodsList($order_goods_condition, $field, 0, null, '', 'order_id', 'order_id');
-            foreach($commis_list as $key => $val){
-                $return_commis_amount=0;
-                $refund_info=Db::name('refundreturn')->alias('refundreturn')->join('ordergoods ordergoods', 'refundreturn.order_goods_id = ordergoods.rec_id')->where(array(array('refundreturn.order_id' ,'=', $key), array('refundreturn.refund_state' ,'=', 3), array('refundreturn.order_goods_id','>', 0)))->field('SUM(ROUND(refundreturn.refund_amount*ordergoods.commis_rate/100,2)) AS ob_commis_return_totals')->find();
-                $return_commis_amount=$refund_info['ob_commis_return_totals'];
-                $commis_list[$key]['return_commis_amount']=$return_commis_amount;
+            foreach ($commis_list as $key => $val) {
+                $return_commis_amount = 0;
+                $refund_info = Db::name('refundreturn')->alias('refundreturn')->join('ordergoods ordergoods', 'refundreturn.order_goods_id = ordergoods.rec_id')->where(array(array('refundreturn.order_id', '=', $key), array('refundreturn.refund_state', '=', 3), array('refundreturn.order_goods_id', '>', 0)))->field('SUM(ROUND(refundreturn.refund_amount*ordergoods.commis_rate/100,2)) AS ob_commis_return_totals')->find();
+                $return_commis_amount = $refund_info['ob_commis_return_totals'];
+                $commis_list[$key]['return_commis_amount'] = $return_commis_amount;
                 //分销佣金
-                $inviter_info=Db::name('orderinviter')->where(array('orderinviter_order_id' => $key, 'orderinviter_valid' => 1, 'orderinviter_order_type' => 0))->field('SUM(orderinviter_money) AS ob_inviter_totals')->find();
-                $commis_list[$key]['inviter_amount']=$inviter_info['ob_inviter_totals'];
+                $inviter_info = Db::name('orderinviter')->where(array('orderinviter_order_id' => $key, 'orderinviter_valid' => 1, 'orderinviter_order_type' => 0))->field('SUM(orderinviter_money) AS ob_inviter_totals')->find();
+                $commis_list[$key]['inviter_amount'] = $inviter_info['ob_inviter_totals'];
                 //平台代金券
-                $mallvoucher_info=Db::name('ordercommon')->where(array('order_id' => $key))->field('mallvoucher_price')->find();
-                $commis_list[$key]['mall_voucher_totals']=number_format($mallvoucher_info['mallvoucher_price'], 2);
+                $mallvoucher_info = Db::name('ordercommon')->where(array('order_id' => $key))->field('mallvoucher_price')->find();
+                $commis_list[$key]['mall_voucher_totals'] = number_format($mallvoucher_info['mallvoucher_price'], 2);
             }
             View::assign('commis_list', $commis_list);
             View::assign('order_list', $order_list);
@@ -190,37 +179,38 @@ class Bill extends AdminControl
         return View::fetch($sub_tpl_name);
     }
 
-    public function bill_check() {
+    public function bill_check()
+    {
         $ob_no = input('param.ob_no');
         if (!$ob_no) {
             $this->error(lang('param_error'));
         }
         $bill_model = model('bill');
         $condition = array();
-        $condition[] = array('ob_no','=',$ob_no);
-        $condition[] = array('ob_state','=',BILL_STATE_STORE_COFIRM);
+        $condition[] = array('ob_no', '=', $ob_no);
+        $condition[] = array('ob_state', '=', BILL_STATE_STORE_COFIRM);
         $bill_info = $bill_model->getOrderbillInfo($condition);
         if (!$bill_info) {
             $this->error(lang('bill_is_not_exist'));
         }
         if (request()->isPost()) {
-            
+
             Db::startTrans();
             try {
-                if($bill_info['ob_result_totals']!=0){
-                    $storemoneylog_model=model('storemoneylog');
-                    $data=array(
-                        'store_id'=>$bill_info['ob_store_id'],
-                        'storemoneylog_type'=>Storemoneylog::TYPE_BILL,
-                        'storemoneylog_state'=>Storemoneylog::STATE_VALID,
-                        'storemoneylog_add_time'=>TIMESTAMP,
-                        'store_avaliable_money'=>$bill_info['ob_result_totals'],//如果是欠账则从店铺余额里扣除，否则增加
-                        'storemoneylog_desc'=>$ob_no.lang('bill_phase_numbers').lang('bill_state_success'),
+                if ($bill_info['ob_result_totals'] != 0) {
+                    $storemoneylog_model = model('storemoneylog');
+                    $data = array(
+                        'store_id' => $bill_info['ob_store_id'],
+                        'storemoneylog_type' => Storemoneylog::TYPE_BILL,
+                        'storemoneylog_state' => Storemoneylog::STATE_VALID,
+                        'storemoneylog_add_time' => TIMESTAMP,
+                        'store_avaliable_money' => $bill_info['ob_result_totals'], //如果是欠账则从店铺余额里扣除，否则增加
+                        'storemoneylog_desc' => $ob_no . lang('bill_phase_numbers') . lang('bill_state_success'),
                     );
 
                     $storemoneylog_model->changeStoremoney($data);
                 }
-                $update = $bill_model->editOrderbill(array('ob_state' => BILL_STATE_SUCCESS,'ob_admin_content'=>input('post.ob_admin_content')), $condition);
+                $update = $bill_model->editOrderbill(array('ob_state' => BILL_STATE_SUCCESS, 'ob_admin_content' => input('post.ob_admin_content')), $condition);
                 if (!$update) {
                     throw new \think\Exception(lang('bill_audit_fail'), 10006);
                 }
@@ -231,7 +221,7 @@ class Bill extends AdminControl
             }
             Db::commit();
             $this->log(lang('bill_audit_bill') . $ob_no, 1);
-            $this->success(lang('bill_audit_succ'),(string)url('Bill/show_bill',['ob_no'=>$ob_no]));
+            $this->success(lang('bill_audit_succ'), (string)url('Bill/show_bill', ['ob_no' => $ob_no]));
         } else {
             return View::fetch('bill_check');
         }
@@ -239,7 +229,6 @@ class Bill extends AdminControl
 
     /**
      * 账单付款
-     *
      */
     public function bill_pay()
     {
@@ -249,8 +238,8 @@ class Bill extends AdminControl
         }
         $bill_model = model('bill');
         $condition = array();
-        $condition[] = array('ob_no','=',$ob_no);
-        $condition[] = array('ob_state','=',BILL_STATE_SYSTEM_CHECK);
+        $condition[] = array('ob_no', '=', $ob_no);
+        $condition[] = array('ob_state', '=', BILL_STATE_SYSTEM_CHECK);
         $bill_info = $bill_model->getOrderbillInfo($condition);
         if (!$bill_info) {
             $this->error(lang('param_error'));
@@ -267,9 +256,9 @@ class Bill extends AdminControl
             if ($update) {
                 $storecost_model = model('storecost');
                 $cost_condition = array();
-                $cost_condition[] = array('storecost_store_id','=',$bill_info['ob_store_id']);
-                $cost_condition[] = array('storecost_state','=',0);
-                $cost_condition[] = array('storecost_time','between', "{$bill_info['ob_startdate']},{$bill_info['ob_enddate']}");
+                $cost_condition[] = array('storecost_store_id', '=', $bill_info['ob_store_id']);
+                $cost_condition[] = array('storecost_state', '=', 0);
+                $cost_condition[] = array('storecost_time', 'between', "{$bill_info['ob_startdate']},{$bill_info['ob_enddate']}");
                 $storecost_model->editStorecost(array('storecost_state' => 1), $cost_condition);
 
                 // 发送店铺消息
@@ -285,10 +274,10 @@ class Bill extends AdminControl
                 $param['param'] = $param['ali_param'];
                 //微信模板消息
                 $param['weixin_param'] = array(
-                    'url' => config('ds_config.h5_store_site_url').'/pages/seller/bill/BillList',
-                    'data'=>array(
+                    'url' => config('ds_config.h5_store_site_url') . '/pages/seller/bill/BillList',
+                    'data' => array(
                         "keyword1" => array(
-                            "value" => date('Y-m-d', $bill_info['ob_startdate']).'~'.date('Y-m-d', $bill_info['ob_enddate']),
+                            "value" => date('Y-m-d', $bill_info['ob_startdate']) . '~' . date('Y-m-d', $bill_info['ob_enddate']),
                             "color" => "#333"
                         ),
                         "keyword2" => array(
@@ -301,7 +290,7 @@ class Bill extends AdminControl
                         )
                     ),
                 );
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendStoremsg','cron_value'=>serialize($param)));
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendStoremsg', 'cron_value' => serialize($param)));
 
                 $this->log(lang('bill_payment_audit_fail') . $ob_no, 1);
                 $this->success(lang('ds_common_save_succ'), 'bill/show_statis?os_month=' . $bill_info['os_month']);
@@ -317,7 +306,6 @@ class Bill extends AdminControl
 
     /**
      * 打印结算单
-     *
      */
     public function bill_print()
     {
@@ -327,8 +315,8 @@ class Bill extends AdminControl
         }
         $bill_model = model('bill');
         $condition = array();
-        $condition[] = array('ob_no','=',$ob_no);
-        $condition[] = array('ob_state','=',BILL_STATE_SUCCESS);
+        $condition[] = array('ob_no', '=', $ob_no);
+        $condition[] = array('ob_state', '=', BILL_STATE_SUCCESS);
         $bill_info = $bill_model->getOrderbillInfo($condition);
         if (!$bill_info) {
             $this->error(lang('param_error'));
@@ -341,14 +329,14 @@ class Bill extends AdminControl
 
     /**
      * 导出 结算管理
-     *
      */
-    public function export_js_step1() {
+    public function export_js_step1()
+    {
         $bill_model = model('bill');
         $condition = array();
         $query_year = input('get.query_year');
         if (preg_match('/^\d{4}$/', $query_year, $match)) {
-            $condition[]=array('os_month','like',$query_year.'%');
+            $condition[] = array('os_month', 'like', $query_year . '%');
         }
         if (!is_numeric(input('param.page'))) {
             $count = $bill_model->getOrderstatisCount($condition);
@@ -376,11 +364,10 @@ class Bill extends AdminControl
 
     /**
      * 结算管理 生成excel
-     *
-     * @param array $data
      */
-    private function createJsExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createJsExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -399,7 +386,7 @@ class Bill extends AdminControl
         //data
         foreach ((array) $data as $k => $v) {
             $tmp = array();
-            $tmp[] = array('data' => substr($v['os_month'],0,4).'-'.substr($v['os_month'],4));
+            $tmp[] = array('data' => substr($v['os_month'], 0, 4) . '-' . substr($v['os_month'], 4));
             $tmp[] = array('format' => 'Number', 'data' => ds_price_format($v['os_order_totals']));
             $tmp[] = array('format' => 'Number', 'data' => ds_price_format($v['os_shipping_totals']));
             $tmp[] = array('format' => 'Number', 'data' => ds_price_format($v['os_commis_totals']));
@@ -420,27 +407,26 @@ class Bill extends AdminControl
 
     /**
      * 商家账单列表 管理
-     *
      */
-    public function export_zd_step1() {
-
+    public function export_zd_step1()
+    {
         $bill_model = model('bill');
         $condition = array();
 
         $bill_state = input('get.bill_state');
         if (is_numeric($bill_state)) {
-            $condition[] = array('ob_state','=',intval($bill_state));
+            $condition[] = array('ob_state', '=', intval($bill_state));
         }
         $query_store = input('get.query_store');
         if (preg_match('/^\d{1,8}$/', $query_store)) {
-            $condition[] = array('ob_store_id','=',$query_store);
+            $condition[] = array('ob_store_id', '=', $query_store);
         } elseif ($query_store != '') {
-            $condition[] = array('ob_store_name','=',$query_store);
+            $condition[] = array('ob_store_name', '=', $query_store);
         }
         $os_month = input('get.os_month');
-        if($os_month){
-            $condition[]=array('ob_startdate','>=',strtotime($os_month.'01 0:0:0'));
-            $condition[]=array('ob_enddate','<',strtotime($os_month.'01 23:59:59 +1 month -1 day'));
+        if ($os_month) {
+            $condition[] = array('ob_startdate', '>=', strtotime($os_month . '01 0:0:0'));
+            $condition[] = array('ob_enddate', '<', strtotime($os_month . '01 23:59:59 +1 month -1 day'));
         }
         if (!is_numeric(input('param.page'))) {
             $count = $bill_model->getOrderbillCount($condition);
@@ -468,11 +454,10 @@ class Bill extends AdminControl
 
     /**
      * 商家账单列表 生成excel
-     *
-     * @param array $data
      */
-    private function createZdExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createZdExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -539,14 +524,13 @@ class Bill extends AdminControl
                 'url' => (string)url('Bill/index')
             ),
         );
-            $title = !empty(input('param.os_month')) ? input('param.os_month') . lang('bill_period') : '';
-            $menu_array[] = array(
-                'name' => 'show_statis',
-                'text' => $title . lang('bill_billing_list'),
-                'url' => !empty($title) ? (string)url('Bill/show_statis', ['os_month' => input('param.os_month')]) : (string)url('Bill/show_statis'),
-            );
+        $title = !empty(input('param.os_month')) ? input('param.os_month') . lang('bill_period') : '';
+        $menu_array[] = array(
+            'name' => 'show_statis',
+            'text' => $title . lang('bill_billing_list'),
+            'url' => !empty($title) ? (string)url('Bill/show_statis', ['os_month' => input('param.os_month')]) : (string)url('Bill/show_statis'),
+        );
         return $menu_array;
     }
+    
 }
-
-?>

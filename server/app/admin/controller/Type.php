@@ -1,30 +1,25 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 类型管理
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 类型管理
  */
-class Type extends AdminControl {
+class Type extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/type.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/type.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $type_model = model('type');
         $type_list = $type_model->getTypeList('', 10);
         // 获取分页显示
@@ -34,11 +29,11 @@ class Type extends AdminControl {
         return View::fetch();
     }
 
-    /*
+    /**
      * 新增类型
      */
-
-    public function type_add() {
+    public function type_add()
+    {
         if (!(request()->isPost())) {
             $type = [
                 'class_id' => 0,
@@ -47,12 +42,10 @@ class Type extends AdminControl {
             //设置类型关联的分类
             $gc_list = model('goodsclass')->getGoodsclassListByParentId(0);
             View::assign('gc_list', $gc_list);
-            
+
             $this->setAdminCurItem('type_add');
             return View::fetch('type_form');
         } else {
-
-
             $data = array(
                 'type_name' => input('post.type_name'),
                 'type_sort' => input('post.type_sort'),
@@ -78,7 +71,7 @@ class Type extends AdminControl {
                     $type_model->addTypebrand($typebrand);
                 }
             }
-            
+
             //添加类型与规格对应
             $spec_array = input('post.spec_id/a');
             if (!empty($spec_array)) {
@@ -131,7 +124,8 @@ class Type extends AdminControl {
         }
     }
 
-    public function type_edit() {
+    public function type_edit()
+    {
         $type_id = input('param.type_id');
         if (empty($type_id)) {
             $this->error(lang('param_error'));
@@ -139,7 +133,7 @@ class Type extends AdminControl {
         $type_model = model('type');
         if (!(request()->isPost())) {
             $type = $type_model->getOneType(array('type_id' => $type_id));
-            if(empty($type)){
+            if (empty($type)) {
                 $this->error(lang('param_error'));
             }
             View::assign('type', $type);
@@ -147,10 +141,10 @@ class Type extends AdminControl {
             $gc_list = model('goodsclass')->getGoodsclassListByParentId(0);
             View::assign('gc_list', $gc_list);
             //根据相同分类检索出对应的品牌
-            $b_related = $this->getBrand($type['class_id'],$type_id);
+            $b_related = $this->getBrand($type['class_id'], $type_id);
             View::assign('brand_list', $b_related);
             //根据相同分类检索出对应的规格
-            $sp_related = $this->getSpec($type['class_id'],$type_id);
+            $sp_related = $this->getSpec($type['class_id'], $type_id);
             View::assign('spec_list', $sp_related);
             //属性
             $attr_list = $type_model->typeRelatedList('attribute', array('type_id' => $type_id));
@@ -210,9 +204,9 @@ class Type extends AdminControl {
                         $attr_array['attr_sort'] = $v['sort'];
                         $attr_array['attr_show'] = isset($v['show']) && $v['show'] == "on" ? 1 : 0;
                         $condition = array();
-                        $condition[] = array('type_id','=',$type_id);
-                        $condition[] = array('attr_id','=',intval($v['attr_id']));
-                        $return = $type_model->editAttribute($condition,$attr_array);
+                        $condition[] = array('type_id', '=', $type_id);
+                        $condition[] = array('attr_id', '=', intval($v['attr_id']));
+                        $return = $type_model->editAttribute($condition, $attr_array);
                     } else if (!isset($v['form_submit'])) {
                         //添加新属性
                         if ($v['value'] != '') {
@@ -263,13 +257,14 @@ class Type extends AdminControl {
                 $type_array['type_sort'] = trim(input('post.type_sort'));
                 $type_array['class_id'] = input('post.class_id');
                 $type_array['class_name'] = input('post.class_name');
-                $type_model->editType(array('type_id' => $type_id),$type_array);
+                $type_model->editType(array('type_id' => $type_id), $type_array);
             }
             $this->success(lang('ds_common_op_succ'), 'Type/index');
         }
     }
 
-    public function attr_edit() {
+    public function attr_edit()
+    {
         $type_model = model('type');
         $attr_id = input('param.attr_id');
         if (empty($attr_id)) {
@@ -302,7 +297,7 @@ class Type extends AdminControl {
                         $update = array();
                         $update['attrvalue_name'] = $val['name'];
                         $update['attrvalue_sort'] = intval($val['sort']);
-                        $type_model->editAttributevalue(array('attrvalue_id' => intval($key)),$update);
+                        $type_model->editAttributevalue(array('attrvalue_id' => intval($key)), $update);
 
                         $attr_array[] = $val['name'];
                     } else if (!isset($val['form_submit'])) {
@@ -327,22 +322,23 @@ class Type extends AdminControl {
 
             //更新属性
             $data['attr_value'] = implode(',', $attr_array);
-            $type_model->editAttribute(array('attr_id' => $attr_id),$data);
+            $type_model->editAttribute(array('attr_id' => $attr_id), $data);
             dsLayerOpenSuccess(lang('ds_common_op_succ'));
         }
     }
 
-    /*
+    /**
      * 删除类型
      */
-    public function type_drop() {
+    public function type_drop()
+    {
         $type_model = model('type');
         $type_id = input('param.type_id');
         if (empty($type_id)) {
             ds_json_encode(10001, lang('param_error'));
         }
         $condition = array();
-        $condition[] = array('type_id','=',$type_id);
+        $condition[] = array('type_id', '=', $type_id);
         //更新前删除对应类型与品牌关联
         $type_model->delTypebrand($condition);
         //更新前删除对应类型与规格关联
@@ -363,7 +359,8 @@ class Type extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -375,131 +372,138 @@ class Type extends AdminControl {
         if (request()->action() == 'type_add' || request()->action() == 'index') {
             $menu_array[] = array(
                 'name' => 'type_add',
-                'text' => lang('ds_new').lang('type_index_type_name'),
+                'text' => lang('ds_new') . lang('type_index_type_name'),
                 'url' => (string)url('Type/type_add')
             );
         }
         if (request()->action() == 'type_edit') {
             $menu_array[] = array(
                 'name' => 'type_edit',
-                'text' => lang('ds_edit').lang('type_index_type_name'),
+                'text' => lang('ds_edit') . lang('type_index_type_name'),
                 'url' => ''
             );
         }
         return $menu_array;
     }
-    function getSpecRelated($type_id){
+
+    function getSpecRelated($type_id)
+    {
         //规格关联列表
         $type_model = model('type');
-            $spec_related = $type_model->typeRelatedList('typespec', array('type_id' => $type_id), 'sp_id');
-            $sp_related = array();
-            if (is_array($spec_related) && !empty($spec_related)) {
-                foreach ($spec_related as $val) {
-                    $sp_related[] = $val['sp_id'];
-                }
+        $spec_related = $type_model->typeRelatedList('typespec', array('type_id' => $type_id), 'sp_id');
+        $sp_related = array();
+        if (is_array($spec_related) && !empty($spec_related)) {
+            foreach ($spec_related as $val) {
+                $sp_related[] = $val['sp_id'];
             }
-            unset($spec_related);
-            return $sp_related;
+        }
+        unset($spec_related);
+        return $sp_related;
     }
-    function getBrandRelated($type_id){
+
+    function getBrandRelated($type_id)
+    {
         //类型与品牌关联列表
         $type_model = model('type');
-            $brand_related = $type_model->typeRelatedList('typebrand', array('type_id' => $type_id), 'brand_id');
-            $b_related = array();
-            if (is_array($brand_related) && !empty($brand_related)) {
-                foreach ($brand_related as $val) {
-                    $b_related[] = $val['brand_id'];
-                }
+        $brand_related = $type_model->typeRelatedList('typebrand', array('type_id' => $type_id), 'brand_id');
+        $b_related = array();
+        if (is_array($brand_related) && !empty($brand_related)) {
+            foreach ($brand_related as $val) {
+                $b_related[] = $val['brand_id'];
             }
-            unset($brand_related);
-            return $b_related;
+        }
+        unset($brand_related);
+        return $b_related;
     }
-    function getSpec($class_id,$type_id=0){
-        
+
+    function getSpec($class_id, $type_id = 0)
+    {
         $goodsclass_model = model('goodsclass');
-        $in_gc_id='0';
+        $in_gc_id = '0';
         //分类是否存在
-        if($class_id && Db::name('goodsclass')->where('gc_id',$class_id)->value('gc_id')){
-            $parent_gc_list=$goodsclass_model->getGoodsclassLineForTag($class_id);
-            if(is_array($parent_gc_list) && !empty($parent_gc_list)){
+        if ($class_id && Db::name('goodsclass')->where('gc_id', $class_id)->value('gc_id')) {
+            $parent_gc_list = $goodsclass_model->getGoodsclassLineForTag($class_id);
+            if (is_array($parent_gc_list) && !empty($parent_gc_list)) {
                 //获取分类的父分类ID
-                if(isset($parent_gc_list['gc_id_1'])){
-                    $in_gc_id.=','.$parent_gc_list['gc_id_1'];
+                if (isset($parent_gc_list['gc_id_1'])) {
+                    $in_gc_id .= ',' . $parent_gc_list['gc_id_1'];
                 }
-                if(isset($parent_gc_list['gc_id_2'])){
-                    $in_gc_id.=','.$parent_gc_list['gc_id_2'];
+                if (isset($parent_gc_list['gc_id_2'])) {
+                    $in_gc_id .= ',' . $parent_gc_list['gc_id_2'];
                 }
-                if(isset($parent_gc_list['gc_id_3'])){
-                    $in_gc_id.=','.$parent_gc_list['gc_id_3'];
+                if (isset($parent_gc_list['gc_id_3'])) {
+                    $in_gc_id .= ',' . $parent_gc_list['gc_id_3'];
                 }
             }
         }
-        
-            //根据相同分类检索出对应的规格
-            $spec_model = model('spec');
-            $condition = array();
-            $condition[]=array('gc_id','in',$in_gc_id);    
-            $spec_list = $spec_model->getSpecList($condition);
-            $s_list = array();
-            $sp_related = array();
-            if($type_id){
-                $sp_related=$this->getSpecRelated($type_id);
+
+        //根据相同分类检索出对应的规格
+        $spec_model = model('spec');
+        $condition = array();
+        $condition[] = array('gc_id', 'in', $in_gc_id);
+        $spec_list = $spec_model->getSpecList($condition);
+        $s_list = array();
+        $sp_related = array();
+        if ($type_id) {
+            $sp_related = $this->getSpecRelated($type_id);
+        }
+        if (is_array($spec_list) && !empty($spec_list)) {
+            foreach ($spec_list as $k => $val) {
+                $val['checked'] = in_array($val['sp_id'], $sp_related) ? 1 : 0;
+                $s_list[$val['gc_id']]['spec'][$k] = $val;
+                $s_list[$val['gc_id']]['name'] = $val['gc_name'];
             }
-            if (is_array($spec_list) && !empty($spec_list)) {
-                foreach ($spec_list as $k => $val) {
-                    $val['checked']= in_array($val['sp_id'], $sp_related)?1:0;
-                    $s_list[$val['gc_id']]['spec'][$k] = $val;
-                    $s_list[$val['gc_id']]['name'] = $val['gc_name'];
-                }
-            }
-            ksort($s_list);
-            return $s_list;
+        }
+        ksort($s_list);
+        return $s_list;
     }
-    function getBrand($class_id,$type_id=0){
+
+    function getBrand($class_id, $type_id = 0)
+    {
         $goodsclass_model = model('goodsclass');
-        
-        $in_gc_id[]=0;
+        $in_gc_id[] = 0;
+
         //分类是否存在
-        if($class_id && Db::name('goodsclass')->where('gc_id',$class_id)->value('gc_id')){
-            $parent_gc_list=$goodsclass_model->getGoodsclassLineForTag($class_id);
-            if(is_array($parent_gc_list) && !empty($parent_gc_list)){
+        if ($class_id && Db::name('goodsclass')->where('gc_id', $class_id)->value('gc_id')) {
+            $parent_gc_list = $goodsclass_model->getGoodsclassLineForTag($class_id);
+            if (is_array($parent_gc_list) && !empty($parent_gc_list)) {
                 //获取分类的父分类ID
-                if(isset($parent_gc_list['gc_id_1'])){
-                    $in_gc_id[]=$parent_gc_list['gc_id_1'];
+                if (isset($parent_gc_list['gc_id_1'])) {
+                    $in_gc_id[] = $parent_gc_list['gc_id_1'];
                 }
-                if(isset($parent_gc_list['gc_id_2'])){
-                    $in_gc_id[]=$parent_gc_list['gc_id_2'];
+                if (isset($parent_gc_list['gc_id_2'])) {
+                    $in_gc_id[] = $parent_gc_list['gc_id_2'];
                 }
-                if(isset($parent_gc_list['gc_id_3'])){
-                    $in_gc_id[]=$parent_gc_list['gc_id_3'];
+                if (isset($parent_gc_list['gc_id_3'])) {
+                    $in_gc_id[] = $parent_gc_list['gc_id_3'];
                 }
             }
         }
         $brand_model = model('brand');
-            $brand_list = $brand_model->getBrandPassedList(array(array('gc_id','in',$in_gc_id)));
-            $b_list = array();
-            $b_related = array();
-            if($type_id){
-                $b_related=$this->getBrandRelated($type_id);
+        $brand_list = $brand_model->getBrandPassedList(array(array('gc_id', 'in', $in_gc_id)));
+        $b_list = array();
+        $b_related = array();
+        if ($type_id) {
+            $b_related = $this->getBrandRelated($type_id);
+        }
+        if (is_array($brand_list) && !empty($brand_list)) {
+            foreach ($brand_list as $k => $val) {
+                $val['checked'] = in_array($val['brand_id'], $b_related) ? 1 : 0;
+                $b_list[$val['gc_id']]['brand'][$k] = $val;
+                $b_list[$val['gc_id']]['name'] = $val['brand_class'];
             }
-            if (is_array($brand_list) && !empty($brand_list)) {
-                foreach ($brand_list as $k => $val) {
-                    $val['checked']= in_array($val['brand_id'], $b_related)?1:0;
-                    $b_list[$val['gc_id']]['brand'][$k] = $val;
-                    $b_list[$val['gc_id']]['name'] = $val['brand_class'];
-                }
-            }
-            ksort($b_list);
-            return $b_list;
+        }
+        ksort($b_list);
+        return $b_list;
     }
-    function ajaxGetSpecAndBrand(){
-        $class_id=intval(input('class_id'));
-        $type_id=intval(input('type_id'));
-        $s_list=$this->getSpec($class_id,$type_id);
-        $b_list=$this->getBrand($class_id,$type_id);
-        echo json_encode(array('s_list'=>$s_list,'b_list'=>$b_list));
+
+    function ajaxGetSpecAndBrand()
+    {
+        $class_id = intval(input('class_id'));
+        $type_id = intval(input('type_id'));
+        $s_list = $this->getSpec($class_id, $type_id);
+        $b_list = $this->getBrand($class_id, $type_id);
+        echo json_encode(array('s_list' => $s_list, 'b_list' => $b_list));
         return;
     }
 }
-
-?>

@@ -6,20 +6,13 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 店铺帮助
  */
-class Storehelp extends AdminControl {
+class Storehelp extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize(); // 
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/storehelp.lang.php');
     }
@@ -27,7 +20,8 @@ class Storehelp extends AdminControl {
     /**
      * 帮助列表
      */
-    public function index() {
+    public function index()
+    {
         $help_model = model('help');
         $condition = array();
         $condition[] = array('help_id', '>', '99'); //内容列表不显示系统自动添加的数据
@@ -61,7 +55,6 @@ class Storehelp extends AdminControl {
         View::assign('help_list', $help_list);
         View::assign('show_page', $help_model->page_info->render());
 
-
         $this->setAdminCurItem('index');
         return View::fetch();
     }
@@ -69,7 +62,8 @@ class Storehelp extends AdminControl {
     /**
      * 帮助类型
      */
-    public function help_type() {
+    public function help_type()
+    {
         $help_model = model('help');
         $condition = array();
 
@@ -82,9 +76,9 @@ class Storehelp extends AdminControl {
 
     /**
      * 新增帮助
-     *
      */
-    public function add_help() {
+    public function add_help()
+    {
         $help_model = model('help');
         $help = array(
             'help_title' => '',
@@ -129,9 +123,9 @@ class Storehelp extends AdminControl {
 
     /**
      * 编辑帮助
-     *
      */
-    public function edit_help() {
+    public function edit_help()
+    {
         $help_model = model('help');
         $condition = array();
         $help_id = intval(input('param.help_id'));
@@ -170,9 +164,9 @@ class Storehelp extends AdminControl {
 
     /**
      * 删除帮助
-     *
      */
-    public function del_help() {
+    public function del_help()
+    {
         $help_model = model('help');
         $condition = array();
         $help_id = intval(input('param.help_id'));
@@ -188,9 +182,9 @@ class Storehelp extends AdminControl {
 
     /**
      * 新增帮助类型
-     *
      */
-    public function add_type() {
+    public function add_type()
+    {
         $help_model = model('help');
         if (request()->isPost()) {
             $type_array = array();
@@ -219,9 +213,9 @@ class Storehelp extends AdminControl {
 
     /**
      * 编辑帮助类型
-     *
      */
-    public function edit_type() {
+    public function edit_type()
+    {
         $help_model = model('help');
         $condition = array();
         $helptype_id = intval(input('param.helptype_id'));
@@ -248,9 +242,9 @@ class Storehelp extends AdminControl {
 
     /**
      * 删除帮助类型
-     *
      */
-    public function del_type() {
+    public function del_type()
+    {
         $helptype_id = intval(input('param.helptype_id'));
         $help_model = model('help');
         $condition = array();
@@ -267,9 +261,10 @@ class Storehelp extends AdminControl {
     /**
      * 上传图片
      */
-    public function upload_pic() {
+    public function upload_pic()
+    {
         $data = array();
-        if (!empty($_FILES['fileupload']['name'])) {//上传图片
+        if (!empty($_FILES['fileupload']['name'])) { //上传图片
             $fprefix = 'admin/storehelp';
             $filename = $file_name = date('YmdHis') . rand(10000, 99999) . '.png';
             $res = ds_upload_pic($fprefix, 'fileupload', $filename);
@@ -291,7 +286,7 @@ class Storehelp extends AdminControl {
             if ($result) {
                 $data['file_id'] = $result;
                 $data['file_name'] = $file_name;
-                $data['file_path'] = ds_get_pic( $fprefix , $file_name);
+                $data['file_path'] = ds_get_pic($fprefix, $file_name);
             }
         }
         echo json_encode($data);
@@ -301,7 +296,8 @@ class Storehelp extends AdminControl {
     /**
      * 删除图片
      */
-    public function del_pic() {
+    public function del_pic()
+    {
         $condition = array();
         $condition[] = array('upload_id', '=', intval(input('param.file_id')));
         $help_model = model('help');
@@ -315,13 +311,15 @@ class Storehelp extends AdminControl {
         }
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
                 'text' => lang('help_info'),
                 'url' => (string) url('Storehelp/index')
-            ), array(
+            ),
+            array(
                 'name' => 'help_type',
                 'text' => lang('helptype_id'),
                 'url' => (string) url('Storehelp/help_type')
@@ -345,9 +343,9 @@ class Storehelp extends AdminControl {
             $menu_array[] = array(
                 'name' => 'add_type',
                 'text' => lang('add_type'),
-                'url' => "javascript:dsLayerOpen('" . (string) url('Storehelp/add_type') . "','" . lang('add_type') . "')");
+                'url' => "javascript:dsLayerOpen('" . (string) url('Storehelp/add_type') . "','" . lang('add_type') . "')"
+            );
         }
         return $menu_array;
     }
-
 }

@@ -1,71 +1,59 @@
 <?php
 
-/**
- * 商品管理
- */
-
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 商品管理
  */
-class Goods extends AdminControl {
+class Goods extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/goods.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/goods.lang.php');
     }
 
     /**
      * 商品管理
      */
-    public function index() {
+    public function index()
+    {
         $goods_model = model('goods');
-        /**
-         * 处理商品分类
-         */
+
+        // 处理商品分类
         $choose_gcid = ($t = intval(input('param.choose_gcid'))) > 0 ? $t : 0;
         $gccache_arr = model('goodsclass')->getGoodsclassCache($choose_gcid, 3);
         View::assign('gc_json', json_encode($gccache_arr['showclass']));
         View::assign('gc_choose_json', json_encode($gccache_arr['choose_gcid']));
 
-        /**
-         * 查询条件
-         */
+        // 查询条件
         $where = array();
         $search_goods_name = trim(input('param.search_goods_name'));
         if ($search_goods_name != '') {
-            $where[]=array('goods_name','like', '%' . $search_goods_name . '%');
+            $where[] = array('goods_name', 'like', '%' . $search_goods_name . '%');
         }
         $search_commonid = intval(input('param.search_commonid'));
         if ($search_commonid > 0) {
-            $where[]=array('goods_commonid','=',$search_commonid);
+            $where[] = array('goods_commonid', '=', $search_commonid);
         }
         $search_store_name = trim(input('param.search_store_name'));
         if ($search_store_name != '') {
-            $where[]=array('store_name','like', '%' .$search_store_name . '%');
+            $where[] = array('store_name', 'like', '%' . $search_store_name . '%');
         }
         $store_id = intval(input('get.store_id'));
-        if ($store_id>0) {
+        if ($store_id > 0) {
             $where[] = array('store_id', '=', $store_id);
         }
         $b_id = intval(input('param.b_id'));
         if ($b_id > 0) {
-            $where[]=array('brand_id','=',$b_id);
+            $where[] = array('brand_id', '=', $b_id);
         }
         if ($choose_gcid > 0) {
-            $where[] = array('gc_id_' . ($gccache_arr['showclass'][$choose_gcid]['depth']),'=',$choose_gcid);
+            $where[] = array('gc_id_' . ($gccache_arr['showclass'][$choose_gcid]['depth']), '=', $choose_gcid);
         }
 
         $type = input('param.type');
@@ -80,14 +68,14 @@ class Goods extends AdminControl {
                 break;
             // 全部商品
             default:
-                //默认所有商品才有此参数
+                // 默认所有商品才有此参数
                 $goods_state = input('param.goods_state');
                 if (in_array($goods_state, array('0', '1', '10'))) {
-                    $where[]=array('goods_state','=',$goods_state);
+                    $where[] = array('goods_state', '=', $goods_state);
                 }
                 $goods_verify = input('param.goods_verify');
                 if (in_array($goods_verify, array('0', '1', '10'))) {
-                    $where[]=array('goods_verify','=',$goods_verify);
+                    $where[] = array('goods_verify', '=', $goods_verify);
                 }
                 $goods_list = $goods_model->getGoodsCommonList($where, '*', 10, 'mall_goods_commend desc,mall_goods_sort asc');
                 break;
@@ -109,29 +97,28 @@ class Goods extends AdminControl {
 
         View::assign('verify', array('1' => lang('goods_verify_1'), '0' => lang('goods_verify_0'), '10' => lang('goods_verify_10')));
 
-
         $type = input('param.type');
-        if(!in_array($type, array('lockup','waitverify','allgoods'))){
+        if (!in_array($type, array('lockup', 'waitverify', 'allgoods'))) {
             $type = 'allgoods';
         }
-        
+
         View::assign('type', $type);
         $this->setAdminCurItem($type);
         return View::fetch();
     }
 
-
     /**
      * 计算商品库存
      */
-    public function goods_storage($goods_list) {
+    public function goods_storage($goods_list)
+    {
         $goods_model = model('goods');
         // 计算库存
         $storage_array = array();
         if (!empty($goods_list)) {
             foreach ($goods_list as $value) {
-                $storage_array[$value['goods_commonid']]['goods_storage'] = $goods_model->getGoodsSum(array('goods_commonid'=>$value['goods_commonid']),'goods_storage');
-                $storage_array[$value['goods_commonid']][] = $goods_model->getGoodsInfo(array('goods_commonid'=>$value['goods_commonid']),'goods_id');
+                $storage_array[$value['goods_commonid']]['goods_storage'] = $goods_model->getGoodsSum(array('goods_commonid' => $value['goods_commonid']), 'goods_storage');
+                $storage_array[$value['goods_commonid']][] = $goods_model->getGoodsInfo(array('goods_commonid' => $value['goods_commonid']), 'goods_id');
             }
             return $storage_array;
         } else {
@@ -142,19 +129,20 @@ class Goods extends AdminControl {
     /**
      * 违规下架
      */
-    public function goods_lockup() {
+    public function goods_lockup()
+    {
         if (request()->isPost()) {
             $commonids = input('param.commonids');
             $commonid_array = ds_delete_param($commonids);
             if ($commonid_array == FALSE) {
                 $this->error(lang('ds_common_op_fail'));
             }
-            
+
             $update = array();
             $update['goods_stateremark'] = trim(input('post.close_reason'));
 
             $where = array();
-            $where[]=array('goods_commonid','in', $commonid_array);
+            $where[] = array('goods_commonid', 'in', $commonid_array);
 
             model('goods')->editProducesLockUp($update, $where);
             dsLayerOpenSuccess(lang('ds_common_op_succ'));
@@ -167,14 +155,15 @@ class Goods extends AdminControl {
     /**
      * 删除商品
      */
-    public function goods_del() {
+    public function goods_del()
+    {
         $common_id = input('param.common_id');
         $common_id_array = ds_delete_param($common_id);
         if ($common_id_array == FALSE) {
             ds_json_encode('10001', lang('ds_common_op_fail'));
         }
         $condition = array();
-        $condition[]=array('goods_commonid','in',$common_id_array);
+        $condition[] = array('goods_commonid', 'in', $common_id_array);
         model('goods')->delGoodsAll($condition);
         ds_json_encode('10000', lang('ds_common_op_succ'));
     }
@@ -182,7 +171,8 @@ class Goods extends AdminControl {
     /**
      * 审核商品
      */
-    public function goods_verify() {
+    public function goods_verify()
+    {
         if (request()->isPost()) {
             $commonids = input('param.commonids');
             $commonid_array = ds_delete_param($commonids);
@@ -197,7 +187,7 @@ class Goods extends AdminControl {
             $update1['goods_verifyremark'] = trim(input('param.verify_reason'));
             $update1 = array_merge($update1, $update2);
             $where = array();
-            $where[]=array('goods_commonid','in', $commonid_array);
+            $where[] = array('goods_commonid', 'in', $commonid_array);
 
             $goods_model = model('goods');
             if (intval(input('param.verify_state')) == 0) {
@@ -212,17 +202,18 @@ class Goods extends AdminControl {
         }
     }
 
-    //ajax获取同一个commonid下面的商品信息
-    public function get_goods_list_ajax() {
+    // ajax获取同一个commonid下面的商品信息
+    public function get_goods_list_ajax()
+    {
         $common_id = input('param.commonid');
         if (empty($common_id)) {
             $this->error(lang('param_error'));
         }
         $map['goods_commonid'] = $common_id;
         $goods_model = model('goods');
-        $common_info = $goods_model->getGoodsCommonInfo($map,'spec_name');
+        $common_info = $goods_model->getGoodsCommonInfo($map, 'spec_name');
         $goods_list = $goods_model->getGoodsList($map);
-        //halt($goods_list);
+
         $spec_name = array_values((array) unserialize($common_info['spec_name']));
         foreach ($goods_list as $key => $val) {
             $goods_spec = array_values((array) unserialize($val['goods_spec']));
@@ -236,17 +227,18 @@ class Goods extends AdminControl {
         }
         return json_encode($goods_list);
     }
-    
+
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $goods_model = model('goods');
         switch (input('param.branch')) {
             case 'mall_goods_commend':
             case 'mall_goods_sort':
                 if (empty($result)) {
-                    $goods_model->editGoodsCommonById(array(trim(input('param.branch')) => trim(input('param.value'))),array(intval(input('param.id'))));
+                    $goods_model->editGoodsCommonById(array(trim(input('param.branch')) => trim(input('param.value'))), array(intval(input('param.id'))));
                     echo 'true';
                     exit;
                 } else {
@@ -260,7 +252,8 @@ class Goods extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'allgoods',
@@ -280,7 +273,4 @@ class Goods extends AdminControl {
         );
         return $menu_array;
     }
-
 }
-
-?>

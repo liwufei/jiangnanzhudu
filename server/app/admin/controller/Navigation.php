@@ -1,38 +1,33 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 导航
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 导航
  */
-class Navigation extends AdminControl {
+class Navigation extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/navigation.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/navigation.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $navigation_model = model('navigation');
         $condition = array();
         $nav_title = input('param.nav_title');
         if (!empty($nav_title)) {
-            $condition[]=array('nav_title','like', "%" . $nav_title . "%");
+            $condition[] = array('nav_title', 'like', "%" . $nav_title . "%");
         }
         $nav_location = input('param.nav_location');
         if (!empty($nav_location)) {
-            $condition[]=array('nav_location','=',$nav_location);
+            $condition[] = array('nav_location', '=', $nav_location);
         }
         $nav_list = $navigation_model->getNavigationList($condition, 10);
         View::assign('nav_list', $nav_list);
@@ -41,7 +36,8 @@ class Navigation extends AdminControl {
         return View::fetch();
     }
 
-    public function add() {
+    public function add()
+    {
         if (!(request()->isPost())) {
             $nav = [
                 'nav_location' => 'header',
@@ -55,11 +51,11 @@ class Navigation extends AdminControl {
             $data['nav_url'] = input('post.nav_url');
             $data['nav_new_open'] = intval(input('post.nav_new_open'));
             $data['nav_sort'] = intval(input('post.nav_sort'));
-            
+
             $this->validate($data, 'app\common\validate\Navigation.add');
-            
-            $navigation_model= model('navigation');
-            $result=$navigation_model->addNavigation($data);
+
+            $navigation_model = model('navigation');
+            $result = $navigation_model->addNavigation($data);
             if ($result) {
                 dsLayerOpenSuccess(lang('ds_common_op_succ'));
             } else {
@@ -68,16 +64,17 @@ class Navigation extends AdminControl {
         }
     }
 
-    public function edit() {
-        $navigation_model= model('navigation');
+    public function edit()
+    {
+        $navigation_model = model('navigation');
         $nav_id = input('param.nav_id');
         if (empty($nav_id)) {
             $this->error(lang('param_error'));
         }
         if (!request()->isPost()) {
             $condition = array();
-            $condition[] = array('nav_id','=',$nav_id);
-            $nav=$navigation_model->getOneNavigation($condition);
+            $condition[] = array('nav_id', '=', $nav_id);
+            $nav = $navigation_model->getOneNavigation($condition);
             View::assign('nav', $nav);
             return View::fetch('form');
         } else {
@@ -86,13 +83,13 @@ class Navigation extends AdminControl {
             $data['nav_url'] = input('post.nav_url');
             $data['nav_new_open'] = intval(input('post.nav_new_open'));
             $data['nav_sort'] = intval(input('post.nav_sort'));
-            
+
             $this->validate($data, 'app\common\validate\Navigation.edit');
 
             $condition = array();
-            $condition[] = array('nav_id','=',$nav_id);
-            $result = $navigation_model->eidtNavigation($data,$condition);
-            if ($result>=0) {
+            $condition[] = array('nav_id', '=', $nav_id);
+            $result = $navigation_model->eidtNavigation($data, $condition);
+            if ($result >= 0) {
                 dsLayerOpenSuccess(lang('ds_common_op_succ'));
             } else {
                 $this->error(lang('error'));
@@ -100,15 +97,16 @@ class Navigation extends AdminControl {
         }
     }
 
-    public function drop() {
-        $navigation_model= model('navigation');
+    public function drop()
+    {
+        $navigation_model = model('navigation');
         $nav_id = input('param.nav_id');
         $nav_id_array = ds_delete_param($nav_id);
-        if($nav_id_array === FALSE){
+        if ($nav_id_array === FALSE) {
             ds_json_encode('10001', lang('param_error'));
         }
         $condition = array(array('nav_id', 'in', $nav_id_array));
-        $result =$navigation_model->delNavigation($condition);
+        $result = $navigation_model->delNavigation($condition);
         if ($result) {
             ds_json_encode('10000', lang('ds_common_del_succ'));
         } else {
@@ -119,7 +117,8 @@ class Navigation extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -129,10 +128,9 @@ class Navigation extends AdminControl {
             array(
                 'name' => 'add',
                 'text' => lang('ds_add'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Navigation/add')."','".lang('ds_add')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Navigation/add') . "','" . lang('ds_add') . "')"
             ),
         );
         return $menu_array;
     }
-
 }

@@ -1,48 +1,40 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 文章分类管理
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 文章分类管理
  */
-class Articleclass extends AdminControl {
+class Articleclass extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/articleclass.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/articleclass.lang.php');
     }
 
     /**
      * 文章管理
      */
-    public function index() {
+    public function index()
+    {
         $articleclass_model = model('articleclass');
-        /**
-         * 父ID
-         */
+
+        // 父ID
         $parent_id = input('param.ac_parent_id') ? intval(input('param.ac_parent_id')) : 0;
-        /**
-         * 列表
-         */
+ 
+        // 列表
         $tmp_list = $articleclass_model->getTreeClassList(2);
         $class_list = array();
         if (is_array($tmp_list)) {
             foreach ($tmp_list as $k => $v) {
                 if ($v['ac_parent_id'] == $parent_id) {
-                    /**
-                     * 判断是否有子类
-                     */
+       
+                    // 判断是否有子类
                     $v['have_child'] = 0;
                     if (isset($tmp_list[$k + 1]['deep']) && $tmp_list[$k + 1]['deep'] > $v['deep']) {
                         $v['have_child'] = 1;
@@ -52,9 +44,7 @@ class Articleclass extends AdminControl {
             }
         }
         if (input('param.ajax') == '1') {
-            /**
-             * 转码
-             */
+            // 转码
             $output = json_encode($class_list);
             print_r($output);
             exit;
@@ -68,29 +58,27 @@ class Articleclass extends AdminControl {
     /**
      * 文章分类 新增
      */
-    public function article_class_add() {
+    public function article_class_add()
+    {
         $articleclass_model = model('articleclass');
+
         if (request()->isPost()) {
+            $insert_array = array();
+            $insert_array['ac_name'] = trim(input('param.ac_name'));
+            $insert_array['ac_parent_id'] = intval(input('param.ac_parent_id'));
+            $insert_array['ac_sort'] = trim(input('param.ac_sort'));
 
+            $this->validate($insert_array, 'app\common\validate\Articleclass.add');
 
-                $insert_array = array();
-                $insert_array['ac_name'] = trim(input('param.ac_name'));
-                $insert_array['ac_parent_id'] = intval(input('param.ac_parent_id'));
-                $insert_array['ac_sort'] = trim(input('param.ac_sort'));
-                
-                $this->validate($insert_array, 'app\common\validate\Articleclass.add');
-
-                $result = $articleclass_model->addArticleclass($insert_array);
-                if ($result) {
-                    $this->log(lang('ds_add') . lang('article_class_index_class') . '[' . input('ac_name') . ']', 1);
-                    dsLayerOpenSuccess(lang('article_class_add_succ'));
-                } else {
-                    $this->error(lang('article_class_add_fail'));
-                }
+            $result = $articleclass_model->addArticleclass($insert_array);
+            if ($result) {
+                $this->log(lang('ds_add') . lang('article_class_index_class') . '[' . input('ac_name') . ']', 1);
+                dsLayerOpenSuccess(lang('article_class_add_succ'));
+            } else {
+                $this->error(lang('article_class_add_fail'));
+            }
         } else {
-            /**
-             * 父类列表，只取到第三级
-             */
+            // 父类列表，只取到第三级
             $parent_list = $articleclass_model->getTreeClassList(1);
             if (is_array($parent_list)) {
                 foreach ($parent_list as $k => $v) {
@@ -106,26 +94,27 @@ class Articleclass extends AdminControl {
     /**
      * 文章分类编辑
      */
-    public function article_class_edit() {
+    public function article_class_edit()
+    {
         $articleclass_model = model('articleclass');
-        
-        $ac_id = intval(input('param.ac_id'));
-        
-        if (request()->isPost()) {
-            
-                $update_array = array();
-                $update_array['ac_name'] = trim(input('post.ac_name'));
-                $update_array['ac_sort'] = trim(input('post.ac_sort'));
-                
-                $this->validate($update_array, 'app\common\validate\Articleclass.edit');
 
-                $result = $articleclass_model->editArticleclass($update_array,$ac_id);
-                if ($result>=0) {
-                    $this->log(lang('ds_edit') . lang('article_class_index_class') . '[' . input('post.ac_name') . ']', 1);
-                    dsLayerOpenSuccess(lang('ds_common_op_succ'));
-                } else {
-                    $this->error(lang('ds_common_op_fail'));
-                }
+        $ac_id = intval(input('param.ac_id'));
+
+        if (request()->isPost()) {
+
+            $update_array = array();
+            $update_array['ac_name'] = trim(input('post.ac_name'));
+            $update_array['ac_sort'] = trim(input('post.ac_sort'));
+
+            $this->validate($update_array, 'app\common\validate\Articleclass.edit');
+
+            $result = $articleclass_model->editArticleclass($update_array, $ac_id);
+            if ($result >= 0) {
+                $this->log(lang('ds_edit') . lang('article_class_index_class') . '[' . input('post.ac_name') . ']', 1);
+                dsLayerOpenSuccess(lang('ds_common_op_succ'));
+            } else {
+                $this->error(lang('ds_common_op_fail'));
+            }
         } else {
             $class_array = $articleclass_model->getOneArticleclass($ac_id);
             if (empty($class_array)) {
@@ -140,15 +129,15 @@ class Articleclass extends AdminControl {
     /**
      * 删除分类
      */
-    public function article_class_del() {
+    public function article_class_del()
+    {
         $articleclass_model = model('articleclass');
-        
+
         $ac_id = input('param.ac_id');
         $ac_id_array = ds_delete_param($ac_id);
         if ($ac_id_array === FALSE) {
             ds_json_encode('10001', lang('param_error'));
         }
-        
 
         $del_array = $articleclass_model->getChildClass($ac_id_array);
         if (is_array($del_array)) {
@@ -163,23 +152,23 @@ class Articleclass extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         switch (input('param.branch')) {
-            /**
-             * 分类：验证是否有重复的名称
-             */
+
+            // 分类：验证是否有重复的名称
             case 'article_class_name':
                 $articleclass_model = model('articleclass');
                 $class_array = $articleclass_model->getOneArticleclass(intval(input('param.id')));
 
-                $condition[]=array('ac_name','=',trim(input('param.value')));
-                $condition[]=array('ac_parent_id','=',$class_array['ac_parent_id']);
-                $condition[]=array('ac_id','<>',intval(input('param.id')));
+                $condition[] = array('ac_name', '=', trim(input('param.value')));
+                $condition[] = array('ac_parent_id', '=', $class_array['ac_parent_id']);
+                $condition[] = array('ac_id', '<>', intval(input('param.id')));
                 $class_list = $articleclass_model->getArticleclassList($condition);
                 if (empty($class_list)) {
                     $update_array = array();
                     $update_array['ac_name'] = trim(input('param.value'));
-                    $articleclass_model->editArticleclass($update_array,input('param.id'));
+                    $articleclass_model->editArticleclass($update_array, input('param.id'));
                     echo 'true';
                     exit;
                 } else {
@@ -187,25 +176,21 @@ class Articleclass extends AdminControl {
                     exit;
                 }
                 break;
-            /**
-             * 分类： 排序 显示 设置
-             */
+            // 分类：排序 显示 设置
             case 'article_class_sort':
                 $articleclass_model = model('articleclass');
                 $update_array = array();
                 $update_array[input('param.column')] = trim(input('param.value'));
-                $result = $articleclass_model->editArticleclass($update_array,intval(input('param.id')));
+                $result = $articleclass_model->editArticleclass($update_array, intval(input('param.id')));
                 echo 'true';
                 exit;
                 break;
-            /**
-             * 分类：添加、修改操作中 检测类别名称是否有重复
-             */
+            // 分类：添加、修改操作中 检测类别名称是否有重复
             case 'check_class_name':
                 $articleclass_model = model('articleclass');
-                $condition[]=array('ac_name','=',trim(input('param.ac_name')));
-//                $condition[] = array('ac_parent_id','=',intval(input('param.ac_parent_id')));
-                $condition[]=array('ac_id','<>',intval(input('param.ac_id')));
+                $condition[] = array('ac_name', '=', trim(input('param.ac_name')));
+                // $condition[] = array('ac_parent_id','=',intval(input('param.ac_parent_id')));
+                $condition[] = array('ac_id', '<>', intval(input('param.ac_id')));
                 $class_list = $articleclass_model->getArticleclassList($condition);
                 if (empty($class_list)) {
                     echo 'true';
@@ -218,20 +203,21 @@ class Articleclass extends AdminControl {
         }
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
-                'text' =>lang('ds_manage'),
+                'text' => lang('ds_manage'),
                 'url' => (string)url('Articleclass/index')
             ),
             array(
                 'name' => 'add',
                 'text' => lang('ds_new'),
-                'url' =>"javascript:dsLayerOpen('".(string)url('Articleclass/article_class_add')."','".lang('article_class_add')."')",
+                'url' => "javascript:dsLayerOpen('" . (string)url('Articleclass/article_class_add') . "','" . lang('article_class_add') . "')",
             )
         );
         return $menu_array;
     }
-
+    
 }

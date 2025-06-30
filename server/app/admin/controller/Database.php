@@ -1,6 +1,7 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
@@ -9,32 +10,26 @@ use think\facade\Lang;
 define('DATA_BACKUP_PATH', 'uploads/sqldata/');
 //数据库备份卷大小  20971520表示为 20M
 //define('DATA_BACKUP_PART_SIZE', 20971520);
-define('DATA_BACKUP_PART_SIZE', 1024*1024*10);
+define('DATA_BACKUP_PART_SIZE', 1024 * 1024 * 10);
 //数据库备份文件是否启用压缩
 define('DATA_BACKUP_COMPRESS', 0);
 //数据库备份文件压缩级别
 define('DATA_BACKUP_COMPRESS_LEVEL', 9);
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 数据库备份
  */
-class Database extends AdminControl {
+class Database extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/db.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/db.lang.php');
     }
 
-    public function db() {
+    public function db()
+    {
         $dbtable_list = Db::query('SHOW TABLE STATUS');
         $total = 0;
         foreach ($dbtable_list as $k => $v) {
@@ -48,7 +43,8 @@ class Database extends AdminControl {
         return View::fetch();
     }
 
-    public function export($tables = null, $id = null, $start = null) {
+    public function export($tables = null, $id = null, $start = null)
+    {
         //防止备份数据过程超时
         function_exists('set_time_limit') && set_time_limit(0);
         if (request()->isPost() && !empty($tables) && is_array($tables)) { //初始化
@@ -115,7 +111,7 @@ class Database extends AdminControl {
             } else {
                 $tab = array('id' => $id, 'start' => $start[0]);
                 $rate = floor(100 * ($start[0] / $start[1]));
-                return json(array('tab' => $tab, 'info' => lang('backup_in_progress')."...({$rate}%)", 'status' => 1, 'url' => ''));
+                return json(array('tab' => $tab, 'info' => lang('backup_in_progress') . "...({$rate}%)", 'status' => 1, 'url' => ''));
             }
         } else {
             //出错
@@ -123,7 +119,8 @@ class Database extends AdminControl {
         }
     }
 
-    public function restore() {
+    public function restore()
+    {
         $path = DATA_BACKUP_PATH;
         if (!is_dir($path)) {
             mkdir($path, 0755, true);
@@ -164,11 +161,9 @@ class Database extends AdminControl {
 
     /**
      * 执行还原数据库操作
-     * @param int $time
-     * @param null $part
-     * @param null $start
      */
-    public function import($time = 0, $part = null, $start = null) {
+    public function import($time = 0, $part = null, $start = null)
+    {
         function_exists('set_time_limit') && set_time_limit(0);
 
         if (is_numeric($time) && is_null($part) && is_null($start)) { //初始化
@@ -189,15 +184,18 @@ class Database extends AdminControl {
             $last = end($list);
             if (count($list) === $last[0]) {
                 session('backup_list', $list); //缓存备份列表
-                $this->success(lang('init_success'), NULL ,['part'=>1,'start'=>0]);
+                $this->success(lang('init_success'), NULL, ['part' => 1, 'start' => 0]);
             } else {
                 $this->error(lang('file_break_please_check'));
             }
         } elseif (is_numeric($part) && is_numeric($start)) {
             $list = session('backup_list');
-            $db = new \mall\Backup($list[$part], array(
-                'path' => realpath(DATA_BACKUP_PATH) . DIRECTORY_SEPARATOR,
-                'compress' => $list[$part][2])
+            $db = new \mall\Backup(
+                $list[$part],
+                array(
+                    'path' => realpath(DATA_BACKUP_PATH) . DIRECTORY_SEPARATOR,
+                    'compress' => $list[$part][2]
+                )
             );
             $start = $db->import($start);
             if (false === $start) {
@@ -205,7 +203,7 @@ class Database extends AdminControl {
             } elseif (0 === $start) { //下一卷
                 if (isset($list[++$part])) {
                     $data = array('part' => $part, 'start' => 0);
-                    $this->success(lang('restoring')."...#{$part}", null, $data);
+                    $this->success(lang('restoring') . "...#{$part}", null, $data);
                 } else {
                     session('backup_list', null);
                     $this->success(lang('recover_success'));
@@ -214,10 +212,10 @@ class Database extends AdminControl {
                 $data = array('part' => $part, 'start' => $start[0]);
                 if ($start[1]) {
                     $rate = floor(100 * ($start[0] / $start[1]));
-                    $this->success(lang('restoring')."...#{$part} ({$rate}%)", null, $data);
+                    $this->success(lang('restoring') . "...#{$part} ({$rate}%)", null, $data);
                 } else {
                     $data['gz'] = 1;
-                    $this->success(lang('restoring')."...#{$part}", null, $data);
+                    $this->success(lang('restoring') . "...#{$part}", null, $data);
                 }
             }
         } else {
@@ -228,7 +226,8 @@ class Database extends AdminControl {
     /**
      * 优化
      */
-    public function optimize() {
+    public function optimize()
+    {
         $batchFlag = intval(input('param.batchFlag'));
         //批量删除
         if ($batchFlag) {
@@ -251,7 +250,8 @@ class Database extends AdminControl {
     /**
      * 修复
      */
-    public function repair() {
+    public function repair()
+    {
         $batchFlag = intval(input('param.batchFlag'));
         //批量删除
         if ($batchFlag) {
@@ -274,9 +274,9 @@ class Database extends AdminControl {
 
     /**
      * 下载
-     * @param int $time
      */
-    public function downFile($time = 0) {
+    public function downFile($time = 0)
+    {
         $name = date('Ymd-His', $time) . '-*.sql*';
         $path = realpath(DATA_BACKUP_PATH) . DIRECTORY_SEPARATOR . $name;
         $files = glob($path);
@@ -297,9 +297,9 @@ class Database extends AdminControl {
 
     /**
      * 删除备份文件
-     * @param  Integer $time 备份时间
      */
-    public function del($time = 0) {
+    public function del($time = 0)
+    {
         if ($time) {
             $name = date('Ymd-His', $time) . '-*.sql*';
             $path = realpath(DATA_BACKUP_PATH) . DIRECTORY_SEPARATOR . $name;
@@ -317,7 +317,8 @@ class Database extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'db',
@@ -333,7 +334,4 @@ class Database extends AdminControl {
 
         return $menu_array;
     }
-
 }
-
-?>

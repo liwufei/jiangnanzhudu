@@ -7,20 +7,13 @@ use think\facade\Lang;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 店铺
  */
-class Store extends AdminControl {
+class Store extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/store.lang.php');
     }
@@ -28,7 +21,8 @@ class Store extends AdminControl {
     /**
      * 店铺
      */
-    public function store() {
+    public function store()
+    {
         $store_model = model('store');
 
         $owner_and_name = input('get.owner_and_name');
@@ -62,7 +56,6 @@ class Store extends AdminControl {
                 break;
         }
 
-
         //店铺列表
         $store_list = $store_model->getStoreList($condition, 10, 'store_id desc');
         //店铺等级
@@ -85,7 +78,8 @@ class Store extends AdminControl {
         return View::fetch('store');
     }
 
-    private function _get_store_state_array() {
+    private function _get_store_state_array()
+    {
         return array(
             'open' => lang('ds_open'),
             'close' => lang('ds_close'),
@@ -97,7 +91,8 @@ class Store extends AdminControl {
     /**
      * 店铺编辑
      */
-    public function store_edit() {
+    public function store_edit()
+    {
         $store_id = intval(input('param.store_id'));
         $store_model = model('store');
         //取店铺信息
@@ -137,13 +132,13 @@ class Store extends AdminControl {
             if (trim(input('post.end_time')) != '') {
                 $time = strtotime(input('post.end_time'));
             }
-            
+
             $store_name = input('post.store_name');
             //验证器在model层,验证器未有必填项,在此验证
-            if(empty($store_name)){
+            if (empty($store_name)) {
                 $this->error(lang('please_input_store_name_p'));
             }
-            
+
             $update_array = array();
             $update_array['store_id'] = $store_id;
             $update_array['store_name'] = $store_name;
@@ -174,7 +169,7 @@ class Store extends AdminControl {
                 $update_array['store_close_info'] = '';
             }
             $result = $store_model->editStore($update_array, array('store_id' => $store_id));
-            
+
             //当修改了店铺修改 store_name , 则同时修改数据中其他相关的store_name
             if ($result && $store_name != $store_array['store_name']) {
                 $store_model->updateAllStorename($store_id, $store_name);
@@ -194,7 +189,8 @@ class Store extends AdminControl {
     /**
      * 编辑保存注册信息
      */
-    public function edit_save_joinin() {
+    public function edit_save_joinin()
+    {
         if (request()->isPost()) {
             $member_id = input('post.member_id');
             if ($member_id <= 0) {
@@ -217,7 +213,6 @@ class Store extends AdminControl {
             if (!empty($_FILES['business_licence_number_electronic']['name'])) {
                 $param['business_licence_number_electronic'] = $this->upload_image('business_licence_number_electronic');
             }
-
 
             $param['bank_account_name'] = input('post.bank_account_name');
             $param['bank_account_number'] = input('post.bank_account_number');
@@ -249,8 +244,8 @@ class Store extends AdminControl {
         }
     }
 
-    private function upload_image($file) {
-
+    private function upload_image($file)
+    {
         //上传文件保存路径
         $pic_name = '';
 
@@ -272,7 +267,8 @@ class Store extends AdminControl {
     /**
      * 店铺经营类目管理
      */
-    public function store_bind_class() {
+    public function store_bind_class()
+    {
 
         $store_id = intval(input('param.store_id'));
 
@@ -304,7 +300,8 @@ class Store extends AdminControl {
     /**
      * 添加经营类目
      */
-    public function store_bind_class_add() {
+    public function store_bind_class_add()
+    {
         $store_id = intval(input('post.store_id'));
         $commis_rate = intval(input('post.commis_rate'));
         if ($commis_rate < 0 || $commis_rate > 100) {
@@ -345,7 +342,8 @@ class Store extends AdminControl {
     /**
      * 删除经营类目
      */
-    public function store_bind_class_del() {
+    public function store_bind_class_del()
+    {
         $bid = intval(input('param.bid'));
 
 
@@ -376,7 +374,8 @@ class Store extends AdminControl {
         }
     }
 
-    public function store_bind_class_update() {
+    public function store_bind_class_update()
+    {
         $bid = intval(input('param.id'));
         if ($bid <= 0) {
             echo json_encode(array('result' => FALSE, 'message' => lang('param_error')));
@@ -405,7 +404,8 @@ class Store extends AdminControl {
     /**
      * 店铺 待审核列表
      */
-    public function store_joinin() {
+    public function store_joinin()
+    {
         $condition = array();
         //店铺列表
         if (input('param.owner_and_name')) {
@@ -443,7 +443,8 @@ class Store extends AdminControl {
     /**
      * 经营类目申请列表
      */
-    public function store_bind_class_applay_list() {
+    public function store_bind_class_applay_list()
+    {
         $condition = array();
         // 不显示自营店铺绑定的类目
         $state = input('param.state');
@@ -496,7 +497,8 @@ class Store extends AdminControl {
     /**
      * 审核经营类目申请
      */
-    public function store_bind_class_applay_check() {
+    public function store_bind_class_applay_check()
+    {
         $storebindclass_model = model('storebindclass');
         $condition = array();
         $condition[] = array('storebindclass_id', '=', intval(input('param.bid')));
@@ -513,7 +515,8 @@ class Store extends AdminControl {
     /**
      * 删除经营类目申请
      */
-    public function store_bind_class_applay_del() {
+    public function store_bind_class_applay_del()
+    {
         $storebindclass_model = model('storebindclass');
         $condition = array();
         $condition[] = array('storebindclass_id', '=', intval(input('param.bid')));
@@ -526,7 +529,8 @@ class Store extends AdminControl {
         }
     }
 
-    private function get_store_joinin_state() {
+    private function get_store_joinin_state()
+    {
         $joinin_state_array = array(
             STORE_JOIN_STATE_NEW => lang('store_join_state_new'),
             STORE_JOIN_STATE_PAY => lang('store_join_state_pay'),
@@ -541,7 +545,8 @@ class Store extends AdminControl {
     /**
      * 店铺续签申请列表
      */
-    public function reopen_list() {
+    public function reopen_list()
+    {
         $condition = array();
         $store_id = input('get.store_id');
         if (intval($store_id)) {
@@ -570,7 +575,8 @@ class Store extends AdminControl {
     /**
      * 审核店铺续签申请
      */
-    public function reopen_check() {
+    public function reopen_check()
+    {
         if (intval(input('param.storereopen_id')) <= 0)
             exit();
         $storereopen_model = model('storereopen');
@@ -601,7 +607,8 @@ class Store extends AdminControl {
     /**
      * 删除店铺续签申请
      */
-    public function reopen_del() {
+    public function reopen_del()
+    {
         $storereopen_model = model('storereopen');
         $condition = array();
         $condition[] = array('storereopen_id', '=', intval(input('param.storereopen_id')));
@@ -622,7 +629,8 @@ class Store extends AdminControl {
     /**
      * 审核详细页
      */
-    public function store_joinin_detail() {
+    public function store_joinin_detail()
+    {
         $storejoinin_model = model('storejoinin');
         $member_id = input('param.member_id');
         $joinin_detail = $storejoinin_model->getOneStorejoinin(array('member_id' => $member_id));
@@ -648,7 +656,8 @@ class Store extends AdminControl {
     /**
      * 审核
      */
-    public function store_joinin_verify() {
+    public function store_joinin_verify()
+    {
         $storejoinin_model = model('storejoinin');
         $joinin_detail = $storejoinin_model->getOneStorejoinin(array('member_id' => input('param.member_id')));
 
@@ -665,7 +674,8 @@ class Store extends AdminControl {
         }
     }
 
-    private function store_joinin_verify_pass($joinin_detail) {
+    private function store_joinin_verify_pass($joinin_detail)
+    {
         $param = array();
         $param['joinin_state'] = input('post.verify_type') === 'pass' ? STORE_JOIN_STATE_VERIFY_SUCCESS : STORE_JOIN_STATE_VERIFY_FAIL;
         $param['joinin_message'] = input('post.joinin_message');
@@ -682,10 +692,10 @@ class Store extends AdminControl {
         }
     }
 
-    private function store_joinin_verify_open($joinin_detail) {
+    private function store_joinin_verify_open($joinin_detail)
+    {
         $storejoinin_model = model('storejoinin');
         $store_model = model('store');
-
 
         $param = array();
         $param['joinin_state'] = input('post.verify_type') === 'pass' ? STORE_JOIN_STATE_FINAL : STORE_JOIN_STATE_PAY_FAIL;
@@ -693,52 +703,52 @@ class Store extends AdminControl {
 
         if (input('post.verify_type') === 'pass') {
             Db::startTrans();
-            try{
-                $store_model->setStoreOpen($joinin_detail,$param);
+            try {
+                $store_model->setStoreOpen($joinin_detail, $param);
                 Db::commit();
-            }catch(\Exception $e) {
+            } catch (\Exception $e) {
                 Db::rollback();
                 $this->error($e->getMessage());
             }
             dsLayerOpenSuccess(lang('ds_common_op_succ'));
         } else {
             Db::startTrans();
-            try{
+            try {
                 $predeposit_model = model('predeposit');
-                if($joinin_detail['rcb_amount']>0){
-                            $data_pd = array();
-                            $data_pd['member_id'] = $joinin_detail['member_id'];
-                            $data_pd['member_name'] = $joinin_detail['member_name'];
-                            $data_pd['amount'] = $joinin_detail['rcb_amount'];
-                            $data_pd['order_sn'] = $joinin_detail['pay_sn'];
-                            $predeposit_model->changeRcb('storejoinin_cancel', $data_pd);
+                if ($joinin_detail['rcb_amount'] > 0) {
+                    $data_pd = array();
+                    $data_pd['member_id'] = $joinin_detail['member_id'];
+                    $data_pd['member_name'] = $joinin_detail['member_name'];
+                    $data_pd['amount'] = $joinin_detail['rcb_amount'];
+                    $data_pd['order_sn'] = $joinin_detail['pay_sn'];
+                    $predeposit_model->changeRcb('storejoinin_cancel', $data_pd);
                 }
-                if($joinin_detail['pd_amount']>0){
-                            $data_pd = array();
-                            $data_pd['member_id'] = $joinin_detail['member_id'];
-                            $data_pd['member_name'] = $joinin_detail['member_name'];
-                            $data_pd['amount'] = $joinin_detail['pd_amount'];
-                            $data_pd['order_sn'] = $joinin_detail['pay_sn'];
-                            $predeposit_model->changePd('storejoinin_cancel', $data_pd);
+                if ($joinin_detail['pd_amount'] > 0) {
+                    $data_pd = array();
+                    $data_pd['member_id'] = $joinin_detail['member_id'];
+                    $data_pd['member_name'] = $joinin_detail['member_name'];
+                    $data_pd['amount'] = $joinin_detail['pd_amount'];
+                    $data_pd['order_sn'] = $joinin_detail['pay_sn'];
+                    $predeposit_model->changePd('storejoinin_cancel', $data_pd);
                 }
-            //改变店铺状态
-            $storejoinin_model->editStorejoinin($param, array('member_id' => input('param.member_id')));
-            Db::commit();
-            }catch(\Exception $e) {
-                    Db::rollback();
-                    $this->error($e->getMessage());
+                //改变店铺状态
+                $storejoinin_model->editStorejoinin($param, array('member_id' => input('param.member_id')));
+                Db::commit();
+            } catch (\Exception $e) {
+                Db::rollback();
+                $this->error($e->getMessage());
             }
-            
 
             dsLayerOpenSuccess(lang('ds_common_op_succ'));
-//            $this->error(lang('store_open_reject'));
+            // $this->error(lang('store_open_reject'));
         }
     }
 
     /**
      * 提醒续费
      */
-    public function remind_renewal() {
+    public function remind_renewal()
+    {
         $store_id = intval(input('param.store_id'));
         $store_info = model('store')->getStoreInfoByID($store_id);
         if (!empty($store_info) && $store_info['store_endtime'] < (TIMESTAMP + 864000) && cookie('remindRenewal' . $store_id) == null) {
@@ -762,7 +772,7 @@ class Store extends AdminControl {
                     )
                 ),
             );
-            model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendStoremsg','cron_value'=>serialize($param)));
+            model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendStoremsg', 'cron_value' => serialize($param)));
 
             cookie('remindRenewal' . $store_id, 1, 86400 * 10);  // 十天
             $this->success(lang('ds_common_op_succ'));
@@ -770,9 +780,9 @@ class Store extends AdminControl {
         $this->error(lang('ds_common_op_fail'));
     }
 
-
     //删除店铺操作 
-    public function del_join() {
+    public function del_join()
+    {
         $member_id = (int) input('param.member_id');
         $store_joinin = model('storejoinin');
         $condition = array(
@@ -783,7 +793,6 @@ class Store extends AdminControl {
             $this->error(lang('ds_common_op_fail'), get_referer());
         }
         if ($mm['joinin_state'] == '20') {
-            
         }
         $store_name = $mm['store_name'];
         $store_model = model('store');
@@ -818,12 +827,12 @@ class Store extends AdminControl {
             $this->error($e->getMessage());
         }
 
-
         $this->log(lang('del_store') . ":" . $store_name);
         ds_json_encode('10000', lang('ds_common_del_succ'));
     }
 
-    public function newshop_add() {
+    public function newshop_add()
+    {
         if (!request()->isPost()) {
             return View::fetch('store_newshop_add');
         } else {
@@ -832,28 +841,28 @@ class Store extends AdminControl {
             $member_password = input('post.member_password');
             $seller_name = $member_name;
             $store_name = input('post.store_name');
-            
+
             //store验证器在 model层,避免其他影响, 必填项在控制器进行判断
-            if(empty($store_name)){
+            if (empty($store_name)) {
                 $this->error('店铺名不能为空');
             }
 
-            if (strlen($member_name) < 3 || strlen($member_name) > 15){
+            if (strlen($member_name) < 3 || strlen($member_name) > 15) {
                 $this->error(lang('name_length_error'));
             }
 
-            if (strlen($member_password) < 6){
+            if (strlen($member_password) < 6) {
                 $this->error(lang('member_password_minlength'));
             }
 
-            if (!$this->checkMemberName($member_name)){
+            if (!$this->checkMemberName($member_name)) {
                 $this->error(lang('member_name_exist'));
             }
 
-            if (!$this->checkSellerName($member_name)){
+            if (!$this->checkSellerName($member_name)) {
                 $this->error(lang('member_name_exist'));
             }
-                
+
             $memberId = model('member')->addMember(array(
                 'member_name' => $member_name,
                 'member_password' => $member_password,
@@ -914,15 +923,17 @@ class Store extends AdminControl {
         }
     }
 
-    public function check_seller_name() {
+    public function check_seller_name()
+    {
         echo json_encode($this->checkSellerName(input('param.seller_name')));
         exit;
     }
 
-    private function checkSellerName($sellerName) {
+    private function checkSellerName($sellerName)
+    {
         // 判断store_joinin是否存在记录
         $count = (int) model('storejoinin')->getStorejoininCount(array(
-                    'seller_name' => $sellerName,
+            'seller_name' => $sellerName,
         ));
         if ($count > 0)
             return false;
@@ -936,38 +947,41 @@ class Store extends AdminControl {
         return TRUE;
     }
 
-    public function check_member_name() {
+    public function check_member_name()
+    {
         echo json_encode($this->checkMemberName(input('param.member_name')));
         exit;
     }
 
-    private function checkMemberName($member_name) {
+    private function checkMemberName($member_name)
+    {
         // 判断store_joinin是否存在记录
         $count = (int) model('storejoinin')->getStorejoininCount(array(
-                    'member_name' => $member_name,
+            'member_name' => $member_name,
         ));
         if ($count > 0)
             return false;
 
         return !model('member')->getMemberCount(array(
-                    'member_name' => $member_name,
+            'member_name' => $member_name,
         ));
     }
 
     /**
      * 验证店铺名称是否存在
      */
-    public function ckeck_store_name() {
+    public function ckeck_store_name()
+    {
         $store_name = trim(input('get.store_name'));
         if (empty($store_name)) {
             echo 'false';
             exit;
         }
         $where = array();
-        $where[]=array('store_name','=',$store_name);
+        $where[] = array('store_name', '=', $store_name);
         $store_id = input('get.store_id');
         if (isset($store_id)) {
-            $where[]=array('store_id','<>', $store_id);
+            $where[] = array('store_id', '<>', $store_id);
         }
         $store_info = model('store')->getStoreInfo($where);
         if (!empty($store_info['store_name'])) {
@@ -980,7 +994,8 @@ class Store extends AdminControl {
     /**
      * 验证店铺名称是否存在
      */
-    private function ckeckStoreName($store_name) {
+    private function ckeckStoreName($store_name)
+    {
         $condition = array();
         $condition[] = array('store_name', '=', $store_name);
         $store_info = model('store')->getStoreInfo($condition);
@@ -992,12 +1007,11 @@ class Store extends AdminControl {
     }
 
     //ajax操作
-    public function ajax() {
+    public function ajax()
+    {
         $store_model = model('store');
         switch (input('param.branch')) {
-            /**
-             * 品牌名称
-             */
+            // 品牌名称
             case 'store_sort':
                 $id = intval(input('param.id'));
                 $result = $store_model->editStore(array('store_sort' => trim(input('param.value'))), array('store_id' => $id));
@@ -1013,25 +1027,30 @@ class Store extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'store',
                 'text' => lang('ds_manage'),
                 'url' => (string) url('Store/store')
-            ), array(
+            ),
+            array(
                 'name' => 'store_joinin',
                 'text' => lang('pending'),
                 'url' => (string) url('Store/store_joinin')
-            ), array(
+            ),
+            array(
                 'name' => 'reopen_list',
                 'text' => lang('reopen_list'),
                 'url' => (string) url('Store/reopen_list')
-            ), array(
+            ),
+            array(
                 'name' => 'store_bind_class_applay_list',
                 'text' => lang('store_bind_class_apply'),
                 'url' => (string) url('Store/store_bind_class_applay_list')
-            ), array(
+            ),
+            array(
                 'name' => 'newshop_add',
                 'text' => lang('add_store'),
                 'url' => "javascript:dsLayerOpen('" . (string) url('Store/newshop_add') . "','" . lang('add_store') . "')"
@@ -1039,12 +1058,11 @@ class Store extends AdminControl {
         );
         if (request()->action() == 'store_bind_class') {
             $menu_array[] = [
-                'name' => 'store_bind_class', 'text' => lang('ds_edit') . lang('store_bind_class'), 'url' => '#'
+                'name' => 'store_bind_class',
+                'text' => lang('ds_edit') . lang('store_bind_class'),
+                'url' => '#'
             ];
         }
         return $menu_array;
     }
-
 }
-
-?>

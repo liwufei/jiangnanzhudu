@@ -1,25 +1,19 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 营销活动
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 营销活动管理  包含刮刮卡\大转盘\砸金蛋\生肖翻翻看
+ * 营销活动
  */
-class Marketmanage extends AdminControl {
+class Marketmanage extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/marketmanage.lang.php');
         //营销活动类型
@@ -32,13 +26,14 @@ class Marketmanage extends AdminControl {
         View::assign('marketmanage_type', $this->marketmanage_type);
     }
 
-    public function index() {
+    public function index()
+    {
         $condition = array();
         $marketmanage_name = input('param.marketmanage_name');
         if (!empty($marketmanage_name)) {
-            $condition[]=array('marketmanage_name','like', '%' . $marketmanage_name . '%');
+            $condition[] = array('marketmanage_name', 'like', '%' . $marketmanage_name . '%');
         }
-        $condition[]=array('marketmanage_type','=',$this->marketmanage_type);
+        $condition[] = array('marketmanage_type', '=', $this->marketmanage_type);
         $marketmanage_model = model('marketmanage');
         $marketmanage_list = $marketmanage_model->getMarketmanageList($condition, 10);
         View::assign('marketmanage_list', $marketmanage_list);
@@ -47,13 +42,14 @@ class Marketmanage extends AdminControl {
         return View::fetch();
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             $marketmanage = array(
-                'marketmanage_jointype'=>0,
-                'marketmanage_point'=>0,
+                'marketmanage_jointype' => 0,
+                'marketmanage_point' => 0,
                 'marketmanage_begintime' => TIMESTAMP,
-                'marketmanage_endtime' => TIMESTAMP+3600*24*7,
+                'marketmanage_endtime' => TIMESTAMP + 3600 * 24 * 7,
             );
             View::assign('marketmanage', $marketmanage);
 
@@ -73,15 +69,15 @@ class Marketmanage extends AdminControl {
 
             //获取正在进行中的奖品红包活动
             $condition = array();
-            $condition[] = array('bonus_type','=',3);
-            $condition[] = array('bonus_state','=',1);
+            $condition[] = array('bonus_type', '=', 3);
+            $condition[] = array('bonus_state', '=', 1);
             $bonus_model = model('bonus');
             $bonus_list = $bonus_model->getBonusList($condition, '');
             View::assign('bonus_list', $bonus_list);
             //获取店铺的优惠券列表
             $condition = array();
-            $condition[]=array('vouchertemplate_state','=',1);
-            $condition[]=array('vouchertemplate_enddate','>', TIMESTAMP);
+            $condition[] = array('vouchertemplate_state', '=', 1);
+            $condition[] = array('vouchertemplate_enddate', '>', TIMESTAMP);
             $vouchertemplate_list = Db::name('vouchertemplate')->field('*')->where($condition)->limit(10)->select()->toArray();
             View::assign('vouchertemplate_list', $vouchertemplate_list);
             return View::fetch('form');
@@ -90,22 +86,21 @@ class Marketmanage extends AdminControl {
             $total_marketmanageaward_probability = 0;
             for ($i = 1; $i <= 4; $i++) {
                 $marketmanageaward_probability = intval($_POST['probability_' . $i]);
-                $total_marketmanageaward_probability +=$marketmanageaward_probability;
+                $total_marketmanageaward_probability += $marketmanageaward_probability;
                 $data_marketmanageaward[] = array(
                     'marketmanageaward_level' => $i,
                     'marketmanageaward_type' => intval($_POST['type_' . $i]),
                     'marketmanageaward_count' => intval($_POST['count_' . $i]),
-                    'marketmanageaward_probability' => $marketmanageaward_probability,//中奖概率
-                    'marketmanageaward_point'=>intval($_POST['point_' . $i]),
-                    'bonus_id'=>isset($_POST['bonus_id_' . $i]) ? intval($_POST['bonus_id_' . $i]) : 0,
-                    'vouchertemplate_id'=> isset($_POST['vouchertemplate_id_' . $i]) ? intval($_POST['vouchertemplate_id_' . $i]) : 0,
+                    'marketmanageaward_probability' => $marketmanageaward_probability, //中奖概率
+                    'marketmanageaward_point' => intval($_POST['point_' . $i]),
+                    'bonus_id' => isset($_POST['bonus_id_' . $i]) ? intval($_POST['bonus_id_' . $i]) : 0,
+                    'vouchertemplate_id' => isset($_POST['vouchertemplate_id_' . $i]) ? intval($_POST['vouchertemplate_id_' . $i]) : 0,
                 );
             }
             //中奖概率之和应小于 400%
-            if($total_marketmanageaward_probability>400){
+            if ($total_marketmanageaward_probability > 400) {
                 $this->error(lang('marketmanageaward_probability_error'));
             }
-            
 
             $data_marketmanage = array(
                 'marketmanage_name' => input('param.marketmanage_name'),
@@ -135,14 +130,15 @@ class Marketmanage extends AdminControl {
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         $marketmanage_model = model('marketmanage');
         $condition = array();
         $marketmanage_id = intval(input('param.marketmanage_id'));
         if ($marketmanage_id <= 0) {
             $this->error(lang('param_error'));
         }
-        $condition[] = array('marketmanage_id','=',$marketmanage_id);
+        $condition[] = array('marketmanage_id', '=', $marketmanage_id);
         if (!request()->isPost()) {
             $marketmanage = $marketmanage_model->getOneMarketmanage($condition);
             View::assign('marketmanage', $marketmanage);
@@ -150,15 +146,15 @@ class Marketmanage extends AdminControl {
 
             //获取正在进行中的奖品红包活动
             $condition = array();
-            $condition[] = array('bonus_type','=',3);
-            $condition[] = array('bonus_state','=',1);
+            $condition[] = array('bonus_type', '=', 3);
+            $condition[] = array('bonus_state', '=', 1);
             $bonus_model = model('bonus');
             $bonus_list = $bonus_model->getBonusList($condition, '');
             View::assign('bonus_list', $bonus_list);
             //获取店铺的优惠券列表
             $condition = array();
-            $condition[] = array('vouchertemplate_state','=',1);
-            $condition[]=array('vouchertemplate_enddate','>', TIMESTAMP);
+            $condition[] = array('vouchertemplate_state', '=', 1);
+            $condition[] = array('vouchertemplate_enddate', '>', TIMESTAMP);
             $vouchertemplate_list = Db::name('vouchertemplate')->field('*')->where($condition)->limit(10)->select()->toArray();
             View::assign('vouchertemplate_list', $vouchertemplate_list);
             return View::fetch('form');
@@ -167,20 +163,20 @@ class Marketmanage extends AdminControl {
             $total_marketmanageaward_probability = 0;
             for ($i = 1; $i <= 4; $i++) {
                 $marketmanageaward_probability = intval($_POST['probability_' . $i]);
-                $total_marketmanageaward_probability +=$marketmanageaward_probability;
+                $total_marketmanageaward_probability += $marketmanageaward_probability;
                 $data_marketmanageaward[] = array(
                     'marketmanageaward_id' => intval($_POST['id_' . $i]), //主键ID 稍后用于修改数据
                     'marketmanageaward_level' => $i,
                     'marketmanageaward_type' => intval($_POST['type_' . $i]),
                     'marketmanageaward_count' => intval($_POST['count_' . $i]),
-                    'marketmanageaward_probability' => $marketmanageaward_probability,//中奖概率
+                    'marketmanageaward_probability' => $marketmanageaward_probability, //中奖概率
                     'marketmanageaward_point' => intval($_POST['point_' . $i]),
                     'bonus_id' => isset($_POST['bonus_id_' . $i]) ? intval($_POST['bonus_id_' . $i]) : 0,
                     'vouchertemplate_id' => isset($_POST['vouchertemplate_id_' . $i]) ? intval($_POST['vouchertemplate_id_' . $i]) : 0,
                 );
             }
             //中奖概率应小于 400%
-            if($total_marketmanageaward_probability>400){
+            if ($total_marketmanageaward_probability > 400) {
                 $this->error(lang('marketmanageaward_probability_error'));
             }
             $data_marketmanage = array(
@@ -198,15 +194,15 @@ class Marketmanage extends AdminControl {
             //编辑营销活动奖品记录
             foreach ($data_marketmanageaward as $key => $marketmanageaward) {
                 $condition = array();
-                $condition[]=array('marketmanageaward_id','=',$marketmanageaward['marketmanageaward_id']);
-                $condition[]=array('marketmanage_id','=',$marketmanage_id);
+                $condition[] = array('marketmanageaward_id', '=', $marketmanageaward['marketmanageaward_id']);
+                $condition[] = array('marketmanage_id', '=', $marketmanage_id);
                 Db::name('marketmanageaward')->where($condition)->update($marketmanageaward);
             }
             $this->log(lang('ds_edit') . $this->marketmanage_type_list[$this->marketmanage_type] . '[ID' . $marketmanage_id . ']', 1);
             dsLayerOpenSuccess(lang('ds_common_save_succ'));
         }
     }
-    
+
     //删除活动
     public function del()
     {
@@ -219,8 +215,7 @@ class Marketmanage extends AdminControl {
         $this->log(lang('ds_edit') . $this->marketmanage_type_list[$this->marketmanage_type] . '[ID' . $marketmanage_id . ']', 1);
         ds_json_encode(10000, lang('ds_common_op_succ'));
     }
-    
-    
+
     //链接信息
     public function link()
     {
@@ -229,42 +224,43 @@ class Marketmanage extends AdminControl {
         if ($marketmanage_id <= 0) {
             $this->error(lang('param_error'));
         }
-        $condition[] = array('marketmanage_id','=',$marketmanage_id);
+        $condition[] = array('marketmanage_id', '=', $marketmanage_id);
         $marketmanage_model = model('marketmanage');
         $marketmanage = $marketmanage_model->getOneMarketmanage($condition);
         View::assign('marketmanage', $marketmanage);
-        
+
         $market_url = '';
         //1刮刮卡2大转盘3砸金蛋4生肖翻翻看
         switch ($marketmanage['marketmanage_type']) {
             case 1:
-                $market_url = config('ds_config.h5_site_url')."/pages/home/marketmanage/Marketcard?marketmanage_id=".$marketmanage['marketmanage_id'];
+                $market_url = config('ds_config.h5_site_url') . "/pages/home/marketmanage/Marketcard?marketmanage_id=" . $marketmanage['marketmanage_id'];
                 break;
             case 2:
-                $market_url = config('ds_config.h5_site_url')."/pages/home/marketmanage/Marketwheel?marketmanage_id=".$marketmanage['marketmanage_id'];
+                $market_url = config('ds_config.h5_site_url') . "/pages/home/marketmanage/Marketwheel?marketmanage_id=" . $marketmanage['marketmanage_id'];
                 break;
             case 3:
-                $market_url = config('ds_config.h5_site_url')."/pages/home/marketmanage/Marketegg?marketmanage_id=".$marketmanage['marketmanage_id'];
+                $market_url = config('ds_config.h5_site_url') . "/pages/home/marketmanage/Marketegg?marketmanage_id=" . $marketmanage['marketmanage_id'];
                 break;
             case 4:
-                $market_url = config('ds_config.h5_site_url')."/pages/home/marketmanage/Marketzodiac?marketmanage_id=".$marketmanage['marketmanage_id'];
+                $market_url = config('ds_config.h5_site_url') . "/pages/home/marketmanage/Marketzodiac?marketmanage_id=" . $marketmanage['marketmanage_id'];
                 break;
             default:
                 break;
         }
         View::assign('market_url', $market_url);
-        
+
         return View::fetch();
     }
 
-        //活动参与记录
-    public function detail() {
+    //活动参与记录
+    public function detail()
+    {
         $condition = array();
         $marketmanage_id = intval(input('param.marketmanage_id'));
         if ($marketmanage_id <= 0) {
             $this->error(lang('param_error'));
         }
-        $condition[] = array('marketmanage_id','=',$marketmanage_id);
+        $condition[] = array('marketmanage_id', '=', $marketmanage_id);
         $marketmanage_model = model('marketmanage');
         $marketmanagelog_list = $marketmanage_model->getMarketmanageLogList($condition, 10);
         View::assign('marketmanagelog_list', $marketmanagelog_list);
@@ -272,7 +268,8 @@ class Marketmanage extends AdminControl {
         return View::fetch();
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -282,10 +279,9 @@ class Marketmanage extends AdminControl {
             array(
                 'name' => 'add',
                 'text' => lang('ds_add'),
-                'url' => "javascript:dsLayerOpen('" . (string)url('Marketmanage/add', ['type' => input('param.type')]) . "','".lang('ds_add')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Marketmanage/add', ['type' => input('param.type')]) . "','" . lang('ds_add') . "')"
             ),
         );
         return $menu_array;
     }
-
 }

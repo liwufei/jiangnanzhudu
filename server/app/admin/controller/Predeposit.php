@@ -1,59 +1,54 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用功能 用户预存款
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 用户预存款
  */
-class Predeposit extends AdminControl {
+class Predeposit extends AdminControl
+{
     const EXPORT_SIZE = 1000;
-    public function initialize() {
+
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/predeposit.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/predeposit.lang.php');
     }
 
-    /*
+    /**
      * 充值明细
      */
-
-    public function pdrecharge_list() {
+    public function pdrecharge_list()
+    {
         $condition = array();
         $if_start_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('param.query_start_date'));
         $if_end_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('param.query_end_date'));
         $start_unixtime = $if_start_date ? strtotime(input('param.query_start_date')) : null;
         $end_unixtime = $if_end_date ? strtotime(input('param.query_end_date')) : null;
         if ($start_unixtime) {
-            $condition[]=array('pdr_addtime','>=', $start_unixtime);
+            $condition[] = array('pdr_addtime', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[]=array('pdr_addtime','<=', $end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('pdr_addtime', '<=', $end_unixtime);
         }
         if (input('param.mname') != '') {
-            $condition[]=array('pdr_member_name','like', "%" . input('param.mname') . "%");
+            $condition[] = array('pdr_member_name', 'like', "%" . input('param.mname') . "%");
         }
         if (input('param.paystate_search') != '') {
-            $condition[]=array('pdr_payment_state','=',input('param.paystate_search'));
+            $condition[] = array('pdr_payment_state', '=', input('param.paystate_search'));
         }
         $predeposit_model = model('predeposit');
         $recharge_list = $predeposit_model->getPdRechargeList($condition, 20, '*', 'pdr_id desc');
         View::assign('recharge_list', $recharge_list);
         View::assign('show_page', $predeposit_model->page_info->render());
-        
+
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
-        
+
         $this->setAdminCurItem('pdrecharge_list');
         return View::fetch();
     }
@@ -61,7 +56,8 @@ class Predeposit extends AdminControl {
     /**
      * 充值编辑(更改成收到款)
      */
-    public function recharge_edit() {
+    public function recharge_edit()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
             $this->error(lang('admin_predeposit_parameter_error'), 'Predeposit/pdrecharge_list');
@@ -69,8 +65,8 @@ class Predeposit extends AdminControl {
         //查询充值信息
         $predeposit_model = model('predeposit');
         $condition = array();
-        $condition[] = array('pdr_id','=',$id);
-        $condition[] = array('pdr_payment_state','=',0);
+        $condition[] = array('pdr_id', '=', $id);
+        $condition[] = array('pdr_payment_state', '=', 0);
         $info = $predeposit_model->getPdRechargeInfo($condition);
         if (empty($info)) {
             $this->error(lang('admin_predeposit_record_error'), 'Predeposit/pdrecharge_list');
@@ -92,15 +88,15 @@ class Predeposit extends AdminControl {
         //取支付方式信息
         $payment_model = model('payment');
         $condition = array();
-        $condition[]=array('payment_code','=',input('post.payment_code'));
+        $condition[] = array('payment_code', '=', input('post.payment_code'));
         $payment_info = $payment_model->getPaymentOpenInfo($condition);
         if (!$payment_info) {
             $this->error(lang('payment_index_sys_not_support'));
         }
 
         $condition = array();
-        $condition[] = array('pdr_sn','=',$info['pdr_sn']);
-        $condition[] = array('pdr_payment_state','=',0);
+        $condition[] = array('pdr_sn', '=', $info['pdr_sn']);
+        $condition[] = array('pdr_payment_state', '=', 0);
         $update = array();
         $update['pdr_payment_state'] = 1;
         $update['pdr_paymenttime'] = strtotime(input('post.payment_time'));
@@ -137,7 +133,8 @@ class Predeposit extends AdminControl {
     /**
      * 充值查看
      */
-    public function recharge_info() {
+    public function recharge_info()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
             $this->error(lang('admin_predeposit_parameter_error'), 'Predeposit/pdrecharge_list');
@@ -145,7 +142,7 @@ class Predeposit extends AdminControl {
         //查询充值信息
         $predeposit_model = model('predeposit');
         $condition = array();
-        $condition[] = array('pdr_id','=',$id);
+        $condition[] = array('pdr_id', '=', $id);
         $info = $predeposit_model->getPdRechargeInfo($condition);
         if (empty($info)) {
             $this->error(lang('admin_predeposit_record_error'), 'Predeposit/pdrecharge_list');
@@ -157,16 +154,17 @@ class Predeposit extends AdminControl {
     /**
      * 充值删除
      */
-    public function recharge_del() {
+    public function recharge_del()
+    {
         $pdr_id = input('param.pdr_id');
         $pdr_id_array = ds_delete_param($pdr_id);
-        if($pdr_id_array === FALSE){
+        if ($pdr_id_array === FALSE) {
             ds_json_encode('10001', lang('param_error'));
         }
         $predeposit_model = model('predeposit');
         $condition = array();
-        $condition[] = array('pdr_id','in', $pdr_id_array);
-        $condition[] = array('pdr_payment_state','=',0);
+        $condition[] = array('pdr_id', 'in', $pdr_id_array);
+        $condition[] = array('pdr_payment_state', '=', 0);
         $result = $predeposit_model->delPdRecharge($condition);
         if ($result) {
             ds_json_encode('10000', lang('ds_common_del_succ'));
@@ -175,13 +173,11 @@ class Predeposit extends AdminControl {
         }
     }
 
-
-
-    /*
+    /**
      * 预存款明细
      */
-
-    public function pdlog_list() {
+    public function pdlog_list()
+    {
         $condition = array();
         $stime = input('get.stime');
         $etime = input('get.etime');
@@ -190,60 +186,63 @@ class Predeposit extends AdminControl {
         $start_unixtime = $if_start_date ? strtotime($stime) : null;
         $end_unixtime = $if_end_date ? strtotime($etime) : null;
         if ($start_unixtime) {
-            $condition[]=array('lg_addtime','>=', $start_unixtime);
+            $condition[] = array('lg_addtime', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[]=array('lg_addtime','<=', $end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('lg_addtime', '<=', $end_unixtime);
         }
         $mname = input('get.mname');
         if (!empty($mname)) {
-            $condition[] = array('lg_member_name','=',$mname);
+            $condition[] = array('lg_member_name', '=', $mname);
         }
         $aname = input('get.aname');
         if (!empty($aname)) {
-            $condition[] = array('lg_admin_name','=',$aname);
+            $condition[] = array('lg_admin_name', '=', $aname);
         }
         $predeposit_model = model('predeposit');
         $list_log = $predeposit_model->getPdLogList($condition, 10, '*', 'lg_id desc');
         View::assign('show_page', $predeposit_model->page_info->render());
         View::assign('list_log', $list_log);
-        
+
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
-        
+
         $this->setAdminCurItem('pdlog_list');
         return View::fetch();
     }
 
-    /*
+    /**
      * 提现设置
      */
-    public function pdcash_set(){
+    public function pdcash_set()
+    {
         $config_model = model('config');
-        if(!request()->isPost()){
+        if (!request()->isPost()) {
             $list_setting = rkcache('config', true);
-            View::assign('list_setting',$list_setting);
+            View::assign('list_setting', $list_setting);
             $this->setAdminCurItem('pdcash_set');
             return View::fetch();
-        }else{
-            $update_array=array(
-                'member_withdraw_min'=>abs(round(input('post.member_withdraw_min'),2)),
-                'member_withdraw_max'=>abs(round(input('post.member_withdraw_max'),2)),
-                'member_withdraw_cycle'=>abs(intval(input('post.member_withdraw_cycle'))),
+        } else {
+            $update_array = array(
+                'member_withdraw_min' => abs(round(input('post.member_withdraw_min'), 2)),
+                'member_withdraw_max' => abs(round(input('post.member_withdraw_max'), 2)),
+                'member_withdraw_cycle' => abs(intval(input('post.member_withdraw_cycle'))),
             );
             $result = $config_model->editConfig($update_array);
             if ($result) {
-                $this->log(lang('ds_update').lang('admin_predeposit_cashset'),1);
+                $this->log(lang('ds_update') . lang('admin_predeposit_cashset'), 1);
                 $this->success(lang('ds_common_op_succ'), 'Predeposit/pdcash_set');
-            }else{
-                $this->log(lang('ds_update').lang('admin_predeposit_cashset'),0);
+            } else {
+                $this->log(lang('ds_update') . lang('admin_predeposit_cashset'), 0);
             }
         }
     }
-    /*
+
+    /**
      * 提现列表
      */
-    public function pdcash_list() {
+    public function pdcash_list()
+    {
         $condition = array();
         $stime = input('get.stime');
         $etime = input('get.etime');
@@ -252,31 +251,31 @@ class Predeposit extends AdminControl {
         $start_unixtime = $if_start_date ? strtotime($stime) : null;
         $end_unixtime = $if_end_date ? strtotime($etime) : null;
         if ($start_unixtime) {
-            $condition[]=array('pdc_addtime','>=', $start_unixtime);
+            $condition[] = array('pdc_addtime', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[]=array('pdc_addtime','<=', $end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('pdc_addtime', '<=', $end_unixtime);
         }
         $mname = input('get.mname');
         if (!empty($mname)) {
-            $condition[]=array('pdc_member_name','like', "%" . $mname . "%");
+            $condition[] = array('pdc_member_name', 'like', "%" . $mname . "%");
         }
         $pdc_bank_user = input('get.pdc_bank_user');
         if (!empty($pdc_bank_user)) {
-            $condition[]=array('pdc_bank_user','like', "%" . $pdc_bank_user . "%");
+            $condition[] = array('pdc_bank_user', 'like', "%" . $pdc_bank_user . "%");
         }
         $paystate_search = input('get.paystate_search');
         if ($paystate_search != '') {
-            $condition[]=array('pdc_payment_state','=',$paystate_search);
+            $condition[] = array('pdc_payment_state', '=', $paystate_search);
         }
         $predeposit_model = model('predeposit');
         $predeposit_list = $predeposit_model->getPdcashList($condition, 20, '*', 'pdc_payment_state asc,pdc_id desc');
         View::assign('predeposit_list', $predeposit_list);
         View::assign('show_page', $predeposit_model->page_info->render());
-        
+
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
-        
+
         $this->setAdminCurItem('pdcash_list');
         return View::fetch('pdcash_list');
     }
@@ -284,15 +283,16 @@ class Predeposit extends AdminControl {
     /**
      * 删除提现记录
      */
-    public function pdcash_del() {
+    public function pdcash_del()
+    {
         $pdc_id = intval(input('param.pdc_id'));
         if ($pdc_id <= 0) {
-             ds_json_encode(10001, lang('param_error'));
+            ds_json_encode(10001, lang('param_error'));
         }
         $predeposit_model = model('predeposit');
         $condition = array();
-        $condition[] = array('pdc_id','=',$pdc_id);
-        $condition[] = array('pdc_payment_state','=',0);
+        $condition[] = array('pdc_id', '=', $pdc_id);
+        $condition[] = array('pdc_payment_state', '=', 0);
         $info = $predeposit_model->getPdcashInfo($condition);
         if (!$info) {
             ds_json_encode(10001, lang('admin_predeposit_parameter_error'));
@@ -323,15 +323,16 @@ class Predeposit extends AdminControl {
     /**
      * 更改提现为支付状态
      */
-    public function pdcash_pay() {
+    public function pdcash_pay()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
-            $this->error(lang('admin_predeposit_parameter_error'),'Predeposit/pdcash_list');
+            $this->error(lang('admin_predeposit_parameter_error'), 'Predeposit/pdcash_list');
         }
         $predeposit_model = model('predeposit');
         $condition = array();
-        $condition[] = array('pdc_id','=',$id);
-        $condition[] = array('pdc_payment_state','=',0);
+        $condition[] = array('pdc_id', '=', $id);
+        $condition[] = array('pdc_payment_state', '=', 0);
         $info = $predeposit_model->getPdcashInfo($condition);
         if (!is_array($info) || count($info) < 0) {
             $this->error(lang('admin_predeposit_record_error'), 'Predeposit/pdcash_list');
@@ -346,7 +347,7 @@ class Predeposit extends AdminControl {
         $update['pdc_payment_admin'] = $admininfo['admin_name'];
         $update['pdc_payment_time'] = TIMESTAMP;
         $update['pdc_trade_sn'] = input('param.pdc_trade_sn');
-        
+
         $log_msg = lang('admin_predeposit_cash_edit_state') . ',' . lang('admin_predeposit_cs_sn') . ':' . $info['pdc_sn'];
 
         Db::startTrans();
@@ -372,42 +373,43 @@ class Predeposit extends AdminControl {
             $this->error($e->getMessage(), 'Predeposit/pdcash_list');
         }
     }
-    
+
     /**
      * 系统自动转账
      */
-    public function pdcash_pay_auto(){
+    public function pdcash_pay_auto()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
-            $this->error(lang('admin_predeposit_parameter_error'),'Predeposit/pdcash_list');
+            $this->error(lang('admin_predeposit_parameter_error'), 'Predeposit/pdcash_list');
         }
         $logic_predeposit = model('predeposit', 'logic');
         $result = $logic_predeposit->pdcash_pay_auto($id);
-        
+
         if (!$result['code']) {
             $this->error($result['msg']);
-        }else{
+        } else {
             dsLayerOpenSuccess(lang('admin_predeposit_cash_edit_success'));
         }
     }
-    
 
     /**
      * 查看提现信息
      */
-    public function pdcash_view() {
+    public function pdcash_view()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
             $this->error(lang('admin_predeposit_parameter_error'), 'Predeposit/pdcash_list');
         }
         $predeposit_model = model('predeposit');
         $condition = array();
-        $condition[] = array('pdc_id','=',$id);
+        $condition[] = array('pdc_id', '=', $id);
         $info = $predeposit_model->getPdcashInfo($condition);
         if (!is_array($info) || count($info) < 0) {
             $this->error(lang('admin_predeposit_record_error'), 'Predeposit/pdcash_list');
         }
-        
+
         $info['if_pdcash_pay_auto'] = false;
         //系统是否开启自动转账功能
         if ($info['pdc_bank_type'] == 'alipay') {
@@ -432,24 +434,23 @@ class Predeposit extends AdminControl {
             }
         }
 
-
         View::assign('info', $info);
         return View::fetch();
     }
 
-    /*
+    /**
      * 调节预存款
      */
-
-    public function pd_add() {
+    public function pd_add()
+    {
         if (!(request()->isPost())) {
             $member_id = intval(input('get.member_id'));
-            if($member_id>0){
+            if ($member_id > 0) {
                 $condition = array();
-                $condition[] = array('member_id','=',$member_id);
+                $condition[] = array('member_id', '=', $member_id);
                 $member = model('member')->getMemberInfo($condition);
-                if(!empty($member)){
-                    View::assign('member_info',$member);
+                if (!empty($member)) {
+                    View::assign('member_info', $member);
                 }
             }
             return View::fetch();
@@ -514,7 +515,7 @@ class Predeposit extends AdminControl {
                     $this->error(lang('ds_common_op_fail'), 'Predeposit/pdlog_list');
                     break;
             }
-            
+
             Db::startTrans();
             try {
                 //扣除冻结的预存款
@@ -539,7 +540,8 @@ class Predeposit extends AdminControl {
     }
 
     //取得会员信息
-    public function checkmember() {
+    public function checkmember()
+    {
         $name = input('post.name');
         if (!$name) {
             exit(json_encode(array('id' => 0)));
@@ -553,35 +555,31 @@ class Predeposit extends AdminControl {
             exit(json_encode(array('id' => 0)));
         }
     }
-    
-    
-    
 
     /**
      * 导出预存款充值记录
-     *
      */
-    public function export_step1() {
+    public function export_step1()
+    {
         $condition = array();
         $if_start_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('param.query_start_date'));
         $if_end_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('param.query_end_date'));
         $start_unixtime = $if_start_date ? strtotime(input('param.query_start_date')) : null;
         $end_unixtime = $if_end_date ? strtotime(input('param.query_end_date')) : null;
         if ($start_unixtime) {
-            $condition[] = array('pdr_addtime','>=', $start_unixtime);
+            $condition[] = array('pdr_addtime', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[] = array('pdr_addtime','<=', $end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('pdr_addtime', '<=', $end_unixtime);
         }
         if (input('param.mname') != '') {
-            $condition[]=array('pdr_member_name','like', "%" . input('param.mname') . "%");
+            $condition[] = array('pdr_member_name', 'like', "%" . input('param.mname') . "%");
         }
         if (input('param.paystate_search') != '') {
-            $condition[]=array('pdr_payment_state','=',input('param.paystate_search'));
+            $condition[] = array('pdr_payment_state', '=', input('param.paystate_search'));
         }
-        
-        
+
         $predeposit_model = model('predeposit');
         if (!is_numeric(input('param.page'))) {
             $count = $predeposit_model->getPdRechargeCount($condition);
@@ -617,11 +615,10 @@ class Predeposit extends AdminControl {
 
     /**
      * 生成导出预存款充值excel
-     *
-     * @param array $data
      */
-    private function createExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -661,12 +658,11 @@ class Predeposit extends AdminControl {
         $excel_obj->generateXML($excel_obj->charset(lang('exp_yc_yckcz'), CHARSET) . input('param.page') . '-' . date('Y-m-d-H', TIMESTAMP));
     }
 
-    
     /**
      * 导出预存款提现记录
-     *
      */
-    public function export_cash_step1() {
+    public function export_cash_step1()
+    {
         $condition = array();
         $stime = input('get.stime');
         $etime = input('get.etime');
@@ -675,23 +671,23 @@ class Predeposit extends AdminControl {
         $start_unixtime = $if_start_date ? strtotime($stime) : null;
         $end_unixtime = $if_end_date ? strtotime($etime) : null;
         if ($start_unixtime) {
-            $condition[] = array('pdc_addtime','>=', $start_unixtime);
+            $condition[] = array('pdc_addtime', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[] = array('pdc_addtime','<=', $end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('pdc_addtime', '<=', $end_unixtime);
         }
         $mname = input('get.mname');
         if (!empty($mname)) {
-            $condition[]=array('pdc_member_name','like', "%" . $mname . "%");
+            $condition[] = array('pdc_member_name', 'like', "%" . $mname . "%");
         }
         $pdc_bank_user = input('get.pdc_bank_user');
         if (!empty($pdc_bank_user)) {
-            $condition[]=array('pdc_bank_user','like', "%" . $pdc_bank_user . "%");
+            $condition[] = array('pdc_bank_user', 'like', "%" . $pdc_bank_user . "%");
         }
         $paystate_search = input('get.paystate_search');
         if ($paystate_search != '') {
-            $condition[]=array('pdc_payment_state','=',$paystate_search);
+            $condition[] = array('pdc_payment_state', '=', $paystate_search);
         }
 
         $predeposit_model = Model('predeposit');
@@ -730,11 +726,10 @@ class Predeposit extends AdminControl {
 
     /**
      * 生成导出预存款提现excel
-     *
-     * @param array $data
      */
-    private function createCashExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createCashExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -765,7 +760,8 @@ class Predeposit extends AdminControl {
     /**
      * 预存款明细信息导出
      */
-    public function export_mx_step1() {
+    public function export_mx_step1()
+    {
         $condition = array();
         $stime = input('get.stime');
         $etime = input('get.etime');
@@ -774,22 +770,21 @@ class Predeposit extends AdminControl {
         $start_unixtime = $if_start_date ? strtotime($stime) : null;
         $end_unixtime = $if_end_date ? strtotime($etime) : null;
         if ($start_unixtime) {
-            $condition[] = array('lg_addtime','>=',$start_unixtime);
+            $condition[] = array('lg_addtime', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[] = array('lg_addtime','<=',$end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('lg_addtime', '<=', $end_unixtime);
         }
         $mname = input('get.mname');
         if (!empty($mname)) {
-            $condition[] = array('lg_member_name','=',$mname);
+            $condition[] = array('lg_member_name', '=', $mname);
         }
         $aname = input('get.aname');
         if (!empty($aname)) {
-            $condition[] = array('lg_admin_name','=',$aname);
+            $condition[] = array('lg_admin_name', '=', $aname);
         }
-        
-        
+
         $predeposit_model = model('predeposit');
         if (!is_numeric(input('param.page'))) {
             $count = $predeposit_model->getPdLogCount($condition);
@@ -817,11 +812,10 @@ class Predeposit extends AdminControl {
 
     /**
      * 导出预存款明细excel
-     *
-     * @param array $data
      */
-    private function createmxExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createmxExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -856,12 +850,12 @@ class Predeposit extends AdminControl {
         $excel_obj->addWorksheet($excel_obj->charset(lang('exp_mx_rz'), CHARSET));
         $excel_obj->generateXML($excel_obj->charset(lang('exp_mx_rz'), CHARSET) . input('param.page') . '-' . date('Y-m-d-H', TIMESTAMP));
     }
-    
-    
+
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'pdrecharge_list',
@@ -886,11 +880,9 @@ class Predeposit extends AdminControl {
             array(
                 'name' => 'pd_add',
                 'text' => lang('pd_add'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Predeposit/pd_add')."','".lang('pd_add')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Predeposit/pd_add') . "','" . lang('pd_add') . "')"
             ),
         );
         return $menu_array;
     }
 }
-
-?>

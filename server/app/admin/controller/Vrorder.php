@@ -1,67 +1,58 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 平台订单
  */
-class Vrorder extends AdminControl {
-
-    /**
-     * 每次导出订单数量
-     * @var int
-     */
+class Vrorder extends AdminControl
+{
+    // 每次导出订单数量
     const EXPORT_SIZE = 1000;
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/vrorder.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/vrorder.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $vrorder_model = model('vrorder');
         $condition = array();
 
         $order_sn = input('get.order_sn');
         if ($order_sn) {
-            $condition[] = array('order_sn','=',$order_sn);
+            $condition[] = array('order_sn', '=', $order_sn);
         }
         $store_name = input('get.store_name');
         if ($store_name) {
-            $condition[] = array('store_name','=',$store_name);
+            $condition[] = array('store_name', '=', $store_name);
         }
         $store_id = intval(input('get.store_id'));
-        if ($store_id>0) {
+        if ($store_id > 0) {
             $condition[] = array('store_id', '=', $store_id);
         }
         $order_state = input('get.order_state');
         if (!empty($order_state)) {
-            $condition[] = array('order_state','=',intval($order_state));
+            $condition[] = array('order_state', '=', intval($order_state));
         }
         $payment_code = input('get.payment_code');
         if ($payment_code) {
-            $condition[] = array('payment_code','=',$payment_code);
+            $condition[] = array('payment_code', '=', $payment_code);
         }
         $buyer_name = input('get.buyer_name');
         if ($buyer_name) {
-            $condition[] = array('buyer_name','=',$buyer_name);
+            $condition[] = array('buyer_name', '=', $buyer_name);
         }
         $refund_state = input('param.refund_state');
-        if(in_array($refund_state,array('0','1','2'))){
-            $condition[] = array('refund_state','=',$refund_state);
+        if (in_array($refund_state, array('0', '1', '2'))) {
+            $condition[] = array('refund_state', '=', $refund_state);
         }
-        
+
         $query_start_time = input('get.query_start_time');
         $query_end_time = input('get.query_end_time');
         $if_start_time = preg_match('/^20\d{2}-\d{2}-\d{2}$/', $query_start_time);
@@ -69,11 +60,11 @@ class Vrorder extends AdminControl {
         $start_unixtime = $if_start_time ? strtotime($query_start_time) : null;
         $end_unixtime = $if_end_time ? strtotime($query_end_time) : null;
         if ($start_unixtime) {
-            $condition[] = array('add_time','>=',$start_unixtime);
+            $condition[] = array('add_time', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[] = array('add_time','<=',$end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('add_time', '<=', $end_unixtime);
         }
         $order_list = $vrorder_model->getVrorderList($condition, 30);
 
@@ -90,7 +81,7 @@ class Vrorder extends AdminControl {
 
         View::assign('order_list', $order_list);
         View::assign('show_page', $vrorder_model->page_info->render());
-        
+
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
         $this->setAdminCurItem('index');
         return View::fetch('vr_order_index');
@@ -98,12 +89,12 @@ class Vrorder extends AdminControl {
 
     /**
      * 平台订单状态操作
-     *
      */
-    public function change_state() {
+    public function change_state()
+    {
         $vrorder_model = model('vrorder');
         $condition = array();
-        $condition[] = array('order_id','=',intval(input('param.order_id')));
+        $condition[] = array('order_id', '=', intval(input('param.order_id')));
         $order_info = $vrorder_model->getVrorderInfo($condition);
         $state_type = input('param.state_type');
         if ($state_type == 'cancel') {
@@ -117,16 +108,16 @@ class Vrorder extends AdminControl {
                 dsLayerOpenSuccess($result['msg']);
             }
         }
-        $this->error('操作出错','index');
+        $this->error('操作出错', 'index');
     }
 
     /**
      * 系统取消订单
-     * @param unknown $order_info
      */
-    private function _order_cancel($order_info) {
+    private function _order_cancel($order_info)
+    {
         $vrorder_model = model('vrorder');
-        $logic_vrorder = model('vrorder','logic');
+        $logic_vrorder = model('vrorder', 'logic');
         $if_allow = $vrorder_model->getVrorderOperateState('system_cancel', $order_info);
         if (!$if_allow) {
             return ds_callback(false, lang('no_right_operate'));
@@ -137,12 +128,11 @@ class Vrorder extends AdminControl {
 
     /**
      * 系统收到货款
-     * @param unknown $order_info
-     * @throws Exception
      */
-    private function _order_receive_pay($order_info, $post) {
+    private function _order_receive_pay($order_info, $post)
+    {
         $vrorder_model = model('vrorder');
-        $logic_vrorder = model('vrorder','logic');
+        $logic_vrorder = model('vrorder', 'logic');
         $if_allow = $vrorder_model->getVrorderOperateState('system_receive_pay', $order_info);
         if (!$if_allow) {
             return ds_callback(false, lang('no_right_operate'));
@@ -170,15 +160,15 @@ class Vrorder extends AdminControl {
 
     /**
      * 查看订单
-     *
      */
-    public function show_order() {
+    public function show_order()
+    {
         $order_id = intval(input('param.order_id'));
         if ($order_id <= 0) {
             $this->error(lang('miss_order_number'));
         }
         $vrorder_model = model('vrorder');
-        $order_info = $vrorder_model->getVrorderInfo(array('order_id' => $order_id),'*', array('orderlog'));
+        $order_info = $vrorder_model->getVrorderInfo(array('order_id' => $order_id), '*', array('orderlog'));
         if (empty($order_info)) {
             $this->error(lang('order_not_exist'));
         }
@@ -203,38 +193,37 @@ class Vrorder extends AdminControl {
 
     /**
      * 导出
-     *
      */
-    public function export_step1() {
-
+    public function export_step1()
+    {
         $vrorder_model = model('vrorder');
         $condition = array();
         if (input('param.order_sn')) {
-            $condition[] = array('order_sn','=',input('param.order_sn'));
+            $condition[] = array('order_sn', '=', input('param.order_sn'));
         }
         if (input('param.store_name')) {
-            $condition[] = array('store_name','=',input('param.store_name'));
+            $condition[] = array('store_name', '=', input('param.store_name'));
         }
         $order_state = input('param.order_state');
         if (in_array($order_state, array('0', '10', '20', '30', '40'))) {
-            $condition[] = array('order_state','=',$order_state);
+            $condition[] = array('order_state', '=', $order_state);
         }
         if (input('param.payment_code')) {
-            $condition[] = array('payment_code','=',input('param.payment_code'));
+            $condition[] = array('payment_code', '=', input('param.payment_code'));
         }
         if (input('param.buyer_name')) {
-            $condition[] = array('buyer_name','=',input('param.buyer_name'));
+            $condition[] = array('buyer_name', '=', input('param.buyer_name'));
         }
         $if_start_time = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('param.query_start_time'));
         $if_end_time = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('param.query_end_time'));
         $start_unixtime = $if_start_time ? strtotime(input('param.query_start_time')) : null;
         $end_unixtime = $if_end_time ? strtotime(input('param.query_end_time')) : null;
         if ($start_unixtime) {
-            $condition[] = array('add_time','>=',$start_unixtime);
+            $condition[] = array('add_time', '>=', $start_unixtime);
         }
         if ($end_unixtime) {
-            $end_unixtime=$end_unixtime+86399;
-            $condition[] = array('add_time','<=',$end_unixtime);
+            $end_unixtime = $end_unixtime + 86399;
+            $condition[] = array('add_time', '<=', $end_unixtime);
         }
 
         if (!is_numeric(input('param.page'))) {
@@ -263,10 +252,9 @@ class Vrorder extends AdminControl {
 
     /**
      * 生成excel
-     *
-     * @param array $data
      */
-    private function createExcel($data = array()) {
+    private function createExcel($data = array())
+    {
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -303,23 +291,29 @@ class Vrorder extends AdminControl {
         $excel_obj->generateXML($excel_obj->charset(lang('exp_od_order'), CHARSET) . input('param.page') . '-' . date('Y-m-d-H', TIMESTAMP));
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'index', 'text' => lang('ds_manage'), 'url' => (string)url('Vrorder/index')
+                'name' => 'index',
+                'text' => lang('ds_manage'),
+                'url' => (string)url('Vrorder/index')
             )
         );
-        if(request()->action() == 'change_state') {
+        if (request()->action() == 'change_state') {
             $menu_array[] = array(
-                'name' => 'submit', 'text' => lang('confirm_receive_pay'), 'url' => ''
+                'name' => 'submit',
+                'text' => lang('confirm_receive_pay'),
+                'url' => ''
             );
         }
-        if(request()->action() == 'show_order') {
+        if (request()->action() == 'show_order') {
             $menu_array[] = array(
-                'name' => 'show_order', 'text' => lang('order_detail'), 'url' => ''
+                'name' => 'show_order',
+                'text' => lang('order_detail'),
+                'url' => ''
             );
         }
         return $menu_array;
     }
-
 }

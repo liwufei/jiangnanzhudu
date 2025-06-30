@@ -9,29 +9,22 @@ use app\common\model\Storedepositlog;
 use app\common\model\Storemoneylog;
 
 /**
- * ============================================================================
- * 通用功能 店铺资金
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 店铺资金
  */
-class Storedeposit extends AdminControl {
+class Storedeposit extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/storedeposit.lang.php');
     }
 
-    /*
+    /**
      * 资金明细
      */
-
-    public function index() {
+    public function index()
+    {
         $condition = array();
         $stime = input('get.stime');
         $etime = input('get.etime');
@@ -64,11 +57,11 @@ class Storedeposit extends AdminControl {
         return View::fetch();
     }
 
-    /*
+    /**
      * 提现列表
      */
-
-    public function withdraw_list() {
+    public function withdraw_list()
+    {
         $condition = array(array('storedepositlog_type', 'in', [Storedepositlog::TYPE_WITHDRAW, Storedepositlog::TYPE_RECHARGE]),);
         $paystate_search = input('param.paystate_search');
         if (isset($paystate_search) && $paystate_search !== '') {
@@ -89,7 +82,8 @@ class Storedeposit extends AdminControl {
     /**
      * 查看提现信息
      */
-    public function withdraw_view() {
+    public function withdraw_view()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
             $this->error(lang('param_error'));
@@ -115,7 +109,7 @@ class Storedeposit extends AdminControl {
                 'storedepositlog_state' => Storedepositlog::STATE_VALID,
                 'storedepositlog_add_time' => TIMESTAMP,
             );
-            if (input('param.verify_state') == 1) {//通过
+            if (input('param.verify_state') == 1) { //通过
                 $data['storedepositlog_freeze_deposit'] = -$info['storedepositlog_freeze_deposit'];
                 $storedepositlog_state = Storedepositlog::STATE_AGREE;
             } else {
@@ -159,7 +153,8 @@ class Storedeposit extends AdminControl {
         }
     }
 
-    public function recharge_view() {
+    public function recharge_view()
+    {
         $id = intval(input('param.id'));
         if ($id <= 0) {
             $this->error(lang('param_error'));
@@ -185,7 +180,7 @@ class Storedeposit extends AdminControl {
                 'storedepositlog_state' => Storedepositlog::STATE_VALID,
                 'storedepositlog_add_time' => TIMESTAMP,
             );
-            if (input('param.verify_state') == 1) {//通过
+            if (input('param.verify_state') == 1) { //通过
                 $data['storedepositlog_avaliable_deposit'] = $info['storedepositlog_payable_deposit'];
                 $data['storedepositlog_payable_deposit'] = -$info['storedepositlog_payable_deposit'];
                 $storedepositlog_state = Storedepositlog::STATE_PAYED;
@@ -216,11 +211,11 @@ class Storedeposit extends AdminControl {
         }
     }
 
-    /*
+    /**
      * 调节资金
      */
-
-    public function adjust() {
+    public function adjust()
+    {
         if (!(request()->isPost())) {
             $store_id = intval(input('get.store_id'));
             if ($store_id > 0) {
@@ -301,7 +296,8 @@ class Storedeposit extends AdminControl {
     }
 
     //取得店主信息
-    public function checkseller() {
+    public function checkseller()
+    {
         $name = input('post.name');
         if (!$name) {
             exit(json_encode(array('id' => 0)));
@@ -319,7 +315,8 @@ class Storedeposit extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -340,5 +337,3 @@ class Storedeposit extends AdminControl {
         return $menu_array;
     }
 }
-
-?>

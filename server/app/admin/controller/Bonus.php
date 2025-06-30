@@ -1,44 +1,39 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 平台红包
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 平台红包 控制器
+ * 平台红包
  */
-class Bonus extends AdminControl {
+class Bonus extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/bonus.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $condition = array();
         $bonus_name = input('param.bonus_name');
         if (!empty($bonus_name)) {
-            $condition[]=array('bonus_name','like', '%' . $bonus_name . '%');
+            $condition[] = array('bonus_name', 'like', '%' . $bonus_name . '%');
         }
         //红包是否有效
         $bonus_state = intval(input('get.bonus_state'));
         if ($bonus_state) {
-            $condition[]=array('bonus_state','=',$bonus_state);
+            $condition[] = array('bonus_state', '=', $bonus_state);
         }
         //红包类型
         $bonus_type = intval(input('get.bonus_type'));
         if ($bonus_type) {
-            $condition[]=array('bonus_type','=',$bonus_type);
+            $condition[] = array('bonus_type', '=', $bonus_type);
         }
         $bonus_model = model('bonus');
         $bonus_list = $bonus_model->getBonusList($condition, 10);
@@ -57,13 +52,14 @@ class Bonus extends AdminControl {
     /**
      * 添加吸粉红包
      */
-    public function add() {
+    public function add()
+    {
         $bonus_model = model('bonus');
         if (!request()->isPost()) {
             $bonus = array(
                 'bonus_type' => 1,
                 'bonus_begintime' => TIMESTAMP,
-                'bonus_endtime' => TIMESTAMP+3600*24*7,
+                'bonus_endtime' => TIMESTAMP + 3600 * 24 * 7,
             );
             //红包类型
             View::assign('bonus_type_list', $bonus_model->bonus_type_list());
@@ -83,7 +79,7 @@ class Bonus extends AdminControl {
                 if ($bonus_fixedprice == 0 || $bonus_fixedprice > $bonus_totalprice) {
                     $this->error(lang('bonus_fixedprice_error'));
                 }
-                if (($bonus_totalprice*100) % ($bonus_fixedprice*100) != 0) {
+                if (($bonus_totalprice * 100) % ($bonus_fixedprice * 100) != 0) {
                     $this->error(lang('bonus_fixedprice_error'));
                 }
                 //生成红包领取记录-固定金额
@@ -147,16 +143,17 @@ class Bonus extends AdminControl {
     }
 
     /**
-     * 编辑吸粉红包  不可以对金额以及红包类型进行编辑。
+     * 编辑吸粉红包 不可以对金额以及红包类型进行编辑。
      */
-    public function edit() {
+    public function edit()
+    {
         $bonus_id = intval(input('param.bonus_id'));
         if ($bonus_id < 0) {
             ds_json_encode(10000, lang('param_error'));
         }
         $bonus_model = model('bonus');
         $condition = array();
-        $condition[] = array('bonus_id','=',$bonus_id);
+        $condition[] = array('bonus_id', '=', $bonus_id);
         if (!request()->isPost()) {
             $bonus = $bonus_model->getOneBonus($condition);
             View::assign('bonus', $bonus);
@@ -178,16 +175,17 @@ class Bonus extends AdminControl {
     }
 
     /**
-     * 设置红包失效    1正在进行  2过期  3失效
+     * 设置红包失效 1正在进行 2过期 3失效
      */
-    public function invalid() {
+    public function invalid()
+    {
         $bonus_id = intval(input('param.bonus_id'));
         if ($bonus_id < 0) {
             ds_json_encode(10000, lang('param_error'));
         }
         $bonus_model = model('bonus');
         $condition = array();
-        $condition[] = array('bonus_id','=',$bonus_id);
+        $condition[] = array('bonus_id', '=', $bonus_id);
         $data['bonus_state'] = 3;
         $bonus_model->editBonus($condition, $data);
         $this->log(lang('ds_edit') . lang('ds_bonus') . '[ID' . $bonus_id . ']', 1);
@@ -197,20 +195,21 @@ class Bonus extends AdminControl {
     /**
      * 领取列表
      */
-    public function receive() {
+    public function receive()
+    {
         $bonus_id = intval(input('param.bonus_id'));
         if ($bonus_id < 0) {
             $this->error(lang('param_error'));
         }
         $condition = array();
-        $condition[] = array('bonus_id','=',$bonus_id);
+        $condition[] = array('bonus_id', '=', $bonus_id);
         $bonus_model = model('bonus');
         $bonusreceive_list = $bonus_model->getBonusreceiveList($condition, 10);
         View::assign('bonusreceive_list', $bonusreceive_list);
         View::assign('show_page', $bonus_model->page_info->render());
         return View::fetch();
     }
-    
+
     //链接信息
     public function link()
     {
@@ -219,17 +218,17 @@ class Bonus extends AdminControl {
             $this->error(lang('param_error'));
         }
         $condition = array();
-        $condition[] = array('bonus_id','=',$bonus_id);
+        $condition[] = array('bonus_id', '=', $bonus_id);
         $bonus_model = model('bonus');
         $bonus = $bonus_model->getOneBonus($condition);
         View::assign('bonus', $bonus);
-        $bonus_url = config('ds_config.h5_site_url')."/pages/home/bonus/Detail?bonus_id=".$bonus['bonus_id'];
+        $bonus_url = config('ds_config.h5_site_url') . "/pages/home/bonus/Detail?bonus_id=" . $bonus['bonus_id'];
         View::assign('bonus_url', $bonus_url);
         return View::fetch();
     }
-    
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -239,10 +238,10 @@ class Bonus extends AdminControl {
             array(
                 'name' => 'add',
                 'text' => lang('ds_add'),
-                'url' => "javascript:dsLayerOpen('" . (string)url('Bonus/add') . "','".lang('ds_add')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Bonus/add') . "','" . lang('ds_add') . "')"
             ),
         );
         return $menu_array;
     }
-
+    
 }

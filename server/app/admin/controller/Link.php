@@ -6,25 +6,19 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 友情链接
  */
-class Link extends AdminControl {
+class Link extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/link.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $condition = array();
         $link_title = input('get.link_title');
         if ($link_title) {
@@ -43,8 +37,9 @@ class Link extends AdminControl {
 
     /**
      * 新增友情链接
-     * */
-    public function add() {
+     */
+    public function add()
+    {
         if (!(request()->isPost())) {
             $link = [
                 'link_id' => '',
@@ -62,20 +57,20 @@ class Link extends AdminControl {
                 'link_sort' => input('post.link_sort'),
             );
             $this->validate($data, 'app\common\validate\Link.add');
-            
+
             //上传图片
             $link_pic = '';
             if ($_FILES['link_pic']['name'] != '') {
-                $file_name = date('YmdHis') . rand(10000, 99999).'.png';
-                $res=ds_upload_pic(DIR_ADMIN . DIRECTORY_SEPARATOR . 'link','link_pic',$file_name);
-                if($res['code']){
-                    $link_pic=$res['data']['file_name'];
-                }else{
+                $file_name = date('YmdHis') . rand(10000, 99999) . '.png';
+                $res = ds_upload_pic(DIR_ADMIN . DIRECTORY_SEPARATOR . 'link', 'link_pic', $file_name);
+                if ($res['code']) {
+                    $link_pic = $res['data']['file_name'];
+                } else {
                     $this->error($res['msg']);
                 }
             }
             $data['link_pic'] = $link_pic;
-            
+
             $result = model('link')->addLink($data);
             if ($result) {
                 dsLayerOpenSuccess(lang('ds_common_save_succ'), (string) url('Link/index'));
@@ -87,8 +82,9 @@ class Link extends AdminControl {
 
     /**
      * 编辑友情链接
-     * */
-    public function edit() {
+     */
+    public function edit()
+    {
         $link_id = intval(input('param.link_id'));
         if (empty($link_id)) {
             $this->error(lang('param_error'));
@@ -103,19 +99,19 @@ class Link extends AdminControl {
                 'link_sort' => input('post.link_sort'),
                 'link_url' => input('post.link_url'),
             );
-            
+
             $this->validate($data, 'app\common\validate\Link.edit');
-            
+
             //上传图片
             if ($_FILES['link_pic']['name'] != '') {
-                $file_name = date('YmdHis') . rand(10000, 99999).'.png';
-                $res=ds_upload_pic(DIR_ADMIN . DIRECTORY_SEPARATOR . 'link','link_pic',$file_name);
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $file_name = date('YmdHis') . rand(10000, 99999) . '.png';
+                $res = ds_upload_pic(DIR_ADMIN . DIRECTORY_SEPARATOR . 'link', 'link_pic', $file_name);
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $data['link_pic'] = $file_name;
                     //删除原有友情链接图片
-                    ds_del_pic(DIR_ADMIN.'/link',$link['link_pic']);
-                }else{
+                    ds_del_pic(DIR_ADMIN . '/link', $link['link_pic']);
+                } else {
                     $this->error($res['msg']);
                 }
             }
@@ -129,7 +125,8 @@ class Link extends AdminControl {
         }
     }
 
-    public function drop() {
+    public function drop()
+    {
         $link_id = intval(input('param.link_id'));
         if (empty($link_id)) {
             $this->error(lang('param_error'));
@@ -145,7 +142,8 @@ class Link extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $result = -1;
         switch (input('get.branch')) {
             case 'link':
@@ -164,7 +162,8 @@ class Link extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -179,5 +178,4 @@ class Link extends AdminControl {
         );
         return $menu_array;
     }
-
 }

@@ -1,32 +1,26 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 会员
  */
-class Member extends AdminControl {
+class Member extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/member.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/member.lang.php');
     }
 
-    public function member() {
+    public function member()
+    {
         $member_model = model('member');
-
 
         //会员级别
         $member_grade = $member_model->getMemberGradeArr();
@@ -36,47 +30,48 @@ class Member extends AdminControl {
         if ($search_field_value != '') {
             switch ($search_field_name) {
                 case 'member_name':
-                    $condition[]=array('member_name','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('member_name', 'like', '%' . trim($search_field_value) . '%');
                     break;
                 case 'member_email':
-                    $condition[]=array('member_email','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('member_email', 'like', '%' . trim($search_field_value) . '%');
                     break;
                 case 'member_mobile':
-                    $condition[]=array('member_mobile','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('member_mobile', 'like', '%' . trim($search_field_value) . '%');
                     break;
                 case 'member_truename':
-                    $condition[]=array('member_truename','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('member_truename', 'like', '%' . trim($search_field_value) . '%');
                     break;
             }
         }
         $search_state = input('search_state');
         switch ($search_state) {
             case 'no_informallow':
-                $condition[]=array('inform_allow','=','2');
+                $condition[] = array('inform_allow', '=', '2');
                 break;
             case 'no_isbuy':
-                $condition[]=array('is_buylimit','=','0');
+                $condition[] = array('is_buylimit', '=', '0');
                 break;
             case 'no_isallowtalk':
-                $condition[]=array('is_allowtalk','=','0');
+                $condition[] = array('is_allowtalk', '=', '0');
                 break;
             case 'no_memberstate':
-                $condition[]=array('member_state','=','0');
+                $condition[] = array('member_state', '=', '0');
                 break;
         }
+
         //会员等级
         $search_grade = intval(input('get.search_grade'));
-        if ($search_grade>0 && $member_grade) {
+        if ($search_grade > 0 && $member_grade) {
             if (isset($member_grade[$search_grade + 1]['exppoints'])) {
-                $condition[] = array('member_exppoints','between',array($member_grade[$search_grade]['exppoints'],$member_grade[$search_grade + 1]['exppoints']));
-            }else{
-                $condition[]=array('member_exppoints','>=', $member_grade[$search_grade]['exppoints']);
+                $condition[] = array('member_exppoints', 'between', array($member_grade[$search_grade]['exppoints'], $member_grade[$search_grade + 1]['exppoints']));
+            } else {
+                $condition[] = array('member_exppoints', '>=', $member_grade[$search_grade]['exppoints']);
             }
         }
 
         //排序
         $order = trim(input('get.search_sort'));
-        if (!in_array($order,array('member_logintime desc','member_loginnum desc'))) {
+        if (!in_array($order, array('member_logintime desc', 'member_loginnum desc'))) {
             $order = 'member_id desc';
         }
         $member_list = $member_model->getMemberList($condition, '*', 10, $order);
@@ -101,7 +96,8 @@ class Member extends AdminControl {
         return View::fetch();
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             return View::fetch();
         } else {
@@ -127,23 +123,24 @@ class Member extends AdminControl {
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         //注：pathinfo地址参数不能通过get方法获取，查看“获取PARAM变量”
         $member_id = intval(input('param.member_id'));
         if (empty($member_id)) {
             $this->error(lang('param_error'));
         }
         $member_model = model('member');
-            $condition = array();
-            $condition[] = array('member_id','=',$member_id);
-            $member_array = $member_model->getMemberInfo($condition);
+        $condition = array();
+        $condition[] = array('member_id', '=', $member_id);
+        $member_array = $member_model->getMemberInfo($condition);
         if (!request()->isPost()) {
             View::assign('member_array', $member_array);
             return View::fetch();
         } else {
-            $member_mobile=input('post.member_mobile');
-            if($member_mobile==encrypt_show($member_array['member_mobile'],4,4)){
-                $member_mobile=$member_array['member_mobile'];
+            $member_mobile = input('post.member_mobile');
+            if ($member_mobile == encrypt_show($member_array['member_mobile'], 4, 4)) {
+                $member_mobile = $member_array['member_mobile'];
             }
             $data = array(
                 'member_email' => input('post.member_email'),
@@ -171,12 +168,12 @@ class Member extends AdminControl {
             if (input('post.member_paypwd')) {
                 $data['member_paypwd'] = md5(input('post.member_paypwd'));
             }
-            
+
             //用于验证器 的 unique 
             $data['member_id'] = $member_id;
 
-            $result = $member_model->editMember(array('member_id'=>$member_id),$data,$member_id);
-            if ($result>=0) {
+            $result = $member_model->editMember(array('member_id' => $member_id), $data, $member_id);
+            if ($result >= 0) {
                 dsLayerOpenSuccess(lang('ds_common_op_succ'));
             } else {
                 $this->error(lang('ds_common_op_fail'));
@@ -187,17 +184,16 @@ class Member extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $branch = input('param.branch');
-        $condition=array();
+        $condition = array();
         switch ($branch) {
-            /**
-             * 验证会员是否重复
-             */
+            // 验证会员是否重复
             case 'check_user_name':
                 $member_model = model('member');
-                $condition[]=array('member_name','=',input('param.member_name'));
-                $condition[]=array('member_id','<>', intval(input('get.member_id')));
+                $condition[] = array('member_name', '=', input('param.member_name'));
+                $condition[] = array('member_id', '<>', intval(input('get.member_id')));
                 $list = $member_model->getMemberInfo($condition);
                 if (empty($list)) {
                     echo 'true';
@@ -207,13 +203,11 @@ class Member extends AdminControl {
                     exit;
                 }
                 break;
-            /**
-             * 验证邮件是否重复
-             */
+            // 验证邮件是否重复
             case 'check_email':
                 $member_model = model('member');
-                $condition[]=array('member_email','=',input('param.member_email'));
-                $condition[]=array('member_id','<>', intval(input('param.member_id')));
+                $condition[] = array('member_email', '=', input('param.member_email'));
+                $condition[] = array('member_id', '<>', intval(input('param.member_id')));
                 $list = $member_model->getMemberInfo($condition);
                 if (empty($list)) {
                     echo 'true';
@@ -229,7 +223,8 @@ class Member extends AdminControl {
     /**
      * 设置会员状态
      */
-    public function memberstate() {
+    public function memberstate()
+    {
         $member_id = input('param.member_id');
         $member_id_array = ds_delete_param($member_id);
         if ($member_id_array == FALSE) {
@@ -238,15 +233,15 @@ class Member extends AdminControl {
         $data['member_state'] = input('param.member_state') ? input('param.member_state') : 0;
 
         $condition = array();
-        $condition[]=array('member_id','in', $member_id_array);
+        $condition[] = array('member_id', 'in', $member_id_array);
         $result = Db::name('member')->where($condition)->update($data);
-        if ($result>=0) {
+        if ($result >= 0) {
             foreach ($member_id_array as $key => $member_id) {
                 dcache($member_id, 'member');
             }
             $this->log(lang('ds_edit') .  '[ID:' . implode(',', $member_id_array) . ']', 1);
             ds_json_encode('10000', lang('ds_common_op_succ'));
-        }else{
+        } else {
             ds_json_encode('10001', lang('ds_common_op_fail'));
         }
     }
@@ -254,7 +249,8 @@ class Member extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'member',
@@ -266,12 +262,9 @@ class Member extends AdminControl {
             $menu_array[] = array(
                 'name' => 'add',
                 'text' => lang('ds_add'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Member/add')."','".lang('ds_add')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Member/add') . "','" . lang('ds_add') . "')"
             );
         }
         return $menu_array;
     }
-
 }
-
-?>

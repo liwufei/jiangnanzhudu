@@ -1,9 +1,5 @@
 <?php
 
-/**
- * 预售管理
- */
-
 namespace app\admin\controller;
 
 use think\facade\View;
@@ -11,20 +7,13 @@ use think\facade\Db;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 预售管理
  */
-class Promotionpresell extends AdminControl {
+class Promotionpresell extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/promotionpresell.lang.php');
     }
@@ -32,7 +21,8 @@ class Promotionpresell extends AdminControl {
     /**
      * 预售列表
      */
-    public function index() {
+    public function index()
+    {
         $presell_model = model('presell');
         $condition = array();
         if (!empty(input('param.goods_name'))) {
@@ -62,7 +52,8 @@ class Promotionpresell extends AdminControl {
     /**
      * 预售活动 取消
      */
-    public function presell_end() {
+    public function presell_end()
+    {
         $presell_id = intval(input('param.presell_id'));
         $presell_model = model('presell');
 
@@ -70,13 +61,12 @@ class Promotionpresell extends AdminControl {
         if (!$presell_info) {
             ds_json_encode(10001, lang('param_error'));
         }
-        if (!in_array($presell_info['presell_state'], array(1, 2))) {//只有未开始、进行中的活动可以取消
+        if (!in_array($presell_info['presell_state'], array(1, 2))) { //只有未开始、进行中的活动可以取消
             ds_json_encode(10001, lang('presell_cant_cancel'));
         }
-        
+
         Db::startTrans();
         try {
-
             //取消用户发起的活动
             $condition = array();
             $condition[] = array('goods_type', '=', 10);
@@ -107,19 +97,20 @@ class Promotionpresell extends AdminControl {
         $this->log('预售活动取消，商品名称：' . $presell_info['goods_name'] . '活动编号：' . $presell_id, 1);
         ds_json_encode(10000, lang('ds_common_op_succ'));
     }
+
     /**
      * 拼团活动 删除
      */
-    public function presell_del() {
+    public function presell_del()
+    {
         $presell_id = intval(input('param.presell_id'));
         $presell_model = model('presell');
         $presell_info = $presell_model->getPresellInfoByID($presell_id);
         if (!$presell_info) {
             ds_json_encode(10001, lang('param_error'));
         }
-        /**
-         * 指定拼团活动删除
-         */
+
+        // 指定拼团活动删除
         $result = $presell_model->delPresell(array('presell_id' => $presell_id));
 
         if ($result) {
@@ -129,10 +120,12 @@ class Promotionpresell extends AdminControl {
             ds_json_encode(10001, lang('ds_common_op_fail'));
         }
     }
+
     /**
      * 预售套餐管理
      */
-    public function presell_quota() {
+    public function presell_quota()
+    {
         $presellquota_model = model('presellquota');
 
         $condition = array();
@@ -148,7 +141,8 @@ class Promotionpresell extends AdminControl {
     /**
      * 预售设置
      */
-    public function presell_setting() {
+    public function presell_setting()
+    {
         if (!(request()->isPost())) {
             $setting = rkcache('config', true);
             View::assign('setting', $setting);
@@ -173,14 +167,20 @@ class Promotionpresell extends AdminControl {
         }
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'presell_list', 'text' => lang('presell_list'), 'url' => (string) url('Promotionpresell/index')
-            ), array(
-                'name' => 'presell_quota', 'text' => lang('presell_quota'),
+                'name' => 'presell_list',
+                'text' => lang('presell_list'),
+                'url' => (string) url('Promotionpresell/index')
+            ),
+            array(
+                'name' => 'presell_quota',
+                'text' => lang('presell_quota'),
                 'url' => (string) url('Promotionpresell/presell_quota')
-            ), array(
+            ),
+            array(
                 'name' => 'presell_setting',
                 'text' => lang('presell_setting'),
                 'url' => "javascript:dsLayerOpen('" . (string) url('Promotionpresell/presell_setting') . "','" . lang('presell_setting') . "')"
@@ -189,5 +189,4 @@ class Promotionpresell extends AdminControl {
 
         return $menu_array;
     }
-
 }

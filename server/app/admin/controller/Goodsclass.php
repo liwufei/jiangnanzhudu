@@ -6,20 +6,13 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 商品分类
  */
-class Goodsclass extends AdminControl {
+class Goodsclass extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/goodsclass.lang.php');
     }
@@ -27,7 +20,8 @@ class Goodsclass extends AdminControl {
     /**
      * 分类管理
      */
-    public function goods_class() {
+    public function goods_class()
+    {
         $goodsclass_model = model('goodsclass');
         //父ID
         $parent_id = input('param.gc_parent_id') ? intval(input('param.gc_parent_id')) : 0;
@@ -61,7 +55,8 @@ class Goodsclass extends AdminControl {
     /**
      * 商品分类添加
      */
-    public function goods_class_add() {
+    public function goods_class_add()
+    {
         $goodsclass_model = model('goodsclass');
         if (!request()->isPost()) {
             //父类列表，只取到第二级
@@ -103,10 +98,10 @@ class Goodsclass extends AdminControl {
             $insert_array['commis_rate'] = intval(input('post.commis_rate'));
             $insert_array['gc_sort'] = intval(input('post.gc_sort'));
             $insert_array['gc_virtual'] = intval(input('post.gc_virtual'));
-            
+
             $this->validate($insert_array, 'app\common\validate\Goodsclass.add');
-            
-            if (!empty($_FILES['pic']['name'])) {//上传图片
+
+            if (!empty($_FILES['pic']['name'])) { //上传图片
                 $res = ds_upload_pic(ATTACH_COMMON, 'pic');
                 if ($res['code']) {
                     $file_name = $res['data']['file_name'];
@@ -115,7 +110,7 @@ class Goodsclass extends AdminControl {
                     $this->error($res['msg']);
                 }
             }
-            
+
             $result = $goodsclass_model->addGoodsclass($insert_array);
             if ($result) {
                 $this->log(lang('ds_add') . lang('goods_class_index_class') . '[' . input('post.gc_name') . ']', 1);
@@ -130,7 +125,8 @@ class Goodsclass extends AdminControl {
     /**
      * 编辑
      */
-    public function goods_class_edit() {
+    public function goods_class_edit()
+    {
         $goodsclass_model = model('goodsclass');
         $gc_id = intval(input('param.gc_id'));
 
@@ -164,16 +160,13 @@ class Goodsclass extends AdminControl {
             $gc_list = model('goodsclass')->getGoodsclassListByParentId(0);
             View::assign('gc_list', $gc_list);
 
-
             $class_array['pic'] = ds_get_pic(ATTACH_COMMON, $class_array['gc_image']);
-
 
             View::assign('type_list', $t_list);
             View::assign('class_array', $class_array);
             $this->setAdminCurItem('goods_class_edit');
             return View::fetch('goods_class_edit');
         } else {
-
 
             $update_array = array();
             $update_array['gc_name'] = input('post.gc_name');
@@ -183,10 +176,10 @@ class Goodsclass extends AdminControl {
             $update_array['gc_sort'] = intval(input('post.gc_sort'));
             $update_array['gc_virtual'] = intval(input('post.gc_virtual'));
             $update_array['gc_parent_id'] = intval(input('post.gc_parent_id'));
-            
+
             $this->validate($update_array, 'app\common\validate\Goodsclass.edit');
 
-            if (!empty($_FILES['pic']['name'])) {//上传图片
+            if (!empty($_FILES['pic']['name'])) { //上传图片
                 $res = ds_upload_pic(ATTACH_COMMON, 'pic');
                 if ($res['code']) {
                     $file_name = $res['data']['file_name'];
@@ -214,7 +207,6 @@ class Goodsclass extends AdminControl {
                 $this->error(lang('goods_class_batch_edit_fail'));
             }
 
-
             // 检测是否需要关联自己操作，统一查询子分类
             if (input('post.t_commis_rate') == '1' || input('post.t_associated') == '1' || input('post.t_gc_virtual') == '1') {
                 $gc_id_list = $goodsclass_model->getChildClass($gc_id);
@@ -231,7 +223,6 @@ class Goodsclass extends AdminControl {
                 $goodsclass_model->editGoodsclass(array('commis_rate' => $update_array['commis_rate']), array(array('gc_id', 'in', $gc_ids)));
             }
 
-
             // 更新该分类下子分类的所有类型
             if (input('post.t_associated') == '1' && !empty($gc_ids)) {
                 $where = array();
@@ -247,7 +238,6 @@ class Goodsclass extends AdminControl {
                 $goodsclass_model->editGoodsclass(array('gc_virtual' => $update_array['gc_virtual']), array(array('gc_id', 'in', $gc_ids)));
             }
 
-
             $this->log(lang('ds_edit') . lang('goods_class_index_class') . '[' . input('post.gc_name') . ']', 1);
             $this->success(lang('goods_class_batch_edit_ok'), (string) url('Goodsclass/goods_class'));
         }
@@ -256,7 +246,8 @@ class Goodsclass extends AdminControl {
     /**
      * 删除分类
      */
-    public function goods_class_del() {
+    public function goods_class_del()
+    {
         $gc_id = input('param.gc_id');
         $gc_id_array = ds_delete_param($gc_id);
         if ($gc_id_array === FALSE) {
@@ -273,11 +264,9 @@ class Goodsclass extends AdminControl {
     /**
      * tag列表
      */
-    public function tag() {
-
-        /**
-         * 处理商品分类
-         */
+    public function tag()
+    {
+        // 处理商品分类
         $choose_gcid = ($t = intval(input('param.choose_gcid'))) > 0 ? $t : 0;
         $gccache_arr = model('goodsclass')->getGoodsclassCache($choose_gcid, 3);
         View::assign('gc_json', json_encode($gccache_arr['showclass']));
@@ -315,7 +304,8 @@ class Goodsclass extends AdminControl {
     /**
      * 重置TAG
      */
-    public function tag_reset() {
+    public function tag_reset()
+    {
         //实例化模型
         $goodsclass_model = model('goodsclass');
         $classtag_model = model('goodsclasstag');
@@ -374,7 +364,8 @@ class Goodsclass extends AdminControl {
     /**
      * 更新TAG名称
      */
-    public function tag_update() {
+    public function tag_update()
+    {
         $goodsclass_model = model('goodsclass');
         $classtag_model = model('goodsclasstag');
 
@@ -436,7 +427,8 @@ class Goodsclass extends AdminControl {
     /**
      * 删除TAG
      */
-    public function tag_del() {
+    public function tag_del()
+    {
         $id = intval(input('get.tag_id'));
         $classtag_model = model('goodsclasstag');
         if ($id > 0) {
@@ -453,7 +445,8 @@ class Goodsclass extends AdminControl {
     /**
      * 分类导航
      */
-    public function nav_edit() {
+    public function nav_edit()
+    {
         $gc_id = input('param.gc_id');
         $goodsclass_model = model('goodsclass');
         $class_info = $goodsclass_model->getGoodsclassInfoById($gc_id);
@@ -465,21 +458,21 @@ class Goodsclass extends AdminControl {
             $update['gc_id'] = $gc_id;
             $update['goodscn_alias'] = input('post.goodscn_alias');
             $class_id_array = input('post.class_id/a');
-            if(empty($class_id_array)){
-            	$update['goodscn_classids'] = '';
-            }else if (is_array($class_id_array) && !empty($class_id_array)) {
+            if (empty($class_id_array)) {
+                $update['goodscn_classids'] = '';
+            } else if (is_array($class_id_array) && !empty($class_id_array)) {
                 $update['goodscn_classids'] = implode(',', $class_id_array);
             }
             $brand_id_array = input('post.brand_id/a');
-            if(empty($brand_id_array)){
-            	$update['goodscn_brandids'] = '';
-            }else if (is_array($brand_id_array) && !empty($brand_id_array)) {
+            if (empty($brand_id_array)) {
+                $update['goodscn_brandids'] = '';
+            } else if (is_array($brand_id_array) && !empty($brand_id_array)) {
                 $update['goodscn_brandids'] = implode(',', $brand_id_array);
             }
             $update['goodscn_adv1_link'] = input('post.goodscn_adv1_link');
             $update['goodscn_adv2_link'] = input('post.goodscn_adv2_link');
-            if (!empty($_FILES['pic']['name'])) {//上传图片
-                ds_del_pic(ATTACH_GOODS_CLASS,$nav_info['goodscn_pic']);
+            if (!empty($_FILES['pic']['name'])) { //上传图片
+                ds_del_pic(ATTACH_GOODS_CLASS, $nav_info['goodscn_pic']);
                 $file_name = date('YmdHis') . rand(10000, 99999) . '.png';
 
                 $res = ds_upload_pic(ATTACH_GOODS_CLASS, 'pic', $file_name);
@@ -490,8 +483,8 @@ class Goodsclass extends AdminControl {
                     $this->error($res['msg']);
                 }
             }
-            if (!empty($_FILES['adv1']['name'])) {//上传广告图片
-                ds_del_pic(ATTACH_GOODS_CLASS,$nav_info['goodscn_adv1']);
+            if (!empty($_FILES['adv1']['name'])) { //上传广告图片
+                ds_del_pic(ATTACH_GOODS_CLASS, $nav_info['goodscn_adv1']);
                 $file_name = date('YmdHis') . rand(10000, 99999) . '.png';
 
                 $res = ds_upload_pic(ATTACH_GOODS_CLASS, 'adv1', $file_name);
@@ -502,8 +495,8 @@ class Goodsclass extends AdminControl {
                     $this->error($res['msg']);
                 }
             }
-            if (!empty($_FILES['adv2']['name'])) {//上传广告图片
-                ds_del_pic(ATTACH_GOODS_CLASS,$nav_info['goodscn_adv2']);
+            if (!empty($_FILES['adv2']['name'])) { //上传广告图片
+                ds_del_pic(ATTACH_GOODS_CLASS, $nav_info['goodscn_adv2']);
                 $file_name = date('YmdHis') . rand(10000, 99999) . '.png';
 
                 $res = ds_upload_pic(ATTACH_GOODS_CLASS, 'adv2', $file_name);
@@ -567,7 +560,8 @@ class Goodsclass extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $branch = input('param.branch');
         $condition = array();
         switch ($branch) {
@@ -596,9 +590,7 @@ class Goodsclass extends AdminControl {
                     exit;
                 }
                 break;
-            /**
-             * 分类 排序 显示 设置
-             */
+            // 分类 排序 显示 设置
             case 'goods_class_sort':
             case 'goods_class_show':
             case 'goods_class_index_show':
@@ -611,9 +603,7 @@ class Goodsclass extends AdminControl {
                 echo 'true';
                 exit;
                 break;
-            /**
-             * 添加、修改操作中 检测类别名称是否有重复
-             */
+            // 添加、修改操作中 检测类别名称是否有重复
             case 'check_class_name':
                 $goodsclass_model = model('goodsclass');
                 $condition[] = array('gc_name', '=', trim(input('get.gc_name')));
@@ -628,15 +618,11 @@ class Goodsclass extends AdminControl {
                     exit;
                 }
                 break;
-            /**
-             * TAG值编辑
-             */
+            // TAG值编辑
             case 'goods_class_tag_value':
                 $classtag_model = model('goodsclasstag');
                 $update_array = array();
-                /**
-                 * 转码  防止GBK下用中文逗号截取不正确
-                 */
+                // 转码  防止GBK下用中文逗号截取不正确
                 $comma = '，';
                 $update_array[input('param.column')] = trim(str_replace($comma, ',', input('param.value')));
                 $classtag_model->editGoodsclasstag($update_array, intval(input('param.id')));
@@ -649,7 +635,8 @@ class Goodsclass extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'goods_class',
@@ -678,7 +665,4 @@ class Goodsclass extends AdminControl {
         );
         return $menu_array;
     }
-
 }
-
-?>

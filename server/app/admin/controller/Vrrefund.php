@@ -1,43 +1,35 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Vrrefund extends AdminControl {
+class Vrrefund extends AdminControl
+{
 
     const EXPORT_SIZE = 1000;
-    public function initialize() {
-        parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/vrrefund.lang.php');
-    }
 
+    public function initialize()
+    {
+        parent::initialize();
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/vrrefund.lang.php');
+    }
 
     /**
      * 待处理列表
      */
-    public function refund_manage() {
+    public function refund_manage()
+    {
         $vrrefund_model = model('vrrefund');
         $condition = array();
-        $condition[]=array('admin_state','=','1'); //状态:1为待审核,2为同意,3为不同意
+        $condition[] = array('admin_state', '=', '1'); //状态:1为待审核,2为同意,3为不同意
 
         $keyword_type = array('order_sn', 'refund_sn', 'store_name', 'buyer_name', 'goods_name');
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $type . '%');
+            $condition[] = array($type, 'like', '%' . $type . '%');
         }
 
         $add_time_from = trim(input('get.add_time_from'));
@@ -45,21 +37,21 @@ class Vrrefund extends AdminControl {
         if ($add_time_from != '') {
             $add_time_from = strtotime($add_time_from);
             if ($add_time_from !== false) {
-                $condition[] = array('add_time','>=', $add_time_from);
+                $condition[] = array('add_time', '>=', $add_time_from);
             }
         }
         if ($add_time_to != '') {
             $add_time_to = strtotime($add_time_to);
             if ($add_time_to !== false) {
-                $add_time_to=$add_time_to+86399;
-                $condition[] = array('add_time','<=', $add_time_to);
+                $add_time_to = $add_time_to + 86399;
+                $condition[] = array('add_time', '<=', $add_time_to);
             }
         }
         $refund_list = $vrrefund_model->getVrrefundList($condition, 10);
 
         View::assign('refund_list', $refund_list);
         View::assign('show_page', $vrrefund_model->page_info->render());
-        
+
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
         $this->setAdminCurItem('refund_manage');
         return View::fetch('vr_refund_manage_list');
@@ -68,7 +60,8 @@ class Vrrefund extends AdminControl {
     /**
      * 所有记录
      */
-    public function refund_all() {
+    public function refund_all()
+    {
         $vrrefund_model = model('vrrefund');
         $condition = array();
 
@@ -76,42 +69,42 @@ class Vrrefund extends AdminControl {
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $key . '%');
+            $condition[] = array($type, 'like', '%' . $key . '%');
         }
         $add_time_from = trim(input('get.add_time_from'));
         $add_time_to = trim(input('get.add_time_to'));
         if ($add_time_from != '') {
             $add_time_from = strtotime($add_time_from);
             if ($add_time_from !== false) {
-                $condition[] = array('add_time','>=', $add_time_from);
+                $condition[] = array('add_time', '>=', $add_time_from);
             }
         }
         if ($add_time_to != '') {
             $add_time_to = strtotime($add_time_to);
             if ($add_time_to !== false) {
-                $add_time_to=$add_time_to+86399;
-                $condition[] = array('add_time','<=', $add_time_to);
+                $add_time_to = $add_time_to + 86399;
+                $condition[] = array('add_time', '<=', $add_time_to);
             }
         }
         $refund_list = $vrrefund_model->getVrrefundList($condition, 10);
         View::assign('refund_list', $refund_list);
         View::assign('show_page', $vrrefund_model->page_info->render());
-        
+
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
-        
+
         $this->setAdminCurItem('refund_all');
         return View::fetch('vr_refund_all_list');
     }
 
     /**
      * 审核页
-     *
      */
-    public function edit() {
+    public function edit()
+    {
         $refund_id = intval(input('param.refund_id'));
         $vrrefund_model = model('vrrefund');
-        $condition=array();
-        $condition[] = array('refund_id','=',$refund_id);
+        $condition = array();
+        $condition[] = array('refund_id', '=', $refund_id);
         $refund = $vrrefund_model->getOneVrrefund($condition);
         if (!(request()->isPost())) {
             View::assign('refund', $refund);
@@ -119,21 +112,21 @@ class Vrrefund extends AdminControl {
             View::assign('code_array', $code_array);
             return View::fetch('vr_refund_edit');
         } else {
-            if ($refund['admin_state'] != '1') {//检查状态,防止页面刷新不及时造成数据错误
+            if ($refund['admin_state'] != '1') { //检查状态,防止页面刷新不及时造成数据错误
                 $this->error(lang('ds_common_save_fail'));
             }
-            
+
             $admin_message = input('post.admin_message');
             $admin_state = input('post.admin_state');
-            if(!in_array($admin_state,array('2','3'))){
+            if (!in_array($admin_state, array('2', '3'))) {
                 $admin_state = '2';
             }
-            
-            if($admin_state == '2'){
+
+            if ($admin_state == '2') {
                 //admin_state 审核状态:1为待审核,2为同意,3为不同意   执行退款的操作
                 $vrrefund_model->editVrorderRefund($refund);
             }
-            
+
             $vrrefund_data = array(
                 'admin_state' => $admin_state,
                 'admin_message' => $admin_message,
@@ -153,13 +146,13 @@ class Vrrefund extends AdminControl {
                 $param['ten_param'] = array(
                     $refund['refund_sn']
                 );
-                $param['param'] = array_merge($param['ali_param'],array(
-                    'refund_url' => HOME_SITE_URL .'/Membervrrefund/view?refund_id='.$refund['refund_id'],
+                $param['param'] = array_merge($param['ali_param'], array(
+                    'refund_url' => HOME_SITE_URL . '/Membervrrefund/view?refund_id=' . $refund['refund_id'],
                 ));
                 //微信模板消息
                 $param['weixin_param'] = array(
-                    'url' => config('ds_config.h5_site_url').'/pages/member/vrrefund/VrRefundView?refund_id='.$refund['refund_id'],
-                    'data'=>array(
+                    'url' => config('ds_config.h5_site_url') . '/pages/member/vrrefund/VrRefundView?refund_id=' . $refund['refund_id'],
+                    'data' => array(
                         "keyword1" => array(
                             "value" => $refund['order_sn'],
                             "color" => "#333"
@@ -170,8 +163,8 @@ class Vrrefund extends AdminControl {
                         )
                     ),
                 );
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendMemberMsg','cron_value'=>serialize($param)));
-                
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendMemberMsg', 'cron_value' => serialize($param)));
+
                 $this->log('虚拟订单退款审核，退款编号' . $refund['refund_sn']);
                 dsLayerOpenSuccess(lang('ds_common_save_succ'));
             } else {
@@ -182,13 +175,13 @@ class Vrrefund extends AdminControl {
 
     /**
      * 查看页
-     *
      */
-    public function view() {
+    public function view()
+    {
         $vrrefund_model = model('vrrefund');
         $refund_id = intval(input('param.refund_id'));
-        $condition=array();
-        $condition[] = array('refund_id','=',$refund_id);
+        $condition = array();
+        $condition[] = array('refund_id', '=', $refund_id);
         $refund = $vrrefund_model->getOneVrrefund($condition);
         View::assign('refund', $refund);
         $code_array = explode(',', $refund['redeemcode_sn']);
@@ -198,10 +191,9 @@ class Vrrefund extends AdminControl {
 
     /**
      * 导出
-     *
      */
-    public function export_step1() {
-
+    public function export_step1()
+    {
         $vrrefund_model = model('vrrefund');
         $condition = array();
 
@@ -209,21 +201,21 @@ class Vrrefund extends AdminControl {
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $key . '%');
+            $condition[] = array($type, 'like', '%' . $key . '%');
         }
         $add_time_from = trim(input('get.add_time_from'));
         $add_time_to = trim(input('get.add_time_to'));
         if ($add_time_from != '') {
             $add_time_from = strtotime($add_time_from);
             if ($add_time_from !== false) {
-                $condition[] = array('add_time','>=', $add_time_from);
+                $condition[] = array('add_time', '>=', $add_time_from);
             }
         }
         if ($add_time_to != '') {
             $add_time_to = strtotime($add_time_to);
             if ($add_time_to !== false) {
-                $add_time_to=$add_time_to+86399;
-                $condition[] = array('add_time','<=', $add_time_to);
+                $add_time_to = $add_time_to + 86399;
+                $condition[] = array('add_time', '<=', $add_time_to);
             }
         }
         if (!is_numeric(input('param.page'))) {
@@ -252,11 +244,10 @@ class Vrrefund extends AdminControl {
 
     /**
      * 生成excel
-     *
-     * @param array $data
      */
-    private function createExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -290,7 +281,8 @@ class Vrrefund extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'refund_manage',
@@ -303,10 +295,10 @@ class Vrrefund extends AdminControl {
                 'url' => (string)url('Vrrefund/refund_all')
             ),
         );
-        if(request()->action() == 'view'){
-            $menu_array[]=array('name'=>'vr_refund_view','text'=>lang('ds_view'),'url'=>'javascript:void(0)');
+        if (request()->action() == 'view') {
+            $menu_array[] = array('name' => 'vr_refund_view', 'text' => lang('ds_view'), 'url' => 'javascript:void(0)');
         }
-        
+
         return $menu_array;
     }
 }

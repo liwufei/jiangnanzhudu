@@ -6,25 +6,19 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 上传
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 上传
  */
-class Upload extends AdminControl {
+class Upload extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/upload.lang.php');
     }
 
-    function default_thumb() {
+    function default_thumb()
+    {
         $config_model = model('config');
         $list_config = rkcache('config', true);
 
@@ -114,7 +108,8 @@ class Upload extends AdminControl {
         }
     }
 
-    public function upload_type() {
+    public function upload_type()
+    {
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
@@ -134,16 +129,20 @@ class Upload extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'default_thumb', 'text' => lang('default_thumb'), 'url' => (string) url('Upload/default_thumb')
-            ), array(
-                'name' => 'upload_type', 'text' => lang('ds_upload_set'), 'url' => (string) url('Upload/upload_type')
+                'name' => 'default_thumb',
+                'text' => lang('default_thumb'),
+                'url' => (string) url('Upload/default_thumb')
+            ),
+            array(
+                'name' => 'upload_type',
+                'text' => lang('ds_upload_set'),
+                'url' => (string) url('Upload/upload_type')
             )
         );
         return $menu_array;
     }
 }
-
-?>

@@ -1,40 +1,36 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 快递
  */
-class Express extends AdminControl {
+class Express extends AdminControl
+{
+    protected $express_id_array;
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/express.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $express_letter = input('get.express_letter');
         $condition = array();
         if (preg_match('/^[A-Z]$/', $express_letter)) {
-            $condition[]=array('express_letter','=',$express_letter);
+            $condition[] = array('express_letter', '=', $express_letter);
         }
-        
+
         $express_name = input('get.express_name');
-        if(!empty($express_name)){
-            $condition[]=array('express_name','like', "%" . $express_name . "%");
+        if (!empty($express_name)) {
+            $condition[] = array('express_name', 'like', "%" . $express_name . "%");
         }
-        
+
         $express_model = model('express');
         $express_list = $express_model->getAllExpresslist($condition, 10);
         View::assign('show_page', $express_model->page_info->render());
@@ -43,10 +39,8 @@ class Express extends AdminControl {
         return View::fetch();
     }
 
-    /**
-     * 添加品牌
-     */
-    public function add() {
+    public function add()
+    {
         $express_mod = model('express');
         if (request()->isPost()) {
             $insert_array['express_name'] = trim(input('post.express_name'));
@@ -73,12 +67,13 @@ class Express extends AdminControl {
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         $express_model = model('express');
         $express_id = input('param.express_id');
         $condition = array();
         if (request()->isPost()) {
-            $condition[] = array('express_id','=',$express_id);
+            $condition[] = array('express_id', '=', $express_id);
 
             $data['express_name'] = trim(input('post.express_name'));
             $data['express_code'] = input('post.express_code');
@@ -96,7 +91,7 @@ class Express extends AdminControl {
                 $this->error(lang('ds_common_save_fail'));
             }
         } else {
-            $condition[] = array('express_id','=',$express_id);
+            $condition[] = array('express_id', '=', $express_id);
             $express = $express_model->getOneExpress($condition);
             if (empty($express)) {
                 $this->error(lang('param_error'));
@@ -106,10 +101,8 @@ class Express extends AdminControl {
         }
     }
 
-    /**
-     * 删除品牌
-     */
-    public function del() {
+    public function del()
+    {
         $express_id = input('param.express_id');
         $express_id_array = ds_delete_param($express_id);
         if ($express_id_array == FALSE) {
@@ -117,7 +110,7 @@ class Express extends AdminControl {
             ds_json_encode(10001, lang('param_error'));
         }
         $express_mod = model('express');
-        $express_mod->delExpress(array(array('express_id','in', implode(',', $express_id_array))));
+        $express_mod->delExpress(array(array('express_id', 'in', implode(',', $express_id_array))));
         $this->log(lang('ds_del') . lang('express') . '[ID:' . $express_id . ']', 1);
         ds_json_encode(10000, lang('ds_common_del_succ'));
     }
@@ -125,7 +118,8 @@ class Express extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $branch = input('get.branch');
         $column = input('get.column');
         $value = trim(input('get.value'));
@@ -135,7 +129,7 @@ class Express extends AdminControl {
             case 'state':
                 $express_model = model('express');
                 $update_array = array();
-                $condition[] = array('express_id','=',$id);
+                $condition[] = array('express_id', '=', $id);
                 $update_array[$column] = $value;
                 $express_model->editExpress($condition, $update_array);
                 $this->log(lang('ds_edit') . lang('express_name') . lang('ds_state') . '[ID:' . $id . ']', 1);
@@ -145,7 +139,7 @@ class Express extends AdminControl {
             case 'order':
                 $express_model = model('express');
                 $update_array = array();
-                $condition[] = array('express_id','=',$id);
+                $condition[] = array('express_id', '=', $id);
                 $update_array[$column] = $value;
                 $express_model->editExpress($condition, $update_array);
                 $this->log(lang('ds_edit') . lang('express_name') . lang('ds_state') . '[ID:' . $id . ']', 1);
@@ -155,12 +149,13 @@ class Express extends AdminControl {
         }
     }
 
-    public function config(){
+    public function config()
+    {
         $config_model = model('config');
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
-            /* 设置卖家当前栏目 */
+            // 设置卖家当前栏目
             $this->setAdminCurItem('express_config');
             return View::fetch();
         } else {
@@ -180,7 +175,8 @@ class Express extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -195,12 +191,9 @@ class Express extends AdminControl {
             array(
                 'name' => 'express_add',
                 'text' => lang('ds_add'),
-                'url' => "javascript:dsLayerOpen('" . (string)url('Express/add') . "','".lang('ds_add')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Express/add') . "','" . lang('ds_add') . "')"
             ),
         );
         return $menu_array;
     }
-
 }
-
-?>

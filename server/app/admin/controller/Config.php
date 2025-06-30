@@ -6,30 +6,24 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 配置
  */
-class Config extends AdminControl {
+class Config extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/config.lang.php');
     }
 
-    public function base() {
+    public function base()
+    {
         $config_model = model('config');
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
-            /* 设置卖家当前栏目 */
+            //设置卖家当前栏目
             $this->setAdminCurItem('base');
             return View::fetch();
         } else {
@@ -91,12 +85,13 @@ class Config extends AdminControl {
         }
     }
 
-    public function logo() {
+    public function logo()
+    {
         $config_model = model('config');
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
-            /* 设置卖家当前栏目 */
+            //设置卖家当前栏目
             $this->setAdminCurItem('logo');
             return View::fetch();
         } else {
@@ -216,12 +211,13 @@ class Config extends AdminControl {
     /**
      * 防灌水设置
      */
-    public function dump() {
+    public function dump()
+    {
         $config_model = model('config');
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
-            /* 设置卖家当前栏目 */
+            // 设置卖家当前栏目
             $this->setAdminCurItem('dump');
             return View::fetch();
         } else {
@@ -243,16 +239,16 @@ class Config extends AdminControl {
         }
     }
 
-    /*
+    /**
      * 设置自动收货时间
      */
-
-    public function auto() {
+    public function auto()
+    {
         $config_model = model('config');
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
-            /* 设置卖家当前栏目 */
+            //设置卖家当前栏目
             $this->setAdminCurItem('auto');
             return View::fetch();
         } else {
@@ -285,7 +281,8 @@ class Config extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'base',

@@ -6,22 +6,15 @@ use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 品牌管理
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 品牌管理
  */
-class Brand extends AdminControl {
+class Brand extends AdminControl
+{
 
     const EXPORT_SIZE = 1000;
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/brand.lang.php');
     }
@@ -29,11 +22,11 @@ class Brand extends AdminControl {
     /**
      * 品牌列表
      */
-    public function index() {
+    public function index()
+    {
         $brand_model = model('brand');
-        /**
-         * 检索条件
-         */
+
+        // 检索条件
         if (!empty(input('param.search_brand_name'))) {
             $condition[] = array('brand_name', 'like', "%" . input('param.search_brand_name') . "%");
         }
@@ -53,41 +46,41 @@ class Brand extends AdminControl {
     /**
      * 增加品牌
      */
-    public function brand_add() {
-
+    public function brand_add()
+    {
         $brand_model = model('brand');
         if (request()->isPost()) {
- 
-                $insert_array = array();
-                $insert_array['brand_name'] = trim(input('post.brand_name'));
-                $insert_array['brand_initial'] = strtoupper(input('post.brand_initial'));
-                $insert_array['gc_id'] = input('post.class_id');
-                $insert_array['brand_class'] = trim(input('post.brand_class'));
-                $insert_array['brand_recommend'] = trim(input('post.brand_recommend'));
-                $insert_array['brand_sort'] = intval(input('post.brand_sort'));
-                $insert_array['brand_showtype'] = intval(input('post.brand_showtype')) == 1 ? 1 : 0;
-                
-                $this->validate($insert_array, 'app\common\validate\Brand.brand_add');
-                
-                if (!empty($_FILES['_pic']['name'])) {
-                    $res=ds_upload_pic(ATTACH_BRAND,'_pic');
-                    if($res['code']){
-                        $brand_pic=$res['data']['file_name'];
-                    }else{
-                        $this->error($res['msg']);
-                    }
-                }
-                if (!empty($brand_pic)) {
-                    $insert_array['brand_pic'] = $brand_pic;
-                }
 
-                $result = $brand_model->addBrand($insert_array);
-                if ($result) {
-                    $this->log(lang('ds_add') . lang('brand_index_brand') . '[' . input('post.brand_name') . ']', 1);
-                    dsLayerOpenSuccess(lang('ds_common_save_succ'));
+            $insert_array = array();
+            $insert_array['brand_name'] = trim(input('post.brand_name'));
+            $insert_array['brand_initial'] = strtoupper(input('post.brand_initial'));
+            $insert_array['gc_id'] = input('post.class_id');
+            $insert_array['brand_class'] = trim(input('post.brand_class'));
+            $insert_array['brand_recommend'] = trim(input('post.brand_recommend'));
+            $insert_array['brand_sort'] = intval(input('post.brand_sort'));
+            $insert_array['brand_showtype'] = intval(input('post.brand_showtype')) == 1 ? 1 : 0;
+
+            $this->validate($insert_array, 'app\common\validate\Brand.brand_add');
+
+            if (!empty($_FILES['_pic']['name'])) {
+                $res = ds_upload_pic(ATTACH_BRAND, '_pic');
+                if ($res['code']) {
+                    $brand_pic = $res['data']['file_name'];
                 } else {
-                    $this->error(lang('ds_common_save_fail'));
+                    $this->error($res['msg']);
                 }
+            }
+            if (!empty($brand_pic)) {
+                $insert_array['brand_pic'] = $brand_pic;
+            }
+
+            $result = $brand_model->addBrand($insert_array);
+            if ($result) {
+                $this->log(lang('ds_add') . lang('brand_index_brand') . '[' . input('post.brand_name') . ']', 1);
+                dsLayerOpenSuccess(lang('ds_common_save_succ'));
+            } else {
+                $this->error(lang('ds_common_save_fail'));
+            }
         } else {
             $brand_array = [
                 'brand_id' => '',
@@ -112,48 +105,49 @@ class Brand extends AdminControl {
     /**
      * 品牌编辑
      */
-    public function brand_edit() {
+    public function brand_edit()
+    {
         $brand_model = model('brand');
 
         if (request()->isPost()) {
-            
-                $brand_info = $brand_model->getBrandInfo(array('brand_id' => intval(input('post.brand_id'))));
-                
-                $update_array = array();
-                $update_array['brand_name'] = trim(input('post.brand_name'));
-                $update_array['brand_initial'] = strtoupper(input('post.brand_initial'));
-                $update_array['gc_id'] = input('post.class_id');
-                $update_array['brand_class'] = trim(input('post.brand_class'));
-                $update_array['brand_recommend'] = intval(input('post.brand_recommend'));
-                $update_array['brand_sort'] = intval(input('post.brand_sort'));
-                $update_array['brand_showtype'] = intval(input('post.brand_showtype')) == 1 ? 1 : 0;
-                
-                $this->validate($update_array, 'app\common\validate\Brand.brand_edit');
-                
-                if (!empty($_FILES['_pic']['name'])) {
-                    $res=ds_upload_pic(ATTACH_BRAND,'_pic');
-                    if($res['code']){
-                        $brand_pic=$res['data']['file_name'];
-                    }else{
-                        $this->error($res['msg']);
-                    }
-                }
-                if (!empty($brand_pic)) {
-                    $update_array['brand_pic'] = $brand_pic;
-                }
-                $condition = array();
-                $condition[] = array('brand_id', '=', intval(input('post.brand_id')));
-                $result = $brand_model->editBrand($condition, $update_array);
-                if ($result >= 0) {
-                    if (!empty(input('post.brand_pic')) && !empty($brand_info['brand_pic'])) {
-                        ds_del_pic(ATTACH_BRAND,$brand_info['brand_pic']);
-                    }
-                    $this->log(lang('ds_edit') . lang('brand_index_brand') . '[' . input('post.brand_name') . ']', 1);
-                    dsLayerOpenSuccess(lang('ds_common_save_succ'));
+
+            $brand_info = $brand_model->getBrandInfo(array('brand_id' => intval(input('post.brand_id'))));
+
+            $update_array = array();
+            $update_array['brand_name'] = trim(input('post.brand_name'));
+            $update_array['brand_initial'] = strtoupper(input('post.brand_initial'));
+            $update_array['gc_id'] = input('post.class_id');
+            $update_array['brand_class'] = trim(input('post.brand_class'));
+            $update_array['brand_recommend'] = intval(input('post.brand_recommend'));
+            $update_array['brand_sort'] = intval(input('post.brand_sort'));
+            $update_array['brand_showtype'] = intval(input('post.brand_showtype')) == 1 ? 1 : 0;
+
+            $this->validate($update_array, 'app\common\validate\Brand.brand_edit');
+
+            if (!empty($_FILES['_pic']['name'])) {
+                $res = ds_upload_pic(ATTACH_BRAND, '_pic');
+                if ($res['code']) {
+                    $brand_pic = $res['data']['file_name'];
                 } else {
-                    $this->log(lang('ds_edit') . lang('brand_index_brand') . '[' . input('post.brand_name') . ']', 0);
-                    $this->error(lang('ds_common_save_fail'));
+                    $this->error($res['msg']);
                 }
+            }
+            if (!empty($brand_pic)) {
+                $update_array['brand_pic'] = $brand_pic;
+            }
+            $condition = array();
+            $condition[] = array('brand_id', '=', intval(input('post.brand_id')));
+            $result = $brand_model->editBrand($condition, $update_array);
+            if ($result >= 0) {
+                if (!empty(input('post.brand_pic')) && !empty($brand_info['brand_pic'])) {
+                    ds_del_pic(ATTACH_BRAND, $brand_info['brand_pic']);
+                }
+                $this->log(lang('ds_edit') . lang('brand_index_brand') . '[' . input('post.brand_name') . ']', 1);
+                dsLayerOpenSuccess(lang('ds_common_save_succ'));
+            } else {
+                $this->log(lang('ds_edit') . lang('brand_index_brand') . '[' . input('post.brand_name') . ']', 0);
+                $this->error(lang('ds_common_save_fail'));
+            }
         } else {
             $brand_info = $brand_model->getBrandInfo(array('brand_id' => intval(input('param.brand_id'))));
             if (empty($brand_info)) {
@@ -170,7 +164,8 @@ class Brand extends AdminControl {
     /**
      * 删除品牌
      */
-    public function brand_del() {
+    public function brand_del()
+    {
         $brand_id = input('param.brand_id');
         $brand_id_array = ds_delete_param($brand_id);
         if ($brand_id_array == FALSE) {
@@ -188,11 +183,11 @@ class Brand extends AdminControl {
     /**
      * 品牌申请
      */
-    public function brand_apply() {
+    public function brand_apply()
+    {
         $brand_model = model('brand');
-        /**
-         * 对申请品牌进行操作 通过，拒绝
-         */
+
+        // 对申请品牌进行操作 通过，拒绝
         if (request()->isPost()) {
             $del_id_array = input('post.del_id/a'); #获取数组
             if (!empty($del_id_array)) {
@@ -231,9 +226,8 @@ class Brand extends AdminControl {
                 $this->error(lang('ds_common_del_fail'));
             }
         } else {
-            /**
-             * 检索条件
-             */
+
+            // 检索条件
             $condition = array();
             if (!empty(input('param.search_brand_name'))) {
                 $condition[] = array('brand_name', 'like', '%' . trim(input('param.search_brand_name')) . '%');
@@ -256,15 +250,14 @@ class Brand extends AdminControl {
     /**
      * 审核 申请品牌操作
      */
-    public function brand_apply_set() {
+    public function brand_apply_set()
+    {
         $brand_model = model('brand');
 
         if (intval(input('param.brand_id')) > 0) {
             switch (input('param.state')) {
                 case 'pass':
-                    /**
-                     * 更新品牌 申请状态
-                     */
+                    // 更新品牌 申请状态
                     $update_array = array();
                     $update_array['brand_apply'] = 1;
                     $result = $brand_model->editBrand(array('brand_id' => intval(input('param.brand_id'))), $update_array);
@@ -294,16 +287,14 @@ class Brand extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $brand_model = model('brand');
         switch (input('param.branch')) {
-            /**
-             * 品牌名称
-             */
+
+            // 品牌名称
             case 'brand_name':
-                /**
-                 * 判断是否有重复
-                 */
+                // 判断是否有重复
                 $condition[] = array('brand_name', '=', trim(input('param.value')));
                 $condition[] = array('brand_id', '<>', intval(input('param.id')));
                 $result = $brand_model->getBrandList($condition);
@@ -317,25 +308,25 @@ class Brand extends AdminControl {
                     exit;
                 }
                 break;
-            /**
-             * 品牌类别，品牌排序，推荐
-             */
+            // 品牌类别，品牌排序，推荐
             case 'brand_class':
             case 'brand_sort':
             case 'brand_recommend':
                 $brand_model->editBrand(array('brand_id' => intval(input('param.id'))), array(input('param.column') => trim(input('param.value'))));
                 $detail_log = str_replace(array(
-                    'brand_class', 'brand_sort', 'brand_recommend'
-                        ), array(
-                    lang('brand_index_class'), lang('ds_sort'), lang('ds_recommend')
-                        ), input('param.branch'));
+                    'brand_class',
+                    'brand_sort',
+                    'brand_recommend'
+                ), array(
+                    lang('brand_index_class'),
+                    lang('ds_sort'),
+                    lang('ds_recommend')
+                ), input('param.branch'));
                 $this->log(lang('ds_edit') . lang('brand_index_brand') . $detail_log . '[ID:' . intval(input('param.id')) . ')', 1);
                 echo 'true';
                 exit;
                 break;
-            /**
-             * 验证品牌名称是否有重复
-             */
+            // 验证品牌名称是否有重复
             case 'check_brand_name':
                 $condition[] = array('brand_name', '=', trim(input('param.brand_name')));
                 $condition[] = array('brand_id', '<>', intval(input('param.id')));
@@ -354,7 +345,8 @@ class Brand extends AdminControl {
     /**
      * 品牌导出第一步
      */
-    public function export_step1() {
+    public function export_step1()
+    {
         $brand_model = model('brand');
         $condition = array();
         if ((input('param.search_brand_name'))) {
@@ -391,16 +383,16 @@ class Brand extends AdminControl {
 
     /**
      * 生成excel
-     *
-     * @param array $data
      */
-    private function createExcel($data = array()) {
+    private function createExcel($data = array())
+    {
         Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
         $excel_obj->setStyle(array(
-            'id' => 's_title', 'Font' => array('FontName' => lang('ds_song_typeface'), 'Size' => '12', 'Bold' => '1')
+            'id' => 's_title',
+            'Font' => array('FontName' => lang('ds_song_typeface'), 'Size' => '12', 'Bold' => '1')
         ));
         //header
         $excel_data[0][] = array('styleid' => 's_title', 'data' => lang('exp_brandid'));
@@ -424,7 +416,8 @@ class Brand extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -444,5 +437,5 @@ class Brand extends AdminControl {
         );
         return $menu_array;
     }
-
+    
 }

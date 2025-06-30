@@ -1,48 +1,38 @@
 <?php
 
-/**
- * 抢购管理
- */
-
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 抢购管理
  */
-class Groupbuy extends AdminControl {
+class Groupbuy extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/groupbuy.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/groupbuy.lang.php');
     }
 
     /**
      * 进行中抢购列表，只可推荐
-     *
      */
-    public function index() {
+    public function index()
+    {
         $groupbuy_model = model('groupbuy');
 
         $condition = array();
         if (!empty(input('param.groupbuy_name'))) {
-            $condition[]=array('groupbuy_name','like', '%' . input('param.groupbuy_name') . '%');
+            $condition[] = array('groupbuy_name', 'like', '%' . input('param.groupbuy_name') . '%');
         }
         if ((input('param.store_name'))) {
-            $condition[]=array('store_name','like', '%' . input('param.store_name') . '%');
+            $condition[] = array('store_name', 'like', '%' . input('param.store_name') . '%');
         }
         if ((input('param.groupbuy_state'))) {
-            $condition[]=array('groupbuy_state','=',input('param.groupbuy_state'));
+            $condition[] = array('groupbuy_state', '=', input('param.groupbuy_state'));
         }
         $groupbuy_list = $groupbuy_model->getGroupbuyExtendList($condition, 10);
         View::assign('groupbuy_list', $groupbuy_list);
@@ -51,7 +41,6 @@ class Groupbuy extends AdminControl {
 
         $this->setAdminCurItem('index');
 
-        
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
         return View::fetch();
     }
@@ -59,13 +48,14 @@ class Groupbuy extends AdminControl {
     /**
      * 审核通过
      */
-    public function groupbuy_review_pass() {
+    public function groupbuy_review_pass()
+    {
         $groupbuy_id = intval(input('post.groupbuy_id'));
 
-        if($groupbuy_id<=0){
+        if ($groupbuy_id <= 0) {
             $this->error(lang('param_error'));
         }
-        
+
         $groupbuy_model = model('groupbuy');
         $result = $groupbuy_model->reviewPassGroupbuy($groupbuy_id);
         if ($result) {
@@ -73,11 +63,13 @@ class Groupbuy extends AdminControl {
             // 添加队列
             $groupbuy_info = $groupbuy_model->getGroupbuyInfo(array('groupbuy_id' => $groupbuy_id));
             $this->addcron(array(
-                'cron_exetime' => $groupbuy_info['groupbuy_starttime'], 'cron_value' => serialize(intval($groupbuy_info['goods_commonid'])),
+                'cron_exetime' => $groupbuy_info['groupbuy_starttime'],
+                'cron_value' => serialize(intval($groupbuy_info['goods_commonid'])),
                 'cron_type' => 'editGoodsGroupbuyPrice'
             ));
             $this->addcron(array(
-                'cron_exetime' => $groupbuy_info['groupbuy_endtime'], 'cron_value' => serialize(intval($groupbuy_info['goods_commonid'])),
+                'cron_exetime' => $groupbuy_info['groupbuy_endtime'],
+                'cron_value' => serialize(intval($groupbuy_info['goods_commonid'])),
                 'cron_type' => 'editExpireGroupbuy'
             ));
             $this->success(lang('ds_common_op_succ'), 'Groupbuy/index');
@@ -89,7 +81,8 @@ class Groupbuy extends AdminControl {
     /**
      * 审核失败
      */
-    public function groupbuy_review_fail() {
+    public function groupbuy_review_fail()
+    {
         $groupbuy_id = intval(input('post.groupbuy_id'));
 
         $groupbuy_model = model('groupbuy');
@@ -105,7 +98,8 @@ class Groupbuy extends AdminControl {
     /**
      * 取消
      */
-    public function groupbuy_cancel() {
+    public function groupbuy_cancel()
+    {
         $groupbuy_id = intval(input('post.groupbuy_id'));
 
         $groupbuy_model = model('groupbuy');
@@ -121,7 +115,8 @@ class Groupbuy extends AdminControl {
     /**
      * 删除
      */
-    public function groupbuy_del() {
+    public function groupbuy_del()
+    {
         $groupbuy_id = intval(input('param.groupbuy_id'));
         $groupbuy_model = model('groupbuy');
         $result = $groupbuy_model->delGroupbuy(array('groupbuy_id' => $groupbuy_id));
@@ -136,8 +131,8 @@ class Groupbuy extends AdminControl {
     /**
      * ajax修改抢购信息
      */
-    public function ajax() {
-
+    public function ajax()
+    {
         $result = true;
         $update_array = array();
         $condition = array();
@@ -146,7 +141,7 @@ class Groupbuy extends AdminControl {
             case 'gclass_sort':
                 $groupbuyclass_model = model('groupbuyclass');
                 $update_array['gclass_sort'] = input('param.value');
-                $condition[] = array('gclass_id','=',input('param.id'));
+                $condition[] = array('gclass_id', '=', input('param.id'));
                 $result = $groupbuyclass_model->editGroupbuyclass($update_array, $condition);
                 // 删除抢购分类缓存
                 model('groupbuy')->dropCachedData('groupbuy_classes');
@@ -154,7 +149,7 @@ class Groupbuy extends AdminControl {
             case 'gclass_name':
                 $groupbuyclass_model = model('groupbuyclass');
                 $update_array['gclass_name'] = input('param.value');
-                $condition[] = array('gclass_id','=',input('param.id'));
+                $condition[] = array('gclass_id', '=', input('param.id'));
                 $result = $groupbuyclass_model->editGroupbuyclass($update_array, $condition);
                 // 删除抢购分类缓存
                 model('groupbuy')->dropCachedData('groupbuy_classes');
@@ -163,23 +158,23 @@ class Groupbuy extends AdminControl {
             case 'recommended':
                 $groupbuy_model = model('groupbuy');
                 $update_array['groupbuy_recommended'] = input('param.value');
-                $condition[] = array('groupbuy_id','=',input('param.id'));
+                $condition[] = array('groupbuy_id', '=', input('param.id'));
                 $result = $groupbuy_model->editGroupbuy($update_array, $condition);
                 break;
         }
-		echo 'true';
-		exit;
-
+        echo 'true';
+        exit;
     }
 
     /**
      * 套餐管理
-     * */
-    public function groupbuy_quota() {
+     */
+    public function groupbuy_quota()
+    {
         $groupbuyquota_model = model('groupbuyquota');
 
         $condition = array();
-        $condition[]=array('store_name','like', '%' . input('param.store_name') . '%');
+        $condition[] = array('store_name', 'like', '%' . input('param.store_name') . '%');
         $groupbuyquota_list = $groupbuyquota_model->getGroupbuyquotaList($condition, 10, 'groupbuyquota_endtime desc');
         View::assign('groupbuyquota_list', $groupbuyquota_list);
         View::assign('show_page', $groupbuyquota_model->page_info->render());
@@ -191,8 +186,8 @@ class Groupbuy extends AdminControl {
     /**
      * 抢购类别列表
      */
-    public function class_list() {
-
+    public function class_list()
+    {
         $groupbuyclass_model = model('groupbuyclass');
         $groupbuyclass_list = $groupbuyclass_model->getTreeList();
         $this->setAdminCurItem('class_list');
@@ -203,8 +198,8 @@ class Groupbuy extends AdminControl {
     /**
      * 添加抢购分类页面
      */
-    public function class_add() {
-
+    public function class_add()
+    {
         $groupbuyclass_model = model('groupbuyclass');
         $param = array();
         $param['gclass_parent_id'] = 0;
@@ -219,8 +214,8 @@ class Groupbuy extends AdminControl {
     /**
      * 保存添加的抢购类别
      */
-    public function class_save() {
-
+    public function class_save()
+    {
         $gclass_id = intval(input('post.gclass_id'));
         $param = array();
         $param['gclass_name'] = trim(input('post.input_gclass_name'));
@@ -257,8 +252,8 @@ class Groupbuy extends AdminControl {
     /**
      * 删除抢购类别
      */
-    public function class_drop() {
-
+    public function class_drop()
+    {
         $gclass_id = trim(input('param.gclass_id'));
         if (empty($gclass_id)) {
             $this->error(lang('param_error'), '');
@@ -268,7 +263,7 @@ class Groupbuy extends AdminControl {
         //获得所有下级类别编号
         $all_gclass_id = $groupbuyclass_model->getAllClassId(explode(',', $gclass_id));
         $condition = array();
-        $condition[]=array('gclass_id','in',implode(',', $all_gclass_id));
+        $condition[] = array('gclass_id', 'in', implode(',', $all_gclass_id));
         if ($groupbuyclass_model->delGroupbuyclass($condition)) {
             // 删除抢购分类缓存
             model('groupbuy')->dropCachedData('groupbuy_classes');
@@ -282,8 +277,8 @@ class Groupbuy extends AdminControl {
     /**
      * 抢购价格区间列表
      */
-    public function price_list() {
-
+    public function price_list()
+    {
         $groupbuypricerange_model = model('groupbuypricerange');
         $groupbuypricerange_list = $groupbuypricerange_model->getGroupbuypricerangeList();
         View::assign('groupbuypricerange_list', $groupbuypricerange_list);
@@ -295,9 +290,13 @@ class Groupbuy extends AdminControl {
     /**
      * 添加抢购价格区间页面
      */
-    public function price_add() {
+    public function price_add()
+    {
         $price_info = [
-            'gprange_id' => '', 'gprange_name' => '', 'gprange_start' => '', 'gprange_end' => '',
+            'gprange_id' => '',
+            'gprange_name' => '',
+            'gprange_start' => '',
+            'gprange_end' => '',
         ];
         View::assign('price_info', $price_info);
         $this->setAdminCurItem('price_add');
@@ -307,8 +306,8 @@ class Groupbuy extends AdminControl {
     /**
      * 编辑抢购价格区间页面
      */
-    public function price_edit() {
-
+    public function price_edit()
+    {
         $gprange_id = intval(input('param.gprange_id'));
         if (empty($gprange_id)) {
             $this->error(lang('param_error'), '');
@@ -329,8 +328,8 @@ class Groupbuy extends AdminControl {
     /**
      * 保存添加的抢购价格区间
      */
-    public function price_save() {
-
+    public function price_save()
+    {
         $gprange_id = intval(input('post.gprange_id'));
         $param = array();
         $param['gprange_name'] = trim(input('post.gprange_name'));
@@ -358,7 +357,7 @@ class Groupbuy extends AdminControl {
                 $this->log(lang('groupbuy_price_range_edit_success') . '[' . input('post.gprange_name') . ']', null);
                 dsLayerOpenSuccess(lang('groupbuy_price_range_edit_success'));
             } else {
-//                $this->error(lang('groupbuy_price_range_edit_fail'), (string)url('Groupbuy/price_list'));
+                //                $this->error(lang('groupbuy_price_range_edit_fail'), (string)url('Groupbuy/price_list'));
                 $this->error(lang('groupbuy_price_range_edit_fail'));
             }
         }
@@ -367,17 +366,16 @@ class Groupbuy extends AdminControl {
     /**
      * 删除抢购价格区间
      */
-    public function price_drop() {
-        
-        
+    public function price_drop()
+    {
         $gprange_id = input('param.gprange_id');
         $gprange_id_array = ds_delete_param($gprange_id);
         if ($gprange_id_array === FALSE) {
             $this->error(lang('param_error'));
         }
-        
+
         $condition = array();
-        $condition[]=array('gprange_id','in',$gprange_id_array);
+        $condition[] = array('gprange_id', 'in', $gprange_id_array);
         $groupbuypricerange_model = model('groupbuypricerange');
         if ($groupbuypricerange_model->delGroupbuypricerange($condition)) {
             dkcache('groupbuy_price');
@@ -390,8 +388,9 @@ class Groupbuy extends AdminControl {
 
     /**
      * 设置
-     * */
-    public function groupbuy_setting() {
+     */
+    public function groupbuy_setting()
+    {
         if (!(request()->isPost())) {
             $setting = rkcache('config', true);
             View::assign('setting', $setting);
@@ -424,17 +423,18 @@ class Groupbuy extends AdminControl {
     /**
      * 幻灯片设置
      */
-    public function slider() {
+    public function slider()
+    {
         $config_model = model('config');
         if (request()->isPost()) {
             $update = array();
             $fprefix = 'home/groupbuy/slider';
             if (!empty($_FILES['live_pic1']['name'])) {
-                $res=ds_upload_pic($fprefix,'live_pic1');
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $res = ds_upload_pic($fprefix, 'live_pic1');
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $update['live_pic1'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
             }
@@ -444,11 +444,11 @@ class Groupbuy extends AdminControl {
             }
 
             if (!empty($_FILES['live_pic2']['name'])) {
-                $res=ds_upload_pic($fprefix,'live_pic2');
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $res = ds_upload_pic($fprefix, 'live_pic2');
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $update['live_pic2'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
             }
@@ -458,11 +458,11 @@ class Groupbuy extends AdminControl {
             }
 
             if (!empty($_FILES['live_pic3']['name'])) {
-                $res=ds_upload_pic($fprefix,'live_pic3');
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $res = ds_upload_pic($fprefix, 'live_pic3');
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $update['live_pic3'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
             }
@@ -472,11 +472,11 @@ class Groupbuy extends AdminControl {
             }
 
             if (!empty($_FILES['live_pic4']['name'])) {
-                $res=ds_upload_pic($fprefix,'live_pic4');
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $res = ds_upload_pic($fprefix, 'live_pic4');
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $update['live_pic4'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
             }
@@ -489,19 +489,19 @@ class Groupbuy extends AdminControl {
             $result = $config_model->editConfig($update);
             if ($result) {
                 if ($list_setting['live_pic1'] != '' && isset($update['live_pic1'])) {
-                    ds_del_pic($fprefix,$list_setting['live_pic1']);
+                    ds_del_pic($fprefix, $list_setting['live_pic1']);
                 }
 
                 if ($list_setting['live_pic2'] != '' && isset($update['live_pic2'])) {
-                    ds_del_pic($fprefix,$list_setting['live_pic2']);
+                    ds_del_pic($fprefix, $list_setting['live_pic2']);
                 }
 
                 if ($list_setting['live_pic3'] != '' && isset($update['live_pic3'])) {
-                    ds_del_pic($fprefix,$list_setting['live_pic3']);
+                    ds_del_pic($fprefix, $list_setting['live_pic3']);
                 }
 
                 if ($list_setting['live_pic4'] != '' && isset($update['live_pic4'])) {
-                    ds_del_pic($fprefix,$list_setting['live_pic4']);
+                    ds_del_pic($fprefix, $list_setting['live_pic4']);
                 }
                 $this->log('修改抢购幻灯片设置', 1);
                 $this->success(lang('ds_common_op_succ'));
@@ -509,8 +509,6 @@ class Groupbuy extends AdminControl {
                 $this->error(lang('ds_common_op_fail'));
             }
         } else {
-
-
             $list_setting = rkcache('config', true);
             View::assign('list_setting', $list_setting);
             $this->setAdminCurItem('slider');
@@ -521,7 +519,8 @@ class Groupbuy extends AdminControl {
     /**
      * 幻灯片清空
      */
-    public function slider_clear() {
+    public function slider_clear()
+    {
         $config_model = model('config');
         $update = array();
         $update['live_pic1'] = '';
@@ -544,35 +543,36 @@ class Groupbuy extends AdminControl {
 
     /**
      * 页面内导航菜单
-     *
-     * @param string $menu_key 当前导航的menu_key
-     * @param array $array 附加菜单
-     * @return
      */
-    protected function getAdminItemList() {
-
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'index', 
+                'name' => 'index',
                 'text' => lang('ds_groupbuy'),
                 'url' => (string)url('Groupbuy/index')
-            ), array(
-                'name' => 'groupbuy_quota', 
-                'text' => lang('groupbuy_quota'), 
+            ),
+            array(
+                'name' => 'groupbuy_quota',
+                'text' => lang('groupbuy_quota'),
                 'url' => (string)url('Groupbuy/groupbuy_quota')
-            ), array(
+            ),
+            array(
                 'name' => 'class_list',
                 'text' => lang('groupbuy_class_list'),
                 'url' => (string)url('Groupbuy/class_list')
-            ), array(
-                'name' => 'price_list', 
+            ),
+            array(
+                'name' => 'price_list',
                 'text' => lang('groupbuy_price_list'),
                 'url' => (string)url('Groupbuy/price_list')
-            ), array(
+            ),
+            array(
                 'name' => 'groupbuy_setting',
                 'text' => lang('ds_set'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Groupbuy/groupbuy_setting')."','".lang('ds_set')."')"
-            ), array(
+                'url' => "javascript:dsLayerOpen('" . (string)url('Groupbuy/groupbuy_setting') . "','" . lang('ds_set') . "')"
+            ),
+            array(
                 'name' => 'slider',
                 'text' => lang('groupbuy_slider'),
                 'url' => (string)url('Groupbuy/slider')
@@ -580,5 +580,4 @@ class Groupbuy extends AdminControl {
         );
         return $menu_array;
     }
-
 }

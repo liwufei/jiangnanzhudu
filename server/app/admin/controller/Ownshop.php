@@ -1,45 +1,39 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Ownshop extends AdminControl {
-    
-    public function initialize() {
+
+class Ownshop extends AdminControl
+{
+
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/ownshop.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/ownshop.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $condition = array();
-        $condition[]=array('is_platform_store' ,'=', 1);
-        
+        $condition[] = array('is_platform_store', '=', 1);
+
         $store_name = trim(input('get.store_name'));
         if (strlen($store_name) > 0) {
-            $condition[]=array('store_name','like', "%$store_name%");
+            $condition[] = array('store_name', 'like', "%$store_name%");
             View::assign('store_name', $store_name);
         }
         $ownshop_model = model('store');
-        $storeList = $ownshop_model->getStoreList($condition,10);
+        $storeList = $ownshop_model->getStoreList($condition, 10);
         View::assign('store_list', $storeList);
         View::assign('show_page', $ownshop_model->page_info->render());
         $this->setAdminCurItem('index');
         return View::fetch('ownshop_list');
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             return View::fetch('ownshop_add');
         } else {
@@ -56,7 +50,6 @@ class Ownshop extends AdminControl {
 
             if (!$this->checkMemberName($member_name))
                 $this->error(lang('member_name_remote'));
-
 
             try {
                 $memberId = model('member')->addMember(array(
@@ -117,8 +110,8 @@ class Ownshop extends AdminControl {
             // 删除自营店id缓存
             model('store')->dropCachedOwnShopIds();
 
-            $this->log(lang('add_ownshop').": {$saveArray['store_name']}");
-            dsLayerOpenSuccess(lang('ds_common_op_succ'),(string)url('Ownshop/index'));
+            $this->log(lang('add_ownshop') . ": {$saveArray['store_name']}");
+            dsLayerOpenSuccess(lang('ds_common_op_succ'), (string)url('Ownshop/index'));
         }
     }
 
@@ -149,7 +142,8 @@ class Ownshop extends AdminControl {
     }
      */
 
-    public function edit() {
+    public function edit()
+    {
         $store_model = model('store');
         $store_id = intval(input('param.id'));
         $storeArray = $store_model->getStoreInfoByID($store_id);
@@ -168,7 +162,7 @@ class Ownshop extends AdminControl {
 
             View::assign('class_list', $parent_list);
             return View::fetch('ownshop_edit');
-        }else {
+        } else {
 
             $saveArray = array();
             $saveArray['storeclass_id'] = intval(input('post.storeclass_id'));
@@ -179,26 +173,27 @@ class Ownshop extends AdminControl {
 
             $goods_model = model('goods');
             $condition = array();
-            $condition[] = array('store_id','=',$store_id);
+            $condition[] = array('store_id', '=', $store_id);
             $goods_model->editProducesOffline($condition);
             $store_model->editStore($saveArray, $condition);
-            if($storeArray['store_name']!=$saveArray['store_name']){
+            if ($storeArray['store_name'] != $saveArray['store_name']) {
                 $goods_model = model('goods');
-                $goods_model->editGoodsCommon(array('store_name'=>$saveArray['store_name']), array('store_id'=>$store_id));
-                $goods_model->editGoods(array('store_name'=>$saveArray['store_name']), array('store_id'=>$store_id));
+                $goods_model->editGoodsCommon(array('store_name' => $saveArray['store_name']), array('store_id' => $store_id));
+                $goods_model->editGoods(array('store_name' => $saveArray['store_name']), array('store_id' => $store_id));
             }
             // 删除自营店id缓存
             model('store')->dropCachedOwnShopIds();
 
-            $this->log(lang('edit_ownshop').": {$saveArray['store_name']}");
-            dsLayerOpenSuccess(lang('ds_common_op_succ'),(string)url('Ownshop/index'));
+            $this->log(lang('edit_ownshop') . ": {$saveArray['store_name']}");
+            dsLayerOpenSuccess(lang('ds_common_op_succ'), (string)url('Ownshop/index'));
         }
     }
 
     /**
      * 编辑保存注册信息
      */
-    public function storejoinin_edit() {
+    public function storejoinin_edit()
+    {
         if (request()->isPost()) {
             $member_id = input('post.member_id');
             if ($member_id <= 0) {
@@ -221,7 +216,6 @@ class Ownshop extends AdminControl {
             if (!empty($_FILES['business_licence_number_electronic']['name'])) {
                 $param['business_licence_number_electronic'] = $this->upload_image('business_licence_number_electronic');
             }
-
 
             $param['bank_account_name'] = input('post.bank_account_name');
             $param['bank_account_number'] = input('post.bank_account_number');
@@ -250,7 +244,7 @@ class Ownshop extends AdminControl {
             } else {
                 $this->error(lang('ds_common_op_fail'));
             }
-        }else{
+        } else {
             $store_model = model('store');
             $store_id = intval(input('param.id'));
             $storeArray = $store_model->getStoreInfoByID($store_id);
@@ -260,16 +254,19 @@ class Ownshop extends AdminControl {
             return View::fetch('storejoinin_edit');
         }
     }
-    public function check_seller_name() {
+
+    public function check_seller_name()
+    {
         $seller_name = input('get.seller_name');
         echo json_encode($this->checkSellerName($seller_name));
         exit;
     }
 
-    private function checkSellerName($sellerName) {
+    private function checkSellerName($sellerName)
+    {
         // 判断store_joinin是否存在记录
         $count = (int) model('storejoinin')->getStorejoininCount(array(
-                    'seller_name' => $sellerName,
+            'seller_name' => $sellerName,
         ));
         if ($count > 0) {
             return FALSE;
@@ -283,35 +280,37 @@ class Ownshop extends AdminControl {
         return TRUE;
     }
 
-    public function check_member_name() {
+    public function check_member_name()
+    {
         $member_name = input('get.member_name');
         echo json_encode($this->checkMemberName($member_name));
         exit;
     }
 
-    private function checkMemberName($member_name) {
+    private function checkMemberName($member_name)
+    {
         // 判断store_joinin是否存在记录
         $count = (int) model('storejoinin')->getStorejoininCount(array(
-                    'member_name' => $member_name,
+            'member_name' => $member_name,
         ));
         if ($count > 0)
             return false;
 
         return !model('member')->getMemberCount(array(
-                    'member_name' => $member_name,
+            'member_name' => $member_name,
         ));
     }
 
-    private function upload_image($file) {
-    
+    private function upload_image($file)
+    {
         //上传文件保存路径
         $pic_name = '';
-    
+
         if (!empty($_FILES[$file]['name'])) {
             //设置特殊图片名称
             $member_id = input('post.member_id');
             $file_name = $member_id . '_' . date('YmdHis') . rand(10000, 99999) . '.png';
-    
+
             $res = ds_upload_pic('home' . DIRECTORY_SEPARATOR . 'store_joinin', $file, $file_name);
             if ($res['code']) {
                 $pic_name = $res['data']['file_name'];
@@ -321,8 +320,9 @@ class Ownshop extends AdminControl {
         }
         return $pic_name;
     }
-    
-    public function bind_class() {
+
+    public function bind_class()
+    {
         $store_id = intval(input('param.id'));
 
         $store_model = model('store');
@@ -356,7 +356,8 @@ class Ownshop extends AdminControl {
     /**
      * 添加经营类目
      */
-    public function bind_class_add() {
+    public function bind_class_add()
+    {
         $store_id = intval(input('post.store_id'));
         $commis_rate = intval(input('post.commis_rate'));
         if ($commis_rate < 0 || $commis_rate > 100) {
@@ -426,7 +427,8 @@ class Ownshop extends AdminControl {
         }
     }
 
-    private function _add_bind_class($param) {
+    private function _add_bind_class($param)
+    {
         $storebindclass_model = model('storebindclass');
         // 检查类目是否已经存在
         $store_bind_class_info = $storebindclass_model->getStorebindclassInfo($param);
@@ -438,14 +440,15 @@ class Ownshop extends AdminControl {
     /**
      * 删除经营类目
      */
-    public function bind_class_del() {
+    public function bind_class_del()
+    {
         $bid = input('param.bid');
         $bid_array = ds_delete_param($bid);
         if ($bid_array == FALSE) {
             ds_json_encode('10001', lang('param_error'));
         }
         $storebindclass_model = model('storebindclass');
-        
+
         foreach ($bid_array as $key => $bid) {
             $store_bind_class_info = $storebindclass_model->getStorebindclassInfo(array('storebindclass_id' => $bid));
             if (empty($store_bind_class_info)) {
@@ -474,11 +477,10 @@ class Ownshop extends AdminControl {
             $this->log('删除自营店铺经营类目，类目编号:' . $bid . ',店铺编号:' . $store_bind_class_info['store_id']);
         }
         ds_json_encode('10000', lang('ds_common_del_succ'));
-        
     }
 
-
-    public function bind_class_update() {
+    public function bind_class_update()
+    {
         $bid = intval(input('param.id'));
         if ($bid <= 0) {
             echo json_encode(array('result' => FALSE, 'message' => lang('param_error')));
@@ -510,17 +512,18 @@ class Ownshop extends AdminControl {
     /**
      * 验证店铺名称是否存在
      */
-    public function ckeck_store_name() {
+    public function ckeck_store_name()
+    {
         $store_name = trim(input('get.store_name'));
         if (empty($store_name)) {
             echo 'false';
             exit;
         }
         $where = array();
-        $where[]=array('store_name','=',$store_name);
+        $where[] = array('store_name', '=', $store_name);
         $store_id = input('get.store_id');
         if (isset($store_id)) {
-            $where[]=array('store_id','<>', $store_id);
+            $where[] = array('store_id', '<>', $store_id);
         }
         $store_info = model('store')->getStoreInfo($where);
         if (!empty($store_info['store_name'])) {
@@ -530,7 +533,8 @@ class Ownshop extends AdminControl {
         }
     }
     //ajax操作
-    public function ajax() {
+    public function ajax()
+    {
         $store_model = model('store');
         switch (input('param.branch')) {
             /**
@@ -538,28 +542,31 @@ class Ownshop extends AdminControl {
              */
             case 'store_sort':
                 $id = intval(input('param.id'));
-                $result = $store_model->editStore(array('store_sort'=>trim(input('param.value'))), array('store_id' => $id));
-                if($result){
-                    $this->log(lang('ds_edit').'自营店铺' . '[' . $id . ']', 1);
+                $result = $store_model->editStore(array('store_sort' => trim(input('param.value'))), array('store_id' => $id));
+                if ($result) {
+                    $this->log(lang('ds_edit') . '自营店铺' . '[' . $id . ']', 1);
                 }
                 echo 'true';
                 exit;
                 break;
         }
     }
+    
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
                 'text' => lang('ds_manage'),
                 'url' => (string)url('Ownshop/index')
-            ), array(
+            ),
+            array(
                 'name' => 'add',
                 'text' => lang('ds_new'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Ownshop/add')."','".lang('ds_new')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Ownshop/add') . "','" . lang('ds_new') . "')"
             )
         );
         if (request()->action() == 'bind_class') {
@@ -571,5 +578,4 @@ class Ownshop extends AdminControl {
         }
         return $menu_array;
     }
-
 }

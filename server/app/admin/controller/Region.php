@@ -1,36 +1,27 @@
 <?php
 
-/**
- * 地区设置
- */
-
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Db;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 地区设置
  */
-class Region extends AdminControl {
+class Region extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/region.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/region.lang.php');
         $this->_area_model = model('Area');
         define('MAX_LAYER', 3);
     }
 
-    public function index() {
+    public function index()
+    {
         $region_list = $this->_area_model->getAreaChild(0);
         /* 先根排序 */
         foreach ($region_list as $key => $val) {
@@ -44,7 +35,8 @@ class Region extends AdminControl {
         return View::fetch();
     }
 
-    function ajax_cate() {
+    function ajax_cate()
+    {
         $cate_id = input('param.id');
         if (empty($cate_id)) {
             return;
@@ -71,15 +63,15 @@ class Region extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $condition = array();
+
         switch (input('param.branch')) {
-            /**
-             * 更新地区
-             */
+            // 更新地区
             case 'area_name':
                 $area_model = model('area');
-                $condition[] = array('area_id','=',intval(input('get.id')));
+                $condition[] = array('area_id', '=', intval(input('get.id')));
                 $update_array = array();
                 $update_array['area_name'] = addslashes(trim(input('get.value')));
                 $area_model->editArea($update_array, $condition);
@@ -89,14 +81,11 @@ class Region extends AdminControl {
                 \areacache::updateAreaArrayJs();
                 echo 'true';
                 exit;
-
                 break;
-            /**
-             * 地区 排序 显示 设置
-             */
+            // 地区 排序 显示 设置
             case 'area_sort':
                 $area_model = model('area');
-                $condition[] = array('area_id','=',intval(input('get.id')));
+                $condition[] = array('area_id', '=', intval(input('get.id')));
                 $update_array = array();
                 $update_array['area_sort'] = trim(input('get.value'));
                 $area_model->editArea($update_array, $condition);
@@ -109,11 +98,11 @@ class Region extends AdminControl {
 
             case 'area_region':
                 $area_model = model('area');
-                $condition[] = array('area_id','=',intval(input('get.id')));
+                $condition[] = array('area_id', '=', intval(input('get.id')));
                 $update_array = array();
                 $update_array['area_region'] = trim(input('get.value'));
                 $area_model->editArea($update_array, $condition);
-                
+
                 \areacache::deleteCacheFile();
                 \areacache::updateAreaArrayJs();
                 \areacache::updateAreaPhp();
@@ -122,7 +111,7 @@ class Region extends AdminControl {
 
             case 'area_index_show':
                 $area_model = model('area');
-                $condition[] = array('area_id','=',intval(input('get.id')));
+                $condition[] = array('area_id', '=', intval(input('get.id')));
                 $update_array = array();
                 $update_array[input('get.column')] = input('get.value');
                 $area_model->editArea($update_array, $condition);
@@ -133,14 +122,13 @@ class Region extends AdminControl {
                 echo 'true';
                 exit;
                 break;
-            /**
-             * 添加、修改操作中 检测类别名称是否有重复
-             */
+
+            // 添加、修改操作中 检测类别名称是否有重复
             case 'check_class_name':
                 $area_model = model('area');
-                $condition[]=array('area_name','=',trim(input('param.area_name')));
-                $condition[]=array('area_parent_id','=',intval(input('param.area_parent_id')));
-                $condition[]=array('area_id','<>', intval(input('param.area_id')));
+                $condition[] = array('area_name', '=', trim(input('param.area_name')));
+                $condition[] = array('area_parent_id', '=', intval(input('param.area_parent_id')));
+                $condition[] = array('area_id', '<>', intval(input('param.area_id')));
                 $class_list = $area_model->getAreaList($condition);
                 if (empty($class_list)) {
                     echo 'true';
@@ -153,7 +141,8 @@ class Region extends AdminControl {
         }
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             $area = array(
                 'area_parent_id' => input('param.area_id'),
@@ -162,23 +151,23 @@ class Region extends AdminControl {
             View::assign('parents', $this->_get_options());
             return View::fetch('form');
         } else {
-            $area_mod=model('area');
+            $area_mod = model('area');
             $area_parent_id = intval(input('param.area_parentid'));
-            
-            $area = $area_mod->getAreaInfo(array('area_id'=>$area_parent_id));
-            $area_deep=intval($area['area_deep'])+1;
-            if($area_deep>MAX_LAYER){
+
+            $area = $area_mod->getAreaInfo(array('area_id' => $area_parent_id));
+            $area_deep = intval($area['area_deep']) + 1;
+            if ($area_deep > MAX_LAYER) {
                 $this->error(sprintf(lang('area_deep_error'), MAX_LAYER));
             }
             $data = array(
                 'area_name' => input('post.area_name'),
-		'area_initial' => input('post.area_initial'),
+                'area_initial' => input('post.area_initial'),
                 'area_region' => input('post.area_region'),
                 'area_parent_id' => $area_parent_id,
-                'area_deep'=> $area_deep,
+                'area_deep' => $area_deep,
                 'area_sort' => input('post.area_sort'),
             );
-            
+
             $this->validate($data, 'app\common\validate\Region.add');
 
             $result = $area_mod->addArea($data);
@@ -193,18 +182,19 @@ class Region extends AdminControl {
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         $area_id = intval(input('param.area_id'));
-        if ($area_id<=0) {
+        if ($area_id <= 0) {
             $this->error(lang('param_error'));
         }
-        $area_mod=model('area');
-        $area = $area_mod->getAreaInfo(array('area_id'=>$area_id));
-        if(!$area){
+        $area_mod = model('area');
+        $area = $area_mod->getAreaInfo(array('area_id' => $area_id));
+        if (!$area) {
             $this->error(lang('area_empty'));
         }
         if (!request()->isPost()) {
-            
+
             View::assign('area', $area);
             View::assign('parents', $this->_get_options());
             return View::fetch('form');
@@ -212,17 +202,17 @@ class Region extends AdminControl {
             $area_parent_id = intval(input('param.area_parentid'));
             $data = array(
                 'area_name' => input('post.area_name'),
-		'area_initial' => input('post.area_initial'),
+                'area_initial' => input('post.area_initial'),
                 'area_region' => input('post.area_region'),
                 'area_parent_id' => $area_parent_id,
                 'area_sort' => input('post.area_sort'),
             );
             $this->validate($data, 'app\common\validate\Region.edit');
 
-            if($data['area_parent_id']==$area_id){
+            if ($data['area_parent_id'] == $area_id) {
                 $this->error(lang('area_parent_error'));
             }
-            
+
             Db::startTrans();
             try {
 
@@ -275,18 +265,19 @@ class Region extends AdminControl {
         }
     }
 
-    public function drop() {
+    public function drop()
+    {
         $area_id = input('param.area_id');
         if (empty($area_id)) {
             $this->error(lang('param_error'));
         }
         //判断此分类下是否有子分类
-        $area_mod=model('area');
-        $result = $area_mod->getAreaInfo(array('area_parent_id'=>$area_id));
+        $area_mod = model('area');
+        $result = $area_mod->getAreaInfo(array('area_parent_id' => $area_id));
         if ($result) {
             ds_json_encode(10001, lang('please_drop_child_region'));
         }
-        $result = $area_mod->delArea(array('area_id'=>$area_id));
+        $result = $area_mod->delArea(array('area_id' => $area_id));
         if ($result) {
             \areacache::deleteCacheFile();
             \areacache::updateAreaArrayJs();
@@ -297,9 +288,9 @@ class Region extends AdminControl {
         }
     }
 
-    /* 取得可以作为上级的地区分类数据 */
-
-    function _get_options($except = NULL) {
+    // 取得可以作为上级的地区分类数据
+    function _get_options($except = NULL)
+    {
         $area = $this->_area_model->getAreaChild();
         if (empty($area)) {
             return;
@@ -309,7 +300,8 @@ class Region extends AdminControl {
         return $tree->getOptions(MAX_LAYER - 1, 0, $except);
     }
 
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'index',
@@ -322,7 +314,7 @@ class Region extends AdminControl {
             $menu_array[] = array(
                 'name' => 'add',
                 'text' => lang('ds_new'),
-                'url' =>"javascript:dsLayerOpen('".(string)url('Region/add')."','".lang('ds_add')."')",
+                'url' => "javascript:dsLayerOpen('" . (string)url('Region/add') . "','" . lang('ds_add') . "')",
             );
         }
         if (request()->action() == 'edit') {
@@ -334,5 +326,4 @@ class Region extends AdminControl {
         }
         return $menu_array;
     }
-
 }

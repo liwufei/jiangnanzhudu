@@ -1,36 +1,27 @@
 <?php
 
-/**
- * 店铺分类
- */
-
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 店铺分类
  */
-class Storeclass extends AdminControl {
+class Storeclass extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/storeclass.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/storeclass.lang.php');
     }
 
     /**
      * 店铺分类
      */
-    public function store_class() {
+    public function store_class()
+    {
         $storeclass_model = model('storeclass');
 
         $store_class_list = $storeclass_model->getStoreclassList(array(), 20);
@@ -43,7 +34,8 @@ class Storeclass extends AdminControl {
     /**
      * 商品分类添加
      */
-    public function store_class_add() {
+    public function store_class_add()
+    {
         $storeclass_model = model('storeclass');
 
         if (!request()->isPost()) {
@@ -54,13 +46,13 @@ class Storeclass extends AdminControl {
             $insert_array['storeclass_name'] = input('post.storeclass_name');
             $insert_array['storeclass_bail'] = intval(input('post.storeclass_bail'));
             $insert_array['storeclass_sort'] = intval(input('post.storeclass_sort'));
-            
+
             $this->validate($insert_array, 'app\common\validate\Storeclass.add');
 
             $result = $storeclass_model->addStoreclass($insert_array);
             if ($result) {
                 $this->log(lang('ds_add') . lang('store_class') . '[' . input('post.storeclass_name') . ']', 1);
-                dsLayerOpenSuccess(lang('ds_common_save_succ'),(string)url('Storeclass/store_class'));
+                dsLayerOpenSuccess(lang('ds_common_save_succ'), (string)url('Storeclass/store_class'));
             } else {
                 $this->error(lang('ds_common_save_fail'));
             }
@@ -70,7 +62,8 @@ class Storeclass extends AdminControl {
     /**
      * 编辑
      */
-    public function store_class_edit() {
+    public function store_class_edit()
+    {
         $storeclass_model = model('storeclass');
 
         if (!request()->isPost()) {
@@ -87,13 +80,13 @@ class Storeclass extends AdminControl {
             $update_array['storeclass_name'] = input('post.storeclass_name');
             $update_array['storeclass_bail'] = intval(input('post.storeclass_bail'));
             $update_array['storeclass_sort'] = intval(input('post.storeclass_sort'));
-            
+
             $this->validate($update_array, 'app\common\validate\Storeclass.edit');
 
             $result = $storeclass_model->editStoreclass($update_array, array('storeclass_id' => intval(input('param.storeclass_id'))));
-            if ($result>=0) {
+            if ($result >= 0) {
                 $this->log(lang('ds_edit') . lang('store_class') . '[' . input('post.storeclass_name') . ']', 1);
-                dsLayerOpenSuccess(lang('ds_common_save_succ'),(string)url('Storeclass/store_class'));
+                dsLayerOpenSuccess(lang('ds_common_save_succ'), (string)url('Storeclass/store_class'));
             } else {
                 $this->error(lang('ds_common_save_fail'));
             }
@@ -103,7 +96,8 @@ class Storeclass extends AdminControl {
     /**
      * 删除分类
      */
-    public function store_class_del() {
+    public function store_class_del()
+    {
         $storeclass_model = model('storeclass');
         $storeclass_id = input('param.storeclass_id');
         $storeclass_id_array = ds_delete_param($storeclass_id);
@@ -111,7 +105,7 @@ class Storeclass extends AdminControl {
             ds_json_encode('10001', lang('param_error'));
         }
         $condition = array();
-        $condition[]=array('storeclass_id','in', $storeclass_id_array);
+        $condition[] = array('storeclass_id', 'in', $storeclass_id_array);
 
         $result = $storeclass_model->delStoreclass($condition);
         if ($result) {
@@ -123,7 +117,8 @@ class Storeclass extends AdminControl {
     /**
      * ajax操作
      */
-    public function ajax() {
+    public function ajax()
+    {
         $storeclass_model = model('storeclass');
         $update_array = array();
         $branch = input('param.branch');
@@ -131,8 +126,8 @@ class Storeclass extends AdminControl {
             //分类：验证是否有重复的名称
             case 'store_class_name':
                 $condition = array();
-                $condition[]=array('storeclass_name','=',input('get.value'));
-                $condition[]=array('storeclass_id','<>', intval(input('param.id')));
+                $condition[] = array('storeclass_name', '=', input('get.value'));
+                $condition[] = array('storeclass_id', '<>', intval(input('param.id')));
                 $class_list = $storeclass_model->getStoreclassList($condition);
                 if (empty($class_list)) {
                     $update_array['storeclass_name'] = input('get.value');
@@ -150,7 +145,7 @@ class Storeclass extends AdminControl {
                 break;
             //分类：添加、修改操作中 检测类别名称是否有重复
             case 'check_class_name':
-                $condition[]=array('storeclass_name','=',input('get.storeclass_name'));
+                $condition[] = array('storeclass_name', '=', input('get.storeclass_name'));
                 $class_list = $storeclass_model->getStoreclassList($condition);
                 $return = empty($class_list) ? 'true' : 'false';
                 break;
@@ -161,7 +156,8 @@ class Storeclass extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'store_class',
@@ -171,12 +167,9 @@ class Storeclass extends AdminControl {
             array(
                 'name' => 'store_class_add',
                 'text' => lang('ds_new'),
-                'url' => "javascript:dsLayerOpen('".(string)url('Storeclass/store_class_add')."','".lang('ds_new')."')"
+                'url' => "javascript:dsLayerOpen('" . (string)url('Storeclass/store_class_add') . "','" . lang('ds_new') . "')"
             )
         );
         return $menu_array;
     }
-
 }
-
-?>

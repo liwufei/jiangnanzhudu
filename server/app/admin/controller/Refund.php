@@ -1,28 +1,21 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 退款
  */
 class Refund extends AdminControl
 {
     const EXPORT_SIZE = 1000;
+
     public function initialize()
     {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/refund.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/refund.lang.php');
         //向模板页面输出退款退货状态
         $this->getRefundStateArray();
     }
@@ -30,17 +23,23 @@ class Refund extends AdminControl
     function getRefundStateArray($type = 'all')
     {
         $state_array = array(
-            '1' => lang('refund_state_confirm'), '2' => lang('refund_state_yes'), '3' => lang('refund_state_no')
+            '1' => lang('refund_state_confirm'),
+            '2' => lang('refund_state_yes'),
+            '3' => lang('refund_state_no')
         ); //卖家处理状态:1为待审核,2为同意,3为不同意
         View::assign('state_array', $state_array);
 
         $admin_array = array(
-            '1' => lang('admin_state_1'), '2' => lang('admin_state_2'), '3' => lang('admin_state_3'), '4' => lang('refund_state_no')
+            '1' => lang('admin_state_1'),
+            '2' => lang('admin_state_2'),
+            '3' => lang('admin_state_3'),
+            '4' => lang('refund_state_no')
         ); //确认状态:1为买家或卖家处理中,2为待平台管理员处理,3为退款退货已完成
         View::assign('admin_array', $admin_array);
 
         $state_data = array(
-            'seller' => $state_array, 'admin' => $admin_array
+            'seller' => $state_array,
+            'admin' => $admin_array
         );
         if ($type == 'all') {
             return $state_data; //返回所有
@@ -55,27 +54,27 @@ class Refund extends AdminControl
     {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[]=array('refund_type','=',1);
-        $condition[]=array('refund_state','=','2'); //状态:1为处理中,2为待管理员处理,3为已完成
+        $condition[] = array('refund_type', '=', 1);
+        $condition[] = array('refund_state', '=', '2'); //状态:1为处理中,2为待管理员处理,3为已完成
 
         $keyword_type = array('order_sn', 'refund_sn', 'store_name', 'buyer_name', 'goods_name');
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $key . '%');
+            $condition[] = array($type, 'like', '%' . $key . '%');
         }
         $add_time_from = input('get.add_time_from');
         $add_time_to = input('get.add_time_to');
         if (trim($add_time_from) != '') {
             $add_time_from = strtotime(trim($add_time_from));
             if ($add_time_from !== false) {
-                $condition[] = array('add_time','>=', $add_time_from);
+                $condition[] = array('add_time', '>=', $add_time_from);
             }
         }
         if (trim($add_time_to) != '') {
-            $add_time_to = strtotime(trim($add_time_to))+86399;
+            $add_time_to = strtotime(trim($add_time_to)) + 86399;
             if ($add_time_to !== false) {
-                $condition[] = array('add_time','<=', $add_time_to);
+                $condition[] = array('add_time', '<=', $add_time_to);
             }
         }
         $refund_list = $refundreturn_model->getRefundList($condition, 10);
@@ -92,25 +91,25 @@ class Refund extends AdminControl
     {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[]=array('refund_type','=',1);
+        $condition[] = array('refund_type', '=', 1);
         $keyword_type = array('order_sn', 'refund_sn', 'store_name', 'buyer_name', 'goods_name');
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $key . '%');
+            $condition[] = array($type, 'like', '%' . $key . '%');
         }
         $add_time_from = input('get.add_time_from');
         $add_time_to = input('get.add_time_to');
         if (trim($add_time_from) != '') {
             $add_time_from = strtotime(trim($add_time_from));
             if ($add_time_from !== false) {
-                $condition[] = array('add_time','>=', $add_time_from);
+                $condition[] = array('add_time', '>=', $add_time_from);
             }
         }
         if (trim($add_time_to) != '') {
-            $add_time_to = strtotime(trim($add_time_to))+86399;
+            $add_time_to = strtotime(trim($add_time_to)) + 86399;
             if ($add_time_to !== false) {
-                $condition[] = array('add_time','<=', $add_time_to);
+                $condition[] = array('add_time', '<=', $add_time_to);
             }
         }
         $refund_list = $refundreturn_model->getRefundList($condition, 10);
@@ -122,27 +121,26 @@ class Refund extends AdminControl
 
     /**
      * 退款处理页
-     *
      */
     public function edit()
     {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[] = array('refund_id','=',intval(input('param.refund_id')));
-        $refund_list = $refundreturn_model->getRefundList(array_merge($condition,array(array('refund_type','=',1))));
+        $condition[] = array('refund_id', '=', intval(input('param.refund_id')));
+        $refund_list = $refundreturn_model->getRefundList(array_merge($condition, array(array('refund_type', '=', 1))));
         $refund = $refund_list[0];
         //查询交易凭证
         $order_model = model('order');
         $order = $order_model->getOrderInfo(array('order_id' => $refund['order_id']));
         if (request()->isPost()) {
-            if(!in_array(input('post.refund_state'),[3,4])){
-              $this->error(lang('refund_state_null'));
+            if (!in_array(input('post.refund_state'), [3, 4])) {
+                $this->error(lang('refund_state_null'));
             }
             $check = request()->checkToken('__token__');
-            if(false === $check) {
+            if (false === $check) {
                 $this->error('invalid token');
             }
-            if ($refund['refund_state'] != '2') {//检查状态,防止页面刷新不及时造成数据错误
+            if ($refund['refund_state'] != '2') { //检查状态,防止页面刷新不及时造成数据错误
                 $this->error(lang('ds_common_save_fail'));
             }
             $order_id = $refund['order_id'];
@@ -151,10 +149,10 @@ class Refund extends AdminControl
             $refund_array['refund_state'] = '4'; //状态:1为处理中,2为待管理员处理,3为已完成
             $refund_array['admin_message'] = input('post.admin_message');
             if (input('post.refund_state') == '3') {
-                $trade_no=input('param.trade_no');
-                if($trade_no && $trade_no!=$order['trade_no']){
-                    $order_model->editOrder(array('trade_no'=>$trade_no), array(
-                    'order_id' => $order['order_id']
+                $trade_no = input('param.trade_no');
+                if ($trade_no && $trade_no != $order['trade_no']) {
+                    $order_model->editOrder(array('trade_no' => $trade_no), array(
+                        'order_id' => $order['order_id']
                     ));
                     //添加订单日志
                     $data = array();
@@ -167,21 +165,21 @@ class Refund extends AdminControl
                 }
                 $refund_array['refund_state'] = '3';
                 $res = $refundreturn_model->editOrderRefund($refund);
-                $state=$res['code'];
-                if(!$state){
+                $state = $res['code'];
+                if (!$state) {
                     $this->error($res['msg']);
                 }
-            }else{
-                if($refund['order_lock'] == '2'){
+            } else {
+                if ($refund['order_lock'] == '2') {
                     $state = $refundreturn_model->editOrderUnlock($order_id); //订单解锁
-                }else{
+                } else {
                     $state = true;
                 }
                 //自提点订单解锁
-                $chain_order_model=model('chain_order');
+                $chain_order_model = model('chain_order');
                 $chain_order_model->editChainOrderUnlock($order_id);
             }
-            
+
             if ($state) {
                 $refundreturn_model->editRefundreturn($condition, $refund_array);
 
@@ -196,13 +194,13 @@ class Refund extends AdminControl
                 $param['ten_param'] = array(
                     $refund['refund_sn']
                 );
-                $param['param'] = array_merge($param['ali_param'],array(
-                    'refund_url' => HOME_SITE_URL .'/memberrefund/view?refund_id='.$refund['refund_id'],
+                $param['param'] = array_merge($param['ali_param'], array(
+                    'refund_url' => HOME_SITE_URL . '/memberrefund/view?refund_id=' . $refund['refund_id'],
                 ));
                 //微信模板消息
                 $param['weixin_param'] = array(
-                    'url' => config('ds_config.h5_site_url').'/pages/member/refund/RefundView?refund_id='.$refund['refund_id'],
-                    'data'=>array(
+                    'url' => config('ds_config.h5_site_url') . '/pages/member/refund/RefundView?refund_id=' . $refund['refund_id'],
+                    'data' => array(
                         "keyword1" => array(
                             "value" => $refund['order_sn'],
                             "color" => "#333"
@@ -213,12 +211,11 @@ class Refund extends AdminControl
                         )
                     ),
                 );
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendMemberMsg','cron_value'=>serialize($param)));
-              
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendMemberMsg', 'cron_value' => serialize($param)));
+
                 $this->log('退款确认，退款编号' . $refund['refund_sn']);
                 dsLayerOpenSuccess(lang('ds_common_save_succ'));
-            }
-            else {
+            } else {
                 $this->error(lang('ds_common_save_fail'));
             }
         }
@@ -234,14 +231,13 @@ class Refund extends AdminControl
 
     /**
      * 退款记录查看页
-     *
      */
     public function view()
     {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[]=array('refund_id','=',intval(input('param.refund_id')));
-        $condition[] =array('refund_type','=',1);
+        $condition[] = array('refund_id', '=', intval(input('param.refund_id')));
+        $condition[] = array('refund_type', '=', 1);
         $refund_list = $refundreturn_model->getRefundList($condition);
         $refund = $refund_list[0];
         View::assign('refund', $refund);
@@ -284,8 +280,7 @@ class Refund extends AdminControl
             if ($state) {
                 $this->log('新增退款退货原因，编号' . $state);
                 dsLayerOpenSuccess(lang('ds_common_save_succ'));
-            }
-            else {
+            } else {
                 $this->error(lang('ds_common_save_fail'));
             }
         }
@@ -294,14 +289,13 @@ class Refund extends AdminControl
 
     /**
      * 编辑退款退货原因
-     *
      */
     public function edit_reason()
     {
         $refundreturn_model = model('refundreturn');
         $condition = array();
         $reason_id = intval(input('param.reason_id'));
-        $condition[] = array('reason_id','=',$reason_id);
+        $condition[] = array('reason_id', '=', $reason_id);
         $reason_list = $refundreturn_model->getReasonList($condition);
         $reason = $reason_list[$reason_id];
         if (request()->post()) {
@@ -313,8 +307,7 @@ class Refund extends AdminControl
             if ($state) {
                 $this->log('编辑退款退货原因，编号' . $reason_id);
                 dsLayerOpenSuccess(lang('ds_common_save_succ'));
-            }
-            else {
+            } else {
                 $this->error(lang('ds_common_save_fail'));
             }
         }
@@ -324,33 +317,30 @@ class Refund extends AdminControl
 
     /**
      * 删除退款退货原因
-     *
      */
     public function del_reason()
     {
         $refundreturn_model = model('refundreturn');
         $reason_id = input('param.reason_id');
         $reason_id_array = ds_delete_param($reason_id);
-        if($reason_id_array === FALSE){
+        if ($reason_id_array === FALSE) {
             ds_json_encode('10001', lang('param_error'));
         }
-        $condition = array(array('reason_id','in', $reason_id_array));
+        $condition = array(array('reason_id', 'in', $reason_id_array));
         $state = $refundreturn_model->delReason($condition);
         if ($state) {
             $this->log('删除退款退货原因，编号' . $reason_id);
             ds_json_encode('10000', lang('ds_common_del_succ'));
-        }
-        else {
+        } else {
             ds_json_encode('10001', lang('ds_common_del_fail'));
         }
     }
 
     /**
      * 导出
-     *
      */
-    public function export_step1() {
-
+    public function export_step1()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
 
@@ -358,20 +348,20 @@ class Refund extends AdminControl
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $key . '%');
+            $condition[] = array($type, 'like', '%' . $key . '%');
         }
         $add_time_from = input('get.add_time_from');
         $add_time_to = input('get.add_time_to');
         if (trim($add_time_from) != '') {
             $add_time_from = strtotime(trim($add_time_from));
             if ($add_time_from !== false) {
-                $condition[] = array('add_time','>=', $add_time_from);
+                $condition[] = array('add_time', '>=', $add_time_from);
             }
         }
         if (trim($add_time_to) != '') {
-            $add_time_to = strtotime(trim($add_time_to))+86399;
+            $add_time_to = strtotime(trim($add_time_to)) + 86399;
             if ($add_time_to !== false) {
-                $condition[] = array('add_time','<=', $add_time_to);
+                $condition[] = array('add_time', '<=', $add_time_to);
             }
         }
         if (!is_numeric(input('param.page'))) {
@@ -387,24 +377,23 @@ class Refund extends AdminControl
                 View::assign('export_list', $export_list);
                 return View::fetch('/public/excel');
             } else { //如果数量小，直接下载
-                $data = $refundreturn_model->getRefundList(array_merge($condition,array(array('refund_type','=',1))), '', '*', 'refund_id desc', self::EXPORT_SIZE);
+                $data = $refundreturn_model->getRefundList(array_merge($condition, array(array('refund_type', '=', 1))), '', '*', 'refund_id desc', self::EXPORT_SIZE);
                 $this->createExcel($data);
             }
         } else { //下载
             $limit1 = (input('param.page') - 1) * self::EXPORT_SIZE;
             $limit2 = self::EXPORT_SIZE;
-            $data = $refundreturn_model->getRefundList(array_merge($condition,array(array('refund_type','=',1))), $limit2, '*', 'refund_id desc');
+            $data = $refundreturn_model->getRefundList(array_merge($condition, array(array('refund_type', '=', 1))), $limit2, '*', 'refund_id desc');
             $this->createExcel($data);
         }
     }
 
     /**
      * 生成excel
-     *
-     * @param array $data
      */
-    private function createExcel($data = array()) {
-        Lang::load(base_path() .'admin/lang/'.config('lang.default_lang').'/export.lang.php');
+    private function createExcel($data = array())
+    {
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/export.lang.php');
         $excel_obj = new \excel\Excel();
         $excel_data = array();
         //设置样式
@@ -442,20 +431,28 @@ class Refund extends AdminControl
     {
         $menu_array = array(
             array(
-                'name' => 'refund_manage', 'text' => lang('admin_state_2'), 'url' => (string)url('Refund/refund_manage')
-            ), array(
-                'name' => 'refund_all', 'text' => lang('refund_all'), 'url' => (string)url('Refund/refund_all')
-            ), array(
-                'name' => 'reason', 'text' => lang('refund_return_reason'), 'url' => (string)url('Refund/reason')
+                'name' => 'refund_manage',
+                'text' => lang('admin_state_2'),
+                'url' => (string)url('Refund/refund_manage')
+            ),
+            array(
+                'name' => 'refund_all',
+                'text' => lang('refund_all'),
+                'url' => (string)url('Refund/refund_all')
+            ),
+            array(
+                'name' => 'reason',
+                'text' => lang('refund_return_reason'),
+                'url' => (string)url('Refund/reason')
             ),
         );
         if (request()->action() == 'reason') {
             $menu_array[] = [
-                'name' => 'add_reason', 'text' => lang('add_reason'), 'url' =>"javascript:dsLayerOpen('".(string)url('Refund/add_reason')."','".lang('add_reason')."')"
+                'name' => 'add_reason',
+                'text' => lang('add_reason'),
+                'url' => "javascript:dsLayerOpen('" . (string)url('Refund/add_reason') . "','" . lang('add_reason') . "')"
             ];
         }
         return $menu_array;
     }
 }
-
-?>

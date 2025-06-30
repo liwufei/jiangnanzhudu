@@ -1,33 +1,29 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 use AlibabaCloud\Client\AlibabaCloud;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Message extends AdminControl {
 
-    public function initialize() {
+/**
+ * 短信
+ */
+class Message extends AdminControl
+{
+
+    public function initialize()
+    {
         parent::initialize();
 
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/message.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/message.lang.php');
     }
 
     /**
      * 邮件设置
      */
-    public function email() {
+    public function email()
+    {
         $config_model = model('config');
         if (!(request()->isPost())) {
             $list_config = rkcache('config', true);
@@ -58,15 +54,16 @@ class Message extends AdminControl {
     /**
      * 短信平台设置
      */
-    public function mobile() {
+    public function mobile()
+    {
         $config_model = model('config');
         if (!(request()->isPost())) {
             $list_config = rkcache('config', true);
 
             $smscf_num = '';
-            if($list_config['smscf_type']=='wj' && !empty($list_config['smscf_wj_username'])&&!empty($list_config['smscf_wj_key'])){
+            if ($list_config['smscf_type'] == 'wj' && !empty($list_config['smscf_wj_username']) && !empty($list_config['smscf_wj_key'])) {
                 //如果配置了信息,可以查看具体可用短信条数
-                $smscf_num = http_request('http://www.smschinese.cn/web_api/SMS/?Action=SMS_Num&Uid='.$list_config['smscf_wj_username'].'&Key='.$list_config['smscf_wj_key'],'get');
+                $smscf_num = http_request('http://www.smschinese.cn/web_api/SMS/?Action=SMS_Num&Uid=' . $list_config['smscf_wj_username'] . '&Key=' . $list_config['smscf_wj_key'], 'get');
             }
             View::assign('smscf_num', $smscf_num);
             View::assign('list_config', $list_config);
@@ -109,32 +106,30 @@ class Message extends AdminControl {
         if (trim($add_time_from) != '') {
             $add_time_from = strtotime(trim($add_time_from));
             if ($add_time_from !== false) {
-                $condition[]=array('smslog_smstime','>=', $add_time_from);
+                $condition[] = array('smslog_smstime', '>=', $add_time_from);
             }
         }
         if (trim($add_time_to) != '') {
             $add_time_to = strtotime(trim($add_time_to));
             if ($add_time_to !== false) {
-                $add_time_to=$add_time_to+86399;
-                $condition[]=array('smslog_smstime','<=', $add_time_to);
+                $add_time_to = $add_time_to + 86399;
+                $condition[] = array('smslog_smstime', '<=', $add_time_to);
             }
         }
         $member_name = input('get.member_name');
-        if(!empty($member_name)){
-            $condition[]=array('member_name','like',"%" . $member_name . "%");
+        if (!empty($member_name)) {
+            $condition[] = array('member_name', 'like', "%" . $member_name . "%");
         }
         $smslog_phone = input('get.smslog_phone');
-        if(!empty($smslog_phone)){
-            $condition[]=array('smslog_phone','like',"%" . $smslog_phone . "%");
+        if (!empty($smslog_phone)) {
+            $condition[] = array('smslog_phone', 'like', "%" . $smslog_phone . "%");
         }
         View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
-        $condition[]=array('smslog_state','<>',0);
+        $condition[] = array('smslog_state', '<>', 0);
         $smslog_model = model('smslog');
-        $smslog_list = $smslog_model->getSmsList($condition,10);
+        $smslog_list = $smslog_model->getSmsList($condition, 10);
         View::assign('smslog_list', $smslog_list);
         View::assign('show_page', $smslog_model->page_info->render());
-
-        
 
         $this->setAdminCurItem('smslog');
         return View::fetch();
@@ -143,7 +138,8 @@ class Message extends AdminControl {
     /**
      * 短信日志删除
      */
-    public function smslog_del(){
+    public function smslog_del()
+    {
         $smslog_id = input('param.smslog_id');
         $smslog_id_array = ds_delete_param($smslog_id);
         if ($smslog_id_array === FALSE) {
@@ -151,7 +147,7 @@ class Message extends AdminControl {
         }
         $condition = array();
         $smslog_model = model('smslog');
-        $condition[]=array('smslog_id','in', $smslog_id_array);
+        $condition[] = array('smslog_id', 'in', $smslog_id_array);
         $smslog_list = $smslog_model->delSmsLog($condition);
         if ($smslog_list) {
             ds_json_encode(10000, lang('ds_common_del_succ'));
@@ -163,7 +159,8 @@ class Message extends AdminControl {
     /**
      * 邮件模板列表
      */
-    public function email_tpl() {
+    public function email_tpl()
+    {
         $mailtemplates_model = model('mailtemplates');
         $templates_list = $mailtemplates_model->getTplList();
         View::assign('templates_list', $templates_list);
@@ -174,7 +171,8 @@ class Message extends AdminControl {
     /**
      * 编辑邮件模板
      */
-    public function email_tpl_edit() {
+    public function email_tpl_edit()
+    {
         $mailtemplates_model = model('mailtemplates');
         if (!request()->isPost()) {
             if (!(input('param.code'))) {
@@ -185,35 +183,31 @@ class Message extends AdminControl {
             $this->setAdminCurItem('email_tpl_edit');
             return View::fetch('email_tpl_edit');
         } else {
-             
-                $update_array = array();
-                $update_array['mailmt_code'] = input('post.code');
-                $update_array['mailmt_title'] = input('post.title');
-                $update_array['mailmt_content'] = input('post.content');
-                
-                $this->validate($update_array, 'app\common\validate\Mailtemplates.email_tpl_edit');
-                
-                $result = $mailtemplates_model->editTpl($update_array, array('mailmt_code' => input('post.code')));
-                if ($result>=0) {
-                    $this->log(lang('ds_edit') . lang('email_tpl'), 1);
-                    $this->success(lang('mailtemplates_edit_succ'), 'admin/Message/email_tpl');
-                } else {
-                    $this->log(lang('ds_edit') . lang('email_tpl'), 0);
-                    $this->error(lang('mailtemplates_edit_fail'));
-                }
+
+            $update_array = array();
+            $update_array['mailmt_code'] = input('post.code');
+            $update_array['mailmt_title'] = input('post.title');
+            $update_array['mailmt_content'] = input('post.content');
+
+            $this->validate($update_array, 'app\common\validate\Mailtemplates.email_tpl_edit');
+
+            $result = $mailtemplates_model->editTpl($update_array, array('mailmt_code' => input('post.code')));
+            if ($result >= 0) {
+                $this->log(lang('ds_edit') . lang('email_tpl'), 1);
+                $this->success(lang('mailtemplates_edit_succ'), 'admin/Message/email_tpl');
+            } else {
+                $this->log(lang('ds_edit') . lang('email_tpl'), 0);
+                $this->error(lang('mailtemplates_edit_fail'));
+            }
         }
     }
 
     /**
      * 测试邮件发送
-     *
-     * @param
-     * @return
      */
-    public function email_testing() {
-        /**
-         * 读取语言包
-         */
+    public function email_testing()
+    {
+        // 读取语言包
         $email_host = trim(input('post.email_host'));
         $email_secure = trim(input('post.email_secure'));
         $email_port = trim(input('post.email_port'));
@@ -233,7 +227,7 @@ class Message extends AdminControl {
         $email_id = '';
         $email_pass = '';
         $email_test = '181814630@qq.com';
-        */
+         */
 
         $site_name = config('ds_config.site_name');
         $message = '<p>' . lang('this_is_to') . "<a href='" . $site_url . "' target='_blank'>" . $site_name . '</a>' . lang('test_email_set_ok') . '</p>';
@@ -249,20 +243,20 @@ class Message extends AdminControl {
         $result = $obj_email->send($email_test, $subject, $message);
         if ($result === false) {
             $data['msg'] = lang('test_email_send_fail');
-            echo json_encode($data);exit;
+            echo json_encode($data);
+            exit;
         } else {
             $data['msg'] = lang('test_email_send_ok');
-            echo json_encode($data);exit;
+            echo json_encode($data);
+            exit;
         }
     }
 
     /**
      * 测试手机短信发送
-     *
-     * @param
-     * @return
      */
-    public function mobile_testing() {
+    public function mobile_testing()
+    {
         $mobile = input('param.mobile_test');
         $content = input('param.mobile_test_content');
         $smscf_type = input('param.smscf_type');
@@ -341,14 +335,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板编辑
      */
-    public function seller_tpl_edit() {
+    public function seller_tpl_edit()
+    {
         if (!request()->isPost()) {
             $code = trim(input('param.code'));
             if (empty($code)) {
                 $this->error(lang('param_error'));
             }
             $condition = array();
-            $condition[] = array('storemt_code','=',$code);
+            $condition[] = array('storemt_code', '=', $code);
             $smtpl_info = model('storemsgtpl')->getStoremsgtplInfo($condition);
             View::assign('smtpl_info', $smtpl_info);
             $this->setAdminCurItem('seller_tpl_edit');
@@ -379,14 +374,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新站内信
      */
-    private function seller_tpl_update_message() {
+    private function seller_tpl_update_message()
+    {
         $message_content = trim(input('post.message_content'));
         if (empty($message_content)) {
             $this->error(lang('param_error'));
         }
         // 条件
         $condition = array();
-        $condition[] = array('storemt_code','=',trim(input('post.code')));
+        $condition[] = array('storemt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['storemt_message_switch'] = intval(input('post.message_switch'));
@@ -399,14 +395,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新短消息
      */
-    private function seller_tpl_update_short() {
+    private function seller_tpl_update_short()
+    {
         $short_content = trim(input('post.short_content'));
         if (empty($short_content)) {
             $this->error(lang('param_error'));
         }
         // 条件
         $condition = array();
-        $condition[] = array('storemt_code','=',trim(input('post.code')));
+        $condition[] = array('storemt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['storemt_short_switch'] = intval(input('post.short_switch'));
@@ -419,7 +416,8 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新邮件
      */
-    private function seller_tpl_update_mail() {
+    private function seller_tpl_update_mail()
+    {
         $mail_subject = trim(input('post.mail_subject'));
         $mail_content = trim(input('post.mail_content'));
         if ((empty($mail_subject) || empty($mail_content))) {
@@ -427,7 +425,7 @@ class Message extends AdminControl {
         }
         // 条件
         $condition = array();
-        $condition[] = array('storemt_code','=',trim(input('post.code')));
+        $condition[] = array('storemt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['storemt_mail_switch'] = intval(input('post.mail_switch'));
@@ -441,14 +439,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新邮件
      */
-    private function seller_tpl_update_weixin() {
+    private function seller_tpl_update_weixin()
+    {
         $weixin_code = trim(input('post.weixin_code'));
         if (empty($weixin_code)) {
             $this->error(lang('param_error'));
         }
         // 条件
         $condition = array();
-        $condition[] = array('storemt_code','=',trim(input('post.code')));
+        $condition[] = array('storemt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['storemt_weixin_switch'] = intval(input('post.weixin_switch'));
@@ -458,8 +457,9 @@ class Message extends AdminControl {
         $this->seller_tpl_update_showmessage($result);
     }
 
-    private function seller_tpl_update_showmessage($result) {
-        if ($result>=0) {
+    private function seller_tpl_update_showmessage($result)
+    {
+        if ($result >= 0) {
             $this->success(lang('ds_common_op_succ'), (string)url('Message/seller_tpl'));
         } else {
             $this->error(lang('ds_common_op_fail'));
@@ -469,7 +469,8 @@ class Message extends AdminControl {
     /**
      * 用户消息模板
      */
-    public function member_tpl() {
+    public function member_tpl()
+    {
         $mmtpl_list = model('membermsgtpl')->getMembermsgtplList(array());
         View::assign('mmtpl_list', $mmtpl_list);
         $this->setAdminCurItem('member_tpl');
@@ -479,14 +480,15 @@ class Message extends AdminControl {
     /**
      * 用户消息模板编辑
      */
-    public function member_tpl_edit() {
+    public function member_tpl_edit()
+    {
         if (!request()->isPost()) {
             $code = trim(input('param.code'));
             if (empty($code)) {
                 $this->error(lang('param_error'));
             }
             $condition = array();
-            $condition[] = array('membermt_code','=',$code);
+            $condition[] = array('membermt_code', '=', $code);
             $mmtpl_info = model('membermsgtpl')->getMembermsgtplInfo($condition);
             View::assign('mmtpl_info', $mmtpl_info);
             $this->setAdminCurItem('member_tpl_edit');
@@ -514,23 +516,25 @@ class Message extends AdminControl {
         }
     }
 
-    public function ali_tpl(){
+    public function ali_tpl()
+    {
         $mstpl_list = model('storemsgtpl')->getStoremsgtplList(array());
         $mmtpl_list = model('membermsgtpl')->getMembermsgtplList(array());
         $mailtemplates_model = model('mailtemplates');
-        $templates_list = $mailtemplates_model->getTplList(array(array('mailmt_code','<>','bind_email')));
-        View::assign('mstpl_list',$mstpl_list);
-        View::assign('mmtpl_list',$mmtpl_list);
-        View::assign('templates_list',$templates_list);
+        $templates_list = $mailtemplates_model->getTplList(array(array('mailmt_code', '<>', 'bind_email')));
+        View::assign('mstpl_list', $mstpl_list);
+        View::assign('mmtpl_list', $mmtpl_list);
+        View::assign('templates_list', $templates_list);
         $this->setAdminCurItem('message_ali_tpl');
         return View::fetch();
     }
 
-    public function ali_tpl_edit(){
-        $type=input('param.type');
-        $code=input('param.code');
-        $name=input('param.name');
-        switch($type){
+    public function ali_tpl_edit()
+    {
+        $type = input('param.type');
+        $code = input('param.code');
+        $name = input('param.name');
+        switch ($type) {
             case 'membermsgtpl':
                 if (!model('membermsgtpl')->editMembermsgtpl(array('membermt_code' => $name), array('ali_template_code' => $code))) {
                     ds_json_encode(10001, lang('ds_common_op_fail'));
@@ -557,40 +561,41 @@ class Message extends AdminControl {
         }
     }
 
-    public function ali_tpl_query() {
+    public function ali_tpl_query()
+    {
         $code = input('param.code');
 
         AlibabaCloud::accessKeyClient(config('ds_config.smscf_ali_id'), config('ds_config.smscf_ali_secret'))
-                ->regionId('cn-hangzhou')
-                ->asDefaultClient();
+            ->regionId('cn-hangzhou')
+            ->asDefaultClient();
 
         try {
             $result = AlibabaCloud::rpc()
-                    ->product('Dysmsapi')
-                    // ->scheme('https') // https | http
-                    ->version('2017-05-25')
-                    ->action('QuerySmsTemplate')
-                    ->method('POST')
-                    ->host('dysmsapi.aliyuncs.com')
-                    ->options([
-                        'query' => [
-                            'RegionId' => "cn-hangzhou",
-                            'TemplateCode' => $code,
-                        ],
-                    ])
-                    ->request();
-
+                ->product('Dysmsapi')
+                // ->scheme('https') // https | http
+                ->version('2017-05-25')
+                ->action('QuerySmsTemplate')
+                ->method('POST')
+                ->host('dysmsapi.aliyuncs.com')
+                ->options([
+                    'query' => [
+                        'RegionId' => "cn-hangzhou",
+                        'TemplateCode' => $code,
+                    ],
+                ])
+                ->request();
         } catch (\Exception $e) {
             ds_json_encode(10001, $e->getErrorMessage());
         }
-        ds_json_encode(10000, lang('ds_common_op_succ'),$result->toArray());
+        ds_json_encode(10000, lang('ds_common_op_succ'), $result->toArray());
     }
 
-    public function ten_tpl() {
+    public function ten_tpl()
+    {
         $mstpl_list = model('storemsgtpl')->getStoremsgtplList(array());
         $mmtpl_list = model('membermsgtpl')->getMembermsgtplList(array());
         $mailtemplates_model = model('mailtemplates');
-        $templates_list = $mailtemplates_model->getTplList(array(array('mailmt_code','<>', 'bind_email')));
+        $templates_list = $mailtemplates_model->getTplList(array(array('mailmt_code', '<>', 'bind_email')));
         View::assign('mstpl_list', $mstpl_list);
         View::assign('mmtpl_list', $mmtpl_list);
         View::assign('templates_list', $templates_list);
@@ -598,7 +603,8 @@ class Message extends AdminControl {
         return View::fetch();
     }
 
-    public function ten_tpl_edit() {
+    public function ten_tpl_edit()
+    {
         $type = input('param.type');
         $code = input('param.code');
         $name = input('param.name');
@@ -630,20 +636,21 @@ class Message extends AdminControl {
     }
 
     //接口
-    public function ten_tpl_query() {
+    public function ten_tpl_query()
+    {
         $code = input('param.code');
         // 短信应用 SDK AppID
         $appid = config('ds_config.smscf_ten_id'); // SDK AppID 以1400开头
         // 短信应用 SDK AppKey
         $appkey = config('ds_config.smscf_ten_secret');
         try {
-            $cred = new Credential($appid,$appkey);
+            $cred = new Credential($appid, $appkey);
             $httpProfile = new HttpProfile();
             $httpProfile->setEndpoint("sms.tencentcloudapi.com");
 
             $clientProfile = new ClientProfile();
             $clientProfile->setHttpProfile($httpProfile);
-            $client = new SmsClient($cred,"",$clientProfile);
+            $client = new SmsClient($cred, "", $clientProfile);
 
             $req = new DescribeSmsTemplateListRequest();
 
@@ -662,14 +669,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新站内信
      */
-    private function member_tpl_update_message() {
+    private function member_tpl_update_message()
+    {
         $message_content = trim(input('post.message_content'));
         if (empty($message_content)) {
             $this->error(lang('param_error'));
         }
         // 条件
         $condition = array();
-        $condition[] = array('membermt_code','=',trim(input('post.code')));
+        $condition[] = array('membermt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['membermt_message_switch'] = intval(input('post.message_switch'));
@@ -681,14 +689,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新短消息
      */
-    private function member_tpl_update_short() {
+    private function member_tpl_update_short()
+    {
         $short_content = trim(input('post.short_content'));
         if (empty($short_content)) {
             $this->error(lang('param_error'));
         }
         // 条件
         $condition = array();
-        $condition[] = array('membermt_code','=',trim(input('post.code')));
+        $condition[] = array('membermt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['membermt_short_switch'] = intval(input('post.short_switch'));
@@ -700,14 +709,15 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新邮件
      */
-    private function member_tpl_update_weixin() {
+    private function member_tpl_update_weixin()
+    {
         $weixin_code = trim(input('post.weixin_code'));
         if (empty($weixin_code)) {
             $this->error(lang('param_error'));
         }
         // 条件
         $condition = array();
-        $condition[] = array('membermt_code','=',trim(input('post.code')));
+        $condition[] = array('membermt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['membermt_weixin_switch'] = intval(input('post.weixin_switch'));
@@ -719,7 +729,8 @@ class Message extends AdminControl {
     /**
      * 商家消息模板更新邮件
      */
-    private function member_tpl_update_mail() {
+    private function member_tpl_update_mail()
+    {
         $mail_subject = trim(input('post.mail_subject'));
         $mail_content = trim(input('post.mail_content'));
         if ((empty($mail_subject) || empty($mail_content))) {
@@ -727,7 +738,7 @@ class Message extends AdminControl {
         }
         // 条件
         $condition = array();
-        $condition[] = array('membermt_code','=',trim(input('post.code')));
+        $condition[] = array('membermt_code', '=', trim(input('post.code')));
         // 数据
         $update = array();
         $update['membermt_mail_switch'] = intval(input('post.mail_switch'));
@@ -737,8 +748,9 @@ class Message extends AdminControl {
         $this->member_tpl_update_showmessage($result);
     }
 
-    private function member_tpl_update_showmessage($result) {
-        if ($result>=0) {
+    private function member_tpl_update_showmessage($result)
+    {
+        if ($result >= 0) {
             $this->success(lang('ds_common_op_succ'), (string)url('Message/member_tpl'));
         } else {
             $this->error(lang('ds_common_op_fail'));
@@ -748,7 +760,8 @@ class Message extends AdminControl {
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'email',
@@ -781,7 +794,7 @@ class Message extends AdminControl {
                 'url' => (string)url('Message/email_tpl')
             ),
         );
-        if(config('ds_config.smscf_type')=='ali'){
+        if (config('ds_config.smscf_type') == 'ali') {
             array_splice($menu_array, 2, 0, array(array(
                 'name' => 'message_ali_tpl',
                 'text' => lang('message_ali_tpl'),
@@ -817,10 +830,6 @@ class Message extends AdminControl {
             );
         }
 
-
         return $menu_array;
     }
-
 }
-
-?>

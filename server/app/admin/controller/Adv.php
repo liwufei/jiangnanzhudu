@@ -1,70 +1,60 @@
 <?php
 
 namespace app\admin\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
 /**
- * ============================================================================
- * 通用功能 广告管理
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
+ * 广告管理
  */
-class Adv extends AdminControl {
+class Adv extends AdminControl
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'admin/lang/'.config('lang.default_lang').'/adv.lang.php');
+        Lang::load(base_path() . 'admin/lang/' . config('lang.default_lang') . '/adv.lang.php');
     }
 
     /**
-     *
      * 管理广告位
      */
-    public function ap_manage() {
+    public function ap_manage()
+    {
         $adv_model = model('adv');
-        /**
-         * 多选删除广告位
-         */
+        // 多选删除广告位
         if (!request()->isPost()) {
-            /**
-             * 显示广告位管理界面
-             */
+            // 显示广告位管理界面
             $condition = array();
             $orderby = '';
             $search_name = trim(input('get.search_name'));
             if ($search_name != '') {
-                $condition[]=array('ap_name','like', "%" . $search_name . "%");
+                $condition[] = array('ap_name', 'like', "%" . $search_name . "%");
             }
             $ap_list = $adv_model->getAdvpositionList($condition, '10', $orderby);
             $adv_list = $adv_model->getAdvList();
             View::assign('ap_list', $ap_list);
             View::assign('adv_list', $adv_list);
             View::assign('showpage', $adv_model->page_info->render());
-            
+
             View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
-            
+
             $this->setAdminCurItem('ap_manage');
             return View::fetch('ap_manage');
         }
     }
 
     /**
-     *
      * 修改广告位
      */
-    public function ap_edit() {
+    public function ap_edit()
+    {
         $ap_id = intval(input('param.ap_id'));
         $adv_model = model('adv');
         if (!request()->isPost()) {
             $condition = array();
-            $condition[] = array('ap_id','=',$ap_id);
+            $condition[] = array('ap_id', '=', $ap_id);
             $ap = $adv_model->getOneAdvposition($condition);
             View::assign('ref_url', get_referer());
             View::assign('ap', $ap);
@@ -77,12 +67,12 @@ class Adv extends AdminControl {
             if (input('post.ap_isuse') != '') {
                 $param['ap_isuse'] = intval(input('post.ap_isuse'));
             }
-            
+
             $this->validate($param, 'app\common\validate\Adv.ap_edit');
 
-            $result = $adv_model->editAdvposition($ap_id,$param);
+            $result = $adv_model->editAdvposition($ap_id, $param);
 
-            if ($result>=0) {
+            if ($result >= 0) {
                 $this->log(lang('ap_change_succ') . '[' . input('post.ap_name') . ']', null);
                 dsLayerOpenSuccess(lang('ap_change_succ'));
             } else {
@@ -92,10 +82,10 @@ class Adv extends AdminControl {
     }
 
     /**
-     *
      * 新增广告位
      */
-    public function ap_add() {
+    public function ap_add()
+    {
         if (!request()->isPost()) {
             $ap['ap_isuse'] = 1;
             View::assign('ap', $ap);
@@ -110,27 +100,26 @@ class Adv extends AdminControl {
             $insert_array['ap_height'] = intval(input('post.ap_height'));
 
             $this->validate($insert_array, 'app\common\validate\Adv.ap_add');
-            
+
             $result = $adv_model->addAdvposition($insert_array);
 
             if ($result) {
                 $this->log(lang('ap_add_succ') . '[' . input('post.ap_name') . ']', null);
                 dsLayerOpenSuccess(lang('ap_add_succ'));
-           } else {
+            } else {
                 $this->error(lang('ap_add_fail'));
             }
         }
     }
 
     /**
-     *
      * 删除广告位
      */
-    public function ap_del() {
+    public function ap_del()
+    {
         $adv_model = model('adv');
-        /**
-         * 删除一个广告
-         */
+ 
+        // 删除一个广告
         $ap_id = intval(input('param.ap_id'));
         $result = $adv_model->delAdvposition($ap_id);
 
@@ -143,24 +132,24 @@ class Adv extends AdminControl {
     }
 
     /**
-     *
      * 广告管理
      */
-    public function adv() {
+    public function adv()
+    {
         $adv_model = model('adv');
 
         $ap_id = intval(input('param.ap_id'));
         if (!request()->isPost()) {
             $condition = array();
             if ($ap_id) {
-                 $condition[] = array('ap_id','=',$ap_id);
+                $condition[] = array('ap_id', '=', $ap_id);
             }
             $adv_info = $adv_model->getAdvList($condition, 20, '', '');
             View::assign('adv_info', $adv_info);
             $ap_list = $adv_model->getAdvpositionList();
             View::assign('ap_list', $ap_list);
             if ($ap_id) {
-                $ap_condition=array();
+                $ap_condition = array();
                 $ap_condition['ap_id'] = $ap_id;
                 $ap = $adv_model->getOneAdvposition($ap_condition);
                 View::assign('ap_name', $ap['ap_name']);
@@ -169,7 +158,7 @@ class Adv extends AdminControl {
             }
 
             View::assign('show_page', $adv_model->page_info->render());
-            
+
             View::assign('filtered', $condition ? 1 : 0); //是否有查询条件
             $this->setAdminCurItem('adv');
             return View::fetch('adv_index');
@@ -179,7 +168,8 @@ class Adv extends AdminControl {
     /**
      * 管理员添加广告
      */
-    public function adv_add() {
+    public function adv_add()
+    {
         $adv_model = model('adv');
         if (!request()->isPost()) {
 
@@ -204,19 +194,17 @@ class Adv extends AdminControl {
             $insert_array['adv_enddate'] = $this->getunixtime(input('post.adv_enddate'));
 
             $this->validate($insert_array, 'app\common\validate\Adv.adv_add');
-            
+
             //上传文件保存路径
             if (!empty($_FILES['adv_code']['name'])) {
-                $res=ds_upload_pic(ATTACH_ADV,'adv_code');
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $res = ds_upload_pic(ATTACH_ADV, 'adv_code');
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $insert_array['adv_code'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
-
             }
-
 
             //广告信息入库
             $result = $adv_model->addAdv($insert_array);
@@ -224,7 +212,7 @@ class Adv extends AdminControl {
             if ($result) {
                 $this->log(lang('adv_add_succ') . '[' . input('post.adv_name') . ']', null);
                 dsLayerOpenSuccess(lang('adv_add_succ'));
-//                $this->success(lang('adv_add_succ'), (string)url('Adv/adv', ['ap_id' => input('post.ap_id')]));
+                //                $this->success(lang('adv_add_succ'), (string)url('Adv/adv', ['ap_id' => input('post.ap_id')]));
             } else {
                 $this->error(lang('adv_add_fail'));
             }
@@ -232,15 +220,15 @@ class Adv extends AdminControl {
     }
 
     /**
-     *
      * 修改广告
      */
-    public function adv_edit() {
+    public function adv_edit()
+    {
         $adv_id = intval(input('param.adv_id'));
         $adv_model = model('adv');
         //获取指定广告
         $condition = array();
-        $condition[] = array('adv_id','=',$adv_id);
+        $condition[] = array('adv_id', '=', $adv_id);
         $adv = $adv_model->getOneAdv($condition);
         if (!request()->isPost()) {
             //获取广告列表
@@ -258,32 +246,30 @@ class Adv extends AdminControl {
             $param['adv_enabled'] = input('post.adv_enabled');
             $param['adv_startdate'] = $this->getunixtime(trim(input('post.adv_startdate')));
             $param['adv_enddate'] = $this->getunixtime(trim(input('post.adv_enddate')));
-            
+
             $this->validate($param, 'app\common\validate\Adv.adv_edit');
 
             if (!empty($_FILES['adv_code']['name'])) {
-		//上传文件保存路径
-                $res=ds_upload_pic(ATTACH_ADV,'adv_code');
-                if($res['code']){
+                //上传文件保存路径
+                $res = ds_upload_pic(ATTACH_ADV, 'adv_code');
+                if ($res['code']) {
                     //还需删除原来图片
                     if (!empty($adv['adv_code'])) {
-                        ds_del_pic(ATTACH_ADV,$adv['adv_code']);
+                        ds_del_pic(ATTACH_ADV, $adv['adv_code']);
                     }
-                    $file_name=$res['data']['file_name'];
+                    $file_name = $res['data']['file_name'];
                     $param['adv_code'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
-                
-
             }
 
-            $result = $adv_model->editAdv($adv_id,$param);
+            $result = $adv_model->editAdv($adv_id, $param);
 
-            if ($result>=0) {
+            if ($result >= 0) {
                 $this->log(lang('adv_change_succ') . '[' . input('post.ap_name') . ']', null);
                 dsLayerOpenSuccess(lang('adv_change_succ'));
-//               $this->success(lang('adv_change_succ'), input('post.ref_url'));
+                //               $this->success(lang('adv_change_succ'), input('post.ref_url'));
             } else {
                 $this->error(lang('adv_change_fail'));
             }
@@ -291,14 +277,11 @@ class Adv extends AdminControl {
     }
 
     /**
-     *
      * 删除广告
      */
-    public function adv_del() {
+    public function adv_del()
+    {
         $adv_model = model('adv');
-        /**
-         * 删除一个广告
-         */
         $adv_id = intval(input('param.adv_id'));
         $result = $adv_model->delAdv($adv_id);
 
@@ -311,16 +294,17 @@ class Adv extends AdminControl {
     }
 
     /**
-     *
      * 获取UNIX时间戳
      */
-    public function getunixtime($time) {
+    public function getunixtime($time)
+    {
         $array = explode("-", $time);
         $unix_time = mktime(0, 0, 0, $array[1], $array[2], $array[0]);
         return $unix_time;
     }
 
-    public function ajax() {
+    public function ajax()
+    {
         $adv_model = model('adv');
         switch (input('get.branch')) {
             case 'ap_branch':
@@ -328,7 +312,7 @@ class Adv extends AdminControl {
                 $value = trim(input('param.value'));
                 $ap_id = intval(input('param.id'));
                 $param[$column] = trim($value);
-                $result = $adv_model->editAdvposition($ap_id,$param);
+                $result = $adv_model->editAdvposition($ap_id, $param);
                 break;
             //ADV数据表更新
             case 'adv_branch':
@@ -336,17 +320,18 @@ class Adv extends AdminControl {
                 $value = trim(input('param.value'));
                 $adv_id = intval(input('param.id'));
                 $param[$column] = trim($value);
-                $result = $adv_model->editAdv($adv_id,$param);
+                $result = $adv_model->editAdv($adv_id, $param);
                 break;
         }
-        if($result>=0){
+        if ($result >= 0) {
             echo 'true';
-        }else{
+        } else {
             echo false;
         }
     }
 
-    function adv_template() {
+    function adv_template()
+    {
         $pages = $this->_get_editable_pages();
         View::assign('pages', $pages);
         $this->setAdminCurItem('adv_template');
@@ -354,18 +339,20 @@ class Adv extends AdminControl {
     }
 
     /**
-     *    获取可以编辑的页面列表
+     * 获取可以编辑的页面列表
      */
-    function _get_editable_pages() {
+    function _get_editable_pages()
+    {
         return array(
-            lang('homepage') => (string)url('home/Index/index',['edit_ad'=>1]),
+            lang('homepage') => (string)url('home/Index/index', ['edit_ad' => 1]),
         );
     }
 
     /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-    protected function getAdminItemList() {
+    protected function getAdminItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'ap_manage',
@@ -381,13 +368,9 @@ class Adv extends AdminControl {
         $menu_array[] = array(
             'name' => 'adv_add',
             'text' => lang('adv_add'),
-            'url' => "javascript:dsLayerOpen('".(string)url('Adv/adv_add', ['ap_id' => input('param.ap_id')])."','".lang('adv_add')."')"
+            'url' => "javascript:dsLayerOpen('" . (string)url('Adv/adv_add', ['ap_id' => input('param.ap_id')]) . "','" . lang('adv_add') . "')"
         );
-
 
         return $menu_array;
     }
-
 }
-
-?>
