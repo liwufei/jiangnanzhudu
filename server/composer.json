@@ -20,25 +20,25 @@
         }
     ],
     "require": {
-        "php": ">=8.0",
-        "topthink/framework": "^6.1.5",
-        "topthink/think-orm": "^2.0",
-        "topthink/think-filesystem": "^1.0",
-        "topthink/think-multi-app": "^1.0",
-        "topthink/think-view": "^1.0",
+        "php": ">=8.0.0",
+        "topthink/framework": "^8.1",
+        "topthink/think-orm": "^4.0",
+        "topthink/think-filesystem": "^3.0",
+        "topthink/think-multi-app": "^1.1",
+        "topthink/think-view": "^2.0",
         "topthink/think-captcha": "^3.0",
         "topthink/think-image": "^1.0",
-        "liliuwei/thinkphp-jump": "^1.5",
-        "aliyuncs/oss-sdk-php": "^2.6",
-        "phpmailer/phpmailer": "^6.8",
+        "liliuwei/thinkphp-jump": "^2.0",
+        "aliyuncs/oss-sdk-php": "^2.7",
+        "phpmailer/phpmailer": "^6.10",
         "alibabacloud/client": "^1.5",
-        "qcloudsms/qcloudsms_php": "^0.1.4",
-        "firebase/php-jwt": "^6.4",
-        "workerman/gatewayclient": "^3.0"
+        "qcloudsms/qcloudsms_php": "^0.1",
+        "firebase/php-jwt": "^6.11",
+        "workerman/gatewayclient": "^3.1"
     },
     "require-dev": {
-        "symfony/var-dumper": "^4.2",
-        "topthink/think-trace": "^1.0"
+        "symfony/var-dumper": "^7.3",
+        "topthink/think-trace": "^1.6"
     },
     "autoload": {
         "psr-4": {

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `activity` (
   `activity_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '活动排序',
   `activity_state` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '活动状态 0为关闭 1为开启',
   PRIMARY KEY (`activity_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活动表';
 
 
 
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `activitydetail` (
   PRIMARY KEY (`activitydetail_id`),
   KEY `activity_id` (`activity_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='活动详情表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='活动详情表';
 
 
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `address_latitude` varchar(20) DEFAULT '' COMMENT '纬度',
   PRIMARY KEY (`address_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='买家地址信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='买家地址信息表';
 
 
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `admin_is_super` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否超级管理员',
   `admin_gid` smallint(6) DEFAULT '0' COMMENT '权限组ID',
   PRIMARY KEY (`admin_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='管理员表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员表';
 
 
 
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `adminlog` (
   `adminlog_ip` char(15) NOT NULL COMMENT '管理员操作IP',
   `adminlog_url` varchar(50) NOT NULL DEFAULT '' COMMENT 'controller/action',
   PRIMARY KEY (`adminlog_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员操作日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='管理员操作日志';
 
 
 
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `adv` (
   `adv_bgcolor` varchar(50) DEFAULT NULL COMMENT '广告背景颜色',
   PRIMARY KEY (`adv_id`),
   KEY `ap_id` (`ap_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='广告表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='广告表';
 
 
 
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `advposition` (
   `ap_width` int(10) DEFAULT '0' COMMENT '广告位宽度',
   `ap_height` int(10) DEFAULT '0' COMMENT '广告位高度',
   PRIMARY KEY (`ap_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='广告位表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='广告位表';
 
 
 
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `albumclass` (
   `aclass_isdefault` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为默认相册,1代表默认',
   PRIMARY KEY (`aclass_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='相册表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='相册表';
 
 
 
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `albumpic` (
   PRIMARY KEY (`apic_id`),
   KEY `aclass_id` (`aclass_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='相册图片表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='相册图片表';
 
 
 
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `appadv` (
   `adv_enabled` tinyint(1) unsigned DEFAULT '1' COMMENT 'APP广告是否有效',
   PRIMARY KEY (`adv_id`),
   KEY `ap_id` (`ap_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='APP广告表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='APP广告表';
 
 
 
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS `appadvposition` (
   `ap_width` int(10) DEFAULT '0' COMMENT 'APP广告位宽度',
   `ap_height` int(10) DEFAULT '0' COMMENT 'APP广告位高度',
   PRIMARY KEY (`ap_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='APP广告位表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='APP广告位表';
 
 
 
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `area` (
   `area_initial` varchar(1) DEFAULT NULL COMMENT '品牌首字母',
   PRIMARY KEY (`area_id`),
   KEY `area_parent_id` (`area_parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='地区表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='地区表';
 
 
 
@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `arrivalnotice` (
   `arrivalnotice_time` int(10) DEFAULT '0' COMMENT '通知时间',
   PRIMARY KEY (`arrivalnotice_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品到货通知表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品到货通知表';
 
 
 
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `article` (
   `article_pic` varchar(255) NOT NULL DEFAULT '' COMMENT '文章主图',
   PRIMARY KEY (`article_id`),
   KEY `ac_id` (`ac_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='文章表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章表';
 
 
 
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `articleclass` (
   `ac_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '文章分类排序',
   PRIMARY KEY (`ac_id`),
   KEY `ac_parent_id` (`ac_parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='文章分类表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章分类表';
 
 
 
@@ -252,7 +252,7 @@ CREATE TABLE IF NOT EXISTS `attribute` (
   `attr_sort` tinyint(1) unsigned NOT NULL COMMENT '属性排序',
   PRIMARY KEY (`attr_id`),
   KEY `attr_id` (`attr_id`,`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品属性表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品属性表';
 
 
 
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `attributevalue` (
   PRIMARY KEY (`attrvalue_id`),
   KEY `attr_id` (`attr_id`),
   KEY `type_id` (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品属性值表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品属性值表';
 
 
 
@@ -288,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `bonus` (
   `bonus_endtime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '结束时间',
   `bonus_remark` varchar(255) NOT NULL DEFAULT '' COMMENT '红包备注',
   PRIMARY KEY (`bonus_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='吸粉红包表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='吸粉红包表';
 
 
 
@@ -303,7 +303,7 @@ CREATE TABLE IF NOT EXISTS `bonusreceive` (
   `bonusreceive_transformed` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否转入预存款',
   PRIMARY KEY (`bonusreceive_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='吸粉红包领取信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='吸粉红包领取信息表';
 
 
 
@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `brand` (
   PRIMARY KEY (`brand_id`),
   KEY `store_id` (`store_id`),
   KEY `gc_id` (`gc_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='品牌表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='品牌表';
 
 
 
@@ -341,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `bl_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '组合套装ID',
   PRIMARY KEY (`cart_id`),
   KEY `member_id` (`buyer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='购物车数据表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='购物车数据表';
 
 
 
@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `complain` (
   PRIMARY KEY (`complain_id`),
   KEY `accuser_id` (`accuser_id`),
   KEY `accused_id` (`accused_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='投诉表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='投诉表';
 
 
 
@@ -388,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `complainsubject` (
   `complainsubject_desc` varchar(100) NOT NULL COMMENT '投诉主题描述',
   `complainsubject_state` tinyint(4) NOT NULL COMMENT '投诉主题状态 1:有效 2:失效',
   PRIMARY KEY (`complainsubject_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='投诉主题表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='投诉主题表';
 
 
 
@@ -406,7 +406,7 @@ CREATE TABLE IF NOT EXISTS `complaintalk` (
   PRIMARY KEY (`talk_id`),
   KEY `complain_id` (`complain_id`),
   KEY `talk_member_id` (`talk_member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='投诉对话表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='投诉对话表';
 
 
 
@@ -417,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `value` text,
   `remark` varchar(100) DEFAULT '解释,备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='配置参数表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='配置参数表';
 
 
 
@@ -440,7 +440,7 @@ CREATE TABLE IF NOT EXISTS `consult` (
   KEY `goods_id` (`goods_id`),
   KEY `seller_id` (`store_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='产品咨询表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='产品咨询表';
 
 
 
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `consulttype` (
   `consulttype_introduce` text NOT NULL COMMENT '咨询类型详细介绍',
   `consulttype_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '咨询类型排序',
   PRIMARY KEY (`consulttype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='咨询类型表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='咨询类型表';
 
 
 
@@ -463,7 +463,7 @@ CREATE TABLE IF NOT EXISTS `cron` (
   `cron_exetime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '执行时间',
   PRIMARY KEY (`cron_id`),
   KEY `cron_type` (`cron_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='任务队列表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务队列表';
 
 
 
@@ -481,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `daddress` (
   `daddress_isdefault` enum('0','1') NOT NULL DEFAULT '0' COMMENT '是否默认 1:是0:不是',
   PRIMARY KEY (`daddress_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='卖家发货地址信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='卖家发货地址信息表';
 
 
 
@@ -510,7 +510,7 @@ CREATE TABLE IF NOT EXISTS `chain` (
   `chain_if_pickup` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否支持自提',
   `chain_if_collect` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否支持代收',
   PRIMARY KEY (`chain_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门店表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='门店表';
 
 
 DROP TABLE IF EXISTS `chain_goods`;
@@ -527,7 +527,7 @@ CREATE TABLE IF NOT EXISTS `chain_goods` (
   KEY `goods_commonid` (`goods_commonid`),
   KEY `store_id` (`store_id`),
   KEY `chain_id` (`chain_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门店商品' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='门店商品' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `chain_order`;
 CREATE TABLE IF NOT EXISTS `chain_order` (
@@ -552,7 +552,7 @@ CREATE TABLE IF NOT EXISTS `chain_order` (
   KEY `order_goods_id` (`order_goods_id`),
   KEY `chain_id` (`chain_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门店订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='门店订单表';
 
 DROP TABLE IF EXISTS `document`;
 CREATE TABLE IF NOT EXISTS `document` (
@@ -563,7 +563,7 @@ CREATE TABLE IF NOT EXISTS `document` (
   `document_time` int(10) unsigned NOT NULL COMMENT '添加时间/修改时间',
   PRIMARY KEY (`document_id`),
   UNIQUE KEY `document_code` (`document_code`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='系统文章表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统文章表';
 
 
 
@@ -581,7 +581,7 @@ CREATE TABLE IF NOT EXISTS `editable_page` (
   PRIMARY KEY (`editable_page_id`),
   KEY `store_id` (`store_id`),
   KEY `editable_page_item_id` (`editable_page_item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='可编辑页面表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='可编辑页面表';
 
 
 
@@ -594,7 +594,7 @@ CREATE TABLE IF NOT EXISTS `editable_page_config` (
   `editable_page_config_content` text COMMENT '配置内容',
   PRIMARY KEY (`editable_page_config_id`),
   KEY `editable_page_id` (`editable_page_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='可编辑页面配置表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='可编辑页面配置表';
 
 
 
@@ -608,7 +608,7 @@ CREATE TABLE IF NOT EXISTS `editable_page_model` (
   `editable_page_model_client` varchar(10) NOT NULL DEFAULT '' COMMENT '客户端pc、h5，空表示通用',
   `editable_page_model_content` text NOT NULL COMMENT '配置内容',
   PRIMARY KEY (`editable_page_model_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='可编辑页面模块表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='可编辑页面模块表';
 
 
 
@@ -640,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `evaluategoods` (
   KEY `geval_goodsid` (`geval_goodsid`),
   KEY `geval_storeid` (`geval_storeid`),
   KEY `geval_frommemberid` (`geval_frommemberid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='信誉评价表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='信誉评价表';
 
 
 
@@ -661,7 +661,7 @@ CREATE TABLE IF NOT EXISTS `evaluatestore` (
   KEY `seval_orderid` (`seval_orderid`),
   KEY `seval_storeid` (`seval_storeid`),
   KEY `seval_memberid` (`seval_memberid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺评分表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺评分表';
 
 
 
@@ -676,7 +676,7 @@ CREATE TABLE IF NOT EXISTS `exppointslog` (
   `explog_stage` varchar(50) NOT NULL COMMENT '经验值操作状态',
   PRIMARY KEY (`explog_id`),
   KEY `explog_memberid` (`explog_memberid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='经验值日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='经验值日志表';
 
 
 
@@ -690,7 +690,7 @@ CREATE TABLE IF NOT EXISTS `express` (
   `express_order` enum('1','2') NOT NULL DEFAULT '2' COMMENT '1:常用2:不常用',
   `express_url` varchar(100) NOT NULL COMMENT '快递公司网址',
   PRIMARY KEY (`express_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='快递公司';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='快递公司';
 
 
 DROP TABLE IF EXISTS `expresscf_kdn_config`;
@@ -706,7 +706,7 @@ CREATE TABLE IF NOT EXISTS `expresscf_kdn_config` (
   `store_id` int(10) unsigned NOT NULL COMMENT '店铺ID',
   PRIMARY KEY (`expresscf_kdn_config_id`),
   UNIQUE KEY `express_code` (`express_code`,`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='快递鸟电子面单' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='快递鸟电子面单' AUTO_INCREMENT=1 ;
 
 
 DROP TABLE IF EXISTS `favorites`;
@@ -729,7 +729,7 @@ CREATE TABLE IF NOT EXISTS `favorites` (
   KEY `member_id` (`member_id`),
   KEY `fav_id` (`fav_id`,`fav_type`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='收藏表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='收藏表';
 
 
 
@@ -743,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   `member_name` varchar(50) NOT NULL COMMENT '用户名',
   PRIMARY KEY (`fb_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='意见反馈';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='意见反馈';
 
 
 
@@ -758,7 +758,7 @@ CREATE TABLE IF NOT EXISTS `flowstat` (
   `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
   KEY `store_id` (`store_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访问量统计表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='访问量统计表';
 
 
 
@@ -768,7 +768,7 @@ CREATE TABLE IF NOT EXISTS `gadmin` (
   `gname` varchar(50) DEFAULT NULL COMMENT '权限组名',
   `glimits` text COMMENT '权限组序列',
   PRIMARY KEY (`gid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='权限组';
 
 
 
@@ -833,7 +833,7 @@ CREATE TABLE IF NOT EXISTS `goods` (
   KEY `gc_id_3` (`gc_id_3`),
   KEY `brand_id` (`brand_id`),
   KEY `goods_commonid` (`goods_commonid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品表';
 
 
 
@@ -848,7 +848,7 @@ CREATE TABLE IF NOT EXISTS `goodsattrindex` (
   PRIMARY KEY (`goods_id`,`gc_id`,`attrvalue_id`),
   KEY `goods_id` (`goods_id`),
   KEY `attrvalue_id` (`attrvalue_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品与属性对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品与属性对应表';
 
 
 
@@ -864,7 +864,7 @@ CREATE TABLE IF NOT EXISTS `goodsbrowse` (
   `gc_id_3` int(11) NOT NULL COMMENT '商品三级分类',
   PRIMARY KEY (`goodsbrowse_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品浏览历史表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品浏览历史表';
 
 
 
@@ -886,7 +886,7 @@ CREATE TABLE IF NOT EXISTS `goodsclass` (
   PRIMARY KEY (`gc_id`),
   KEY `store_id` (`gc_parent_id`),
   KEY `gc_parent_id` (`gc_parent_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品分类表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品分类表';
 
 
 
@@ -902,7 +902,7 @@ CREATE TABLE IF NOT EXISTS `goodsclassnav` (
   `goodscn_adv2` varchar(100) DEFAULT '' COMMENT '广告图2',
   `goodscn_adv2_link` varchar(100) NOT NULL COMMENT '广告2链接',
   PRIMARY KEY (`gc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分类导航表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='分类导航表';
 
 
 
@@ -918,7 +918,7 @@ CREATE TABLE IF NOT EXISTS `goodsclassstaple` (
   `member_id` int(11) unsigned NOT NULL COMMENT '会员id',
   PRIMARY KEY (`staple_id`),
   KEY `store_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺常用分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺常用分类表';
 
 
 
@@ -938,7 +938,7 @@ CREATE TABLE IF NOT EXISTS `goodsclasstag` (
   KEY `gc_id_1` (`gc_id_1`),
   KEY `gc_id_2` (`gc_id_2`),
   KEY `gc_id_3` (`gc_id_3`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品分类TAG表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品分类TAG表';
 
 
 
@@ -951,7 +951,7 @@ CREATE TABLE IF NOT EXISTS `goodscombo` (
   PRIMARY KEY (`combo_id`),
   KEY `goods_id` (`goods_id`),
   KEY `combo_goodsid` (`combo_goodsid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品推荐组合表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品推荐组合表';
 
 
 
@@ -1026,7 +1026,7 @@ CREATE TABLE IF NOT EXISTS `goodscommon` (
   KEY `gc_id_1` (`gc_id_1`),
   KEY `gc_id_2` (`gc_id_2`),
   KEY `gc_id_3` (`gc_id_3`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品公共内容表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品公共内容表';
 
 
 
@@ -1039,7 +1039,7 @@ CREATE TABLE IF NOT EXISTS `goodsfcode` (
   PRIMARY KEY (`goodsfcode_id`),
   KEY `goods_commonid` (`goods_commonid`),
   KEY `goodsfcode_code` (`goodsfcode_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品F码';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品F码';
 
 DROP TABLE IF EXISTS `goodsvideo`;
 CREATE TABLE IF NOT EXISTS `goodsvideo` (
@@ -1050,7 +1050,7 @@ CREATE TABLE IF NOT EXISTS `goodsvideo` (
   `goodsvideo_add_time` int(10) unsigned NOT NULL COMMENT '新增时间',
   PRIMARY KEY (`goodsvideo_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品视频' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品视频' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `goodsgift`;
 CREATE TABLE IF NOT EXISTS `goodsgift` (
@@ -1063,7 +1063,7 @@ CREATE TABLE IF NOT EXISTS `goodsgift` (
   `goods_commonid` int(10) unsigned NOT NULL COMMENT '主商品公共ID',
   PRIMARY KEY (`gift_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品赠品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品赠品表';
 
 
 
@@ -1079,7 +1079,7 @@ CREATE TABLE IF NOT EXISTS `goodsimages` (
   PRIMARY KEY (`goodsimage_id`),
   KEY `goods_commonid` (`goods_commonid`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品图片';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品图片';
 
 
 DROP TABLE IF EXISTS `goods_resource`;
@@ -1093,7 +1093,7 @@ CREATE TABLE IF NOT EXISTS `goods_resource` (
   `goods_resource_add_time` int(10) unsigned NOT NULL COMMENT '新增时间',
   PRIMARY KEY (`goods_resource_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品资源' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品资源' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `groupbuy`;
 CREATE TABLE IF NOT EXISTS `groupbuy` (
@@ -1132,7 +1132,7 @@ CREATE TABLE IF NOT EXISTS `groupbuy` (
   KEY `s_gclass_id` (`s_gclass_id`),
   KEY `vr_class_id` (`vr_class_id`),
   KEY `vr_s_class_id` (`vr_s_class_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抢购商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='抢购商品表';
 
 
 
@@ -1145,7 +1145,7 @@ CREATE TABLE IF NOT EXISTS `groupbuyclass` (
   `gclass_deep` tinyint(1) unsigned DEFAULT NULL COMMENT '抢购类别深度',
   PRIMARY KEY (`gclass_id`),
   KEY `gclass_parent_id` (`gclass_parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抢购类别表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='抢购类别表';
 
 
 
@@ -1156,7 +1156,7 @@ CREATE TABLE IF NOT EXISTS `groupbuypricerange` (
   `gprange_start` int(10) unsigned NOT NULL COMMENT '抢购价格区间下限',
   `gprange_end` int(10) unsigned NOT NULL COMMENT '抢购价格区间上限',
   PRIMARY KEY (`gprange_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抢购价格区间表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='抢购价格区间表';
 
 
 
@@ -1171,7 +1171,7 @@ CREATE TABLE IF NOT EXISTS `groupbuyquota` (
   `groupbuyquota_endtime` int(10) unsigned NOT NULL COMMENT '抢购套餐结束时间',
   PRIMARY KEY (`groupbuyquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抢购套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='抢购套餐表';
 
 
 
@@ -1187,7 +1187,7 @@ CREATE TABLE IF NOT EXISTS `help` (
   `page_show` tinyint(1) unsigned DEFAULT '1' COMMENT '页面类型 1:店铺 2:会员',
   PRIMARY KEY (`help_id`),
   KEY `helptype_id` (`helptype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='帮助内容表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='帮助内容表';
 
 
 
@@ -1200,7 +1200,7 @@ CREATE TABLE IF NOT EXISTS `helptype` (
   `helptype_show` tinyint(1) unsigned DEFAULT '1' COMMENT '帮助类型是否显示 0:否 1:是',
   `page_show` tinyint(1) unsigned DEFAULT '1' COMMENT '页面类型:1:店铺 2:会员',
   PRIMARY KEY (`helptype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='帮助类型表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='帮助类型表';
 
 
 
@@ -1229,7 +1229,7 @@ CREATE TABLE IF NOT EXISTS `inform` (
   PRIMARY KEY (`inform_id`),
   KEY `inform_member_id` (`inform_member_id`),
   KEY `inform_store_id` (`inform_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='举报表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='举报表';
 
 
 
@@ -1242,7 +1242,7 @@ CREATE TABLE IF NOT EXISTS `informsubject` (
   `informsubject_state` tinyint(3) NOT NULL COMMENT '举报主题状态 1:可用 2:失效',
   PRIMARY KEY (`informsubject_id`),
   KEY `informsubject_type_id` (`informsubject_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='举报主题表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='举报主题表';
 
 
 
@@ -1253,7 +1253,7 @@ CREATE TABLE IF NOT EXISTS `informsubjecttype` (
   `informtype_desc` varchar(100) NOT NULL COMMENT '举报类型描述',
   `informtype_state` tinyint(4) NOT NULL COMMENT '举报类型状态 1:有效 2:失效',
   PRIMARY KEY (`informtype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='举报类型表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='举报类型表';
 
 DROP TABLE IF EXISTS `instant_message`;
 CREATE TABLE IF NOT EXISTS `instant_message` (
@@ -1272,7 +1272,7 @@ CREATE TABLE IF NOT EXISTS `instant_message` (
   PRIMARY KEY (`instant_message_id`),
   KEY `instant_message_from_id` (`instant_message_from_id`,`instant_message_from_type`),
   KEY `instant_message_to_id` (`instant_message_to_id`,`instant_message_to_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='消息表';
 
 
 DROP TABLE IF EXISTS `inviter`;
@@ -1287,7 +1287,7 @@ CREATE TABLE IF NOT EXISTS `inviter` (
   `inviter_goods_quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总共分销的商品件数',
   `inviter_goods_amount` decimal(10,0) unsigned NOT NULL DEFAULT '0' COMMENT '总共分销的商品金额',
   PRIMARY KEY (`inviter_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='推广员表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='推广员表';
 
 
 
@@ -1297,7 +1297,7 @@ CREATE TABLE IF NOT EXISTS `inviterclass` (
   `inviterclass_name` varchar(50) NOT NULL COMMENT '等级名',
   `inviterclass_amount` decimal(10,2) NOT NULL COMMENT '等级门槛',
   PRIMARY KEY (`inviterclass_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='推广等级表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='推广等级表';
 
 
 
@@ -1321,7 +1321,7 @@ CREATE TABLE IF NOT EXISTS `invoice` (
   `invoice_goto_addr` varchar(50) DEFAULT '' COMMENT '送票地址',
   PRIMARY KEY (`invoice_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='买家发票信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='买家发票信息表';
 
 
 
@@ -1333,7 +1333,7 @@ CREATE TABLE IF NOT EXISTS `link` (
   `link_pic` varchar(100) DEFAULT NULL COMMENT '友情链接图片',
   `link_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '友情链接排序',
   PRIMARY KEY (`link_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='友情链接';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='友情链接';
 
 DROP TABLE IF EXISTS `live_apply`;
 CREATE TABLE IF NOT EXISTS `live_apply` (
@@ -1358,7 +1358,7 @@ CREATE TABLE IF NOT EXISTS `live_apply` (
   PRIMARY KEY (`live_apply_id`),
   KEY `live_apply_state` (`live_apply_state`),
   KEY `live_apply_type_id` (`live_apply_type_id`,`live_apply_user_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='直播申请';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='直播申请';
 
 DROP TABLE IF EXISTS `live_apply_goods`;
 CREATE TABLE IF NOT EXISTS `live_apply_goods` (
@@ -1378,7 +1378,7 @@ CREATE TABLE IF NOT EXISTS `live_apply_goods` (
   KEY `gc_id_1` (`gc_id_1`),
   KEY `gc_id_2` (`gc_id_2`),
   KEY `gc_id_3` (`gc_id_3`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='直播申请商品';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='直播申请商品';
 
 
 DROP TABLE IF EXISTS `mailcron`;
@@ -1388,7 +1388,7 @@ CREATE TABLE IF NOT EXISTS `mailcron` (
   `mailcron_subject` varchar(255) NOT NULL COMMENT '邮件标题',
   `mailcron_contnet` text NOT NULL COMMENT '邮件内容',
   PRIMARY KEY (`mailcron_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邮件任务计划表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='邮件任务计划表';
 
 
 
@@ -1401,7 +1401,7 @@ CREATE TABLE IF NOT EXISTS `mailmsgtemlates` (
   `ali_template_code` varchar(255) DEFAULT NULL COMMENT '阿里云短信模板ID',
   `ten_template_code` varchar(255) DEFAULT NULL COMMENT '腾讯云短信模板ID',
   PRIMARY KEY (`mailmt_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='邮件模板表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='邮件模板表';
 
 
 
@@ -1420,7 +1420,7 @@ CREATE TABLE IF NOT EXISTS `mallconsult` (
   `admin_name` varchar(50) NOT NULL DEFAULT '' COMMENT '管理员名称',
   PRIMARY KEY (`mallconsult_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台客服咨询表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台客服咨询表';
 
 
 
@@ -1431,7 +1431,7 @@ CREATE TABLE IF NOT EXISTS `mallconsulttype` (
   `mallconsulttype_introduce` text NOT NULL COMMENT '平台客服咨询类型备注',
   `mallconsulttype_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '咨询类型排序',
   PRIMARY KEY (`mallconsulttype_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='平台客服咨询类型表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台客服咨询类型表';
 
 DROP TABLE IF EXISTS `mallvouchertemplate`;
 CREATE TABLE IF NOT EXISTS `mallvouchertemplate` (
@@ -1450,7 +1450,7 @@ CREATE TABLE IF NOT EXISTS `mallvouchertemplate` (
   `mallvouchertemplate_used` int(11) NOT NULL COMMENT '代金券已使用数量',
   `mallvouchertemplate_eachlimit` int(11) NOT NULL COMMENT '每人限制领取数',
   PRIMARY KEY (`mallvouchertemplate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='平台代金券模板表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台代金券模板表';
 
 DROP TABLE IF EXISTS `mallvoucheruser`;
 CREATE TABLE IF NOT EXISTS `mallvoucheruser` (
@@ -1470,7 +1470,7 @@ CREATE TABLE IF NOT EXISTS `mallvoucheruser` (
   `mallvouchertemplate_gcid` int(11) NOT NULL COMMENT '平台代金券所属商品分类ID',
   `mallvouchertemplate_points` int(11) NOT NULL DEFAULT '0' COMMENT '领取代金券所需积分',
   PRIMARY KEY (`mallvoucheruser_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='平台代金券会员表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台代金券会员表';
 
 
 
@@ -1490,7 +1490,7 @@ CREATE TABLE IF NOT EXISTS `marketmanage` (
   `marketmanage_failed` varchar(255) NOT NULL DEFAULT '' COMMENT '未中奖说明',
   `marketmanage_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '营销活动类型 1刮刮卡2大转盘3砸金蛋4生肖翻翻看',
   PRIMARY KEY (`marketmanage_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销活动活动 刮刮卡大转盘砸金蛋生肖翻翻看';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='营销活动活动 刮刮卡大转盘砸金蛋生肖翻翻看';
 
 
 
@@ -1507,7 +1507,7 @@ CREATE TABLE IF NOT EXISTS `marketmanageaward` (
   `bonus_id` int(11) NOT NULL DEFAULT '0' COMMENT '红包ID',
   `vouchertemplate_id` int(11) NOT NULL DEFAULT '0' COMMENT '优惠券ID',
   PRIMARY KEY (`marketmanageaward_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销活动活动奖品记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='营销活动活动奖品记录';
 
 
 
@@ -1523,7 +1523,7 @@ CREATE TABLE IF NOT EXISTS `marketmanagelog` (
   `marketmanagelog_remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注领取信息',
   PRIMARY KEY (`marketmanagelog_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营销活动活动领取记录';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='营销活动活动领取记录';
 
 
 DROP TABLE IF EXISTS `platformtoken`;
@@ -1541,7 +1541,7 @@ CREATE TABLE IF NOT EXISTS `platformtoken` (
   PRIMARY KEY (`platformtoken_id`),
   KEY `platform_userid` (`platform_userid`),
   KEY `platform_token` (`platform_token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='移动端登录令牌表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='移动端登录令牌表';
 
 
 DROP TABLE IF EXISTS `member`;
@@ -1610,7 +1610,7 @@ CREATE TABLE IF NOT EXISTS `member` (
   KEY `member_qqopenid` (`member_qqopenid`),
   KEY `member_sinaopenid` (`member_sinaopenid`),
   KEY `inviter_id` (`inviter_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='会员表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员表';
 
 
 
@@ -1624,7 +1624,7 @@ CREATE TABLE IF NOT EXISTS `memberbank` (
   `member_id` int(11) NOT NULL COMMENT '所属用户id',
   PRIMARY KEY (`memberbank_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户收款账户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户收款账户表';
 
 
 
@@ -1635,7 +1635,7 @@ CREATE TABLE IF NOT EXISTS `membermsgsetting` (
   `member_id` int(11) unsigned NOT NULL COMMENT '会员ID',
   PRIMARY KEY (`membermt_code`,`member_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户消息接收设置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户消息接收设置表';
 
 
 
@@ -1655,7 +1655,7 @@ CREATE TABLE IF NOT EXISTS `membermsgtpl` (
   `ali_template_code` varchar(255) DEFAULT NULL DEFAULT '' COMMENT '阿里云短信模板ID',
   `ten_template_code` varchar(255) DEFAULT NULL DEFAULT '' COMMENT '腾讯云短信模板ID',
   PRIMARY KEY (`membermt_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户消息模板';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户消息模板';
 
 
 
@@ -1682,7 +1682,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   KEY `to_member_id` (`to_member_id`(255)),
   KEY `message_ismore` (`message_ismore`),
   KEY `message_parent_id` (`message_parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='短消息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='短消息';
 
 
 
@@ -1703,7 +1703,7 @@ CREATE TABLE IF NOT EXISTS `minipro_live` (
   PRIMARY KEY (`minipro_live_id`),
   KEY `member_id` (`member_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小程序直播' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='小程序直播' AUTO_INCREMENT=1 ;
 
 
 DROP TABLE IF EXISTS `minipro_live_room_goods`;
@@ -1732,7 +1732,7 @@ CREATE TABLE IF NOT EXISTS `minipro_live_room_goods` (
   KEY `gc_id_1` (`gc_id_1`),
   KEY `gc_id_2` (`gc_id_2`),
   KEY `gc_id_3` (`gc_id_3`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小程序直播商品' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='小程序直播商品' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `minipro_live_goods`;
 CREATE TABLE IF NOT EXISTS `minipro_live_goods` (
@@ -1754,7 +1754,7 @@ CREATE TABLE IF NOT EXISTS `minipro_live_goods` (
   KEY `minipro_live_goods_result_id` (`minipro_live_goods_result_id`),
   KEY `goods_id` (`goods_id`),
   KEY `goods_commonid` (`goods_commonid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='小程序直播商品' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='小程序直播商品' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `navigation`;
 CREATE TABLE IF NOT EXISTS `navigation` (
@@ -1768,7 +1768,7 @@ CREATE TABLE IF NOT EXISTS `navigation` (
   `item_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '页面导航类别ID，对应着nav_type中的内容，默认为0',
   `nav_is_close` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否前台显示，0为否，1为是，默认为1',
   PRIMARY KEY (`nav_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='页面导航表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='页面导航表';
 
 
 DROP TABLE IF EXISTS `order`;
@@ -1811,7 +1811,7 @@ CREATE TABLE IF NOT EXISTS `order` (
   PRIMARY KEY (`order_id`),
   KEY `store_id` (`store_id`),
   KEY `buyer_id` (`buyer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单表';
 
 
 
@@ -1840,7 +1840,7 @@ CREATE TABLE IF NOT EXISTS `ordercommon` (
   `promotion_info` varchar(500) DEFAULT NULL COMMENT '订单促销信息备注',
   PRIMARY KEY (`order_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单信息扩展表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单信息扩展表';
 
 
 
@@ -1863,7 +1863,7 @@ CREATE TABLE IF NOT EXISTS `ordergoods` (
   `gc_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '商品最底级分类ID',
   PRIMARY KEY (`rec_id`),
   KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单商品表';
 
 
 
@@ -1890,7 +1890,7 @@ CREATE TABLE IF NOT EXISTS `orderinviter` (
   `orderinviter_addtime` int(10) unsigned NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`orderinviter_id`),
   KEY `orderinviter_member_id` (`orderinviter_member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分销详情表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='分销详情表';
 
 
 
@@ -1905,7 +1905,7 @@ CREATE TABLE IF NOT EXISTS `orderlog` (
   `log_type` varchar(10) NOT NULL DEFAULT 'order' COMMENT 'order普通订单 vrorder虚拟订单 fuwu服务订单 errand跑腿订单',
   PRIMARY KEY (`log_id`),
   KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单记录表';
 
 
 
@@ -1917,7 +1917,7 @@ CREATE TABLE IF NOT EXISTS `orderpay` (
   `api_paystate` enum('0','1') DEFAULT '0' COMMENT '0默认未支付1已支付(只有第三方支付接口通知到时才会更改此状态)',
   PRIMARY KEY (`pay_id`),
   KEY `pay_sn` (`pay_sn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单支付表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单支付表';
 
 
 
@@ -1929,7 +1929,7 @@ CREATE TABLE IF NOT EXISTS `payment` (
   `payment_platform` char(10) NOT NULL COMMENT '支付方式所适应平台 pc h5 app',
   `payment_state` enum('0','1') NOT NULL DEFAULT '0' COMMENT '接口状态0禁用1启用',
   PRIMARY KEY (`payment_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付方式表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='支付方式表';
 
 
 
@@ -1959,7 +1959,7 @@ CREATE TABLE IF NOT EXISTS `pbargain` (
   KEY `member_id` (`member_id`),
   KEY `store_id` (`store_id`),
   KEY `bargain_goods_id` (`bargain_goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺砍价活动表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺砍价活动表';
 
 
 
@@ -1975,7 +1975,7 @@ CREATE TABLE IF NOT EXISTS `pbargainlog` (
   PRIMARY KEY (`pbargainlog_id`),
   KEY `pbargainlog_member_id` (`pbargainlog_member_id`,`bargainorder_id`),
   KEY `bargain_id` (`bargain_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='砍价记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='砍价记录表';
 
 
 
@@ -2003,7 +2003,7 @@ CREATE TABLE IF NOT EXISTS `pbargainorder` (
   KEY `store_id` (`store_id`),
   KEY `bargain_id` (`bargain_id`),
   KEY `bargain_goods_id` (`bargain_goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='砍价订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='砍价订单表';
 
 
 
@@ -2018,7 +2018,7 @@ CREATE TABLE IF NOT EXISTS `pbargainquota` (
   `bargainquota_endtime` int(10) unsigned NOT NULL COMMENT '砍价套餐结束时间',
   PRIMARY KEY (`bargainquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='砍价套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='砍价套餐表';
 
 
 
@@ -2032,7 +2032,7 @@ CREATE TABLE IF NOT EXISTS `pboothgoods` (
   PRIMARY KEY (`boothgoods_id`),
   KEY `store_id` (`store_id`),
   KEY `gc_id` (`gc_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='展位商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='展位商品表';
 
 
 
@@ -2046,7 +2046,7 @@ CREATE TABLE IF NOT EXISTS `pboothquota` (
   `boothquota_state` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '套餐状态 1:开启 0:关闭',
   PRIMARY KEY (`boothquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='展位套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='展位套餐表';
 
 
 
@@ -2062,7 +2062,7 @@ CREATE TABLE IF NOT EXISTS `pbundling` (
   `bl_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '组合状态 0:关闭 1:开启',
   PRIMARY KEY (`bl_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='组合销售活动表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='组合销售活动表';
 
 
 
@@ -2079,7 +2079,7 @@ CREATE TABLE IF NOT EXISTS `pbundlinggoods` (
   PRIMARY KEY (`blgoods_id`),
   KEY `bl_id` (`bl_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='组合销售活动商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='组合销售活动商品表';
 
 
 
@@ -2095,7 +2095,7 @@ CREATE TABLE IF NOT EXISTS `pbundlingquota` (
   `blquota_endtime` varchar(10) NOT NULL COMMENT '组合套餐结束时间',
   `blquota_state` tinyint(1) unsigned NOT NULL COMMENT '组合套餐状态：0关闭，1开启。默认为 1',
   PRIMARY KEY (`blquota_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='组合销售套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='组合销售套餐表';
 
 
 
@@ -2118,7 +2118,7 @@ CREATE TABLE IF NOT EXISTS `pdcash` (
   `pdc_trade_sn` varchar(50) DEFAULT '' COMMENT '第三方支付接口交易号',
   PRIMARY KEY (`pdc_id`),
   KEY `pdc_member_id` (`pdc_member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预存款提现记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='预存款提现记录表';
 
 
 
@@ -2137,7 +2137,7 @@ CREATE TABLE IF NOT EXISTS `pdlog` (
   `lg_desc` varchar(150) DEFAULT NULL COMMENT '变更描述',
   PRIMARY KEY (`lg_id`),
   KEY `lg_member_id` (`lg_member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预存款变更日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='预存款变更日志表';
 
 
 
@@ -2156,7 +2156,7 @@ CREATE TABLE IF NOT EXISTS `pdrecharge` (
   `pdr_admin` varchar(30) DEFAULT '' COMMENT '管理员名',
   PRIMARY KEY (`pdr_id`),
   KEY `pdr_member_id` (`pdr_member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预存款充值表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='预存款充值表';
 
 
 
@@ -2175,7 +2175,7 @@ CREATE TABLE IF NOT EXISTS `pmansong` (
   `mansong_remark` varchar(200) NOT NULL COMMENT '满就送备注',
   PRIMARY KEY (`mansong_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='满就送活动表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='满就送活动表';
 
 
 
@@ -2192,7 +2192,7 @@ CREATE TABLE IF NOT EXISTS `pmansongquota` (
   `mansongquota_state` tinyint(1) unsigned DEFAULT NULL COMMENT '配额状态 1:可用 2:取消 3:结束',
   PRIMARY KEY (`mansongquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='满就送套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='满就送套餐表';
 
 
 
@@ -2206,7 +2206,7 @@ CREATE TABLE IF NOT EXISTS `pmansongrule` (
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '满就送商品ID',
   PRIMARY KEY (`mansongrule_id`),
   KEY `mansong_id` (`mansong_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='满就送活动规则表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='满就送活动规则表';
 
 
 
@@ -2221,7 +2221,7 @@ CREATE TABLE IF NOT EXISTS `pmgdiscountquota` (
   `mgdiscountquota_endtime` int(10) unsigned NOT NULL COMMENT '会员等级折扣套餐结束时间',
   PRIMARY KEY (`mgdiscountquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员等级折扣套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员等级折扣套餐表';
 
 
 
@@ -2236,7 +2236,7 @@ CREATE TABLE IF NOT EXISTS `pointscart` (
   `pgoods_image` varchar(100) DEFAULT NULL COMMENT '积分礼品图片',
   PRIMARY KEY (`pcart_id`),
   KEY `pmember_id` (`pmember_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='积分礼品兑换购物车';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='积分礼品兑换购物车';
 
 
 
@@ -2268,7 +2268,7 @@ CREATE TABLE IF NOT EXISTS `pointsgoods` (
   `pgoods_endtime` int(11) DEFAULT NULL COMMENT '积分兑换结束时间',
   `pgoods_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '积分礼品排序',
   PRIMARY KEY (`pgoods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='积分礼品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='积分礼品表';
 
 
 
@@ -2285,7 +2285,7 @@ CREATE TABLE IF NOT EXISTS `pointslog` (
   `pl_stage` varchar(50) NOT NULL COMMENT '积分操作阶段',
   PRIMARY KEY (`pl_id`),
   KEY `pl_memberid` (`pl_memberid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员积分日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员积分日志表';
 
 
 
@@ -2306,7 +2306,7 @@ CREATE TABLE IF NOT EXISTS `pointsorder` (
   `point_orderstate` int(11) NOT NULL DEFAULT '20' COMMENT '订单状态：20:已兑换并扣除积分;30:已发货;40:已收货;50:已完成;2:已取消',
   PRIMARY KEY (`point_orderid`),
   KEY `point_buyerid` (`point_buyerid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='兑换订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='兑换订单表';
 
 
 
@@ -2323,7 +2323,7 @@ CREATE TABLE IF NOT EXISTS `pointsorderaddress` (
   `pointoa_mobphone` varchar(20) NOT NULL COMMENT '手机号码',
   PRIMARY KEY (`pointoa_id`),
   KEY `pointoa_orderid` (`pointoa_orderid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='积分兑换地址表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='积分兑换地址表';
 
 
 
@@ -2338,7 +2338,7 @@ CREATE TABLE IF NOT EXISTS `pointsordergoods` (
   `pointog_goodsimage` varchar(100) DEFAULT NULL COMMENT '礼品图片',
   PRIMARY KEY (`pointog_recid`),
   KEY `pointog_orderid` (`pointog_orderid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='兑换订单商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='兑换订单商品表';
 
 
 
@@ -2369,7 +2369,7 @@ CREATE TABLE IF NOT EXISTS `ppintuan` (
   PRIMARY KEY (`pintuan_id`),
   KEY `store_id` (`store_id`),
   KEY `pintuan_goods_id` (`pintuan_goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺拼团表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺拼团表';
 
 
 
@@ -2389,7 +2389,7 @@ CREATE TABLE IF NOT EXISTS `ppintuangroup` (
   PRIMARY KEY (`pintuangroup_id`),
   KEY `pintuan_id` (`pintuan_id`),
   KEY `pintuangroup_goods_id` (`pintuangroup_goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='拼团开团表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='拼团开团表';
 
 
 
@@ -2406,7 +2406,7 @@ CREATE TABLE IF NOT EXISTS `ppintuanorder` (
   PRIMARY KEY (`pintuanorder_id`),
   KEY `pintuan_id` (`pintuan_id`),
   KEY `pintuangroup_id` (`pintuangroup_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='拼团订单辅助表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='拼团订单辅助表';
 
 
 
@@ -2421,7 +2421,7 @@ CREATE TABLE IF NOT EXISTS `ppintuanquota` (
   `pintuanquota_endtime` int(10) unsigned NOT NULL COMMENT '拼团套餐结束时间',
   PRIMARY KEY (`pintuanquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='拼团套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='拼团套餐表';
 
 
 DROP TABLE IF EXISTS `presell`;
@@ -2445,7 +2445,7 @@ CREATE TABLE IF NOT EXISTS `presell` (
   KEY `store_id` (`store_id`),
   KEY `goods_id` (`goods_id`),
   KEY `goods_commonid` (`goods_commonid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预售表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='预售表' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `presellquota`;
 CREATE TABLE IF NOT EXISTS `presellquota` (
@@ -2458,7 +2458,7 @@ CREATE TABLE IF NOT EXISTS `presellquota` (
   `presellquota_endtime` int(10) unsigned NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`presellquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='预售套餐' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='预售套餐' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `pxianshi`;
 CREATE TABLE IF NOT EXISTS `pxianshi` (
@@ -2477,7 +2477,7 @@ CREATE TABLE IF NOT EXISTS `pxianshi` (
   `xianshi_state` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态，0:取消 1:正常',
   PRIMARY KEY (`xianshi_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='限时折扣活动表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='限时折扣活动表';
 
 
 
@@ -2504,7 +2504,7 @@ CREATE TABLE IF NOT EXISTS `pxianshigoods` (
   PRIMARY KEY (`xianshigoods_id`),
   KEY `store_id` (`store_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='限时折扣商品表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='限时折扣商品表';
 
 
 
@@ -2519,7 +2519,7 @@ CREATE TABLE IF NOT EXISTS `pxianshiquota` (
   `xianshiquota_endtime` int(10) unsigned NOT NULL COMMENT '限时折扣套餐结束时间',
   PRIMARY KEY (`xianshiquota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='限时折扣套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='限时折扣套餐表';
 
 
 
@@ -2535,7 +2535,7 @@ CREATE TABLE IF NOT EXISTS `rcblog` (
   `rcblog_description` varchar(150) DEFAULT NULL COMMENT '变更描述',
   PRIMARY KEY (`rcblog_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='充值卡余额变更日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='充值卡余额变更日志表';
 
 
 
@@ -2553,7 +2553,7 @@ CREATE TABLE IF NOT EXISTS `rechargecard` (
   `member_name` varchar(50) DEFAULT NULL COMMENT '使用者会员名称',
   PRIMARY KEY (`rc_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台充值卡';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='平台充值卡';
 
 
 
@@ -2564,7 +2564,7 @@ CREATE TABLE IF NOT EXISTS `refundreason` (
   `reason_sort` tinyint(3) unsigned DEFAULT '255' COMMENT '退款退货原因排序',
   `reason_updatetime` int(10) unsigned NOT NULL COMMENT '退款退货原因更新时间',
   PRIMARY KEY (`reason_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='退款退货原因表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='退款退货原因表';
 
 
 
@@ -2611,7 +2611,7 @@ CREATE TABLE IF NOT EXISTS `refundreturn` (
   KEY `store_id` (`store_id`),
   KEY `buyer_id` (`buyer_id`),
   KEY `order_goods_id` (`order_goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='退款退货表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='退款退货表';
 
 
 
@@ -2627,7 +2627,7 @@ CREATE TABLE IF NOT EXISTS `seller` (
   PRIMARY KEY (`seller_id`),
   KEY `member_id` (`member_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='卖家用户表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='卖家用户表';
 
 
 
@@ -2640,7 +2640,7 @@ CREATE TABLE IF NOT EXISTS `sellergroup` (
   `store_id` int(10) unsigned NOT NULL COMMENT '店铺ID',
   PRIMARY KEY (`sellergroup_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='卖家用户组表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='卖家用户组表';
 
 
 
@@ -2658,7 +2658,7 @@ CREATE TABLE IF NOT EXISTS `sellerlog` (
   PRIMARY KEY (`sellerlog_id`),
   KEY `sellerlog_seller_id` (`sellerlog_seller_id`),
   KEY `sellerlog_store_id` (`sellerlog_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='卖家日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='卖家日志表';
 
 
 
@@ -2670,7 +2670,7 @@ CREATE TABLE IF NOT EXISTS `seo` (
   `seo_description` text NOT NULL COMMENT 'SEO描述',
   `seo_type` varchar(20) NOT NULL COMMENT 'SEO类型',
   PRIMARY KEY (`seo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='SEO信息存放表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='SEO信息存放表';
 
 
 
@@ -2690,7 +2690,7 @@ CREATE TABLE IF NOT EXISTS `smslog` (
   KEY `smslog_phone` (`smslog_phone`),
   KEY `member_id` (`member_id`),
   KEY `smslog_state` (`smslog_state`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='手机短信记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='手机短信记录表';
 
 
 
@@ -2706,7 +2706,7 @@ CREATE TABLE IF NOT EXISTS `snsalbumclass` (
   `ac_isdefault` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为买家秀相册  1:是 0:否',
   PRIMARY KEY (`ac_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='相册表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='相册表';
 
 
 
@@ -2725,7 +2725,7 @@ CREATE TABLE IF NOT EXISTS `snsalbumpic` (
   PRIMARY KEY (`ap_id`),
   KEY `member_id` (`member_id`),
   KEY `ac_id` (`ac_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='相册图片表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='相册图片表';
 
 
 
@@ -2743,7 +2743,7 @@ CREATE TABLE IF NOT EXISTS `snsfriend` (
   PRIMARY KEY (`friend_id`),
   KEY `friend_frommid` (`friend_frommid`),
   KEY `friend_tomid` (`friend_tomid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='好友数据表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='好友数据表';
 
 
 
@@ -2756,7 +2756,7 @@ CREATE TABLE IF NOT EXISTS `snsmembertag` (
   `mtag_desc` varchar(50) NOT NULL COMMENT '标签描述',
   `mtag_img` varchar(50) DEFAULT NULL COMMENT '标签图片',
   PRIMARY KEY (`mtag_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员标签表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员标签表';
 
 
 
@@ -2767,7 +2767,7 @@ CREATE TABLE IF NOT EXISTS `snsmtagmember` (
   `recommend` tinyint(4) NOT NULL DEFAULT '0' COMMENT '推荐，默认为0',
   PRIMARY KEY (`mtag_id`,`member_id`),
   KEY `member_id` (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员标签会员对照表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员标签会员对照表';
 
 
 
@@ -2780,7 +2780,7 @@ CREATE TABLE IF NOT EXISTS `spec` (
   `gc_name` varchar(50) DEFAULT NULL COMMENT '所属商品分类名称',
   PRIMARY KEY (`sp_id`),
   KEY `gc_id` (`gc_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品规格表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品规格表';
 
 
 
@@ -2796,7 +2796,7 @@ CREATE TABLE IF NOT EXISTS `specvalue` (
   PRIMARY KEY (`spvalue_id`),
   KEY `store_id` (`store_id`),
   KEY `sp_id` (`sp_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品规格值表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品规格值表';
 
 
 
@@ -2815,7 +2815,7 @@ CREATE TABLE IF NOT EXISTS `statmember` (
   `statm_pointsreduce` int(11) NOT NULL DEFAULT '0' COMMENT '积分减少额',
   `statm_updatetime` int(11) NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`statm_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='会员相关数据统计';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='会员相关数据统计';
 
 
 
@@ -2843,7 +2843,7 @@ CREATE TABLE IF NOT EXISTS `statorder` (
   UNIQUE KEY `order_id` (`order_id`),
   KEY `order_add_time` (`order_add_time`),
   KEY `order_isvalid` (`order_isvalid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='统计功能订单缓存表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='统计功能订单缓存表';
 
 
 
@@ -2891,7 +2891,7 @@ CREATE TABLE IF NOT EXISTS `statordergoods` (
   UNIQUE KEY `rec_id` (`rec_id`),
   KEY `order_id` (`order_id`),
   KEY `order_add_time` (`order_add_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='统计功能订单商品缓存表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='统计功能订单商品缓存表';
 
 
 
@@ -2973,7 +2973,7 @@ CREATE TABLE IF NOT EXISTS `store` (
   `expresscf_kdn_printer` varchar(100) DEFAULT NULL COMMENT '快递鸟-打印机',
   PRIMARY KEY (`store_id`),
   KEY `seller_name` (`seller_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='店铺数据表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺数据表';
 
 
 
@@ -2991,7 +2991,7 @@ CREATE TABLE IF NOT EXISTS `storebindclass` (
   KEY `class_1` (`class_1`),
   KEY `class_2` (`class_2`),
   KEY `class_3` (`class_3`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺可发布商品类目表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺可发布商品类目表';
 
 
 
@@ -3002,7 +3002,7 @@ CREATE TABLE IF NOT EXISTS `storeclass` (
   `storeclass_bail` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '店铺分类保证金数额',
   `storeclass_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '店铺分类排序',
   PRIMARY KEY (`storeclass_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='店铺分类表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺分类表';
 
 
 
@@ -3017,7 +3017,7 @@ CREATE TABLE IF NOT EXISTS `storecost` (
   `storecost_time` int(10) unsigned NOT NULL COMMENT '费用发生时间',
   PRIMARY KEY (`storecost_id`),
   KEY `storecost_store_id` (`storecost_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺消费表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺消费表';
 
 
 
@@ -3035,7 +3035,7 @@ CREATE TABLE IF NOT EXISTS `storedepositlog` (
   `storedepositlog_add_time` int(10) unsigned NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`storedepositlog_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺保证金日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺保证金日志表';
 
 
 
@@ -3046,7 +3046,7 @@ CREATE TABLE IF NOT EXISTS `storeextend` (
   `pricerange` text COMMENT '店铺统计设置的商品价格区间',
   `orderpricerange` text COMMENT '店铺统计设置的订单价格区间',
   PRIMARY KEY (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺信息扩展表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺信息扩展表';
 
 
 
@@ -3061,7 +3061,7 @@ CREATE TABLE IF NOT EXISTS `storegoodsclass` (
   PRIMARY KEY (`storegc_id`),
   KEY `storegc_parent_id` (`storegc_parent_id`,`storegc_sort`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺商品分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺商品分类表';
 
 
 
@@ -3079,7 +3079,7 @@ CREATE TABLE IF NOT EXISTS `storegrade` (
   `storegrade_description` text COMMENT '店铺等级申请说明',
   `storegrade_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '店铺等级排序',
   PRIMARY KEY (`storegrade_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='店铺等级表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺等级表';
 
 
 
@@ -3135,7 +3135,7 @@ CREATE TABLE IF NOT EXISTS `storejoinin` (
   `trade_sn` varchar(50) DEFAULT '' COMMENT '第三方支付接口交易号',
   `rcb_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值卡支付金额',
   `pd_amount` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '预存款支付金额'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺入住表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺入住表';
 
 
 
@@ -3156,7 +3156,7 @@ CREATE TABLE IF NOT EXISTS `storemoneylog` (
   `storemoneylog_trade_sn` varchar(50) DEFAULT '' COMMENT '第三方支付接口交易号',
   PRIMARY KEY (`storemoneylog_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺金额日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺金额日志表';
 
 
 
@@ -3170,7 +3170,7 @@ CREATE TABLE IF NOT EXISTS `storemsg` (
   `storemsg_readids` varchar(255) DEFAULT NULL COMMENT '已读卖家id',
   PRIMARY KEY (`storemsg_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺消息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺消息表';
 
 
 
@@ -3181,7 +3181,7 @@ CREATE TABLE IF NOT EXISTS `storemsgread` (
   `storemsg_readtime` int(11) NOT NULL COMMENT '阅读时间',
   PRIMARY KEY (`storemsg_id`,`seller_id`),
   KEY `seller_id` (`seller_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺消息阅读表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺消息阅读表';
 
 
 
@@ -3197,7 +3197,7 @@ CREATE TABLE IF NOT EXISTS `storemsgsetting` (
   `storems_mail_number` varchar(100) NOT NULL COMMENT '邮箱号码',
   PRIMARY KEY (`storemt_code`,`store_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺消息接收设置';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺消息接收设置';
 
 
 
@@ -3221,7 +3221,7 @@ CREATE TABLE IF NOT EXISTS `storemsgtpl` (
   `ali_template_code` varchar(255) DEFAULT NULL COMMENT '阿里云短信模板ID',
   `ten_template_code` varchar(255) DEFAULT NULL COMMENT '腾讯云短信模板ID',
   PRIMARY KEY (`storemt_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商家消息模板';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家消息模板';
 
 
 
@@ -3235,7 +3235,7 @@ CREATE TABLE IF NOT EXISTS `storenavigation` (
   `storenav_url` varchar(255) DEFAULT NULL COMMENT '店铺导航的外链URL',
   PRIMARY KEY (`storenav_id`),
   KEY `storenav_store_id` (`storenav_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='卖家店铺导航信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='卖家店铺导航信息表';
 
 
 
@@ -3248,7 +3248,7 @@ CREATE TABLE IF NOT EXISTS `storeplate` (
   `store_id` int(10) unsigned NOT NULL COMMENT '所属店铺ID',
   PRIMARY KEY (`storeplate_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='关联板式表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='关联板式表';
 
 
 
@@ -3267,7 +3267,7 @@ CREATE TABLE IF NOT EXISTS `storereopen` (
   `storereopen_pay_cert_explain` varchar(200) DEFAULT NULL COMMENT '付款说明',
   PRIMARY KEY (`storereopen_id`),
   KEY `storereopen_store_id` (`storereopen_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='续签内容表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='续签内容表';
 
 
 
@@ -3284,7 +3284,7 @@ CREATE TABLE IF NOT EXISTS `storesnscomment` (
   PRIMARY KEY (`storesnscomm_id`),
   KEY `stracelog_id` (`stracelog_id`),
   KEY `storesnscomm_memberid` (`storesnscomm_memberid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺动态评论表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺动态评论表';
 
 
 
@@ -3304,7 +3304,7 @@ CREATE TABLE IF NOT EXISTS `storesnssetting` (
   `storesnsset_groupbuy` tinyint(4) NOT NULL DEFAULT '1' COMMENT '抢购,0:关闭 1:开启',
   `storesnsset_groupbuytitle` varchar(150) NOT NULL COMMENT '抢购内容',
   PRIMARY KEY (`storesnsset_storeid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺自动发布动态设置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺自动发布动态设置表';
 
 
 
@@ -3325,7 +3325,7 @@ CREATE TABLE IF NOT EXISTS `storesnstracelog` (
   `stracelog_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '动态状态 1:正常 0:屏蔽',
   PRIMARY KEY (`stracelog_id`),
   KEY `stracelog_storeid` (`stracelog_storeid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺动态表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺动态表';
 
 
 
@@ -3345,7 +3345,7 @@ CREATE TABLE IF NOT EXISTS `storewatermark` (
   `store_id` int(10) DEFAULT NULL COMMENT '店铺ID',
   PRIMARY KEY (`swm_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺水印图片表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺水印图片表';
 
 
 DROP TABLE IF EXISTS `store_service`;
@@ -3356,7 +3356,7 @@ CREATE TABLE IF NOT EXISTS `store_service` (
   `store_service_desc` varchar(255) NOT NULL COMMENT '店铺服务描述',
   `store_service_sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '店铺服务排序',
   PRIMARY KEY (`store_service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='店铺服务' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='店铺服务' AUTO_INCREMENT=1 ;
 
 
 DROP TABLE IF EXISTS `transport`;
@@ -3370,7 +3370,7 @@ CREATE TABLE IF NOT EXISTS `transport` (
   `transport_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '计费方式（0件1重量）',
   PRIMARY KEY (`transport_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='售卖区域';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='售卖区域';
 
 
 
@@ -3389,7 +3389,7 @@ CREATE TABLE IF NOT EXISTS `transportextend` (
   `transportext_xprice` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`transportext_id`),
   KEY `transport_id` (`transport_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='运费模板扩展表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='运费模板扩展表';
 
 
 
@@ -3402,7 +3402,7 @@ CREATE TABLE IF NOT EXISTS `type` (
   `class_name` varchar(50) NOT NULL COMMENT '所属商品分类名称',
   PRIMARY KEY (`type_id`),
   KEY `class_id` (`class_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='商品类型表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品类型表';
 
 
 
@@ -3410,7 +3410,7 @@ DROP TABLE IF EXISTS `typebrand`;
 CREATE TABLE IF NOT EXISTS `typebrand` (
   `type_id` int(10) unsigned NOT NULL COMMENT '类型ID',
   `brand_id` int(10) unsigned NOT NULL COMMENT '品牌ID'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型与品牌对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品类型与品牌对应表';
 
 
 
@@ -3418,7 +3418,7 @@ DROP TABLE IF EXISTS `typespec`;
 CREATE TABLE IF NOT EXISTS `typespec` (
   `type_id` int(10) unsigned NOT NULL COMMENT '类型ID',
   `sp_id` int(10) unsigned NOT NULL COMMENT '规格ID'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品类型与规格对应表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商品类型与规格对应表';
 
 
 
@@ -3432,7 +3432,7 @@ CREATE TABLE IF NOT EXISTS `upload` (
   `item_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '信息ID',
   PRIMARY KEY (`upload_id`),
   KEY `upload_type` (`upload_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='上传文件表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='上传文件表';
 
 
 
@@ -3448,7 +3448,7 @@ CREATE TABLE IF NOT EXISTS `verify_code` (
   `verify_code_ip` varchar(15) NOT NULL COMMENT 'ip地址',
   PRIMARY KEY (`verify_code_id`),
   KEY `verify_code_type` (`verify_code_type`,`verify_code_user_type`,`verify_code_user_id`,`verify_code`,`verify_code_add_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='验证码表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='验证码表';
 
 
 
@@ -3473,7 +3473,7 @@ CREATE TABLE IF NOT EXISTS `voucher` (
   PRIMARY KEY (`voucher_id`),
   KEY `voucher_store_id` (`voucher_store_id`),
   KEY `voucher_owner_id` (`voucher_owner_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='代金券表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代金券表';
 
 
 
@@ -3484,7 +3484,7 @@ CREATE TABLE IF NOT EXISTS `voucherprice` (
   `voucherprice` int(11) NOT NULL COMMENT '代金券面值',
   `voucherprice_defaultpoints` int(11) NOT NULL DEFAULT '0' COMMENT '代金劵默认的兑换所需积分可以为0',
   PRIMARY KEY (`voucherprice_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='代金券面额表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代金券面额表';
 
 
 
@@ -3501,7 +3501,7 @@ CREATE TABLE IF NOT EXISTS `voucherquota` (
   `voucherquota_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1:可用 2:取消 3:结束',
   PRIMARY KEY (`voucherquota_id`),
   KEY `voucherquota_storeid` (`voucherquota_storeid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='代金券套餐表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代金券套餐表';
 
 
 
@@ -3533,7 +3533,7 @@ CREATE TABLE IF NOT EXISTS `vouchertemplate` (
   `vouchertemplate_if_private` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否私密 0:否 1:是',
   PRIMARY KEY (`vouchertemplate_id`),
   KEY `vouchertemplate_store_id` (`vouchertemplate_store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='代金券模版表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代金券模版表';
 
 
 
@@ -3545,7 +3545,7 @@ CREATE TABLE IF NOT EXISTS `vrgroupbuyclass` (
   `vrgclass_sort` tinyint(3) unsigned DEFAULT '255' COMMENT '虚拟抢购分类排序',
   PRIMARY KEY (`vrgclass_id`),
   KEY `vrgclass_parent_id` (`vrgclass_parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='虚拟抢购分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='虚拟抢购分类表';
 
 
 
@@ -3598,7 +3598,7 @@ CREATE TABLE IF NOT EXISTS `vrorder` (
   PRIMARY KEY (`order_id`),
   KEY `store_id` (`store_id`),
   KEY `buyer_id` (`buyer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='虚拟订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='虚拟订单表';
 
 
 
@@ -3620,7 +3620,7 @@ CREATE TABLE IF NOT EXISTS `vrordercode` (
   KEY `order_id` (`order_id`),
   KEY `store_id` (`store_id`),
   KEY `buyer_id` (`buyer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='兑换码表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='兑换码表';
 
 
 
@@ -3650,7 +3650,7 @@ CREATE TABLE IF NOT EXISTS `vrrefund` (
   KEY `order_id` (`order_id`),
   KEY `store_id` (`store_id`),
   KEY `buyer_id` (`buyer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='虚拟退款表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='虚拟退款表';
 
 DROP TABLE IF EXISTS `wholesale`;
 CREATE TABLE IF NOT EXISTS `wholesale` (
@@ -3669,7 +3669,7 @@ CREATE TABLE IF NOT EXISTS `wholesale` (
   PRIMARY KEY (`wholesale_id`),
   KEY `store_id` (`store_id`),
   KEY `goods_commonid` (`goods_commonid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='批发表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='批发表' AUTO_INCREMENT=1 ;
 
 
 DROP TABLE IF EXISTS `wholesalegoods`;
@@ -3690,7 +3690,7 @@ CREATE TABLE IF NOT EXISTS `wholesalegoods` (
   KEY `store_id` (`store_id`),
   KEY `goods_id` (`goods_id`),
   KEY `goods_commonid` (`goods_commonid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='批发商品表' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='批发商品表' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `wholesalequota`;
 CREATE TABLE IF NOT EXISTS `wholesalequota` (
@@ -3703,7 +3703,7 @@ CREATE TABLE IF NOT EXISTS `wholesalequota` (
   `wholesalequota_endtime` int(10) unsigned NOT NULL COMMENT '结束时间',
   PRIMARY KEY (`wholesalequota_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='批发套餐' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='批发套餐' AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `wxconfig`;
 CREATE TABLE IF NOT EXISTS `wxconfig` (
@@ -3722,7 +3722,7 @@ CREATE TABLE IF NOT EXISTS `wxconfig` (
   `ticket` varchar(250) DEFAULT NULL COMMENT 'ticket',
   `ticket_expires_in` int(15) DEFAULT NULL COMMENT 'ticket过期时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信配置表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信配置表';
 
 
 
@@ -3734,7 +3734,7 @@ CREATE TABLE IF NOT EXISTS `wxkeyword` (
   `type` varchar(30) DEFAULT 'TEXT' COMMENT '关键词操作类型',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信关键词表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信关键词表';
 
 
 
@@ -3748,7 +3748,7 @@ CREATE TABLE IF NOT EXISTS `wxmenu` (
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '255' COMMENT '排序',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信菜单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信菜单表';
 
 
 
@@ -3760,7 +3760,7 @@ CREATE TABLE IF NOT EXISTS `wxmsg` (
   `createtime` int(15) NOT NULL COMMENT '创建时间',
   `issend` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0未发送1成功2失败',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信推送表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信推送表';
 
 
 
@@ -3773,7 +3773,7 @@ CREATE TABLE IF NOT EXISTS `wxtext` (
   `updatetime` varchar(13) NOT NULL DEFAULT '' COMMENT '更新时间',
   `click` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '点击',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信文本回复表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='微信文本回复表';
 
 INSERT INTO `area` (`area_id`, `area_name`, `area_parent_id`, `area_sort`, `area_deep`, `area_region`, `area_initial`) VALUES
 (1, '北京市', 0, 255, 1, '华北','B'),
