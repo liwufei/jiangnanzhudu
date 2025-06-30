@@ -1,38 +1,25 @@
 <?php
+// +----------------------------------------------------------------------
+// | 模板设置
+// +----------------------------------------------------------------------
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | View Storage Paths
-    |--------------------------------------------------------------------------
-    |
-    | Most templating systems load templates from disk. Here you may specify
-    | an array of paths that should be checked for your views. Of course
-    | the usual Laravel view path has already been registered for you.
-    |
-    */
-
-    'paths' => [
-        resource_path('views'), // 默认模板路径
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Compiled View Path
-    |--------------------------------------------------------------------------
-    |
-    | This option determines where all the compiled Blade templates will be
-    | stored for your application. Typically, this is within the storage
-    | directory. However, as usual, you are free to change this value.
-    |
-    */
-
-    'compiled' => realpath(storage_path('framework/views')),
-
-    /*
-     * 设置视图缓存是否过期
-     */
-    'expires' => env('APP_ENV') !== 'production',
-
+    // 模板引擎类型使用Think
+    'type'          => 'Think',
+    // 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写 3 保持操作方法
+    'auto_rule'     => 1,
+    // 模板目录名
+    'view_dir_name' => 'view',
+    // 模板后缀
+    'view_suffix'   => 'html',
+    // 模板文件名分隔符
+    'view_depr'     => DIRECTORY_SEPARATOR,
+    // 模板引擎普通标签开始标记
+    'tpl_begin'     => '{',
+    // 模板引擎普通标签结束标记
+    'tpl_end'       => '}',
+    // 标签库标签开始标记
+    'taglib_begin'  => '{',
+    // 标签库标签结束标记
+    'taglib_end'    => '}',
 ];
