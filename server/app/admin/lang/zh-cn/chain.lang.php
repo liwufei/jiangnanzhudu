@@ -1,4 +1,5 @@
 <?php
+
 $lang['chain_function'] = '门店功能';
 $lang['chain_truename'] = '真实姓名';
 $lang['chain_index_help1'] = '提示：门店关闭后，被用户设置成收货地址的记录会被删除，请谨慎操作。';
@@ -27,6 +28,3 @@ $lang['chain_is_open'] = '门店是否开启';
 $lang['chain_verify'] = '等待审核';
 
 return $lang;
-
-
-

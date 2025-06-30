@@ -12,6 +12,7 @@ $lang['adv_code'] = '图片';
 $lang['adv_edit'] = '编辑';
 $lang['adv_pix'] = '像素';
 $lang['adv_edit_support'] = '系统支持的图片格式为:';
+
 /**
  * 广告
  */
@@ -38,6 +39,7 @@ $lang['ap_use'] = '已启用';
 $lang['ap_not_use'] = '未启用';
 $lang['ap_use_s'] = '启用';
 $lang['ap_not_use_s'] = '不启用';
+
 /**
  * 提示信息
  */
@@ -56,11 +58,10 @@ $lang['ap_change_succ'] = '广告位信息修改成功';
 $lang['ap_change_fail'] = '广告位信息修改失败';
 $lang['adv_change_succ'] = '广告信息修改成功';
 $lang['adv_change_fail'] = '广告信息修改失败';
-
-
 $lang['adv_bgcolor'] = '轮播图背景色';
-$lang['app_adv_type'] ='操作类型';
-$lang['app_adv_typedate'] ='操作值';
+$lang['app_adv_type'] = '操作类型';
+$lang['app_adv_typedate'] = '操作值';
+
 //操作类型
 $lang['appadv_adv_form_choose_type'] = '请选择';
 $lang['appadv_adv_form_goods'] = '商品';
@@ -68,9 +69,9 @@ $lang['appadv_adv_form_store'] = '店铺';
 $lang['appadv_adv_form_groupbuy'] = '抢购活动';
 $lang['appadv_adv_form_article'] = '文章';
 $lang['appadv_adv_form_url'] = '链接';
-$lang['appadv_adv_form_type'] ='操作类型一共四种，对应点击以后的操作';
+$lang['appadv_adv_form_type'] = '操作类型一共四种，对应点击以后的操作';
 $lang['appadv_adv_form_goods_type'] = '商品编号会跳转到指定的商品详细页面，输入框填写商品编号。';
-$lang['appadv_adv_form_store_type'] ='店铺编号会跳转到指定的店铺页面，输入框填写店铺编号';
+$lang['appadv_adv_form_store_type'] = '店铺编号会跳转到指定的店铺页面，输入框填写店铺编号';
 $lang['appadv_adv_form_groupbuy_type'] = '抢购编号会跳转到指定的抢购活动，输入框填写抢购编号。';
 $lang['appadv_adv_form_article_type'] = '文章编号会跳转到指定文章内容，输入框填写文章编号。';
 $lang['appadv_adv_form_url_type'] = '直接跳转到指定页面，输入框填写绝对链接地址。';

@@ -9,5 +9,3 @@ $lang['feedback_index_from'] = '来自';
 $lang['feedback_index_hlpe1'] = '用户的反馈';
 
 return $lang;
-
-?>

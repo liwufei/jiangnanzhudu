@@ -31,5 +31,3 @@ $lang['edit_consulttype'] = '编辑咨询类型';
 $lang['del_consulttype'] = '删除咨询类型';
 
 return $lang;
-
-        

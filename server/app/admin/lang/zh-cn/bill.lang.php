@@ -83,6 +83,7 @@ $lang['bill_ob_vr_order_return_totals'] = '虚拟退款金额';
 $lang['bill_ob_vr_commis_totals'] = '虚拟佣金金额';
 $lang['bill_ob_vr_commis_return_totals'] = '虚拟退还佣金';
 $lang['bill_ob_vr_inviter_totals'] = '虚拟分销佣金';
+
 /**
  * 日志记录
  */

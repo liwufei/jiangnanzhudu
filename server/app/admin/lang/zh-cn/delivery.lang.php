@@ -26,6 +26,3 @@ $lang['delivery_set_express'] = '现在去设置自提服务站使用的快递�
 $lang['delivery_verify'] = '等待审核';
 
 return $lang;
-
-
-

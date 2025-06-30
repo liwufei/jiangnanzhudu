@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 导航菜单
  */
@@ -10,18 +11,17 @@ $lang['complain_finish_list'] = '已关闭';
 $lang['complain_subject_list'] = '投诉主题';
 
 $lang['ds_processed'] = '待处理';
+
 /**
  * 导航菜单
  */
 $lang['complain_setting'] = '投诉设置';
-
 $lang['complain_state_new'] = '新投诉';
 $lang['complain_state_handle'] = '待仲裁';
 $lang['complain_state_appeal'] = '待申诉';
 $lang['complain_state_talk'] = '对话中';
 $lang['complain_state_finish'] = '已关闭';
 $lang['complain_subject_list'] = '投诉主题';
-
 $lang['complain_pic'] = '图片';
 $lang['complain_pic_none'] = '暂无图片';
 $lang['complain_message'] = '投诉信息';
@@ -65,8 +65,8 @@ $lang['order_state_verify'] = '已确认';
 $lang['complain_time_limit'] = '投诉时效';
 $lang['complain_time_limit_desc'] = '单位为天，订单完成后开始计算，多少天内可以发起投诉';
 
-$lang['refund_message']	= '退款信息';
-$lang['refund_order_refund']	= '已确认退款金额';
+$lang['refund_message']    = '退款信息';
+$lang['refund_order_refund']    = '已确认退款金额';
 
 /**
  * 提示信息
@@ -98,7 +98,6 @@ $lang['complaints_success'] = '投诉成功';
 $lang['complaints_success_confirm'] = '投诉成功,待管理员确认退款';
 $lang['final_handle_message_error'] = '处理意见不能为空';
 
-
 /**
  * 文本
  */
@@ -108,9 +107,9 @@ $lang['complain_text_say'] = '说';
 $lang['complain_text_verify'] = '审核';
 $lang['complain_text_close'] = '关闭投诉';
 $lang['complain_text_forbit'] = '屏蔽';
-$lang['complain_help1']='订单在投诉时效内，买家可以对订单发起投诉，投诉主题由管理员在后台统一设置';
-$lang['complain_help2']='投诉时效可在投诉设置处进行设置';
-$lang['complain_help3']='点击详细，可进行投诉审核。审核完成后，被投诉店铺可进行申诉。申诉成功后，投诉双方进行对话，最后由后台管理员进行仲裁操作';
+$lang['complain_help1'] = '订单在投诉时效内，买家可以对订单发起投诉，投诉主题由管理员在后台统一设置';
+$lang['complain_help2'] = '投诉时效可在投诉设置处进行设置';
+$lang['complain_help3'] = '点击详细，可进行投诉审核。审核完成后，被投诉店铺可进行申诉。申诉成功后，投诉双方进行对话，最后由后台管理员进行仲裁操作';
 //
 $lang['complain_order_confirm_tips'] = '注：下表中订单商品退款在处理中的或已经确认，不能再次退款。';
 $lang['complain_refund_amount'] = '退款金额';

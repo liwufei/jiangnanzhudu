@@ -24,4 +24,3 @@ return [
     'article_iframe_upload_fail' => '上传失败',
     'article_iframe_upload' => '上传',
 ];
-

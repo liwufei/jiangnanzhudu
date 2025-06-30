@@ -1,6 +1,5 @@
 <?php
 
-
 $lang['db_data_backup_help1'] = '数据备份功能根据您选择备份全部数据或指定数据，导出的数据文件可用“数据恢复”功能或者使用 phpMyAdmin 导入';
 $lang['db_data_backup_help2'] = '建议定期备份数据库，以避免数据丢失';
 
@@ -43,31 +42,29 @@ $lang['db_restore_backup_time'] = '备份时间';
 $lang['db_restore_state'] = '状态';
 $lang['db_restore_restore'] = '恢复';
 
-
 $lang['backup_in_progress'] = '正在备份';
 $lang['restoring'] = '正在还原';
 $lang['optimization_table_succ'] = '优化表成功';
 $lang['optimization_repair_succ'] = '修复表成功';
 
-
 $lang['file_not_exist'] = '该文件不存在，可能是被删除';
 
-$lang['data_backup'] ='数据备份';
-$lang['data_restoration'] ='数据还原';
+$lang['data_backup'] = '数据备份';
+$lang['data_restoration'] = '数据还原';
 
-$lang['back_file_drop_success'] ='备份文件删除成功！';
-$lang['back_file_drop_fail'] ='备份文件删除失败，请检查权限！';
-$lang['please_repire_table'] ='请选择修复的表';
-$lang['please_select_repire_table'] ='请选择要优化的表';
-$lang['recover_success'] ='还原完成！';
-$lang['recover_error'] ='还原数据出错！';
-$lang['file_break_please_check'] ='备份文件可能已经损坏，请检查！';
+$lang['back_file_drop_success'] = '备份文件删除成功！';
+$lang['back_file_drop_fail'] = '备份文件删除失败，请检查权限！';
+$lang['please_repire_table'] = '请选择修复的表';
+$lang['please_select_repire_table'] = '请选择要优化的表';
+$lang['recover_success'] = '还原完成！';
+$lang['recover_error'] = '还原数据出错！';
+$lang['file_break_please_check'] = '备份文件可能已经损坏，请检查！';
 
-$lang['init_success'] ='初始化完成！';
-$lang['back_finish'] ='备份完成！';
-$lang['back_error'] ='备份出错！';
-$lang['init_error'] ='初始化失败，备份文件创建失败！';
-$lang['file_cannot_write'] ='备份目录不存在或不可写，请检查后重试！';
-$lang['file_conflict'] ='检测到有一个备份任务正在执行，请稍后再试！';
+$lang['init_success'] = '初始化完成！';
+$lang['back_finish'] = '备份完成！';
+$lang['back_error'] = '备份出错！';
+$lang['init_error'] = '初始化失败，备份文件创建失败！';
+$lang['file_cannot_write'] = '备份目录不存在或不可写，请检查后重试！';
+$lang['file_conflict'] = '检测到有一个备份任务正在执行，请稍后再试！';
 
 return $lang;

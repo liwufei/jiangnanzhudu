@@ -1,4 +1,5 @@
 <?php
+
 $lang['model_list'] = '模块列表';
 $lang['model_list_tips'] = '点击想要添加的模块';
 
@@ -30,9 +31,9 @@ $lang['theme_name'] = '主题名称';
 $lang['editable_page_name'] = '页面名称';
 $lang['apply_to'] = '应用到路径';
 $lang['editable_page_path_list'] = array(
-    ''=>'',
-    'index/index'=>'首页',
-    'activity/detail'=>'专题活动',
+    '' => '',
+    'index/index' => '首页',
+    'activity/detail' => '专题活动',
 );
 $lang['editable_page_path_tips'] = '';
 $lang['editable_page_item_id'] = '页面类型ID';
@@ -65,10 +66,9 @@ $lang['editable_page_client'] = '客户端';
 $lang['editable_page_model'] = '可编辑模块';
 $lang['mobile_page_setting'] = '手机端设置';
 
-
 $lang['ds_move_up'] = '上移';
 $lang['ds_move_down'] = '下移';
-$lang['add_model_notice']='你还没有添加模块';
+$lang['add_model_notice'] = '你还没有添加模块';
 $lang['buy_now'] = '立刻购买';
 
 return $lang;

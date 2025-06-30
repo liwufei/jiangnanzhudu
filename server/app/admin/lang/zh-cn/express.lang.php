@@ -12,8 +12,6 @@ $lang['express_letter_null'] = '首字母不规范';
 $lang['express_url_null'] = '网址不能为空';
 $lang['express_code_null'] = '快递公司编号不能为空';
 
-
 $lang['zt_express'] = '支持服务站配送';
 
 return $lang;
-?>

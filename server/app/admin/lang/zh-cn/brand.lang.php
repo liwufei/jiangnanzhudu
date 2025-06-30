@@ -14,6 +14,7 @@ $lang['brand_index_pic_sign'] = '品牌图片标识';
 $lang['brand_index_help1'] = '商家添加商品时可以选择商品所属品牌，用户可以选择品牌查询该品牌所属的商品';
 $lang['brand_index_help2'] = '被推荐的品牌，将在前台品牌推荐模块处显示';
 $lang['brand_index_help3'] = '品牌将按品牌分类分组，相同分类的品牌为一组';
+
 /**
  * 新增品牌
  */
@@ -24,6 +25,7 @@ $lang['brand_add_if_recommend'] = '是否推荐';
 $lang['brand_add_update_sort'] = '数字范围为0~255，数字越小越靠前';
 $lang['brand_add_name_exists'] = '该品牌名称已经存在了，请您换一个';
 $lang['brand_add_initial'] = '请填写首字母';
+
 /**
  * 品牌申请
  */

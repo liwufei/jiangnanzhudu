@@ -6,7 +6,6 @@ $lang['exp_brand'] = '品牌';
 $lang['exp_brand_cate'] = '类别';
 $lang['exp_brand_img'] = '标识图';
 
-
 //店铺
 $lang['exp_store'] = '店铺';
 $lang['exp_st_name'] = '店主账号';
@@ -118,4 +117,3 @@ $lang['exp_xn_refund_amount'] = '退款金额';
 $lang['exp_xn_refund'] = '虚拟';
 
 return $lang;
-

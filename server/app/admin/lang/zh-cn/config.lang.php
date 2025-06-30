@@ -1,4 +1,5 @@
 <?php
+
 $lang['config_business_licence'] = '营业执照';
 
 $lang['site_name'] = '网站名称';
@@ -12,11 +13,11 @@ $lang['email_set'] = '邮件设置';
 $lang['mobile_set'] = '短信平台设置';
 $lang['email_tpl'] = '其它模板';
 
-$lang['fixed_suspension_state']= '开启首页悬浮';
-$lang['fixed_suspension_img']= '首页悬浮图片';
-$lang['fixed_suspension_img_notice']= '首页悬浮图片，首次访问首页显示，最佳显示尺寸为800*400像素';
-$lang['fixed_suspension_url']= '悬浮图片地址';
-$lang['fixed_suspension_url_notice']= '首页悬浮图片地址 例如：https://www.baidu.com';
+$lang['fixed_suspension_state'] = '开启首页悬浮';
+$lang['fixed_suspension_img'] = '首页悬浮图片';
+$lang['fixed_suspension_img_notice'] = '首页悬浮图片，首次访问首页显示，最佳显示尺寸为800*400像素';
+$lang['fixed_suspension_url'] = '悬浮图片地址';
+$lang['fixed_suspension_url_notice'] = '首页悬浮图片地址 例如：https://www.baidu.com';
 
 $lang['web_set'] = '站点设置';
 $lang['dis_dump'] = '防灌水设置';
@@ -47,7 +48,6 @@ $lang['points_signin_isuse_notice'] = '积分功能以及签到送积分启用�
 $lang['points_signin'] = '签到积分';
 $lang['points_signin_cycle'] = '连续签到周期';
 $lang['points_signin_reward'] = '连续签到奖励';
-
 
 $lang['points_isuse_notice'] = '积分系统启用后，可设置会员的注册、登录、购买商品送一定的积分';
 $lang['mgdiscount_allow'] = '会员等级折扣';
@@ -94,10 +94,7 @@ $lang['front_storelogin'] = '店铺登录';
 $lang['front_goodsqa'] = '商品咨询';
 $lang['front_regist'] = '前台注册';
 
-
 $lang['default_img_wrong'] = '图片限于png,gif,jpeg,jpg格式';
-
-
 
 $lang['qq_isuse'] = 'QQ互联功能';
 $lang['qq_appid'] = '应用标识';
@@ -108,7 +105,6 @@ $lang['sina_isuse'] = '新浪微博登录功能';
 $lang['sina_wb_akey'] = '应用标识';
 $lang['sina_wb_skey'] = '应用密钥';
 $lang['sina_settings'] = '微博同步登录';
-
 
 $lang['points_isuse'] = '积分';
 $lang['points_isuse_open'] = '开启';
@@ -145,7 +141,6 @@ $lang['order_auto_receive_day_required'] = '收货时间地址必填';
 $lang['order_auto_cancel_day_required'] = '取消订单时间为必填';
 $lang['code_invalid_refund_required'] = '兑换码过期自动退款时间为必填';
 
-
 $lang['automatic_confirmation_receipt'] = '自动确认收货时间设置区间为';
 $lang['exchange_code_refunded_automatically'] = '兑换码过期自动退款时间设置区间为';
 $lang['numerical'] = '数值';
@@ -164,4 +159,3 @@ $lang['h5_force_redirect'] = '手机端强制跳转';
 $lang['h5_force_redirect_tips'] = '当用户用手机访问电脑端首页时，强制跳转到手机端首页';
 
 return $lang;
-?>
