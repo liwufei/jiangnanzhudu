@@ -1,28 +1,22 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 缓存
  */
-class Cache extends BaseModel {
+class Cache extends BaseModel
+{
     /**
      * @access public
      * @author csdeshang 
      * @param string $method
      * @return boolean
      */
-    public function call($method) {
+    public function call($method)
+    {
         $method = '_' . strtolower($method);
         if (method_exists($this, $method)) {
             return $this->$method();
@@ -37,7 +31,8 @@ class Cache extends BaseModel {
      * @author csdeshang 
      * @return array
      */
-    private function _config() {
+    private function _config()
+    {
         $result = Db::name('config')->select()->toArray();
         if (is_array($result)) {
             $list_config = array();
@@ -55,9 +50,9 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _goodsclassseo() {
-
-        $list = Db::name('goodsclass')->field('gc_id,gc_title,gc_keywords,gc_description')->where(array(array('gc_keywords','<>', '')))->select()->toArray();
+    private function _goodsclassseo()
+    {
+        $list = Db::name('goodsclass')->field('gc_id,gc_title,gc_keywords,gc_description')->where(array(array('gc_keywords', '<>', '')))->select()->toArray();
         if (!is_array($list))
             return null;
         $array = array();
@@ -80,14 +75,14 @@ class Cache extends BaseModel {
         return $array;
     }
 
-
     /**
      * 商城主要频道SEO
      * @access private
      * @author csdeshang
      * @return array
      */
-    private function _seo() {
+    private function _seo()
+    {
         $list = Db::name('seo')->select()->toArray();
         if (!is_array($list))
             return null;
@@ -104,7 +99,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _express() {
+    private function _express()
+    {
         $fields = 'express_id,express_name,express_state,express_code,express_letter,express_order,express_url';
         $list = Db::name('express')->field($fields)->order('express_order,express_letter')->where(array('express_state' => 1))->select()->toArray();
         if (!is_array($list))
@@ -122,7 +118,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _nav() {
+    private function _nav()
+    {
         $list = Db::name('navigation')->order('nav_sort')->select()->toArray();
         if (!is_array($list))
             return null;
@@ -135,11 +132,12 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _groupbuyprice() {
+    private function _groupbuyprice()
+    {
         $price = Db::name('groupbuypricerange')->order('gprange_start')->select()->toArray();
-        if (!is_array($price)){
+        if (!is_array($price)) {
             $price = array();
-        }else{
+        } else {
             $price = ds_change_arraykey($price, 'gprange_id');
         }
         return $price;
@@ -151,7 +149,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _classtag() {
+    private function _classtag()
+    {
         $field = 'gctag_id,gctag_name,gctag_value,gc_id,type_id';
         $list = Db::name('goodsclasstag')->field($field)->select()->toArray();
         if (!is_array($list))
@@ -165,7 +164,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _storeclass() {
+    private function _storeclass()
+    {
         $store_class_tmp = Db::name('storeclass')->order('storeclass_sort asc,storeclass_id asc')->select()->toArray();
         $store_class = array();
         if (is_array($store_class_tmp) && !empty($store_class_tmp)) {
@@ -182,7 +182,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _storegrade() {
+    private function _storegrade()
+    {
         $list = Db::name('storegrade')->select()->toArray();
         $array = array();
         foreach ((array) $list as $v) {
@@ -198,7 +199,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _storemsgtpl() {
+    private function _storemsgtpl()
+    {
         $list = model('storemsgtpl')->getStoremsgtplList(array());
         $array = array();
         foreach ((array) $list as $v) {
@@ -214,7 +216,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _membermsgtpl() {
+    private function _membermsgtpl()
+    {
         $list = model('membermsgtpl')->getMembermsgtplList(array());
         $array = array();
         foreach ((array) $list as $v) {
@@ -230,7 +233,8 @@ class Cache extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    private function _consulttype() {
+    private function _consulttype()
+    {
         $list = model('consulttype')->getConsulttypeList(array());
         $array = array();
         foreach ((array) $list as $val) {
@@ -240,6 +244,4 @@ class Cache extends BaseModel {
         unset($list);
         return $array;
     }
-
-
 }

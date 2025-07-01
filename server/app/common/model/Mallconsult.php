@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 客服咨询
  */
-class Mallconsult extends BaseModel {
+class Mallconsult extends BaseModel
+{
 
     public $page_info;
 
@@ -30,7 +22,8 @@ class Mallconsult extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getMallconsultList($condition, $field = '*', $pagesize = 0, $order = 'mallconsult_id desc') {
+    public function getMallconsultList($condition, $field = '*', $pagesize = 0, $order = 'mallconsult_id desc')
+    {
         if ($pagesize) {
             $res = Db::name('mallconsult')->where($condition)->field($field)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -47,7 +40,8 @@ class Mallconsult extends BaseModel {
      * @param type $condition 条件
      * @return int
      */
-    public function getMallconsultCount($condition) {
+    public function getMallconsultCount($condition)
+    {
         return Db::name('mallconsult')->where($condition)->count();
     }
 
@@ -59,7 +53,8 @@ class Mallconsult extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getMallconsultInfo($condition, $field = '*') {
+    public function getMallconsultInfo($condition, $field = '*')
+    {
         return Db::name('mallconsult')->where($condition)->field($field)->find();
     }
 
@@ -70,7 +65,8 @@ class Mallconsult extends BaseModel {
      * @param int $mallconsult_id ID编号
      * @return boolean|multitype:
      */
-    public function getMallconsultDetail($mallconsult_id) {
+    public function getMallconsultDetail($mallconsult_id)
+    {
         $consult_info = $this->getMallconsultInfo(array('mallconsult_id' => $mallconsult_id));
         if (empty($consult_info)) {
             return false;
@@ -87,7 +83,8 @@ class Mallconsult extends BaseModel {
      * @param array $insert 参数内容
      * @return bool
      */
-    public function addMallconsult($data) {
+    public function addMallconsult($data)
+    {
         $data['mallconsult_addtime'] = TIMESTAMP;
         return Db::name('mallconsult')->insertGetId($data);
     }
@@ -100,7 +97,8 @@ class Mallconsult extends BaseModel {
      * @param array $update 数据
      * @return boolean
      */
-    public function editMallconsult($condition, $update) {
+    public function editMallconsult($condition, $update)
+    {
         return Db::name('mallconsult')->where($condition)->update($update);
     }
 
@@ -111,7 +109,8 @@ class Mallconsult extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function delMallconsult($condition) {
+    public function delMallconsult($condition)
+    {
         return Db::name('mallconsult')->where($condition)->delete();
     }
 }

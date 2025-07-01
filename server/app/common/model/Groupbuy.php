@@ -1,24 +1,14 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 团购
  */
 class Groupbuy extends BaseModel
 {
-
     const GROUPBUY_STATE_REVIEW = 10;
     const GROUPBUY_STATE_NORMAL = 20;
     const GROUPBUY_STATE_REVIEW_FAIL = 30;
@@ -26,11 +16,13 @@ class Groupbuy extends BaseModel
     const GROUPBUY_STATE_CLOSE = 32;
     public $page_info;
     private $groupbuy_state_array = array(
-        0 => '全部', self::GROUPBUY_STATE_REVIEW => '审核中', self::GROUPBUY_STATE_NORMAL => '正常',
-        self::GROUPBUY_STATE_CLOSE => '已结束', self::GROUPBUY_STATE_REVIEW_FAIL => '审核失败',
+        0 => '全部',
+        self::GROUPBUY_STATE_REVIEW => '审核中',
+        self::GROUPBUY_STATE_NORMAL => '正常',
+        self::GROUPBUY_STATE_CLOSE => '已结束',
+        self::GROUPBUY_STATE_REVIEW_FAIL => '审核失败',
         self::GROUPBUY_STATE_CANCEL => '管理员关闭',
     );
-
 
     /**
      * 获取团购商品列表
@@ -41,19 +33,19 @@ class Groupbuy extends BaseModel
      * @param str $order 排序
      * @param str $field 字段
      * @return array
-     */        
+     */
     public function getGroupbuyGoodsListAndGoodsList($condition, $pagesize = null, $order = '', $field = '*')
     {
-        if($pagesize){
-            $result = Db::name('groupbuy')->alias('b')->field($field)->join('goods g', 'b.goods_id=g.goods_id', 'RIGHT')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$result;
+        if ($pagesize) {
+            $result = Db::name('groupbuy')->alias('b')->field($field)->join('goods g', 'b.goods_id=g.goods_id', 'RIGHT')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $result;
             $result = $result->items();
-        }else{
+        } else {
             $result = Db::name('groupbuy')->alias('b')->field($field)->join('goods g', 'b.goods_id=g.goods_id', 'RIGHT')->where($condition)->order($order)->select()->toArray();
         }
         return $result;
-
     }
+
     /**
      * 获取团购商品
      * @access public
@@ -73,7 +65,6 @@ class Groupbuy extends BaseModel
             for ($i = 0; $i < count($groupbuy_goods_id_list); $i++) {
 
                 $groupbuy_goods_id_list[$i] = $groupbuy_goods_id_list[$i]['goods_id'];
-
             }
         }
 
@@ -93,14 +84,13 @@ class Groupbuy extends BaseModel
      */
     public function getGroupbuyList($condition, $pagesize = null, $order = 'groupbuy_state asc', $field = '*')
     {
-        if($pagesize){
-            $result= Db::name('groupbuy')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$result;
+        if ($pagesize) {
+            $result = Db::name('groupbuy')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $result;
             return $result->items();
         } else {
             return Db::name('groupbuy')->field($field)->where($condition)->order($order)->select()->toArray();
         }
-
     }
 
     /**
@@ -113,7 +103,6 @@ class Groupbuy extends BaseModel
      * @param string $field 所需字段
      * @param string $limit 限制
      * @return array 抢购列表
-     *
      */
     public function getGroupbuyExtendList($condition, $pagesize = null, $order = 'groupbuy_state asc', $field = '*', $limit = 0)
     {
@@ -135,7 +124,7 @@ class Groupbuy extends BaseModel
      */
     public function getGroupbuyAvailableList($condition)
     {
-        $condition[] = array('groupbuy_state','in', array(self::GROUPBUY_STATE_REVIEW, self::GROUPBUY_STATE_NORMAL));
+        $condition[] = array('groupbuy_state', 'in', array(self::GROUPBUY_STATE_REVIEW, self::GROUPBUY_STATE_NORMAL));
         return $this->getGroupbuyExtendList($condition);
     }
 
@@ -160,13 +149,12 @@ class Groupbuy extends BaseModel
      * @param string $order 排序
      * @param string $field 所需字段
      * @return array 抢购列表
-     *
      */
     public function getGroupbuyOnlineList($condition, $pagesize = null, $order = 'groupbuy_state asc', $field = '*')
     {
-        $condition[] = array('groupbuy_state','=',self::GROUPBUY_STATE_NORMAL);
-        $condition[] = array('groupbuy_starttime','<',TIMESTAMP);
-        $condition[] = array('groupbuy_endtime','>',TIMESTAMP);
+        $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_NORMAL);
+        $condition[] = array('groupbuy_starttime', '<', TIMESTAMP);
+        $condition[] = array('groupbuy_endtime', '>', TIMESTAMP);
         return $this->getGroupbuyExtendList($condition, $pagesize, $order, $field);
     }
 
@@ -179,12 +167,11 @@ class Groupbuy extends BaseModel
      * @param string $order 排序
      * @param string $field 所需字段
      * @return array 抢购列表
-     *
      */
     public function getGroupbuySoonList($condition, $pagesize = null, $order = 'groupbuy_state asc', $field = '*')
     {
-        $condition[]=array('groupbuy_state','=',self::GROUPBUY_STATE_NORMAL);
-        $condition[]=array('groupbuy_starttime','>', TIMESTAMP);
+        $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_NORMAL);
+        $condition[] = array('groupbuy_starttime', '>', TIMESTAMP);
         return $this->getGroupbuyExtendList($condition, $pagesize, $order, $field);
     }
 
@@ -197,11 +184,10 @@ class Groupbuy extends BaseModel
      * @param string $order 排序
      * @param string $field 所需字段
      * @return array 抢购列表
-     *
      */
     public function getGroupbuyHistoryList($condition, $pagesize = null, $order = 'groupbuy_state asc', $field = '*')
     {
-        $condition[]=array('groupbuy_state','=',self::GROUPBUY_STATE_CLOSE);
+        $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_CLOSE);
         return $this->getGroupbuyExtendList($condition, $pagesize, $order, $field);
     }
 
@@ -215,9 +201,9 @@ class Groupbuy extends BaseModel
     public function getGroupbuyCommendedList($limit = 4)
     {
         $condition = array();
-        $condition[] = array('groupbuy_state','=',self::GROUPBUY_STATE_NORMAL);
-        $condition[] = array('groupbuy_starttime','<',TIMESTAMP);
-        $condition[] = array('groupbuy_endtime','>',TIMESTAMP);
+        $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_NORMAL);
+        $condition[] = array('groupbuy_starttime', '<', TIMESTAMP);
+        $condition[] = array('groupbuy_endtime', '>', TIMESTAMP);
         return $this->getGroupbuyExtendList($condition, null, 'groupbuy_recommended desc', '*', $limit);
     }
 
@@ -246,9 +232,9 @@ class Groupbuy extends BaseModel
      */
     public function getGroupbuyOnlineInfo($condition)
     {
-        $condition[] = array('groupbuy_state','=',self::GROUPBUY_STATE_NORMAL);
-        $condition[] = array('groupbuy_starttime','<',TIMESTAMP);
-        $condition[] = array('groupbuy_endtime','>',TIMESTAMP);
+        $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_NORMAL);
+        $condition[] = array('groupbuy_starttime', '<', TIMESTAMP);
+        $condition[] = array('groupbuy_endtime', '>', TIMESTAMP);
         $groupbuy_info = Db::name('groupbuy')->where($condition)->find();
         return $groupbuy_info;
     }
@@ -268,13 +254,12 @@ class Groupbuy extends BaseModel
         }
 
         $condition = array();
-        $condition[] = array('groupbuy_id','=',$groupbuy_id);
+        $condition[] = array('groupbuy_id', '=', $groupbuy_id);
         $groupbuy_info = $this->getGroupbuyInfo($condition);
 
         if ($store_id > 0 && $groupbuy_info['store_id'] != $store_id) {
             return null;
-        }
-        else {
+        } else {
             return $groupbuy_info;
         }
     }
@@ -291,11 +276,11 @@ class Groupbuy extends BaseModel
         $info = $this->_rGoodsGroupbuyCache($goods_commonid);
         if (empty($info)) {
             $condition = array();
-            $condition[] = array('groupbuy_state','=',self::GROUPBUY_STATE_NORMAL);
-            $condition[] = array('groupbuy_endtime','>',TIMESTAMP);
-            $condition[] = array('goods_commonid','=',$goods_commonid);
+            $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_NORMAL);
+            $condition[] = array('groupbuy_endtime', '>', TIMESTAMP);
+            $condition[] = array('goods_commonid', '=', $goods_commonid);
             $groupbuy_goods_list = $this->getGroupbuyExtendList($condition, null, 'groupbuy_starttime asc', '*', 1);
-            $info['info'] = isset($groupbuy_goods_list[0])?serialize($groupbuy_goods_list[0]):serialize("");
+            $info['info'] = isset($groupbuy_goods_list[0]) ? serialize($groupbuy_goods_list[0]) : serialize("");
             $this->_wGoodsGroupbuyCache($goods_commonid, $info);
         }
         $groupbuy_goods_info = unserialize($info['info']);
@@ -327,10 +312,10 @@ class Groupbuy extends BaseModel
     private function _getGroupbuyListByGoodsCommon($goods_commonid_string)
     {
         $condition = array();
-        $condition[] = array('groupbuy_state','=',self::GROUPBUY_STATE_NORMAL);
-        $condition[] = array('groupbuy_starttime','<',TIMESTAMP);
-        $condition[] = array('groupbuy_endtime','>',TIMESTAMP);
-        $condition[] = array('goods_commonid','in',$goods_commonid_string);
+        $condition[] = array('groupbuy_state', '=', self::GROUPBUY_STATE_NORMAL);
+        $condition[] = array('groupbuy_starttime', '<', TIMESTAMP);
+        $condition[] = array('groupbuy_endtime', '>', TIMESTAMP);
+        $condition[] = array('goods_commonid', 'in', $goods_commonid_string);
         $xianshigoods_list = $this->getGroupbuyExtendList($condition, null, 'groupbuy_id desc', '*');
         return $xianshigoods_list;
     }
@@ -355,7 +340,6 @@ class Groupbuy extends BaseModel
      */
     public function addGroupbuy($data)
     {
-
         $data['groupbuy_state'] = self::GROUPBUY_STATE_REVIEW;
         $data['groupbuy_recommended'] = 0;
         $result = Db::name('groupbuy')->insertGetId($data);
@@ -365,8 +349,7 @@ class Groupbuy extends BaseModel
             // 更新商品抢购缓存
             $this->_dGoodsGroupbuyCache($data['goods_commonid']);
             return $result;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -380,7 +363,7 @@ class Groupbuy extends BaseModel
     private function _lockGoods($goods_commonid)
     {
         $condition = array();
-        $condition[] = array('goods_commonid','=',$goods_commonid);
+        $condition[] = array('goods_commonid', '=', $goods_commonid);
 
         $goods_model = model('goods');
         $goods_model->editGoodsCommonLock($condition);
@@ -399,7 +382,7 @@ class Groupbuy extends BaseModel
         $goods_model->editGoodsCommonUnlock(array('goods_commonid' => $goods_commonid));
         $goods_model->editGoodsUnlock(array('goods_commonid' => $goods_commonid));
         // 添加对列 更新商品促销价格
-        model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'updateGoodsPromotionPriceByGoodsCommonId','cron_value'=>serialize($goods_commonid)));
+        model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'updateGoodsPromotionPriceByGoodsCommonId', 'cron_value' => serialize($goods_commonid)));
     }
 
     /**
@@ -435,7 +418,7 @@ class Groupbuy extends BaseModel
     public function reviewPassGroupbuy($groupbuy_id)
     {
         $condition = array();
-        $condition[] = array('groupbuy_id','=',$groupbuy_id);
+        $condition[] = array('groupbuy_id', '=', $groupbuy_id);
 
         $update = array();
         $update['groupbuy_state'] = self::GROUPBUY_STATE_NORMAL;
@@ -456,7 +439,7 @@ class Groupbuy extends BaseModel
         $groupbuy_info = $this->getGroupbuyInfoByID($groupbuy_id);
 
         $condition = array();
-        $condition[] = array('groupbuy_id','=',$groupbuy_id);
+        $condition[] = array('groupbuy_id', '=', $groupbuy_id);
 
         $update = array();
         $update['groupbuy_state'] = self::GROUPBUY_STATE_REVIEW_FAIL;
@@ -481,7 +464,7 @@ class Groupbuy extends BaseModel
         $groupbuy_info = $this->getGroupbuyInfoByID($groupbuy_id);
 
         $condition = array();
-        $condition[] = array('groupbuy_id','=',$groupbuy_id);
+        $condition[] = array('groupbuy_id', '=', $groupbuy_id);
 
         $update = array();
         $update['groupbuy_state'] = self::GROUPBUY_STATE_CANCEL;
@@ -502,8 +485,8 @@ class Groupbuy extends BaseModel
      */
     public function editExpireGroupbuy($condition)
     {
-        $condition[] = array('groupbuy_endtime','<', TIMESTAMP);
-        $condition[] = array('groupbuy_state','in', array(self::GROUPBUY_STATE_REVIEW, self::GROUPBUY_STATE_NORMAL));
+        $condition[] = array('groupbuy_endtime', '<', TIMESTAMP);
+        $condition[] = array('groupbuy_state', 'in', array(self::GROUPBUY_STATE_REVIEW, self::GROUPBUY_STATE_NORMAL));
 
         $expire_groupbuy_list = $this->getGroupbuyExtendList($condition, null);
         if (!empty($expire_groupbuy_list)) {
@@ -512,7 +495,7 @@ class Groupbuy extends BaseModel
                 $goodscommonid_array[] = $val['goods_commonid'];
             }
             // 更新商品促销价格，需要考虑抢购是否在进行中
-            model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'updateGoodsPromotionPriceByGoodsCommonId','cron_value'=>serialize($goodscommonid_array)));
+            model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'updateGoodsPromotionPriceByGoodsCommonId', 'cron_value' => serialize($goodscommonid_array)));
         }
         $groupbuy_id_string = '';
         if (!empty($expire_groupbuy_list)) {
@@ -525,7 +508,7 @@ class Groupbuy extends BaseModel
             $update = array();
             $update['groupbuy_state'] = self::GROUPBUY_STATE_CLOSE;
             $condition = array();
-            $condition[] = array('groupbuy_id','in', rtrim($groupbuy_id_string, ','));
+            $condition[] = array('groupbuy_id', 'in', rtrim($groupbuy_id_string, ','));
             $result = $this->editGroupbuy($update, $condition);
             if ($result) {
                 foreach ($expire_groupbuy_list as $value) {
@@ -556,10 +539,10 @@ class Groupbuy extends BaseModel
                 $this->_dGoodsGroupbuyCache($value['goods_commonid']);
 
                 //删除图片
-                ds_del_pic(ATTACH_GROUPBUY.'/'.$value['store_id'], $value['groupbuy_image']);
+                ds_del_pic(ATTACH_GROUPBUY . '/' . $value['store_id'], $value['groupbuy_image']);
 
                 if (!empty($value['groupbuy_image1'])) {
-                    ds_del_pic(ATTACH_GROUPBUY.'/'.$value['store_id'], $value['groupbuy_image1']);
+                    ds_del_pic(ATTACH_GROUPBUY . '/' . $value['store_id'], $value['groupbuy_image1']);
                 }
             }
         }
@@ -575,8 +558,8 @@ class Groupbuy extends BaseModel
      */
     public function getGroupbuyExtendInfo($groupbuy_info)
     {
-        $groupbuy_info['groupbuy_url'] = (string)url('home/Showgroupbuy/groupbuy_detail',['group_id'=>$groupbuy_info['groupbuy_id']]);
-        $groupbuy_info['goods_url'] = (string)url('home/Goods/index',['goods_id'=>$groupbuy_info['goods_id']]);
+        $groupbuy_info['groupbuy_url'] = (string)url('home/Showgroupbuy/groupbuy_detail', ['group_id' => $groupbuy_info['groupbuy_id']]);
+        $groupbuy_info['goods_url'] = (string)url('home/Goods/index', ['goods_id' => $groupbuy_info['goods_id']]);
         $groupbuy_info['start_time_text'] = date('Y-m-d H:i', $groupbuy_info['groupbuy_starttime']);
         $groupbuy_info['end_time_text'] = date('Y-m-d H:i', $groupbuy_info['groupbuy_endtime']);
         if (empty($groupbuy_info['groupbuy_image1'])) {
@@ -584,25 +567,21 @@ class Groupbuy extends BaseModel
         }
         if ($groupbuy_info['groupbuy_starttime'] > TIMESTAMP && $groupbuy_info['groupbuy_state'] == self::GROUPBUY_STATE_NORMAL) {
             $groupbuy_info['groupbuy_state_text'] = '正常(未开始)';
-        }
-        elseif ($groupbuy_info['groupbuy_endtime'] < TIMESTAMP && $groupbuy_info['groupbuy_state'] == self::GROUPBUY_STATE_NORMAL) {
+        } elseif ($groupbuy_info['groupbuy_endtime'] < TIMESTAMP && $groupbuy_info['groupbuy_state'] == self::GROUPBUY_STATE_NORMAL) {
             $groupbuy_info['groupbuy_state_text'] = '已结束';
-        }
-        else {
+        } else {
             $groupbuy_info['groupbuy_state_text'] = $this->groupbuy_state_array[$groupbuy_info['groupbuy_state']];
         }
 
         if ($groupbuy_info['groupbuy_state'] == self::GROUPBUY_STATE_REVIEW) {
             $groupbuy_info['reviewable'] = 1;
-        }
-        else {
+        } else {
             $groupbuy_info['reviewable'] = 0;
         }
 
         if ($groupbuy_info['groupbuy_state'] == self::GROUPBUY_STATE_NORMAL) {
             $groupbuy_info['cancelable'] = 1;
-        }
-        else {
+        } else {
             $groupbuy_info['cancelable'] = 0;
         }
 
@@ -623,12 +602,10 @@ class Groupbuy extends BaseModel
                     $groupbuy_info['button_text'] = '未开始';
                     $groupbuy_info['count_down_text'] = '距抢购开始';
                     $groupbuy_info['count_down'] = $groupbuy_info['groupbuy_starttime'] - TIMESTAMP;
-                }
-                elseif ($groupbuy_info['groupbuy_endtime'] < TIMESTAMP) {
+                } elseif ($groupbuy_info['groupbuy_endtime'] < TIMESTAMP) {
                     $groupbuy_info['state_flag'] = 'close';
                     $groupbuy_info['button_text'] = '已结束';
-                }
-                else {
+                } else {
                     $groupbuy_info['state_flag'] = 'buy-now';
                     $groupbuy_info['button_text'] = '我要抢';
                     $groupbuy_info['count_down_text'] = '距抢购结束';
@@ -698,7 +675,6 @@ class Groupbuy extends BaseModel
         return $this->getCachedData('groupbuy_vr_classes');
     }
 
-
     /**
      * 删除缓存
      * @access public
@@ -720,7 +696,6 @@ class Groupbuy extends BaseModel
      */
     protected function getCachedData($key)
     {
-
         $data = @$this->cachedData[$key];
 
         // 属性中存在则返回
@@ -747,6 +722,7 @@ class Groupbuy extends BaseModel
 
         return $data;
     }
+
     /**
      * 获取缓存数据查询
      * @access public
@@ -814,7 +790,4 @@ class Groupbuy extends BaseModel
      * @return array
      */
     protected $cachedData;
-
 }
-
-?>

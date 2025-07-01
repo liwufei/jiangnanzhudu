@@ -4,13 +4,14 @@ namespace app\common\logic;
 
 use think\facade\Db;
 
-class Predeposit {
+class Predeposit
+{
 
     /**
      * 自动转账
      */
-    function pdcash_pay_auto($pdc_id) {
-
+    function pdcash_pay_auto($pdc_id)
+    {
         $predeposit_model = model('predeposit');
         $condition = array();
         $condition[] = array('pdc_id', '=', $pdc_id);
@@ -34,7 +35,7 @@ class Predeposit {
                     }
                     $pdc_trade_sn = $result['data']['pdc_trade_sn'];
                     return $this->pdcash_pay_auto_1($info, $payment_code, $pdc_trade_sn);
-//                    $result = $predeposit_model->editPdcash(array('pdc_payment_code' => $payment_code, 'pdc_trade_sn' => $result['data']['pdc_trade_sn']), array('pdc_id' => $id));
+                    // $result = $predeposit_model->editPdcash(array('pdc_payment_code' => $payment_code, 'pdc_trade_sn' => $result['data']['pdc_trade_sn']), array('pdc_id' => $id));
                     if (!$result) {
                         return ds_callback(false, '支付宝自动支付失败');
                     }
@@ -55,20 +56,20 @@ class Predeposit {
                     }
                     $pdc_trade_sn = $result['data']['pdc_trade_sn'];
                     return $this->pdcash_pay_auto_1($info, $payment_code, $pdc_trade_sn);
-//                        $result = $predeposit_model->editPdcash(array('pdc_payment_code'=>$payment_code,'pdc_trade_sn'=>$result['data']['pdc_trade_sn']), array('pdc_id'=>$id));
+                    // $result = $predeposit_model->editPdcash(array('pdc_payment_code'=>$payment_code,'pdc_trade_sn'=>$result['data']['pdc_trade_sn']), array('pdc_id'=>$id));
                     if (!$result) {
                         return ds_callback(false, '微信自动支付失败');
                     }
                 }
             }
-        }else{
+        } else {
             return ds_callback(false, '系统自动支付失败');
         }
     }
 
     // 自动转账完成，系统进行自动扣款，修改状态
-    function pdcash_pay_auto_1($info, $payment_code, $pdc_trade_sn) {
-
+    function pdcash_pay_auto_1($info, $payment_code, $pdc_trade_sn)
+    {
         Db::startTrans();
         try {
             //查询用户信息
@@ -97,7 +98,7 @@ class Predeposit {
             $condition[] = array('pdc_id', '=', $info['pdc_id']);
 
             $result = $predeposit_model->editPdcash($update, $condition);
-            
+
             return ds_callback(true, '系统自动支付成功');
 
             Db::commit();

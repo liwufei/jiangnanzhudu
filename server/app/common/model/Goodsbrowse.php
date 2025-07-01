@@ -1,22 +1,14 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 浏览过的商品
  */
-class Goodsbrowse extends BaseModel {
+class Goodsbrowse extends BaseModel
+{
 
     public $page_info;
 
@@ -28,12 +20,13 @@ class Goodsbrowse extends BaseModel {
      * @param int $shownum 查询的条数，默认0则为返回全部
      * @return array
      */
-    public function getViewedGoodsList($member_id = 0, $shownum = 0) {
+    public function getViewedGoodsList($member_id = 0, $shownum = 0)
+    {
         $shownum = ($t = intval($shownum)) > 0 ? $t : 0;
         $browselist = array();
         //如果会员ID存在，则读取数据库浏览历史，或者memcache
         if ($member_id > 0) {
-            if (!config('ds_config.cache_open')) {//查询数据库
+            if (!config('ds_config.cache_open')) { //查询数据库
                 $browselist_tmp = Db::name('goodsbrowse')->where(array('member_id' => $member_id))->order('goodsbrowse_time desc')->limit($shownum)->select()->toArray();
                 if (!empty($browselist_tmp)) {
                     foreach ($browselist_tmp as $k => $v) {
@@ -91,7 +84,7 @@ class Goodsbrowse extends BaseModel {
         //查询商品数据
         $browselist_new = array();
         if ($browselist) {
-            $goods_list_tmp = model('goods')->getGoodsList(array(array('goods_id','in', array_keys($browselist))), 'goods_id, goods_name, goods_advword, goods_promotion_price, goods_promotion_type, goods_marketprice, goods_image, store_id, gc_id, gc_id_1, gc_id_2, gc_id_3');
+            $goods_list_tmp = model('goods')->getGoodsList(array(array('goods_id', 'in', array_keys($browselist))), 'goods_id, goods_name, goods_advword, goods_promotion_price, goods_promotion_type, goods_marketprice, goods_image, store_id, gc_id, gc_id_1, gc_id_2, gc_id_3');
             $goods_list = array();
             foreach ((array) $goods_list_tmp as $v) {
                 $goods_list[$v['goods_id']] = $v;
@@ -126,7 +119,8 @@ class Goodsbrowse extends BaseModel {
      * @param array $where 检索条件
      * @return array
      */
-    public function delGoodsbrowse($where) {
+    public function delGoodsbrowse($where)
+    {
         return Db::name('goodsbrowse')->where($where)->delete();
     }
 
@@ -137,7 +131,8 @@ class Goodsbrowse extends BaseModel {
      * @param array $insert_arr 插入数组数据
      * @return array
      */
-    public function addGoodsbrowse($insert_arr) {
+    public function addGoodsbrowse($insert_arr)
+    {
         Db::name('goodsbrowse')->insert($insert_arr);
     }
 
@@ -148,7 +143,8 @@ class Goodsbrowse extends BaseModel {
      * @param array $insert_arr 插入数组数据
      * @return array
      */
-    public function addGoodsbrowseAll($insert_arr) {
+    public function addGoodsbrowseAll($insert_arr)
+    {
         Db::name('goodsbrowse')->insertAll($insert_arr);
     }
 
@@ -161,9 +157,10 @@ class Goodsbrowse extends BaseModel {
      * @param type $order 排序
      * @return array
      */
-    public function getOneGoodsbrowse($where, $field = '*', $order = '') {
+    public function getOneGoodsbrowse($where, $field = '*', $order = '')
+    {
         $result = Db::name('goodsbrowse')->field($field)->where($where)->order($order)->find();
-		return $result;
+        return $result;
     }
 
     /**
@@ -177,7 +174,8 @@ class Goodsbrowse extends BaseModel {
      * @param type $group 分组
      * @return array
      */
-    public function getGoodsbrowseList($where, $field = '*', $limit = 0, $order = '', $group = '') {
+    public function getGoodsbrowseList($where, $field = '*', $limit = 0, $order = '', $group = '')
+    {
         return Db::name('goodsbrowse')->field($field)->where($where)->limit($limit)->order($order)->group($group)->select()->toArray();
     }
 
@@ -189,13 +187,14 @@ class Goodsbrowse extends BaseModel {
      * @param array $shownum 显示数量
      * @return array
      */
-    public function getGuessLikeGoods($member_id = 0, $shownum = 0) {
+    public function getGuessLikeGoods($member_id = 0, $shownum = 0)
+    {
         $shownum = ($t = intval($shownum)) > 0 ? $t : 0;
         $browseclass_arr = array(); //浏览历史商品分类数组
         //如果会员ID存在，则读取数据库浏览历史，或者memcache
         if ($member_id > 0) {
-            if (!config('ds_config.cache_open')) {//查询数据库
-                $browseclass_list = $this->getGoodsbrowseList(array('member_id' => $member_id), 'gc_id',20, '', 'gc_id'); //随机抽取20条信息
+            if (!config('ds_config.cache_open')) { //查询数据库
+                $browseclass_list = $this->getGoodsbrowseList(array('member_id' => $member_id), 'gc_id', 20, '', 'gc_id'); //随机抽取20条信息
                 foreach ((array) $browseclass_list as $k => $v) {
                     $browseclass_arr[] = $v['gc_id'];
                 }
@@ -218,7 +217,7 @@ class Goodsbrowse extends BaseModel {
                     //获得缓存的浏览商品信息
                     $browselist_tmp = rcache($hash_key, 'goodsbrowse');
                     foreach ((array) $browselist_tmp as $k => $v) {
-                        if(in_array($k,$goodsid_arr)){
+                        if (in_array($k, $goodsid_arr)) {
                             $v = unserialize($v);
                             if (!$browseclass_arr || !in_array($v['gc_id'], $browseclass_arr)) {
                                 $browseclass_arr[] = $v['gc_id'];
@@ -249,7 +248,7 @@ class Goodsbrowse extends BaseModel {
                 }
                 $browselist = array();
                 if ($cookie_arr) {
-                    $viewed_list = model('goods')->getGoodsList(array(array('goods_id','in', array_keys($cookie_arr))), 'gc_id');
+                    $viewed_list = model('goods')->getGoodsList(array(array('goods_id', 'in', array_keys($cookie_arr))), 'gc_id');
                     foreach ((array) $viewed_list as $v) {
                         if (!in_array($v['gc_id'], $browseclass_arr)) {
                             $browseclass_arr[] = $v['gc_id'];
@@ -269,8 +268,8 @@ class Goodsbrowse extends BaseModel {
             $browseclass_arrtmp = array_merge($browseclass_arrtmp, ($t = @$gc_list[$v]['childchild']) ? explode(',', $t) : array());
         }
         $where = array();
-        $where[] = array('gc_id','in', $browseclass_arrtmp);
-        $where[] = array('boothgoods_state','=',1);
+        $where[] = array('gc_id', 'in', $browseclass_arrtmp);
+        $where[] = array('boothgoods_state', '=', 1);
 
         //随机显示符合以上分类的推荐展位商品
         $boothgoodslist = model('pbooth')->getBoothgoodsList($where, '', 0, $shownum, '');
@@ -278,7 +277,7 @@ class Goodsbrowse extends BaseModel {
         foreach ((array) $boothgoodslist as $k => $v) {
             $goodsid_arr[] = $v['goods_id'];
         }
-        $goodslist = model('goods')->getGoodsOnlineList(array(array('goods_id','in', $goodsid_arr)), '*', 0, 'goods_id desc', 0, 'goods_commonid');
+        $goodslist = model('goods')->getGoodsOnlineList(array(array('goods_id', 'in', $goodsid_arr)), '*', 0, 'goods_id desc', 0, 'goods_commonid');
         return $goodslist;
     }
 
@@ -290,7 +289,8 @@ class Goodsbrowse extends BaseModel {
      * @param type $store_id 店铺ID
      * @return type
      */
-    public function mergeGoodsbrowse($member_id, $store_id = 0) {
+    public function mergeGoodsbrowse($member_id, $store_id = 0)
+    {
         if ($member_id <= 0) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -304,8 +304,8 @@ class Goodsbrowse extends BaseModel {
         foreach ((array) $cookie_list as $k => $v) {
             $cookie_goodsid[] = $v['goods_id'];
         }
-        $goods_info=array();
-        $result=array();
+        $goods_info = array();
+        $result = array();
         //cookie中浏览记录,去除店铺自己的商品，并加入数据库
         if (!empty($cookie_list)) {
             $insert_arr = array();
@@ -323,9 +323,9 @@ class Goodsbrowse extends BaseModel {
                 }
             }
             if (!empty($goods_info)) {
-                if (!config('ds_config.cache_open')) {//存入数据库
+                if (!config('ds_config.cache_open')) { //存入数据库
                     $result = $this->addViewedGoodsToDatabase(array_keys($goods_info), $member_id, 0, $goods_info);
-                } else {//存入缓存
+                } else { //存入缓存
                     $result = $this->addViewedGoodsToCache(array_keys($goods_info), $member_id, 0, $goods_info);
                 }
             }
@@ -344,16 +344,17 @@ class Goodsbrowse extends BaseModel {
      * @param type $store_id 店铺ID
      * @return array
      */
-    public function addViewedGoods($goods_id, $member_id = 0, $store_id = 0) {
+    public function addViewedGoods($goods_id, $member_id = 0, $store_id = 0)
+    {
         //未登录生成浏览过产品cookie
         if ($member_id <= 0) {
             $result = $this->addViewedGoodsToCookie($goods_id);
         }
         //登录后记录浏览历史
         if ($member_id > 0) {
-            if (!config('ds_config.cache_open')) {//存入数据库
+            if (!config('ds_config.cache_open')) { //存入数据库
                 $result = $this->addViewedGoodsToDatabase($goods_id, $member_id, $store_id);
-            } else {//存入缓存
+            } else { //存入缓存
                 $result = $this->addViewedGoodsToCache($goods_id, $member_id, $store_id);
             }
         }
@@ -370,7 +371,8 @@ class Goodsbrowse extends BaseModel {
      * @param array $goods_info 如果已经获取了商品信息则可传递至函数，避免重复查询
      * @return array
      */
-    public function addViewedGoodsToCache($goods_id, $member_id, $store_id = 0, $goods_info = array()) {
+    public function addViewedGoodsToCache($goods_id, $member_id, $store_id = 0, $goods_info = array())
+    {
         if (!$goods_id || $member_id <= 0) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -379,12 +381,12 @@ class Goodsbrowse extends BaseModel {
             //查询商品详细信息
             $goods_model = model('goods');
             if (is_array($goods_id)) {
-                $goods_infotmp = $goods_model->getGoodsList(array(array('goods_id','in', $goods_id)), 'goods_id,gc_id,gc_id_1,gc_id_2,gc_id_3,store_id');
+                $goods_infotmp = $goods_model->getGoodsList(array(array('goods_id', 'in', $goods_id)), 'goods_id,gc_id,gc_id_1,gc_id_2,gc_id_3,store_id');
                 if (!$goods_infotmp) {
                     return array('state' => true);
                 }
                 foreach ($goods_infotmp as $k => $v) {
-                    if ($store_id <> $goods_infotmp['store_id']) {//店铺浏览自己的商品不加入浏览历史
+                    if ($store_id <> $goods_infotmp['store_id']) { //店铺浏览自己的商品不加入浏览历史
                         $goods_infotmp[$v['goods_id']] = $v;
                     }
                 }
@@ -399,7 +401,7 @@ class Goodsbrowse extends BaseModel {
                 }
             } else {
                 $goods_infotmp = $goods_model->getGoodsInfoByID($goods_id);
-                if (!$goods_infotmp || $store_id == $goods_infotmp['store_id']) {//店铺浏览自己的商品不加入浏览历史
+                if (!$goods_infotmp || $store_id == $goods_infotmp['store_id']) { //店铺浏览自己的商品不加入浏览历史
                     return array('state' => true);
                 }
                 $goods_info[$goods_id] = $goods_infotmp;
@@ -450,7 +452,8 @@ class Goodsbrowse extends BaseModel {
      * @param array $goods_info 如果已经获取了商品信息则可传递至函数，避免重复查询
      * @return array
      */
-    public function addViewedGoodsToDatabase($goods_id, $member_id, $store_id = 0, $goods_info = array()) {
+    public function addViewedGoodsToDatabase($goods_id, $member_id, $store_id = 0, $goods_info = array())
+    {
         if (!$goods_id || $member_id <= 0) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -459,7 +462,7 @@ class Goodsbrowse extends BaseModel {
             //查询商品详细信息
             $goods_model = model('goods');
             if (is_array($goods_id)) {
-                $goods_infotmp = $goods_model->getGoodsList(array(array('goods_id','in', $goods_id)), 'goods_id,gc_id,gc_id_1,gc_id_2,gc_id_3,store_id');
+                $goods_infotmp = $goods_model->getGoodsList(array(array('goods_id', 'in', $goods_id)), 'goods_id,gc_id,gc_id_1,gc_id_2,gc_id_3,store_id');
                 if (!$goods_infotmp) {
                     return array('state' => true);
                 }
@@ -480,7 +483,7 @@ class Goodsbrowse extends BaseModel {
                 }
             } else {
                 $goods_infotmp = $goods_model->getGoodsInfoByID($goods_id);
-                if (!$goods_infotmp || $store_id == $goods_infotmp['store_id']) {//店铺浏览自己的商品不加入浏览历史
+                if (!$goods_infotmp || $store_id == $goods_infotmp['store_id']) { //店铺浏览自己的商品不加入浏览历史
                     return array('state' => true);
                 }
                 $goods_info[$goods_id] = $goods_infotmp;
@@ -488,8 +491,8 @@ class Goodsbrowse extends BaseModel {
         }
         //构造新增的数组
         $insert_arr = array();
-		//当天时间年月日
-		$today = date('Y-m-d',$goodsbrowse_time);
+        //当天时间年月日
+        $today = date('Y-m-d', $goodsbrowse_time);
         //处理浏览历史cache中商品详细信息
         foreach ($goods_info as $k => $v) {
             $tmp_arr = array();
@@ -501,18 +504,18 @@ class Goodsbrowse extends BaseModel {
             $tmp_arr['gc_id_2'] = $v['gc_id_2'];
             $tmp_arr['gc_id_3'] = $v['gc_id_3'];
             $insert_arr[] = $tmp_arr;
-			$oncondition   = array();
-			$oncondition[] = array('member_id','=',$member_id);
-			$oncondition[] = array('goods_id','=',$v['goods_id']);
-			$goodsbrowseinfo = $this->getOneGoodsbrowse($oncondition,'*','goodsbrowse_time desc');
-			if(empty($goodsbrowseinfo )){
-				$this->addGoodsbrowseAll($insert_arr);
-			}else{
-				$goodsbrowseinfotime = date('Y-m-d',$goodsbrowseinfo['goodsbrowse_time']);
-				if($goodsbrowseinfotime !== $today){
-					$this->addGoodsbrowseAll($insert_arr);
-				}
-			}
+            $oncondition   = array();
+            $oncondition[] = array('member_id', '=', $member_id);
+            $oncondition[] = array('goods_id', '=', $v['goods_id']);
+            $goodsbrowseinfo = $this->getOneGoodsbrowse($oncondition, '*', 'goodsbrowse_time desc');
+            if (empty($goodsbrowseinfo)) {
+                $this->addGoodsbrowseAll($insert_arr);
+            } else {
+                $goodsbrowseinfotime = date('Y-m-d', $goodsbrowseinfo['goodsbrowse_time']);
+                if ($goodsbrowseinfotime !== $today) {
+                    $this->addGoodsbrowseAll($insert_arr);
+                }
+            }
         }
         return array('state' => true);
     }
@@ -524,7 +527,8 @@ class Goodsbrowse extends BaseModel {
      * @param mixed $goods_id 商品ID或者商品ID数组
      * @return array
      */
-    public function addViewedGoodsToCookie($goods_id) {
+    public function addViewedGoodsToCookie($goods_id)
+    {
         if (!$goods_id) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -544,7 +548,7 @@ class Goodsbrowse extends BaseModel {
         }
         unset($goods_id);
 
-        if (cookie('viewed_goods')) {//如果cookie已经存在
+        if (cookie('viewed_goods')) { //如果cookie已经存在
             $string_viewed_goods = ds_decrypt(cookie('viewed_goods'));
             if (get_magic_quotes_gpc()) {
                 $string_viewed_goods = stripslashes($string_viewed_goods); // 去除斜杠
@@ -553,7 +557,7 @@ class Goodsbrowse extends BaseModel {
             if (!empty($vg_ca) && is_array($vg_ca)) {
                 foreach ($vg_ca as $vk => $vv) {
                     $vv_arr = explode('-', $vv);
-                    if (in_array($vv_arr[0], $goods_idarr)) {//如果该商品的浏览记录已经存在，则删除它
+                    if (in_array($vv_arr[0], $goods_idarr)) { //如果该商品的浏览记录已经存在，则删除它
                         unset($vg_ca[$vk]);
                     }
                 }
@@ -573,7 +577,4 @@ class Goodsbrowse extends BaseModel {
         $vg_ca = ds_encrypt(serialize($vg_ca));
         cookie('viewed_goods', $vg_ca);
     }
-
 }
-
-?>

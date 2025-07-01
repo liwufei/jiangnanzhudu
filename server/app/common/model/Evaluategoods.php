@@ -1,22 +1,14 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 商品评价
  */
-class Evaluategoods extends BaseModel {
+class Evaluategoods extends BaseModel
+{
 
     public $page_info;
 
@@ -30,9 +22,10 @@ class Evaluategoods extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getEvaluategoodsList($condition, $pagesize = null, $order = 'geval_id desc', $field = '*') {
+    public function getEvaluategoodsList($condition, $pagesize = null, $order = 'geval_id desc', $field = '*')
+    {
         if ($pagesize) {
-            $list = Db::name('evaluategoods')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $list = Db::name('evaluategoods')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $list;
             return $list->items();
         } else {
@@ -49,7 +42,8 @@ class Evaluategoods extends BaseModel {
      * @param int $store_id 店铺ID
      * @return type
      */
-    public function getEvaluategoodsInfoByID($geval_id, $store_id = 0) {
+    public function getEvaluategoodsInfoByID($geval_id, $store_id = 0)
+    {
         if (intval($geval_id) <= 0) {
             return null;
         }
@@ -70,7 +64,8 @@ class Evaluategoods extends BaseModel {
      * @param int $goods_id 商品ID
      * @return array
      */
-    public function getEvaluategoodsInfoByGoodsID($goods_id) {
+    public function getEvaluategoodsInfoByGoodsID($goods_id)
+    {
         $prefix = 'goods_evaluation';
         $info = rcache($goods_id, $prefix);
         if (empty($info)) {
@@ -118,7 +113,8 @@ class Evaluategoods extends BaseModel {
      * @param int $goods_commonid 编号
      * @return array
      */
-    public function getEvaluategoodsInfoByCommonidID($goods_commonid) {
+    public function getEvaluategoodsInfoByCommonidID($goods_commonid)
+    {
         $prefix = 'goods_common_evaluation';
         $info = rcache($goods_commonid, $prefix);
         if (empty($info)) {
@@ -133,18 +129,18 @@ class Evaluategoods extends BaseModel {
             $info['bad'] = 0;
 
             $condition = array();
-            $condition[] = array('goods_commonid','=',$goods_commonid);
+            $condition[] = array('goods_commonid', '=', $goods_commonid);
             $goods_list = model('goods')->getGoodsList($condition, 'goods_id');
             if (!empty($goods_list)) {
                 $goodsid_array = array();
                 foreach ($goods_list as $value) {
                     $goodsid_array[] = $value['goods_id'];
                 }
-                $good = Db::name('evaluategoods')->where(array(array('geval_goodsid','in', $goodsid_array), array('geval_scores','in', '4,5')))->count();
+                $good = Db::name('evaluategoods')->where(array(array('geval_goodsid', 'in', $goodsid_array), array('geval_scores', 'in', '4,5')))->count();
                 $info['good'] = $good;
-                $normal = Db::name('evaluategoods')->where(array(array('geval_goodsid','in', $goodsid_array), array('geval_scores','in', '2,3')))->count();
+                $normal = Db::name('evaluategoods')->where(array(array('geval_goodsid', 'in', $goodsid_array), array('geval_scores', 'in', '2,3')))->count();
                 $info['normal'] = $normal;
-                $bad = Db::name('evaluategoods')->where(array(array('geval_goodsid','in', $goodsid_array), array('geval_scores','in', '1')))->count();
+                $bad = Db::name('evaluategoods')->where(array(array('geval_goodsid', 'in', $goodsid_array), array('geval_scores', 'in', '1')))->count();
                 $info['bad'] = $bad;
                 $info['all'] = $info['good'] + $info['normal'] + $info['bad'];
                 if (intval($info['all']) > 0) {
@@ -167,7 +163,8 @@ class Evaluategoods extends BaseModel {
      * @param array $goodsid_array 商品id数组，更新缓存使用
      * @return boolean
      */
-    public function addEvaluategoodsArray($datas, $goodsid_array) {
+    public function addEvaluategoodsArray($datas, $goodsid_array)
+    {
         $result = Db::name('evaluategoods')->insertAll($datas);
         // 删除商品评价缓存
         if ($result && !empty($goodsid_array)) {
@@ -190,7 +187,8 @@ class Evaluategoods extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editEvaluategoods($update, $condition) {
+    public function editEvaluategoods($update, $condition)
+    {
         $goodsid_array = Db::name('evaluategoods')->where($condition)->column('geval_goodsid');
         foreach ($goodsid_array as $goods_id) {
             dcache($goods_id, 'goods_evaluation');
@@ -205,14 +203,12 @@ class Evaluategoods extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function delEvaluategoods($condition) {
+    public function delEvaluategoods($condition)
+    {
         $goodsid_array = Db::name('evaluategoods')->where($condition)->column('geval_goodsid');
         foreach ($goodsid_array as $goods_id) {
             dcache($goods_id, 'goods_evaluation');
         }
         return Db::name('evaluategoods')->where($condition)->delete();
     }
-
 }
-
-?>

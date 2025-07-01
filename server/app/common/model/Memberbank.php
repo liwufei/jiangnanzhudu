@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 提现账户
  */
-class Memberbank extends BaseModel {
+class Memberbank extends BaseModel
+{
 
     /**
      * 取得单条提现账户
@@ -25,7 +17,8 @@ class Memberbank extends BaseModel {
      * @param type $order 排序  
      * @return string
      */
-    public function getMemberbankInfo($condition, $order = '') {
+    public function getMemberbankInfo($condition, $order = '')
+    {
         $addr_info = Db::name('memberbank')->where($condition)->order($order)->find();
         return $addr_info;
     }
@@ -37,7 +30,8 @@ class Memberbank extends BaseModel {
      * @param type $order 排序
      * @return array  数组格式的返回结果
      */
-    public function getMemberbankList($condition, $order = 'memberbank_id desc') {
+    public function getMemberbankList($condition, $order = 'memberbank_id desc')
+    {
         $memberbank_list = Db::name('memberbank')->where($condition)->order($order)->select()->toArray();
         return $memberbank_list;
     }
@@ -48,7 +42,8 @@ class Memberbank extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getMemberbankCount($condition = array()) {
+    public function getMemberbankCount($condition = array())
+    {
         return Db::name('memberbank')->where($condition)->count();
     }
 
@@ -58,7 +53,8 @@ class Memberbank extends BaseModel {
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addMemberbank($data) {
+    public function addMemberbank($data)
+    {
         return Db::name('memberbank')->insertGetId($data);
     }
 
@@ -68,7 +64,8 @@ class Memberbank extends BaseModel {
      * @param int $id 提现账户ID
      * @return array 数组类型的返回结果
      */
-    public function getOneMemberbank($memberbank_id) {
+    public function getOneMemberbank($memberbank_id)
+    {
         $condition = array();
         $condition[] = array('memberbank_id', '=', $memberbank_id);
         $result = Db::name('memberbank')->where($condition)->find();
@@ -82,7 +79,8 @@ class Memberbank extends BaseModel {
      * @param array $condition 更新条件
      * @return bool 布尔类型的返回结果
      */
-    public function editMemberbank($data, $condition) {
+    public function editMemberbank($data, $condition)
+    {
         return Db::name('memberbank')->where($condition)->update($data);
     }
 
@@ -92,9 +90,8 @@ class Memberbank extends BaseModel {
      * @param array $condition记录ID
      * @return bool 布尔类型的返回结果
      */
-    public function delMemberbank($condition) {
+    public function delMemberbank($condition)
+    {
         return Db::name('memberbank')->where($condition)->delete();
     }
 }
-
-?>

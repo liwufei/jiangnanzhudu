@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 支付方式
  */
-class Payment extends BaseModel {
+class Payment extends BaseModel
+{
 
     /**
      * 开启状态标识
@@ -31,7 +23,8 @@ class Payment extends BaseModel {
      * @param array $condition 条件数组
      * @return array 数组格式的返回结果
      */
-    public function getPaymentInfo($condition = array()) {
+    public function getPaymentInfo($condition = array())
+    {
         return Db::name('payment')->where($condition)->find();
     }
 
@@ -42,7 +35,8 @@ class Payment extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function getPaymentOpenInfo($condition = array()) {
+    public function getPaymentOpenInfo($condition = array())
+    {
         $condition[] = array('payment_state', '=', self::STATE_OPEN);
         return Db::name('payment')->where($condition)->find();
     }
@@ -54,7 +48,8 @@ class Payment extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getPaymentList($condition = array()) {
+    public function getPaymentList($condition = array())
+    {
         return Db::name('payment')->where($condition)->select()->toArray();
     }
 
@@ -65,7 +60,8 @@ class Payment extends BaseModel {
      * @param array $condition 条件
      * @return array 数组格式的返回结果
      */
-    public function getPaymentOpenList($condition = array()) {
+    public function getPaymentOpenList($condition = array())
+    {
         $condition[] = array('payment_state', '=', self::STATE_OPEN);
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') == false) {
             //非微信内置浏览器,过滤微信支付
@@ -88,7 +84,8 @@ class Payment extends BaseModel {
      * @param type $data 参数内容
      * @return type
      */
-    public function addPayment($data) {
+    public function addPayment($data)
+    {
         return Db::name('payment')->insert($data);
     }
 
@@ -99,7 +96,8 @@ class Payment extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function delPayment($condition) {
+    public function delPayment($condition)
+    {
         return Db::name('payment')->where($condition)->delete();
     }
 
@@ -111,7 +109,8 @@ class Payment extends BaseModel {
      * @param array $condition 更新条件
      * @return bool 布尔类型的返回结果
      */
-    public function editPayment($data, $condition) {
+    public function editPayment($data, $condition)
+    {
         return Db::name('payment')->where($condition)->update($data);
     }
 
@@ -123,7 +122,8 @@ class Payment extends BaseModel {
      * @param type $conditionvalue 条件值
      * @return type
      */
-    public function getRowByCondition($conditionfield, $conditionvalue) {
+    public function getRowByCondition($conditionfield, $conditionvalue)
+    {
         return Db::name('payment')->where($conditionfield, $conditionvalue)->find();
     }
 
@@ -134,7 +134,8 @@ class Payment extends BaseModel {
      * @staticvar type $payments
      * @return type
      */
-    function get_builtin() {
+    function get_builtin()
+    {
         static $payments = null;
         if ($payments === null) {
             $payment_dir = PLUGINS_PATH . '/payments';
@@ -159,10 +160,9 @@ class Payment extends BaseModel {
      * @param type $code 编码
      * @return type
      */
-    function get_builtin_info($code) {
+    function get_builtin_info($code)
+    {
         $payment_path = PLUGINS_PATH . '/payments/' . $code . '/payment.info.php';
         return include($payment_path);
     }
 }
-
-?>

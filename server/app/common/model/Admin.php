@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 管理员
  */
-class Admin extends BaseModel {
+class Admin extends BaseModel
+{
 
     public $page_info;
 
@@ -27,7 +19,8 @@ class Admin extends BaseModel {
      * @param array $pagesize 分页信息
      * @return array 数组类型的返回结果
      */
-    public function getAdminList($condition, $pagesize) {
+    public function getAdminList($condition, $pagesize)
+    {
         if ($pagesize) {
             $result = Db::name('admin')->alias('a')->join('gadmin g', 'g.gid = a.admin_gid', 'LEFT')->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -44,7 +37,8 @@ class Admin extends BaseModel {
      * @param array $condition 检索条件
      * @return array 数组类型的返回结果
      */
-    public function getOneAdmin($condition) {
+    public function getOneAdmin($condition)
+    {
         return Db::name('admin')->where($condition)->find();
     }
 
@@ -55,7 +49,8 @@ class Admin extends BaseModel {
      * @param	string $field 显示字段
      * @return	array 数组格式的返回结果
      */
-    public function infoAdmin($condition, $field = '*') {
+    public function infoAdmin($condition, $field = '*')
+    {
         if (empty($condition)) {
             return false;
         }
@@ -68,7 +63,8 @@ class Admin extends BaseModel {
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addAdmin($data) {
+    public function addAdmin($data)
+    {
         return Db::name('admin')->insertGetId($data);
     }
 
@@ -79,7 +75,8 @@ class Admin extends BaseModel {
      * @param int $admin_id 管理员id
      * @return bool 布尔类型的返回结果
      */
-    public function editAdmin($data, $admin_id) {
+    public function editAdmin($data, $admin_id)
+    {
         $condition = array();
         $condition[] = array('admin_id', '=', $admin_id);
         return Db::name('admin')->where($condition)->update($data);
@@ -91,7 +88,8 @@ class Admin extends BaseModel {
      * @param array $condition 检索条件
      * @return array $rs_row 返回数组形式的查询结果
      */
-    public function delAdmin($condition) {
+    public function delAdmin($condition)
+    {
         return Db::name('admin')->where($condition)->delete();
     }
 
@@ -101,7 +99,8 @@ class Admin extends BaseModel {
      * @param array $condition  条件
      * @return array 一维数组
      */
-    public function getOneGadmin($condition) {
+    public function getOneGadmin($condition)
+    {
         $gadmin = Db::name('gadmin')->where($condition)->find();
         return $gadmin;
     }
@@ -112,7 +111,8 @@ class Admin extends BaseModel {
      * @param type $field
      * @return array 
      */
-    public function getGadminList($field = '*') {
+    public function getGadminList($field = '*')
+    {
         $gadmin_list = Db::name('gadmin')->field($field)->select()->toArray();
         return $gadmin_list;
     }
@@ -123,7 +123,8 @@ class Admin extends BaseModel {
      * @param array $data 参数内容
      * @return bool
      */
-    public function addGadmin($data) {
+    public function addGadmin($data)
+    {
         return Db::name('gadmin')->insertGetId($data);
     }
 
@@ -133,7 +134,8 @@ class Admin extends BaseModel {
      * @param array $condition 删除条件
      * @return bool
      */
-    public function delGadmin($condition) {
+    public function delGadmin($condition)
+    {
         return Db::name('gadmin')->where($condition)->delete();
     }
 
@@ -144,9 +146,8 @@ class Admin extends BaseModel {
      * @param array $data 更新数据
      * @return bool
      */
-    public function editGadmin($condition, $data) {
+    public function editGadmin($condition, $data)
+    {
         return Db::name('gadmin')->where($condition)->update($data);
     }
 }
-
-?>

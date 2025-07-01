@@ -1,20 +1,11 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 抢购分类
  */
 class Groupbuyclass extends BaseModel
 {
@@ -29,7 +20,7 @@ class Groupbuyclass extends BaseModel
      * @param str $order 排序
      * @return array
      */
-    public function getGroupbuyclassList($condition = '', $pagesize = '',$order='gclass_id desc')
+    public function getGroupbuyclassList($condition = '', $pagesize = '', $order = 'gclass_id desc')
     {
         return Db::name('groupbuyclass')->where($condition)->order($order)->select()->toArray();
     }
@@ -45,7 +36,6 @@ class Groupbuyclass extends BaseModel
      */
     public function getTreeList($condition = '', $pagesize = '', $max_deep = 1)
     {
-
         $gclass_list = $this->getGroupbuyclassList($condition, $pagesize);
 
         $tree_list = array();
@@ -67,7 +57,6 @@ class Groupbuyclass extends BaseModel
      */
     private function _getTreeList($list, $parent_id, $deep = 0, $max_deep)
     {
-
         $result = array();
         foreach ($list as $node) {
 
@@ -77,15 +66,13 @@ class Groupbuyclass extends BaseModel
                     $temp = $this->_getTreeList($list, $node['gclass_id'], $deep + 1, $max_deep);
                     if (!empty($temp)) {
                         $node['have_child'] = 1;
-                    }
-                    else {
+                    } else {
                         $node['have_child'] = 0;
                     }
                     //标记是否为叶子节点
                     if ($deep == $max_deep) {
                         $node['node'] = 1;
-                    }
-                    else {
+                    } else {
                         $node['node'] = 0;
                     }
 
@@ -94,7 +81,6 @@ class Groupbuyclass extends BaseModel
                     if (!empty($temp)) {
                         $result = array_merge($result, $temp);
                     }
-
                     unset($temp);
                 }
             }
@@ -111,7 +97,6 @@ class Groupbuyclass extends BaseModel
      */
     public function getAllClassId($gclass_id_array)
     {
-
         $all_gclass_id_array = array();
         $gclass_list = $this->getGroupbuyclassList();
         foreach ($gclass_id_array as $gclass_id) {
@@ -125,7 +110,6 @@ class Groupbuyclass extends BaseModel
         return $all_gclass_id_array;
     }
 
-
     /**
      * 判断是否存在
      * @access public
@@ -138,8 +122,7 @@ class Groupbuyclass extends BaseModel
         $list = Db::name('groupbuyclass')->where($condition)->select()->toArray();
         if (empty($list)) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -154,7 +137,6 @@ class Groupbuyclass extends BaseModel
     public function addGroupbuyclass($data)
     {
         return Db::name('groupbuyclass')->insertGetId($data);
-
     }
 
     /**
@@ -181,5 +163,4 @@ class Groupbuyclass extends BaseModel
     {
         return Db::name('groupbuyclass')->where($condition)->delete();
     }
-
 }

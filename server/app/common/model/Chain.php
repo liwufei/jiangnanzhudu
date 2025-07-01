@@ -1,20 +1,11 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 门店
  */
 class Chain extends BaseModel
 {
@@ -23,7 +14,10 @@ class Chain extends BaseModel
     const STATE10 = 10; // 等待审核
     const STATE20 = 20; // 等待失败
     private $state = array(
-        self::STATE0 => '关闭', self::STATE1 => '开启', self::STATE10 => '等待审核', self::STATE20 => '审核失败'
+        self::STATE0 => '关闭',
+        self::STATE1 => '开启',
+        self::STATE10 => '等待审核',
+        self::STATE20 => '审核失败'
     );
     public $page_info;
 
@@ -37,7 +31,7 @@ class Chain extends BaseModel
     public function addChain($data)
     {
         $this->validate($data, 'app\common\validate\Chain.model_add');
-        
+
         return Db::name('chain')->insertGetId($data);
     }
 
@@ -52,11 +46,11 @@ class Chain extends BaseModel
      */
     public function getChainList($condition, $pagesize = 0, $order = 'chain_id desc')
     {
-        if($pagesize){
-            $res = Db::name('chain')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$res;
+        if ($pagesize) {
+            $res = Db::name('chain')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
             return $res->items();
-        }else{
+        } else {
             return Db::name('chain')->where($condition)->order($order)->select()->toArray();
         }
     }
@@ -72,7 +66,7 @@ class Chain extends BaseModel
      */
     public function getChainWaitVerifyList($condition, $pagesize = 0, $order = 'chain_id desc')
     {
-        $condition[]=array('chain_state','=',self::STATE10);
+        $condition[] = array('chain_state', '=', self::STATE10);
         return $this->getChainList($condition, $pagesize, $order);
     }
 
@@ -87,7 +81,7 @@ class Chain extends BaseModel
      */
     public function getChainWaitVerifyCount($condition)
     {
-        $condition[]=array('chain_state','=',self::STATE10);
+        $condition[] = array('chain_state', '=', self::STATE10);
         return Db::name('chain')->where($condition)->count();
     }
 
@@ -102,7 +96,7 @@ class Chain extends BaseModel
      */
     public function getChainOpenList($condition, $pagesize = 0, $order = 'chain_id desc')
     {
-        $condition[]=array('chain_state','=',self::STATE1);
+        $condition[] = array('chain_state', '=', self::STATE1);
         return $this->getChainList($condition, $pagesize, $order);
     }
 
@@ -129,7 +123,7 @@ class Chain extends BaseModel
      */
     public function getChainOpenInfo($condition, $field = '*')
     {
-        $condition[]=array('chain_state','=',self::STATE1);
+        $condition[] = array('chain_state', '=', self::STATE1);
         return Db::name('chain')->where($condition)->field($field)->find();
     }
 
@@ -143,7 +137,7 @@ class Chain extends BaseModel
      */
     public function getChainFailInfo($condition, $field = '*')
     {
-        $condition[]=array('chain_state','=',self::STATE20);
+        $condition[] = array('chain_state', '=', self::STATE20);
         return Db::name('chain')->where($condition)->field($field)->find();
     }
 
@@ -158,10 +152,10 @@ class Chain extends BaseModel
     public function editChain($data, $condition)
     {
         $this->validate($data, 'app\common\validate\Chain.model_edit');
-        
+
         return Db::name('chain')->where($condition)->update($data);
     }
-    
+
     /**
      * 删除门店
      * @access public
@@ -169,10 +163,11 @@ class Chain extends BaseModel
      * @param int $condition 记录ID
      * @return bool 
      */
-    public function delChain($condition) {
+    public function delChain($condition)
+    {
         return Db::name('chain')->where($condition)->delete();
     }
-    
+
     /**
      * @access public
      * @author csdeshang 
@@ -183,16 +178,16 @@ class Chain extends BaseModel
     {
         return $this->state;
     }
-    
+
     /**
      * 登录生成token
      */
-    public function getChainToken($chain_id, $chain_name) {
-
+    public function getChainToken($chain_id, $chain_name)
+    {
         //生成新的token
         $platformtoken_data = array();
         $token = md5($chain_name . strval(TIMESTAMP) . strval(rand(0, 999999)));
-        
+
         $platformtoken_data['platform_userid'] = $chain_id;
         $platformtoken_data['platform_username'] = $chain_name;
         $platformtoken_data['platform_token'] = $token;

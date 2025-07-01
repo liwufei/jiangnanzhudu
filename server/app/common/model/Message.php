@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 站内信
  */
-class Message extends BaseModel {
+class Message extends BaseModel
+{
 
     public $page_info;
 
@@ -28,7 +20,8 @@ class Message extends BaseModel {
      * @param  int $pagesize 分页页数
      * @return array
      */
-    public function getMessageList($condition, $pagesize = '') {
+    public function getMessageList($condition, $pagesize = '')
+    {
         //得到条件语句
         $where = $this->getCondition($condition, false);
         $order = 'message_id DESC';
@@ -50,7 +43,8 @@ class Message extends BaseModel {
      * @param  int $pagesize 分页页数
      * @return array
      */
-    public function getStoreMessageList($condition, $pagesize = '') {
+    public function getStoreMessageList($condition, $pagesize = '')
+    {
         //得到条件语句
         $where = $this->getCondition($condition);
         $field = 'message.*,store.store_name,store.store_id';
@@ -72,7 +66,8 @@ class Message extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getMessageCount($condition) {
+    public function getMessageCount($condition)
+    {
         $where = $this->getCondition($condition, false);
         return Db::name('message')->where($where)->count('message_id');
     }
@@ -84,7 +79,8 @@ class Message extends BaseModel {
      * @param type $member_id 会员id
      * @return int
      */
-    public function getNewMessageCount($member_id) {
+    public function getNewMessageCount($member_id)
+    {
         $special_condition = array();
         $special_condition['to_member_id'] = "$member_id";
         $special_condition['no_message_state'] = '2';
@@ -102,7 +98,8 @@ class Message extends BaseModel {
      * @param  array $condition 条件数组
      * @param  int $pagesize 分页页数
      */
-    public function getOneMessage($condition) {
+    public function getOneMessage($condition)
+    {
         //得到条件语句
         $where = $this->getCondition($condition);
         $message_list = Db::name('message')->alias('message')->where($where)->select()->toArray();
@@ -120,7 +117,8 @@ class Message extends BaseModel {
      * @param type $data 参数内容
      * @return boolean
      */
-    public function addMessage($data) {
+    public function addMessage($data)
+    {
         if ($data['member_id'] == '') {
             return false;
         }
@@ -148,7 +146,8 @@ class Message extends BaseModel {
      * @param type $condition 条件
      * @return boolean
      */
-    public function editCommonMessage($data, $condition) {
+    public function editCommonMessage($data, $condition)
+    {
         if (empty($data)) {
             return false;
         }
@@ -165,7 +164,8 @@ class Message extends BaseModel {
      * @param type $drop_type 删除类型
      * @return boolean
      */
-    public function delCommonMessage($condition, $drop_type) {
+    public function delCommonMessage($condition, $drop_type)
+    {
         //得到条件语句
         $where = $this->getCondition($condition);
         //查询站内信列表
@@ -220,7 +220,8 @@ class Message extends BaseModel {
      * @param type $to_member_id 会员ID
      * @return boolean
      */
-    public function delBatchMessage($condition, $to_member_id) {
+    public function delBatchMessage($condition, $to_member_id)
+    {
         //得到条件语句
         $where = $this->getCondition($condition);
         //查询站内信列表
@@ -247,7 +248,7 @@ class Message extends BaseModel {
             } else {
                 $tmp_delid_str = ",{$to_member_id},";
             }
-            if ($tmp_delid_str == $v['to_member_id']) {//所有用户已经全部阅读过了可以删除
+            if ($tmp_delid_str == $v['to_member_id']) { //所有用户已经全部阅读过了可以删除
                 Db::name('message')->where('message_id', $v['message_id'])->delete();
             } else {
                 Db::name('message')->where('message_id', $v['message_id'])->update(array('del_member_id' => $tmp_delid_str));
@@ -264,7 +265,8 @@ class Message extends BaseModel {
      * @param bool $join 连接
      * @return type
      */
-    private function getCondition($condition_array, $join = true) {
+    private function getCondition($condition_array, $join = true)
+    {
         $condition_sql = '1=1';
         //站内信编号
         if ($join) {

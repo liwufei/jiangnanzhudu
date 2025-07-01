@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 导航
  */
-class Navigation extends BaseModel {
+class Navigation extends BaseModel
+{
 
     public $page_info;
 
@@ -29,7 +21,8 @@ class Navigation extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getNavigationList($condition, $pagesize = '', $order = 'nav_sort desc') {
+    public function getNavigationList($condition, $pagesize = '', $order = 'nav_sort desc')
+    {
         if ($pagesize) {
             $nav_list = Db::name('navigation')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $nav_list;
@@ -46,7 +39,8 @@ class Navigation extends BaseModel {
      * @param type $data 参数内容
      * @return bool
      */
-    public function addNavigation($data) {
+    public function addNavigation($data)
+    {
         $add_navigation = Db::name('navigation')->insert($data);
         return $add_navigation;
     }
@@ -59,7 +53,8 @@ class Navigation extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function eidtNavigation($data, $condition) {
+    public function eidtNavigation($data, $condition)
+    {
         return Db::name('navigation')->where($condition)->update($data);
     }
 
@@ -70,7 +65,8 @@ class Navigation extends BaseModel {
      * @param type $condition 条件
      * @return array
      */
-    public function getOneNavigation($condition) {
+    public function getOneNavigation($condition)
+    {
         return Db::name('navigation')->where($condition)->find();
     }
 
@@ -81,7 +77,8 @@ class Navigation extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function delNavigation($condition) {
+    public function delNavigation($condition)
+    {
         return Db::name('navigation')->where($condition)->delete();
     }
 }

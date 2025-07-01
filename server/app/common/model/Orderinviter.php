@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 分销
  */
-class Orderinviter extends BaseModel {
+class Orderinviter extends BaseModel
+{
 
     /**
      * 支付给钱
@@ -24,7 +16,8 @@ class Orderinviter extends BaseModel {
      * @author csdeshang
      * @param type $order_id 订单编号
      */
-    public function giveMoney($order_id, $type) {
+    public function giveMoney($order_id, $type)
+    {
         $orderinviter_list = Db::name('orderinviter')->where(array('orderinviter_order_id' => $order_id, 'orderinviter_valid' => 0, 'orderinviter_order_type' => $type))->select()->toArray();
         if ($orderinviter_list) {
             $predeposit_model = model('predeposit');
@@ -83,8 +76,8 @@ class Orderinviter extends BaseModel {
     }
 
     // 当订单出现退款时候,需要修改推荐人的分销佣金[实物订单]
-    public function refundOrderinviterMoney($order_info, $refund_info) {
-
+    public function refundOrderinviterMoney($order_info, $refund_info)
+    {
         $order_id = $order_info['order_id'];
         $order_amount = $order_info['order_amount']; //订单金额
         $refund_amount = $order_info['refund_amount'] + $refund_info['refund_amount']; //退款金额
@@ -112,8 +105,8 @@ class Orderinviter extends BaseModel {
     }
 
     // 用户退款时,需要修改推荐人的分销佣金[虚拟订单]
-    public function refundVrorderinviterMoney($order_info, $refund_info) {
-
+    public function refundVrorderinviterMoney($order_info, $refund_info)
+    {
         $order_id = $refund_info['order_id']; //订单编号
         $order_amount = $order_info['order_amount']; //订单金额
         $refund_amount = $order_info['refund_amount'] + $refund_info['refund_amount']; //退款金额
@@ -131,7 +124,8 @@ class Orderinviter extends BaseModel {
     }
 
     // 当订单取消时,修改分销佣金
-    public function cancelOrderinviterMoney($order_id, $orderinviter_order_type) {
+    public function cancelOrderinviterMoney($order_id, $orderinviter_order_type)
+    {
         // orderinviter_order_type   0 实物订单  1虚拟订单
 
         $condition = array();

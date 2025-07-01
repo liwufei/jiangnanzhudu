@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 门店订单
  */
-class ChainOrder extends BaseModel {
+class ChainOrder extends BaseModel
+{
 
     public $page_info;
 
@@ -28,7 +20,8 @@ class ChainOrder extends BaseModel {
      * @param str $fields 字段
      * @return type
      */
-    public function getChainOrderInfo($condition = array(), $fields = '*') {
+    public function getChainOrderInfo($condition = array(), $fields = '*')
+    {
         return Db::name('chain_order')->field($fields)->where($condition)->find();
     }
 
@@ -39,7 +32,8 @@ class ChainOrder extends BaseModel {
      * @param array $data 参数内容
      * @return type
      */
-    public function addChainOrder($data) {
+    public function addChainOrder($data)
+    {
         return Db::name('chain_order')->insert($data);
     }
 
@@ -51,7 +45,8 @@ class ChainOrder extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function editChainOrder($data, $condition) {
+    public function editChainOrder($data, $condition)
+    {
         return Db::name('chain_order')->where($condition)->update($data);
     }
 
@@ -63,7 +58,8 @@ class ChainOrder extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editChainOrderArrive($data, $condition) {
+    public function editChainOrderArrive($data, $condition)
+    {
         $data['chain_order_state'] = ORDER_STATE_PICKUP;
         return $this->editChainOrder($data, $condition);
     }
@@ -76,7 +72,8 @@ class ChainOrder extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editChainOrderPickup($data, $condition) {
+    public function editChainOrderPickup($data, $condition)
+    {
         $data['chain_order_state'] = ORDER_STATE_SUCCESS;
         return $this->editChainOrder($data, $condition);
     }
@@ -92,7 +89,8 @@ class ChainOrder extends BaseModel {
      * @param int $limit 数目限制
      * @return array
      */
-    public function getChainOrderList($condition = array(), $fields = '*', $pagesize = 0, $order = 'order_id desc', $limit = 0) {
+    public function getChainOrderList($condition = array(), $fields = '*', $pagesize = 0, $order = 'order_id desc', $limit = 0)
+    {
         if ($pagesize) {
             $res = Db::name('chain_order')->field($fields)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -113,7 +111,8 @@ class ChainOrder extends BaseModel {
      * @param int $limit 数目限制
      * @return array
      */
-    public function getChainOrderDefaultList($condition = array(), $fields = '*', $pagesize = 0, $order = 'order_id desc', $limit = 0) {
+    public function getChainOrderDefaultList($condition = array(), $fields = '*', $pagesize = 0, $order = 'order_id desc', $limit = 0)
+    {
         $condition[] = array('chain_order_state', '=', ORDER_STATE_PAY);
         return $this->getChainOrderList($condition, $fields, $pagesize, $order, $limit);
     }
@@ -129,7 +128,8 @@ class ChainOrder extends BaseModel {
      * @param int $limit 数目限制
      * @return array
      */
-    public function getChainOrderDefaultAndArriveList($condition = array(), $fields = '*', $pagesize = 0, $order = 'order_id desc', $limit = 0) {
+    public function getChainOrderDefaultAndArriveList($condition = array(), $fields = '*', $pagesize = 0, $order = 'order_id desc', $limit = 0)
+    {
         $condition[] = array('chain_order_state', 'not in', [ORDER_STATE_CANCEL, ORDER_STATE_SUCCESS]);
         return $this->getChainOrderList($condition, $fields, $pagesize, $order, $limit);
     }
@@ -141,7 +141,8 @@ class ChainOrder extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function delChainOrder($condition) {
+    public function delChainOrder($condition)
+    {
         return Db::name('chain_order')->where($condition)->delete();
     }
 
@@ -152,21 +153,22 @@ class ChainOrder extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function editChainOrderPay($order_id) {
+    public function editChainOrderPay($order_id)
+    {
         $condition = array();
         $condition[] = array('order_id', '=', $order_id);
         $condition[] = array('chain_order_state', '=', ORDER_STATE_NEW);
         $chain_order_info = $this->getChainOrderInfo($condition);
         if ($chain_order_info) {
-            if ($chain_order_info['chain_order_type'] == 2) {//自提
+            if ($chain_order_info['chain_order_type'] == 2) { //自提
                 $this->editChainOrder(array('chain_order_state' => ORDER_STATE_PICKUP), $condition);
                 $update_order['order_state'] = ORDER_STATE_PICKUP;
                 $order_model = model('order');
                 $order_model->editOrder($update_order, array(
                     'order_id' => $order_id,
-                    'order_state'=>ORDER_STATE_PAY
+                    'order_state' => ORDER_STATE_PAY
                 ));
-            } elseif ($chain_order_info['chain_order_type'] == 1) {//代收
+            } elseif ($chain_order_info['chain_order_type'] == 1) { //代收
                 $this->editChainOrder(array('chain_order_state' => ORDER_STATE_PAY), $condition);
             }
         }
@@ -179,7 +181,8 @@ class ChainOrder extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function editChainOrderCancel($order_id, $chain_order_refund_state = 0, $return_state = 0) {
+    public function editChainOrderCancel($order_id, $chain_order_refund_state = 0, $return_state = 0)
+    {
         $condition = array();
         $condition[] = array('order_id', '=', $order_id);
         $chain_order_info = $this->getChainOrderInfo($condition);
@@ -188,30 +191,30 @@ class ChainOrder extends BaseModel {
             if ($chain_order_refund_state) {
                 $data['chain_order_refund_state'] = $chain_order_refund_state;
             }
-            if ($chain_order_info['chain_order_type'] == 2) {//自提
-                if($return_state){
+            if ($chain_order_info['chain_order_type'] == 2) { //自提
+                if ($return_state) {
                     $data['chain_order_state'] = ORDER_STATE_CANCEL;
                     //退库存
-                    $order_model=model('order');
-                    $ordergoods_list=$order_model->getOrdergoodsList(array(array('order_id','=',$chain_order_info['order_id'])));
-                    if($ordergoods_list){
-                        foreach($ordergoods_list as $key => $val){
-                            Db::name('chain_goods')->where(array(array('chain_id','=',$chain_order_info['chain_id']),array('goods_id','=',$val['goods_id'])))->inc('goods_storage',$val['goods_num'])->update();
+                    $order_model = model('order');
+                    $ordergoods_list = $order_model->getOrdergoodsList(array(array('order_id', '=', $chain_order_info['order_id'])));
+                    if ($ordergoods_list) {
+                        foreach ($ordergoods_list as $key => $val) {
+                            Db::name('chain_goods')->where(array(array('chain_id', '=', $chain_order_info['chain_id']), array('goods_id', '=', $val['goods_id'])))->inc('goods_storage', $val['goods_num'])->update();
                         }
                     }
-                }else{
-                    if($chain_order_info['chain_order_state']<ORDER_STATE_SUCCESS){//还未提货则取消
-                         $data['chain_order_state'] = ORDER_STATE_CANCEL;
+                } else {
+                    if ($chain_order_info['chain_order_state'] < ORDER_STATE_SUCCESS) { //还未提货则取消
+                        $data['chain_order_state'] = ORDER_STATE_CANCEL;
                     }
                 }
-            } elseif ($chain_order_info['chain_order_type'] == 1) {//代收
-                if($chain_order_info['chain_order_state']>ORDER_STATE_PAY){//如果已经到站则是完成状态
+            } elseif ($chain_order_info['chain_order_type'] == 1) { //代收
+                if ($chain_order_info['chain_order_state'] > ORDER_STATE_PAY) { //如果已经到站则是完成状态
                     $data['chain_order_state'] = ORDER_STATE_SUCCESS;
-                }else{
+                } else {
                     $data['chain_order_state'] = ORDER_STATE_CANCEL;
                 }
             }
-            if(!empty($data)){
+            if (!empty($data)) {
                 $this->editChainOrder($data, $condition);
             }
         }
@@ -224,7 +227,8 @@ class ChainOrder extends BaseModel {
      * @param type $order_id 订单编号
      * @return boolean
      */
-    public function editChainOrderLock($order_id) {
+    public function editChainOrderLock($order_id)
+    {
         $order_id = intval($order_id);
         if ($order_id > 0) {
             $condition = array();
@@ -244,7 +248,8 @@ class ChainOrder extends BaseModel {
      * @param type $order_id 订单编号
      * @return boolean
      */
-    public function editChainOrderUnlock($order_id) {
+    public function editChainOrderUnlock($order_id)
+    {
         $order_id = intval($order_id);
         if ($order_id > 0) {
             $condition = array();
@@ -257,7 +262,6 @@ class ChainOrder extends BaseModel {
         }
         return false;
     }
-
 
     /**
      * 添加订单代收表内容

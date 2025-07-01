@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 积分
  */
-class Points extends BaseModel {
+class Points extends BaseModel
+{
 
     public $page_info;
 
@@ -29,7 +21,8 @@ class Points extends BaseModel {
      * @param  bool $if_repeat 是否可以重复记录的信息,true可以重复记录，false不可以重复记录，默认为true
      * @return bool
      */
-    function savePointslog($stage, $insertarr, $if_repeat = true) {
+    function savePointslog($stage, $insertarr, $if_repeat = true)
+    {
         if (!$insertarr['pl_memberid']) {
             return false;
         }
@@ -156,7 +149,8 @@ class Points extends BaseModel {
      * @param type $data 数据
      * @return boolean
      */
-    public function addPointslog($data) {
+    public function addPointslog($data)
+    {
         if (empty($data)) {
             return false;
         }
@@ -173,7 +167,8 @@ class Points extends BaseModel {
      * @param type $field
      * @return type
      */
-    public function getPointslogList($condition, $pagesize = '', $field = '*', $limit = 0, $order = 'pl_addtime desc') {
+    public function getPointslogList($condition, $pagesize = '', $field = '*', $limit = 0, $order = 'pl_addtime desc')
+    {
         if ($pagesize) {
             $result = Db::name('pointslog')->where($condition)->field($field)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -191,15 +186,14 @@ class Points extends BaseModel {
      * @param type $field
      * @return type
      */
-    public function getPointsInfo($condition, $field = '*') {
+    public function getPointsInfo($condition, $field = '*')
+    {
         //得到条件语句
         return Db::name('pointslog')->field($field)->where($condition)->find();
     }
 
-    /**
-     * 
-     */
-    public function getPointsCount($condition) {
+    public function getPointsCount($condition)
+    {
         return Db::name('pointslog')->where($condition)->count();
     }
 }

@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 兑换订单
  */
-class Pointorder extends BaseModel {
+class Pointorder extends BaseModel
+{
 
     public $page_info;
 
@@ -26,7 +18,8 @@ class Pointorder extends BaseModel {
      * @author csdeshang
      * @return int
      */
-    public function getPointorderStateBySign() {
+    public function getPointorderStateBySign()
+    {
         $pointorderstate_arr = array();
         $pointorderstate_arr['canceled'] = array(
             2,
@@ -54,7 +47,8 @@ class Pointorder extends BaseModel {
      * @param type $order_state 订单状态
      * @return string
      */
-    public function getPointorderState($order_state) {
+    public function getPointorderState($order_state)
+    {
         $pointorderstate_arr = array();
         $pointorderstate_arr[2] = array(
             'canceled',
@@ -89,7 +83,8 @@ class Pointorder extends BaseModel {
      * @param array $data 参数内容
      * @return bool
      */
-    public function addPointorder($data) {
+    public function addPointorder($data)
+    {
         if (!$data) {
             return false;
         }
@@ -108,7 +103,8 @@ class Pointorder extends BaseModel {
      * @param array $data 订单礼品信息
      * @return bool
      */
-    public function addPointorderProdAll($data) {
+    public function addPointorderProdAll($data)
+    {
         if (!$data) {
             return false;
         }
@@ -124,7 +120,8 @@ class Pointorder extends BaseModel {
      * @param type $field 查询字段
      * @return type
      */
-    public function getPointordergoodsList($where, $field = '*') {
+    public function getPointordergoodsList($where, $field = '*')
+    {
         $ordergoods_list = Db::name('pointsordergoods')->field($field)->where($where)->select()->toArray();
         if ($ordergoods_list) {
             foreach ($ordergoods_list as $k => $v) {
@@ -142,7 +139,8 @@ class Pointorder extends BaseModel {
      * @param array $where 查询条件
      * @return bool
      */
-    public function delPointorder($where) {
+    public function delPointorder($where)
+    {
         return Db::name('pointsorder')->where($where)->delete();
     }
 
@@ -153,7 +151,8 @@ class Pointorder extends BaseModel {
      * @param array $where 查询条件
      * @return bool
      */
-    public function delPointordergoods($where) {
+    public function delPointordergoods($where)
+    {
         return Db::name('pointsordergoods')->where($where)->delete();
     }
 
@@ -164,7 +163,8 @@ class Pointorder extends BaseModel {
      * @param array $where 查询条件
      * @return bool
      */
-    public function delPointorderAddress($where) {
+    public function delPointorderAddress($where)
+    {
         return Db::name('pointsorderaddress')->where($where)->delete();
     }
 
@@ -175,7 +175,8 @@ class Pointorder extends BaseModel {
      * @param array $data 订单收货地址信息
      * @return bool
      */
-    public function addPointorderAddress($data) {
+    public function addPointorderAddress($data)
+    {
         if (!$data) {
             return false;
         }
@@ -192,7 +193,8 @@ class Pointorder extends BaseModel {
      * @param string $group 分组
      * @return array
      */
-    public function getPointorderInfo($where, $field = '*', $order = '', $group = '') {
+    public function getPointorderInfo($where, $field = '*', $order = '', $group = '')
+    {
         $order_info = Db::name('pointsorder')->field($field)->where($where)->group($group)->order($order)->find();
         if (!$order_info) {
             return $order_info;
@@ -233,7 +235,8 @@ class Pointorder extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getPointorderAddressInfo($where, $field = '*', $order = '', $group = '') {
+    public function getPointorderAddressInfo($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('pointsorderaddress')->field($field)->where($where)->group($group)->order($order)->find();
     }
 
@@ -248,8 +251,8 @@ class Pointorder extends BaseModel {
      * @param str $order 排序
      * @return array
      */
-    public function getPointorderList($where, $field = '*', $pagesize = 0, $limit = 0, $order = '') {
-
+    public function getPointorderList($where, $field = '*', $pagesize = 0, $limit = 0, $order = '')
+    {
         if ($pagesize) {
             $order_list = Db::name('pointsorder')->field($field)->where($where)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $order_list;
@@ -257,7 +260,6 @@ class Pointorder extends BaseModel {
         } else {
             $order_list = Db::name('pointsorder')->field($field)->where($where)->limit($limit)->order($order)->select()->toArray();
         }
-
 
         foreach ($order_list as $k => $v) {
             //订单状态
@@ -296,7 +298,8 @@ class Pointorder extends BaseModel {
      * @param array $pointorder_info 兑换订单详情
      * @return array
      */
-    public function allowPointorderShip($pointorder_info) {
+    public function allowPointorderShip($pointorder_info)
+    {
         if (!$pointorder_info) {
             return array(
                 'state' => false,
@@ -318,7 +321,8 @@ class Pointorder extends BaseModel {
      * @param array $pointorder_info 兑换订单详情
      * @return bool
      */
-    public function allowEditPointorderShip($pointorder_info) {
+    public function allowEditPointorderShip($pointorder_info)
+    {
         if (!$pointorder_info) {
             return array(
                 'state' => false,
@@ -340,7 +344,8 @@ class Pointorder extends BaseModel {
      * @param array $pointorder_info 兑换订单详情
      * @return bool
      */
-    public function allowPointorderReceiving($pointorder_info) {
+    public function allowPointorderReceiving($pointorder_info)
+    {
         if (!$pointorder_info) {
             return array(
                 'state' => false,
@@ -362,7 +367,8 @@ class Pointorder extends BaseModel {
      * @param array $pointorder_info 兑换订单详情
      * @return bool
      */
-    public function allowPointorderCancel($pointorder_info) {
+    public function allowPointorderCancel($pointorder_info)
+    {
         if (!$pointorder_info) {
             return array(
                 'state' => false,
@@ -384,7 +390,8 @@ class Pointorder extends BaseModel {
      * @param array $pointorder_info 兑换订单详情
      * @return array
      */
-    public function allowPointorderDelete($pointorder_info) {
+    public function allowPointorderDelete($pointorder_info)
+    {
         if (!$pointorder_info) {
             return array(
                 'state' => false,
@@ -407,7 +414,8 @@ class Pointorder extends BaseModel {
      * @param  array $condition 条件
      * @return bool 
      */
-    public function editPointorder($condition, $data) {
+    public function editPointorder($condition, $data)
+    {
         if (empty($data)) {
             return false;
         }
@@ -422,7 +430,8 @@ class Pointorder extends BaseModel {
      * @param type $member_id 会员ID
      * @return type
      */
-    public function cancelPointorder($point_orderid, $member_id = 0) {
+    public function cancelPointorder($point_orderid, $member_id = 0)
+    {
         $point_orderid = intval($point_orderid);
         if ($point_orderid <= 0) {
             return array(
@@ -451,7 +460,7 @@ class Pointorder extends BaseModel {
         $result = $this->editPointorder(array(
             'point_orderid' => $order_info['point_orderid'],
             'point_buyerid' => $order_info['point_buyerid']
-                ), array('point_orderstate' => $pointorderstate_arr['canceled'][0]));
+        ), array('point_orderstate' => $pointorderstate_arr['canceled'][0]));
         if ($result) {
 
             //更新会员缓存
@@ -498,7 +507,8 @@ class Pointorder extends BaseModel {
      * @param type $member_id 会员ID
      * @return type
      */
-    public function receivingPointorder($point_orderid, $member_id = 0) {
+    public function receivingPointorder($point_orderid, $member_id = 0)
+    {
         $point_orderid = intval($point_orderid);
         if ($point_orderid <= 0) {
             return array(
@@ -538,7 +548,8 @@ class Pointorder extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getPointorderCount($condition) {
+    public function getPointorderCount($condition)
+    {
         return Db::name('pointsorder')->where($condition)->count();
     }
 
@@ -551,7 +562,8 @@ class Pointorder extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getPointorderAndGoodsList($where, $field = '*', $order = '', $pagesize = '') {
+    public function getPointorderAndGoodsList($where, $field = '*', $order = '', $pagesize = '')
+    {
         if ($pagesize) {
             $order_list = Db::name('pointsordergoods')->alias('pointsordergoods')->field($field)->join('pointsorder pointsorder', 'pointsordergoods.pointog_orderid=pointsorder.point_orderid')->where($where)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $order_list;
@@ -572,7 +584,8 @@ class Pointorder extends BaseModel {
      * @param str $group 分组
      * @return array
      */
-    public function getPointorderAndGoodsInfo($where, $field = '*', $order = '', $group = '') {
+    public function getPointorderAndGoodsInfo($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('pointsordergoods')->alias('pointsordergoods')->field($field)->join('pointsorder pointsorder', 'pointsordergoods.pointog_orderid=pointsorder.point_orderid')->where($where)->group($group)->order($order)->find();
     }
 
@@ -583,7 +596,8 @@ class Pointorder extends BaseModel {
      * @param int $member_id 会员编号
      * @return int
      */
-    public function getMemberPointsOrderGoodsCount($member_id) {
+    public function getMemberPointsOrderGoodsCount($member_id)
+    {
         $info = rcache($member_id, 'm_pointorder');
         if (!isset($info['pointordercount']) || $info['pointordercount'] !== 0) {
             //获取兑换订单状态
@@ -613,7 +627,8 @@ class Pointorder extends BaseModel {
      * @param type $member_info 会员信息
      * @return type
      */
-    public function createOrder($post_arr, $pointprod_arr, $member_info) {
+    public function createOrder($post_arr, $pointprod_arr, $member_info)
+    {
         //验证是否存在收货地址
         $address_options = intval($post_arr['address_options']);
         if ($address_options <= 0) {
@@ -726,7 +741,8 @@ class Pointorder extends BaseModel {
      * @param type $order_id 订单ID
      * @return type
      */
-    public function delPointorderByOrderID($order_id) {
+    public function delPointorderByOrderID($order_id)
+    {
         $order_id = intval($order_id);
         if ($order_id <= 0) {
             return array(
@@ -765,7 +781,8 @@ class Pointorder extends BaseModel {
      * @param type $order_info 会员
      * @return type
      */
-    public function shippingPointorder($order_id, $postarr, $order_info = array()) {
+    public function shippingPointorder($order_id, $postarr, $order_info = array())
+    {
         $order_id = intval($order_id);
         if ($order_id <= 0) {
             return array(
@@ -780,7 +797,8 @@ class Pointorder extends BaseModel {
         $condition = array();
         $condition[] = array('point_orderid', '=', $order_id);
         $condition[] = array(
-            'point_orderstate', 'in',
+            'point_orderstate',
+            'in',
             array(
                 $pointorderstate_arr['waitship'][0],
                 $pointorderstate_arr['waitreceiving'][0]

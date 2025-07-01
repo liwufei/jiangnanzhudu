@@ -5,19 +5,10 @@ namespace app\common\logic;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
  * 逻辑层模型
  */
-class Buyvirtual {
-
+class Buyvirtual
+{
     /**
      * 虚拟商品购买第一步，得到购买数据(商品、店铺、会员)
      * @param int $goods_id 商品ID
@@ -25,7 +16,8 @@ class Buyvirtual {
      * @param int $member_id 会员ID
      * @return array
      */
-    public function getBuyStep1Data($goods_id, $quantity, $member_id) {
+    public function getBuyStep1Data($goods_id, $quantity, $member_id)
+    {
         return $this->getBuyStepData($goods_id, $quantity, $member_id);
     }
 
@@ -36,7 +28,8 @@ class Buyvirtual {
      * @param int $member_id 会员ID
      * @return array
      */
-    public function getBuyStep2Data($goods_id, $quantity, $member_id, $extra = array()) {
+    public function getBuyStep2Data($goods_id, $quantity, $member_id, $extra = array())
+    {
         return $this->getBuyStepData($goods_id, $quantity, $member_id, $extra);
     }
 
@@ -47,14 +40,15 @@ class Buyvirtual {
      * @param int $member_id 会员ID
      * @return array
      */
-    public function getBuyStepData($goods_id, $quantity, $member_id, $extra = array()) {
-        $goods_model=model('goods');
+    public function getBuyStepData($goods_id, $quantity, $member_id, $extra = array())
+    {
+        $goods_model = model('goods');
         $goods_info = $goods_model->getGoodsOnlineInfoAndPromotionById($goods_id);
         if (empty($goods_info)) {
             return ds_callback(false, '该商品不符合购买条件，可能的原因有：下架、不存在、过期等');
         }
         $result2 = $goods_model->getGoodsCommonInfoByID($goods_info['goods_commonid']);
-        $goods_info=array_merge($result2,$goods_info);
+        $goods_info = array_merge($result2, $goods_info);
         if ($goods_info['is_virtual'] != 1 || ($goods_info['virtual_type'] == 0 && $goods_info['virtual_indate'] < TIMESTAMP)) {
             return ds_callback(false, '该商品不符合购买条件，可能的原因有：下架、不存在、过期等');
         }
@@ -69,7 +63,6 @@ class Buyvirtual {
             //取得抢购信息
             $goods_info = $this->_getGroupbuyInfo($goods_info);
         }
-
 
         $quantity = abs(intval($quantity));
         $quantity = $quantity == 0 ? 1 : $quantity;
@@ -88,11 +81,11 @@ class Buyvirtual {
         $return['store_info'] = model('store')->getStoreOnlineInfoByID($goods_info['store_id'], 'store_name,store_id,member_id');
         $return['member_info'] = model('member')->getMemberInfoByID($member_id);
 
-        //        $pd_payment_info = model('payment')->getPaymentOpenInfo(array('payment_code'=>'predeposit'));
-        //        if (empty($pd_payment_info)) {
-        //            $return['member_info']['available_predeposit'] = 0;
-        //            $return['member_info']['available_rc_balance'] = 0;
-        //        }
+        // $pd_payment_info = model('payment')->getPaymentOpenInfo(array('payment_code'=>'predeposit'));
+        // if (empty($pd_payment_info)) {
+        //    $return['member_info']['available_predeposit'] = 0;
+        //    $return['member_info']['available_rc_balance'] = 0;
+        // }
         //返回店铺可用的代金券
         $return['store_voucher_list'] = array();
         if (config('ds_config.voucher_allow')) {
@@ -102,16 +95,16 @@ class Buyvirtual {
             $condition[] = array('voucher_owner_id', '=', $member_id);
             $return['store_voucher_list'] = $voucher_model->getCurrentAvailableVoucher($condition, $goods_info['goods_total']);
         }
-        
+
         //返回平台可用的代金券
         $return['mall_voucher_list'] = array();
         if (config('ds_config.voucher_allow')) {
             $goods_info['goods_num'] = $goods_info['quantity'];
             $goods_list[0] = $goods_info;
             $condition = array();
-            $condition[] = array('mallvoucheruser_ownerid','=',$member_id);
-            $condition[] = array('mallvoucheruser_goodsid','=',$goods_info['goods_id']);
-            $return['mall_voucher_list'] = model('buy_1','logic')->getAvailableMallVoucherUserList($goods_list, $member_id);
+            $condition[] = array('mallvoucheruser_ownerid', '=', $member_id);
+            $condition[] = array('mallvoucheruser_goodsid', '=', $goods_info['goods_id']);
+            $return['mall_voucher_list'] = model('buy_1', 'logic')->getAvailableMallVoucherUserList($goods_list, $member_id);
         }
         return ds_callback(true, '', $return);
     }
@@ -122,7 +115,8 @@ class Buyvirtual {
      * @param int $member_id
      * @return array
      */
-    public function buyStep3($post, $member_id) {
+    public function buyStep3($post, $member_id)
+    {
         $result = $this->getBuyStepData($post['goods_id'], $post['quantity'], $member_id, $post);
         if (!$result['code'])
             return $result;
@@ -130,19 +124,19 @@ class Buyvirtual {
         $goods_info = $result['data']['goods_info'];
         $member_info = $result['data']['member_info'];
         $goods_info['store_voucher_list'] = isset($result['data']['store_voucher_list']) ? $result['data']['store_voucher_list'] : array();
-        $goods_info['mall_voucher_list'] = isset($result['data']['mall_voucher_list'])?$result['data']['mall_voucher_list']:array();
+        $goods_info['mall_voucher_list'] = isset($result['data']['mall_voucher_list']) ? $result['data']['mall_voucher_list'] : array();
         //应付总金额计算
         $pay_total = $goods_info['goods_price'] * $goods_info['quantity'];
         $store_id = $goods_info['store_id'];
         $store_goods_total_list = array($store_id => $pay_total);
         $pay_total = $store_goods_total_list[$store_id];
 
-        if($goods_info['virtual_type']==0){
-            if($post['buyer_phone']==encrypt_show($member_info['member_mobile'],4,4)){
-                $post['buyer_phone']=$member_info['member_mobile'];
+        if ($goods_info['virtual_type'] == 0) {
+            if ($post['buyer_phone'] == encrypt_show($member_info['member_mobile'], 4, 4)) {
+                $post['buyer_phone'] = $member_info['member_mobile'];
             }
-        }else{
-            $post['buyer_phone']='';
+        } else {
+            $post['buyer_phone'] = '';
         }
         //整理数据
         $input = array();
@@ -155,8 +149,8 @@ class Buyvirtual {
         $input['pintuangroup_id'] = isset($post['pintuangroup_id']) ? $post['pintuangroup_id'] : 0;
         $goods_model = model('goods');
         $input['voucher'] = isset($post['voucher']) ? $post['voucher'] : '';
-        $input['mallvoucher'] = isset($post['mallvoucher'])?$post['mallvoucher']:'';
-        
+        $input['mallvoucher'] = isset($post['mallvoucher']) ? $post['mallvoucher'] : '';
+
         Db::startTrans();
         try {
             //生成订单
@@ -165,8 +159,8 @@ class Buyvirtual {
             $this->addOrderInviter($order_info);
 
             //变更库存和销量
-            $res=$goods_model->createOrderUpdateStorage(array($goods_info['goods_id'] => $goods_info['quantity']),$goods_info['virtual_type']>1?true:false);
-            if(!$res['code']){
+            $res = $goods_model->createOrderUpdateStorage(array($goods_info['goods_id'] => $goods_info['quantity']), $goods_info['virtual_type'] > 1 ? true : false);
+            if (!$res['code']) {
                 throw new \think\Exception($res['msg'], 10006);
             }
             //提交事务
@@ -176,7 +170,6 @@ class Buyvirtual {
             Db::rollback();
             return ds_callback(false, $e->getMessage());
         }
-
 
         //更新抢购信息
         $this->_updateGroupBuy($goods_info);
@@ -188,7 +181,8 @@ class Buyvirtual {
      * 生成推广记录
      * @param array $order_list
      */
-    public function addOrderInviter($order = array()) {
+    public function addOrderInviter($order = array())
+    {
         if (!config('ds_config.inviter_open')) {
             return;
         }
@@ -206,7 +200,7 @@ class Buyvirtual {
         if (!$goods_common_info['inviter_open']) {
             return;
         }
-        $goods_amount = $order['order_amount']*$goods_common_info['inviter_ratio']/100;
+        $goods_amount = $order['order_amount'] * $goods_common_info['inviter_ratio'] / 100;
         $inviter_ratios = array(
             $inviter_ratio_1,
             $inviter_ratio_2,
@@ -216,7 +210,7 @@ class Buyvirtual {
         if (config('ds_config.inviter_return')) {
             if (Db::name('inviter')->where('inviter_state=1 AND inviter_id=' . $order['buyer_id'])->value('inviter_id')) {
                 if (isset($inviter_ratios[0]) && floatval($inviter_ratios[0]) > 0) {
-                    $ratio=round($inviter_ratios[0]*$goods_common_info['inviter_ratio']/100,2);
+                    $ratio = round($inviter_ratios[0] * $goods_common_info['inviter_ratio'] / 100, 2);
                     $money_1 = round($inviter_ratios[0] / 100 * $goods_amount, 2);
                     if ($money_1 > 0) {
 
@@ -250,10 +244,9 @@ class Buyvirtual {
             return;
         }
 
-
         $inviter_1 = Db::name('member')->where('member_id', $inviter_1_id)->field('inviter_id,member_id,member_name')->find();
         if ($inviter_1 && isset($inviter_ratios[0]) && floatval($inviter_ratios[0]) > 0) {
-            $ratio=round($inviter_ratios[0]*$goods_common_info['inviter_ratio']/100,2);
+            $ratio = round($inviter_ratios[0] * $goods_common_info['inviter_ratio'] / 100, 2);
             $money_1 = round($inviter_ratios[0] / 100 * $goods_amount, 2);
             if ($money_1 > 0) {
 
@@ -289,7 +282,7 @@ class Buyvirtual {
         }
         $inviter_2 = Db::name('member')->where('member_id', $inviter_2_id)->field('inviter_id,member_id,member_name')->find();
         if ($inviter_2 && isset($inviter_ratios[1]) && floatval($inviter_ratios[1]) > 0) {
-            $ratio=round($inviter_ratios[1]*$goods_common_info['inviter_ratio']/100,2);
+            $ratio = round($inviter_ratios[1] * $goods_common_info['inviter_ratio'] / 100, 2);
             $money_2 = round($inviter_ratios[1] / 100 * $goods_amount, 2);
             if ($money_2 > 0) {
 
@@ -325,7 +318,7 @@ class Buyvirtual {
         }
         $inviter_3 = Db::name('member')->where('member_id', $inviter_3_id)->field('inviter_id,member_id,member_name')->find();
         if ($inviter_3 && isset($inviter_ratios[2]) && floatval($inviter_ratios[2]) > 0) {
-            $ratio=round($inviter_ratios[2]*$goods_common_info['inviter_ratio']/100,2);
+            $ratio = round($inviter_ratios[2] * $goods_common_info['inviter_ratio'] / 100, 2);
             $money_3 = round($inviter_ratios[2] / 100 * $goods_amount, 2);
             if ($money_3 > 0) {
 
@@ -361,7 +354,8 @@ class Buyvirtual {
      * @throws Exception
      * @return array
      */
-    private function _createOrder($input, $goods_info, $member_info) {
+    private function _createOrder($input, $goods_info, $member_info)
+    {
         extract($input);
         $vrorder_model = model('vrorder');
         $goods_model = model('goods');
@@ -399,28 +393,28 @@ class Buyvirtual {
         //验证平台代金券
         if (!empty($input['mallvoucher'])) {
             if (preg_match_all('/^(\d+)\|([\d.]+)$/', $input['mallvoucher'], $matchs)) {
-                    if (floatval($matchs[2][0]) > 0) {
-                        $input_mallvoucher=array();
-                        $input_mallvoucher['mallvouchertemplate_id'] = $matchs[1][0];
-                        $input_mallvoucher['mallvoucheruser_price'] = $matchs[2][0];
-                  
-                        $mallvoucher_list = $goods_info['mall_voucher_list'];
-                        if(is_array($mallvoucher_list) && isset($mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']])){
-                          $input_mallvoucher['mallvoucheruser_id'] = $mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']]['mallvoucheruser_id'];
-                          $input_mallvoucher['mallvoucheruser_code'] = $mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']]['mallvoucheruser_code'];
-                          $input_mallvoucher['mallvoucheruser_ownerid'] = $mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']]['mallvoucheruser_ownerid'];
-                          $input_mallvoucher['mallvoucheruser_price']=floatval($input_mallvoucher['mallvoucheruser_price']);
-                          $order['mallvoucher_price'] = $input_mallvoucher['mallvoucheruser_price'];
-                          $order['mallvoucher_code'] = $input_mallvoucher['mallvoucheruser_code'];
-                          $pay_total=bcsub($pay_total,$input_mallvoucher['mallvoucheruser_price'],2);
-                          if($pay_total<0){
-                              $pay_total=0;
-                          }
-                        }else{
-                          $input_mallvoucher=array();
+                if (floatval($matchs[2][0]) > 0) {
+                    $input_mallvoucher = array();
+                    $input_mallvoucher['mallvouchertemplate_id'] = $matchs[1][0];
+                    $input_mallvoucher['mallvoucheruser_price'] = $matchs[2][0];
+
+                    $mallvoucher_list = $goods_info['mall_voucher_list'];
+                    if (is_array($mallvoucher_list) && isset($mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']])) {
+                        $input_mallvoucher['mallvoucheruser_id'] = $mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']]['mallvoucheruser_id'];
+                        $input_mallvoucher['mallvoucheruser_code'] = $mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']]['mallvoucheruser_code'];
+                        $input_mallvoucher['mallvoucheruser_ownerid'] = $mallvoucher_list[$input_mallvoucher['mallvouchertemplate_id']]['mallvoucheruser_ownerid'];
+                        $input_mallvoucher['mallvoucheruser_price'] = floatval($input_mallvoucher['mallvoucheruser_price']);
+                        $order['mallvoucher_price'] = $input_mallvoucher['mallvoucheruser_price'];
+                        $order['mallvoucher_code'] = $input_mallvoucher['mallvoucheruser_code'];
+                        $pay_total = bcsub($pay_total, $input_mallvoucher['mallvoucheruser_price'], 2);
+                        if ($pay_total < 0) {
+                            $pay_total = 0;
                         }
+                    } else {
+                        $input_mallvoucher = array();
                     }
                 }
+            }
         }
         $order['order_sn'] = makePaySn($member_info['member_id']);
         $order['store_id'] = $goods_info['store_id'];
@@ -441,23 +435,23 @@ class Buyvirtual {
         $order['commis_rate'] = floatval(@$store_gc_id_commis_rate_list[$goods_info['store_id']][$goods_info['gc_id']]);
         $order['gc_id'] = $goods_info['gc_id'];
         $order['virtual_type'] = $goods_info['virtual_type'];
-        if($order['virtual_type']>0){
-            if($order['virtual_type']==1){
-                $res=$goods_model->getAvailableGoodsCard($goods_info);
-                if($res['code']){
-                    if($input['quantity']>count($res['data']['card_list'])){
+        if ($order['virtual_type'] > 0) {
+            if ($order['virtual_type'] == 1) {
+                $res = $goods_model->getAvailableGoodsCard($goods_info);
+                if ($res['code']) {
+                    if ($input['quantity'] > count($res['data']['card_list'])) {
                         throw new \think\Exception('卡券数量不足', 10006);
                     }
-                    $virtual_content=[];
-                    for($i=0;$i<$input['quantity'];$i++){
-                        $virtual_content[]=$res['data']['card_list'][$i];
+                    $virtual_content = [];
+                    for ($i = 0; $i < $input['quantity']; $i++) {
+                        $virtual_content[] = $res['data']['card_list'][$i];
                     }
-                    $virtual_content= implode('\r\n', $virtual_content);
-                }else{
+                    $virtual_content = implode('\r\n', $virtual_content);
+                } else {
                     throw new \think\Exception($res['msg'], 10006);
                 }
-            }else{
-                $virtual_content=$goods_info['virtual_content'];
+            } else {
+                $virtual_content = $goods_info['virtual_content'];
             }
             $order['virtual_content'] = $virtual_content;
         }
@@ -490,7 +484,7 @@ class Buyvirtual {
             $param = array();
             $param['common_id'] = $goods_info['goods_commonid'];
             $param['sku_id'] = $goods_info['goods_id'];
-            $ten_param=array($param['common_id'],$param['sku_id']);
+            $ten_param = array($param['common_id'], $param['sku_id']);
             $weixin_param = array(
                 'url' => config('ds_config.h5_store_site_url') . '/pages/seller/goods/GoodsForm2?commonid=' . $goods_info['goods_commonid'] . '&class_id=' . $goods_info['gc_id'],
                 'data' => array(
@@ -504,7 +498,7 @@ class Buyvirtual {
                     )
                 ),
             );
-            model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendStoremsg','cron_value'=>serialize(array('code' => 'goods_storage_alarm', 'store_id' => $goods_info['store_id'], 'param' => $param, 'ali_param' => $param, 'ten_param' => $ten_param, 'weixin_param' => $weixin_param))));
+            model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendStoremsg', 'cron_value' => serialize(array('code' => 'goods_storage_alarm', 'store_id' => $goods_info['store_id'], 'param' => $param, 'ali_param' => $param, 'ten_param' => $ten_param, 'weixin_param' => $weixin_param))));
         }
 
         //更新使用的店铺代金券状态
@@ -516,19 +510,20 @@ class Buyvirtual {
         if (!empty($input_mallvoucher) && is_array($input_mallvoucher)) {
             model('Mallvouchertemplate')->editMallvoucherState($input_mallvoucher);
         }
-        
+
         return $order;
     }
 
     /**
      * 更新抢购购买人数和数量
      */
-    private function _updateGroupBuy($goods_info) {
+    private function _updateGroupBuy($goods_info)
+    {
         if (isset($goods_info['ifgroupbuy']) && $goods_info['groupbuy_id']) {
             $groupbuy_info = array();
             $groupbuy_info['groupbuy_id'] = $goods_info['groupbuy_id'];
             $groupbuy_info['quantity'] = $goods_info['quantity'];
-            model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'editGroupbuySaleCount','cron_value'=>serialize($groupbuy_info)));
+            model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'editGroupbuySaleCount', 'cron_value' => serialize($groupbuy_info)));
         }
     }
 
@@ -536,7 +531,8 @@ class Buyvirtual {
      * 充值卡支付
      * 如果充值卡足够就单独支付了该订单，如果不足就暂时冻结，等API支付成功了再彻底扣除
      */
-    public function rcbPay($order_info, $input, $buyer_info) {
+    public function rcbPay($order_info, $input, $buyer_info)
+    {
         $available_rcb_amount = floatval($buyer_info['available_rc_balance']);
 
         if ($available_rcb_amount <= 0)
@@ -573,7 +569,7 @@ class Buyvirtual {
             $data_order['payment_code'] = 'predeposit';
             $data_order['rcb_amount'] = round($order_info['rcb_amount'] + $order_amount, 2);
             $result = $vrorder_model->editVrorder($data_order, array('order_id' => $order_info['order_id']));
-            
+
             //添加订单日志
             $data = array();
             $data['order_id'] = $order_info['order_id'];
@@ -581,20 +577,19 @@ class Buyvirtual {
             $data['log_user'] = '';
             $data['log_msg'] = '使用充值卡支付';
             model('orderlog')->addVrOrderlog($data);
-            
-            
+
             if (!$result) {
                 throw new \think\Exception('订单更新失败', 10006);
             }
             if ($order_info['order_promotion_type'] != 2) {
-                if($order_info['virtual_type']==0){
+                if ($order_info['virtual_type'] == 0) {
                     //发放兑换码
                     $insert = $vrorder_model->addVrorderCode($order_info);
                     if (!$insert) {
                         throw new \think\Exception('兑换码发送失败', 10006);
                     }
-                }else{
-                    $logic_vrorder = model('vrorder','logic');
+                } else {
+                    $logic_vrorder = model('vrorder', 'logic');
                     $result = $logic_vrorder->changeOrderStateSuccess($order_info['order_id']);
                     if (!$result['code']) {
                         throw new \think\Exception($result['msg'], 10006);
@@ -621,7 +616,8 @@ class Buyvirtual {
      * 预存款支付 主要处理
      * 如果预存款足够就单独支付了该订单，如果不足就暂时冻结，等API支付成功了再彻底扣除
      */
-    public function pdPay($order_info, $input, $buyer_info) {
+    public function pdPay($order_info, $input, $buyer_info)
+    {
         if ($order_info['order_state'] == ORDER_STATE_PAY)
             return $order_info;
 
@@ -672,7 +668,7 @@ class Buyvirtual {
             $order_info['payment_code'] = $data_order['payment_code'] = 'predeposit';
             $order_info['pd_amount'] = $data_order['pd_amount'] = round($order_info['pd_amount'] + $order_amount, 2);
             $result = $vrorder_model->editVrorder($data_order, array('order_id' => $order_info['order_id']));
-            
+
             //添加订单日志
             $data = array();
             $data['order_id'] = $order_info['order_id'];
@@ -680,16 +676,16 @@ class Buyvirtual {
             $data['log_user'] = '';
             $data['log_msg'] = '使用预存款支付';
             model('orderlog')->addVrOrderlog($data);
-            
+
             if (!$result) {
                 throw new \think\Exception('订单更新失败', 10006);
             }
             if ($order_info['order_promotion_type'] != 2) {
-                if($order_info['virtual_type']==0){
+                if ($order_info['virtual_type'] == 0) {
                     //发放兑换码
                     $vrorder_model->addVrorderCode($order_info);
-                }else{
-                    $logic_vrorder = model('vrorder','logic');
+                } else {
+                    $logic_vrorder = model('vrorder', 'logic');
                     $result = $logic_vrorder->changeOrderStateSuccess($order_info['order_id']);
                     if (!$result['code']) {
                         throw new \think\Exception($result['msg'], 10006);
@@ -717,7 +713,8 @@ class Buyvirtual {
      * @param array $goods_info
      * @return array
      */
-    private function _getGroupbuyInfo($goods_info = array()) {
+    private function _getGroupbuyInfo($goods_info = array())
+    {
         if (!config('ds_config.groupbuy_allow') || empty($goods_info) || !is_array($goods_info))
             return $goods_info;
 
@@ -734,5 +731,4 @@ class Buyvirtual {
 
         return $goods_info;
     }
-
 }

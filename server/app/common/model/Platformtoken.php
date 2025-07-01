@@ -1,26 +1,14 @@
 <?php
 
-/**
- * 手机端买家令牌模型
- */
-
 namespace app\common\model;
 
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 平台令牌
  */
-class Platformtoken extends BaseModel {
+class Platformtoken extends BaseModel
+{
 
     /**
      * 查询
@@ -29,8 +17,8 @@ class Platformtoken extends BaseModel {
      * @param array $condition 查询条件
      * @return array
      */
-    public function getPlatformtokenInfo($condition) {
-
+    public function getPlatformtokenInfo($condition)
+    {
         $platformtoken = Db::name('platformtoken')->where($condition)->find();
         if (!empty($platformtoken)) {
             $platformtoken['platform_logintime_desc'] = date('Y-m-d H:i:s', $platformtoken['platform_logintime']);
@@ -51,7 +39,8 @@ class Platformtoken extends BaseModel {
      * @param type $openId ID
      * @return type
      */
-    public function editMemberOpenId($token, $openId) {
+    public function editMemberOpenId($token, $openId)
+    {
         return Db::name('platformtoken')->where(array('platform_token' => $token,))->update(array('platform_openid' => $openId,));
     }
 
@@ -62,7 +51,8 @@ class Platformtoken extends BaseModel {
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addPlatformtoken($data) {
+    public function addPlatformtoken($data)
+    {
         return Db::name('platformtoken')->insertGetId($data);
     }
 
@@ -73,11 +63,13 @@ class Platformtoken extends BaseModel {
      * @param int $condition 条件
      * @return bool 布尔类型的返回结果
      */
-    public function delPlatformtoken($condition) {
+    public function delPlatformtoken($condition)
+    {
         return Db::name('platformtoken')->where($condition)->delete();
     }
 
-    public function getPlatformtokenList($condition) {
+    public function getPlatformtokenList($condition)
+    {
         $platformtoken_list = Db::name('platformtoken')->where($condition)->order('platform_operationtime desc')->select()->toArray();
         foreach ($platformtoken_list as $key => $platformtoken) {
             $platformtoken_list[$key]['platform_logintime_desc'] = date('Y-m-d H:i:s', $platformtoken['platform_logintime']);
@@ -87,7 +79,8 @@ class Platformtoken extends BaseModel {
     }
 
     //清除member_id 关联 的所有token
-    public function clearMembertoken($member_id) {
+    public function clearMembertoken($member_id)
+    {
         //删除member_id 下的token
         Db::name('platformtoken')->where('platform_userid', $member_id)->where('platform_type', 'member')->delete();
         //判断用户下是否绑定了卖家账户,一个店铺下可有多个卖家账户
@@ -97,5 +90,3 @@ class Platformtoken extends BaseModel {
         }
     }
 }
-
-?>

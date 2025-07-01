@@ -1,30 +1,24 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 相册
  */
-class Album extends BaseModel {
+class Album extends BaseModel
+{
     public $page_info;
+
     /**
      * 计算数量
      * @author csdeshang
      * @param array $condition 条件
      * @return int
      */
-    public function getAlbumpicCount($condition) {
+    public function getAlbumpicCount($condition)
+    {
         $result = Db::name('albumpic')->where($condition)->count();
         return $result;
     }
@@ -36,7 +30,8 @@ class Album extends BaseModel {
      * @param string $table 表名
      * @return int
      */
-    public function getCount($condition, $table = 'albumpic') {
+    public function getCount($condition, $table = 'albumpic')
+    {
         $result = Db::name($table)->where($condition)->count();
         return $result;
     }
@@ -48,7 +43,8 @@ class Album extends BaseModel {
      * @param string $table 表名
      * @return array 一维数组
      */
-    public function getOne($condition, $table = 'albumpic') {
+    public function getOne($condition, $table = 'albumpic')
+    {
         $resule = Db::name($table)->where($condition)->find();
         return $resule;
     }
@@ -61,7 +57,8 @@ class Album extends BaseModel {
      * @param str $order 排序
      * @return array 二维数组
      */
-    public function getAlbumclassList($condition, $pagesize = '', $order = '') {
+    public function getAlbumclassList($condition, $pagesize = '', $order = '')
+    {
         $result = Db::name('albumclass')->where($condition)->order($order)->select()->toArray();
         return $result;
     }
@@ -72,9 +69,10 @@ class Album extends BaseModel {
      * @param int id 相册id
      * @return array 一维数组
      */
-    public function getAlbumclassCount($store_id) {
+    public function getAlbumclassCount($store_id)
+    {
         $condition = array();
-        $condition[] = array('store_id','=',$store_id);
+        $condition[] = array('store_id', '=', $store_id);
         return Db::name('albumclass')->where($condition)->count();
     }
 
@@ -84,7 +82,8 @@ class Album extends BaseModel {
      * @param array $condition 条件
      * @return bool 布尔类型的返回结果
      */
-    public function checkAlbum($condition) {
+    public function checkAlbum($condition)
+    {
         /**
          * 验证是否为有默认相册
          */
@@ -106,12 +105,13 @@ class Album extends BaseModel {
      * @param obj $order 排序
      * @return array 二维数组
      */
-    public function getAlbumpicList($condition, $pagesize = '', $field = '*',$order='apic_id desc') {
-        if($pagesize){
-            $result = Db::name('albumpic')->where($condition)->field($field)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getAlbumpicList($condition, $pagesize = '', $field = '*', $order = 'apic_id desc')
+    {
+        if ($pagesize) {
+            $result = Db::name('albumpic')->where($condition)->field($field)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
-        }else{
+        } else {
             $result = Db::name('albumpic')->where($condition)->field($field)->order($order)->select()->toArray();
             return $result;
         }
@@ -123,7 +123,8 @@ class Album extends BaseModel {
      * @param array $data 参数内容
      * @return bool
      */
-    public function addAlbumclass($data) {
+    public function addAlbumclass($data)
+    {
         return Db::name('albumclass')->insertGetId($data);
     }
 
@@ -133,7 +134,8 @@ class Album extends BaseModel {
      * @param array $data 参数内容
      * @return bool
      */
-    public function addAlbumpic($data) {
+    public function addAlbumpic($data)
+    {
         $result = Db::name('albumpic')->insertGetId($data);
         return $result;
     }
@@ -145,7 +147,8 @@ class Album extends BaseModel {
      * @param int $id 相册id
      * @return bool
      */
-    public function editAlbumclass($data, $id) {
+    public function editAlbumclass($data, $id)
+    {
         return Db::name('albumclass')->where('aclass_id', $id)->update($data);
     }
 
@@ -156,9 +159,10 @@ class Album extends BaseModel {
      * @param int $condition 更新条件
      * @return bool
      */
-    public function editAlbumpic($data, $condition) {
+    public function editAlbumpic($data, $condition)
+    {
         $result = Db::name('albumpic')->where($condition)->update($data);
-       return $result;
+        return $result;
     }
 
     /**
@@ -167,7 +171,8 @@ class Album extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delAlbumclass($condition) {
+    public function delAlbumclass($condition)
+    {
         return Db::name('albumclass')->where($condition)->delete();
     }
 
@@ -177,14 +182,15 @@ class Album extends BaseModel {
      * @param int $id 店铺id
      * @return bool
      */
-    public function delAlbum($id) {
+    public function delAlbum($id)
+    {
         $condition = array();
-        $condition[] = array('store_id','=',$id);
-        
+        $condition[] = array('store_id', '=', $id);
+
         Db::name('albumclass')->where($condition)->delete();
         $pic_list = $this->getAlbumpicList($condition, '', 'apic_cover,store_id,apic_uploadtime');
-        
-        $res=del_albumpic($pic_list);
+
+        $res = del_albumpic($pic_list);
         Db::name('albumpic')->where($condition)->delete();
     }
 
@@ -195,11 +201,9 @@ class Album extends BaseModel {
      * @param int $store_id 店铺id
      * @return bool
      */
-    public function delAlbumpic($condition) {
+    public function delAlbumpic($condition)
+    {
         $pic_list = $this->getAlbumpicList($condition, '', 'apic_cover,store_id,apic_uploadtime');
-        /**
-         * 删除图片
-         */
         $res = del_albumpic($pic_list);
         return Db::name('albumpic')->where($condition)->delete();
     }
@@ -210,7 +214,8 @@ class Album extends BaseModel {
      * @param int $condition 查询条件
      * @return array 一维数组
      */
-    public function getOneAlbumclass($condition) {
+    public function getOneAlbumclass($condition)
+    {
         return Db::name('albumclass')->where($condition)->find();
     }
 
@@ -220,9 +225,11 @@ class Album extends BaseModel {
      * @param int $condition 查询条件
      * @return array 一维数组
      */
-    public function getOneAlbumpicById($condition) {
+    public function getOneAlbumpicById($condition)
+    {
         return Db::name('albumpic')->where($condition)->find();
     }
+
     /**
      * 获取相册列表
      * @param type $condition
@@ -230,15 +237,17 @@ class Album extends BaseModel {
      * @param type $field
      * @return type
      */
-    public function getGoodsalbumList($condition,$pagesize,$field){
-        if($pagesize){
-            $result = Db::name('albumclass')->alias('a')->where($condition)->join('store s', 'a.store_id=s.store_id', 'LEFT')->field($field)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getGoodsalbumList($condition, $pagesize, $field)
+    {
+        if ($pagesize) {
+            $result = Db::name('albumclass')->alias('a')->where($condition)->join('store s', 'a.store_id=s.store_id', 'LEFT')->field($field)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
             return Db::name('albumclass')->alias('a')->where($condition)->join('store s', 'a.store_id=s.store_id', 'LEFT')->field($field)->select()->toArray();
-        }        
+        }
     }
+
     /**
      * 获取相册图片数列表
      * @param type $condition
@@ -246,8 +255,8 @@ class Album extends BaseModel {
      * @param type $group
      * @return type
      */
-    public function getAlbumpicCountlist($condition,$field,$group){
+    public function getAlbumpicCountlist($condition, $field, $group)
+    {
         return Db::name('albumpic')->field($field)->group($group)->where($condition)->select()->toArray();
     }
-
 }

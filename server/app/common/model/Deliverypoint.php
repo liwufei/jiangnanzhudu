@@ -1,20 +1,11 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 自提服务站
  */
 class Deliverypoint extends BaseModel
 {
@@ -23,7 +14,10 @@ class Deliverypoint extends BaseModel
     const STATE10 = 10; // 等待审核
     const STATE20 = 20; // 等待失败
     private $state = array(
-        self::STATE0 => '关闭', self::STATE1 => '开启', self::STATE10 => '等待审核', self::STATE20 => '审核失败'
+        self::STATE0 => '关闭',
+        self::STATE1 => '开启',
+        self::STATE10 => '等待审核',
+        self::STATE20 => '审核失败'
     );
     public $page_info;
 
@@ -50,11 +44,11 @@ class Deliverypoint extends BaseModel
      */
     public function getDeliverypointList($condition, $pagesize = 0, $order = 'dlyp_id desc')
     {
-        if($pagesize){
-            $res = Db::name('deliverypoint')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$res;
+        if ($pagesize) {
+            $res = Db::name('deliverypoint')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
             return $res->items();
-        }else{
+        } else {
             return Db::name('deliverypoint')->where($condition)->order($order)->select()->toArray();
         }
     }
@@ -70,7 +64,7 @@ class Deliverypoint extends BaseModel
      */
     public function getDeliverypointWaitVerifyList($condition, $pagesize = 0, $order = 'dlyp_id desc')
     {
-        $condition[]=array('dlyp_state','=',self::STATE10);
+        $condition[] = array('dlyp_state', '=', self::STATE10);
         return $this->getDeliverypointList($condition, $pagesize, $order);
     }
 
@@ -85,7 +79,7 @@ class Deliverypoint extends BaseModel
      */
     public function getDeliverypointWaitVerifyCount($condition)
     {
-        $condition[]=array('dlyp_state','=',self::STATE10);
+        $condition[] = array('dlyp_state', '=', self::STATE10);
         return Db::name('deliverypoint')->where($condition)->count();
     }
 
@@ -100,7 +94,7 @@ class Deliverypoint extends BaseModel
      */
     public function getDeliverypointOpenList($condition, $pagesize = 0, $order = 'dlyp_id desc')
     {
-        $condition[]=array('dlyp_state','=',self::STATE1);
+        $condition[] = array('dlyp_state', '=', self::STATE1);
         return $this->getDeliverypointList($condition, $pagesize, $order);
     }
 
@@ -127,7 +121,7 @@ class Deliverypoint extends BaseModel
      */
     public function getDeliverypointOpenInfo($condition, $field = '*')
     {
-        $condition[]=array('dlyp_state','=',self::STATE1);
+        $condition[] = array('dlyp_state', '=', self::STATE1);
         return Db::name('deliverypoint')->where($condition)->field($field)->find();
     }
 
@@ -141,7 +135,7 @@ class Deliverypoint extends BaseModel
      */
     public function getDeliverypointFailInfo($condition, $field = '*')
     {
-        $condition[]=array('dlyp_state','=',self::STATE20);
+        $condition[] = array('dlyp_state', '=', self::STATE20);
         return Db::name('deliverypoint')->where($condition)->field($field)->find();
     }
 

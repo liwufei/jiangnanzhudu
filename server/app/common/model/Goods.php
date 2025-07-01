@@ -3,27 +3,19 @@
 namespace app\common\model;
 
 use think\facade\Db;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
- */
-class Goods extends BaseModel {
 
+/**
+ * 商品
+ */
+class Goods extends BaseModel
+{
     const STATE1 = 1;       // 出售中
     const STATE0 = 0;       // 下架
     const STATE10 = 10;     // 违规
     const VERIFY1 = 1;      // 审核通过
     const VERIFY0 = 0;      // 审核失败
     const VERIFY10 = 10;    // 等待审核
-    public $lock=false;//是否加锁
+    public $lock = false; //是否加锁
 
     public $page_info;
 
@@ -34,7 +26,8 @@ class Goods extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function addGoods($data) {
+    public function addGoods($data)
+    {
         $result = Db::name('goods')->insertGetId($data);
         if ($result) {
             $this->_dGoodsCache($result);
@@ -51,7 +44,8 @@ class Goods extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function addGoodsCommon($data) {
+    public function addGoodsCommon($data)
+    {
         return Db::name('goodscommon')->insertGetId($data);
     }
 
@@ -62,7 +56,8 @@ class Goods extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function addGoodsImagesAll($data) {
+    public function addGoodsImagesAll($data)
+    {
         $result = Db::name('goodsimages')->insertAll($data);
         if ($result) {
             foreach ($data as $val) {
@@ -86,14 +81,15 @@ class Goods extends BaseModel {
      * @param type $count 计数
      * @return array
      */
-    public function getGoodsList($condition, $field = '*', $group = '', $order = '', $limit = 0, $pagesize = 0, $lock = false, $count = 0) {
-//        $condition = $this->_getRecursiveClass($condition);
+    public function getGoodsList($condition, $field = '*', $group = '', $order = '', $limit = 0, $pagesize = 0, $lock = false, $count = 0)
+    {
+        //        $condition = $this->_getRecursiveClass($condition);
         if ($pagesize) {
             $result = Db::name('goods')->field($field)->where($condition);
-            if($group){
-                $result=$result->group($group);
+            if ($group) {
+                $result = $result->group($group);
             }
-            $result=$result->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = $result->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -112,12 +108,13 @@ class Goods extends BaseModel {
      * @param int $size 列表最大长度
      * @return array|null
      */
-    public function getGoodsGcStoreRandList($gcId, $storeId, $notEqualGoodsId = 0, $size = 4) {
+    public function getGoodsGcStoreRandList($gcId, $storeId, $notEqualGoodsId = 0, $size = 4)
+    {
         $condition = array();
-        $condition[] = array('store_id','=',$storeId);
-        $condition[] = array('gc_id_1','=',$gcId);
+        $condition[] = array('store_id', '=', $storeId);
+        $condition[] = array('gc_id_1', '=', $gcId);
         if ($notEqualGoodsId > 0) {
-            $condition[] = array('goods_id','<>', $notEqualGoodsId);
+            $condition[] = array('goods_id', '<>', $notEqualGoodsId);
         }
         return Db::name('goods')->where($condition)->limit($size)->select()->toArray();
     }
@@ -133,10 +130,11 @@ class Goods extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function getGoodsListByColorDistinct($condition, $field = '*', $order = 'goods_id asc', $pagesize = 0,$limit=0) {
-        $condition[]=array('goods_state','=',self::STATE1);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
-//        $condition = $this->_getRecursiveClass($condition);
+    public function getGoodsListByColorDistinct($condition, $field = '*', $order = 'goods_id asc', $pagesize = 0, $limit = 0)
+    {
+        $condition[] = array('goods_state', '=', self::STATE1);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
+        //        $condition = $this->_getRecursiveClass($condition);
 
         $field = "CONCAT(goods_commonid) as nc_distinct ," . $field;
         $count = Db::name('goods')->where($condition)->field("distinct CONCAT(goods_commonid)")->count();
@@ -146,7 +144,7 @@ class Goods extends BaseModel {
         }
         return $goods_list;
     }
-    
+
     /**
      * 获取goodscommon和goods联表列表
      * @access public
@@ -158,19 +156,20 @@ class Goods extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function getGoodsUnionList($condition, $field = '*', $order = 'goodscommon.mall_goods_commend desc,goodscommon.mall_goods_sort asc',$group='', $pagesize = 0,$limit=0) {
-        $condition[] = array('goodscommon.goods_state','=',self::STATE1);
-        $condition[] = array('goodscommon.goods_verify','=',self::VERIFY1);
-//        if(isset($condition['goodscommon.gc_id'])){
-//            $condition = $this->_getRecursiveClass($condition,'goodscommon.');
-//        }
+    public function getGoodsUnionList($condition, $field = '*', $order = 'goodscommon.mall_goods_commend desc,goodscommon.mall_goods_sort asc', $group = '', $pagesize = 0, $limit = 0)
+    {
+        $condition[] = array('goodscommon.goods_state', '=', self::STATE1);
+        $condition[] = array('goodscommon.goods_verify', '=', self::VERIFY1);
+        //        if(isset($condition['goodscommon.gc_id'])){
+        //            $condition = $this->_getRecursiveClass($condition,'goodscommon.');
+        //        }
 
-        $result=Db::name('goodscommon')->alias('goodscommon')->join('goods goods','goods.goods_commonid=goodscommon.goods_commonid')->field($field)->where($condition)->order($order);
-        if($group){
-            $result=$result->group($group);
+        $result = Db::name('goodscommon')->alias('goodscommon')->join('goods goods', 'goods.goods_commonid=goodscommon.goods_commonid')->field($field)->where($condition)->order($order);
+        if ($group) {
+            $result = $result->group($group);
         }
         if ($pagesize) {
-            $result=$result->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = $result->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -189,10 +188,11 @@ class Goods extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getGeneralGoodsList($condition, $field = '*', $pagesize = 0, $order = 'goods_id desc') {
-        $condition[]=array('is_virtual','=',0);
-        $condition[]=array('is_goodsfcode','=',0);
-        $condition[]=array('goods_state','=',1);
+    public function getGeneralGoodsList($condition, $field = '*', $pagesize = 0, $order = 'goods_id desc')
+    {
+        $condition[] = array('is_virtual', '=', 0);
+        $condition[] = array('is_goodsfcode', '=', 0);
+        $condition[] = array('goods_state', '=', 1);
         return $this->getGoodsList($condition, $field, '', $order, 0, $pagesize, false, 0);
     }
 
@@ -210,9 +210,10 @@ class Goods extends BaseModel {
      * @param int $count 计数
      * @return array
      */
-    public function getGoodsOnlineList($condition, $field = '*', $pagesize = 0, $order = 'goods_id desc', $limit = 0, $group = '', $lock = false, $count = 0) {
-        $condition[]=array('goods_state','=',self::STATE1);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsOnlineList($condition, $field = '*', $pagesize = 0, $order = 'goods_id desc', $limit = 0, $group = '', $lock = false, $count = 0)
+    {
+        $condition[] = array('goods_state', '=', self::STATE1);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsList($condition, $field, $group, $order, $limit, $pagesize, $lock, $count);
     }
 
@@ -226,38 +227,38 @@ class Goods extends BaseModel {
      * @param type $type 类型
      * @return array
      */
-    public function getGoodsListForPromotion($condition, $field = '*', $pagesize = 0, $type = '') {
+    public function getGoodsListForPromotion($condition, $field = '*', $pagesize = 0, $type = '')
+    {
         switch ($type) {
             case 'wholesale':
-                $condition[]=array('goodscommon.is_virtual','=',0);
-                $condition[]=array('goodscommon.is_goodsfcode','=',0);
-                $condition[]=array('goods.goods_lock','=',0);
-                $condition[]=array('goodscommon.goods_state','=',self::STATE1);
-                $condition[]=array('goodscommon.goods_verify','=',self::VERIFY1);
-                return $this->getGoodsUnionList($condition, $field, 'goodscommon.goods_commonid asc','goodscommon.goods_commonid', $pagesize);
+                $condition[] = array('goodscommon.is_virtual', '=', 0);
+                $condition[] = array('goodscommon.is_goodsfcode', '=', 0);
+                $condition[] = array('goods.goods_lock', '=', 0);
+                $condition[] = array('goodscommon.goods_state', '=', self::STATE1);
+                $condition[] = array('goodscommon.goods_verify', '=', self::VERIFY1);
+                return $this->getGoodsUnionList($condition, $field, 'goodscommon.goods_commonid asc', 'goodscommon.goods_commonid', $pagesize);
             case 'xianshi':
             case 'bargain':
             case 'presell':
             case 'bundling':
-                $condition[]=array('goodscommon.is_virtual','=',0);
-                $condition[]=array('goodscommon.is_goodsfcode','=',0);
-                $condition[]=array('goods.goods_lock','=',0);
-                $condition[]=array('goodscommon.goods_state','=',self::STATE1);
-                $condition[]=array('goodscommon.goods_verify','=',self::VERIFY1);
-                return $this->getGoodsUnionList($condition, $field, 'goodscommon.goods_commonid asc','', $pagesize);
+                $condition[] = array('goodscommon.is_virtual', '=', 0);
+                $condition[] = array('goodscommon.is_goodsfcode', '=', 0);
+                $condition[] = array('goods.goods_lock', '=', 0);
+                $condition[] = array('goodscommon.goods_state', '=', self::STATE1);
+                $condition[] = array('goodscommon.goods_verify', '=', self::VERIFY1);
+                return $this->getGoodsUnionList($condition, $field, 'goodscommon.goods_commonid asc', '', $pagesize);
             case 'combo':
-                $condition[]=array('is_virtual','=',0);
-                $condition[]=array('is_goodsfcode','=',0);
-                $condition[]=array('goods_state','=',self::STATE1);
-                $condition[]=array('goods_verify','=',self::VERIFY1);
+                $condition[] = array('is_virtual', '=', 0);
+                $condition[] = array('is_goodsfcode', '=', 0);
+                $condition[] = array('goods_state', '=', self::STATE1);
+                $condition[] = array('goods_verify', '=', self::VERIFY1);
                 return $this->getGoodsList($condition, $field, '', '', 0, $pagesize);
             case 'gift':
-                $condition[]=array('is_virtual','=',0);
+                $condition[] = array('is_virtual', '=', 0);
                 return $this->getGoodsList($condition, $field, '', '', 0, $pagesize);
             default:
                 break;
         }
-        
     }
 
     /**
@@ -270,10 +271,11 @@ class Goods extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getGoodsCommonList($condition, $field = '*', $pagesize = 10, $order = 'goods_commonid desc') {
-//        $condition = $this->_getRecursiveClass($condition);
+    public function getGoodsCommonList($condition, $field = '*', $pagesize = 10, $order = 'goods_commonid desc')
+    {
+        // $condition = $this->_getRecursiveClass($condition);
         if ($pagesize) {
-            $result = Db::name('goodscommon')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = Db::name('goodscommon')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -291,9 +293,10 @@ class Goods extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getGoodsCommonOnlineList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc") {
-        $condition[]=array('goods_state','=',self::STATE1);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonOnlineList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc")
+    {
+        $condition[] = array('goods_state', '=', self::STATE1);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsCommonList($condition, $field, $pagesize, $order);
     }
 
@@ -307,13 +310,14 @@ class Goods extends BaseModel {
      * @param str $type 排序
      * @return array
      */
-    public function getGoodsCommonListForPromotion($condition, $field = '*', $pagesize = 10, $type) {
+    public function getGoodsCommonListForPromotion($condition, $field = '*', $pagesize = 10, $type)
+    {
         if ($type == 'groupbuy') {
-            $condition[]=array('is_virtual','=',0);
-            $condition[]=array('is_goodsfcode','=',0);
-            $condition[]=array('goods_lock','=',0);
-            $condition[]=array('goods_state','=',self::STATE1);
-            $condition[]=array('goods_verify','=',self::VERIFY1);
+            $condition[] = array('is_virtual', '=', 0);
+            $condition[] = array('is_goodsfcode', '=', 0);
+            $condition[] = array('goods_lock', '=', 0);
+            $condition[] = array('goods_state', '=', self::STATE1);
+            $condition[] = array('goods_verify', '=', self::VERIFY1);
         }
         return $this->getGoodsCommonList($condition, $field, $pagesize);
     }
@@ -327,12 +331,13 @@ class Goods extends BaseModel {
      * @param int $pagesize 分页
      * @return array
      */
-    public function getGoodsCommonListForVrPromotion($condition, $field = '*', $pagesize = 10) {
-        $condition[]=array('is_virtual','=',1);
-        $condition[]=array('is_goodsfcode','=',0);
-        $condition[]=array('goods_lock','=',0);
-        $condition[]=array('goods_state','=',self::STATE1);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonListForVrPromotion($condition, $field = '*', $pagesize = 10)
+    {
+        $condition[] = array('is_virtual', '=', 1);
+        $condition[] = array('is_goodsfcode', '=', 0);
+        $condition[] = array('goods_lock', '=', 0);
+        $condition[] = array('goods_state', '=', self::STATE1);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
 
         return $this->getGoodsCommonList($condition, $field, $pagesize);
     }
@@ -347,9 +352,10 @@ class Goods extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getGoodsCommonOfflineList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc") {
-        $condition[]=array('goods_state','=',self::STATE0);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonOfflineList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc")
+    {
+        $condition[] = array('goods_state', '=', self::STATE0);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsCommonList($condition, $field, $pagesize, $order);
     }
 
@@ -363,9 +369,10 @@ class Goods extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getGoodsCommonLockUpList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc") {
-        $condition[]=array('goods_state','=',self::STATE10);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonLockUpList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc")
+    {
+        $condition[] = array('goods_state', '=', self::STATE10);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsCommonList($condition, $field, $pagesize, $order);
     }
 
@@ -379,8 +386,9 @@ class Goods extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getGoodsCommonWaitVerifyList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc") {
-        $condition[] = array('goods_verify','<>', self::VERIFY1);
+    public function getGoodsCommonWaitVerifyList($condition, $field = '*', $pagesize = 10, $order = "goods_commonid desc")
+    {
+        $condition[] = array('goods_verify', '<>', self::VERIFY1);
         return $this->getGoodsCommonList($condition, $field, $pagesize, $order);
     }
 
@@ -392,9 +400,10 @@ class Goods extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getGoodsStoreList($condition, $field = '*') {
-//        $condition = $this->_getRecursiveClass($condition);
-        return Db::name('goods')->alias('goods')->field($field)->join('store store','goods.store_id = store.store_id','inner')->where($condition)->select()->toArray();
+    public function getGoodsStoreList($condition, $field = '*')
+    {
+        // $condition = $this->_getRecursiveClass($condition);
+        return Db::name('goods')->alias('goods')->field($field)->join('store store', 'goods.store_id = store.store_id', 'inner')->where($condition)->select()->toArray();
     }
 
     /**
@@ -405,14 +414,15 @@ class Goods extends BaseModel {
      * @param int $limit 限制
      * @return array
      */
-    public function getGoodsCommendList($store_id, $limit = 5) {
-        $goods_commend_list = $this->getGoodsOnlineList(array(array('store_id' ,'=', $store_id), array('goods_commend' ,'=', 1)), 'goods_id,goods_name,goods_advword,goods_image,store_id,goods_promotion_price,goods_price,goods_salenum', 0, '', $limit, 'goods_commonid');
+    public function getGoodsCommendList($store_id, $limit = 5)
+    {
+        $goods_commend_list = $this->getGoodsOnlineList(array(array('store_id', '=', $store_id), array('goods_commend', '=', 1)), 'goods_id,goods_name,goods_advword,goods_image,store_id,goods_promotion_price,goods_price,goods_salenum', 0, '', $limit, 'goods_commonid');
         if (!empty($goods_id_list)) {
             $tmp = array();
             foreach ($goods_id_list as $v) {
                 $tmp[] = $v['goods_id'];
             }
-            $goods_commend_list = $this->getGoodsOnlineList(array(array('goods_id','in', $tmp)), 'goods_id,goods_name,goods_advword,goods_image,store_id,goods_promotion_price,goods_salenum', 0, '', $limit);
+            $goods_commend_list = $this->getGoodsOnlineList(array(array('goods_id', 'in', $tmp)), 'goods_id,goods_name,goods_advword,goods_image,store_id,goods_promotion_price,goods_salenum', 0, '', $limit);
         }
         return $goods_commend_list;
     }
@@ -424,14 +434,15 @@ class Goods extends BaseModel {
      * @param array $goods_list 商品列表
      * @return array|boolean
      */
-    public function calculateStorage($goods_list) {
+    public function calculateStorage($goods_list)
+    {
         // 计算库存
         if (!empty($goods_list)) {
             $goodsid_array = array();
             foreach ($goods_list as $value) {
                 $goodscommonid_array[] = $value['goods_commonid'];
             }
-            $goods_storage = $this->getGoodsList(array(array('goods_commonid','in', $goodscommonid_array)), 'goods_storage,goods_commonid,goods_id,goods_storage_alarm');
+            $goods_storage = $this->getGoodsList(array(array('goods_commonid', 'in', $goodscommonid_array)), 'goods_storage,goods_commonid,goods_id,goods_storage_alarm');
             $storage_array = array();
             foreach ($goods_storage as $val) {
                 if ($val['goods_storage_alarm'] != 0 && $val['goods_storage'] <= $val['goods_storage_alarm']) {
@@ -458,7 +469,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoods($update, $condition) {
+    public function editGoods($update, $condition)
+    {
         $goods_list = $this->getGoodsList($condition, 'goods_id');
         if (empty($goods_list)) {
             return true;
@@ -478,12 +490,13 @@ class Goods extends BaseModel {
      * @param int|array $goodsid_array 商品ID
      * @return boolean|unknown
      */
-    public function editGoodsById($update, $goodsid_array) {
+    public function editGoodsById($update, $goodsid_array)
+    {
         if (empty($goodsid_array)) {
             return true;
         }
         $update['goods_edittime'] = TIMESTAMP;
-        $result = Db::name('goods')->where('goods_id','in',(array)$goodsid_array)->update($update);
+        $result = Db::name('goods')->where('goods_id', 'in', (array)$goodsid_array)->update($update);
         if ($result) {
             foreach ((array) $goodsid_array as $value) {
                 $this->_dGoodsCache($value);
@@ -499,7 +512,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsPromotionPrice($condition) {
+    public function editGoodsPromotionPrice($condition)
+    {
         $goods_list = $this->getGoodsList($condition, 'goods_id,goods_commonid');
         $goods_array = array();
         foreach ($goods_list as $val) {
@@ -509,7 +523,7 @@ class Goods extends BaseModel {
         $pxianshigoods_model = model('pxianshigoods');
         foreach ($goods_array as $key => $val) {
             // 查询抢购时候进行
-            $groupbuy = $groupbuy_model->getGroupbuyOnlineInfo(array(array('goods_commonid' ,'=', $key)));
+            $groupbuy = $groupbuy_model->getGroupbuyOnlineInfo(array(array('goods_commonid', '=', $key)));
             if (!empty($groupbuy)) {
                 // 更新价格
                 $this->editGoods(array('goods_promotion_price' => $groupbuy['groupbuy_price'], 'goods_promotion_type' => 1), array('goods_commonid' => $key));
@@ -518,10 +532,10 @@ class Goods extends BaseModel {
             foreach ($val as $k => $v) {
                 // 查询秒杀时候进行
                 $condition = array();
-                $condition[] = array('goods_id','=',$k);
-                $condition[] = array('xianshigoods_state','=',1);
-                $condition[] = array('xianshigoods_starttime','<',TIMESTAMP);
-                $condition[] = array('xianshigoods_end_time','>',TIMESTAMP);
+                $condition[] = array('goods_id', '=', $k);
+                $condition[] = array('xianshigoods_state', '=', 1);
+                $condition[] = array('xianshigoods_starttime', '<', TIMESTAMP);
+                $condition[] = array('xianshigoods_end_time', '>', TIMESTAMP);
                 $xianshigoods = $pxianshigoods_model->getXianshigoodsInfo($condition);
                 if (!empty($xianshigoods)) {
                     // 更新价格
@@ -544,7 +558,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsCommon($update, $condition) {
+    public function editGoodsCommon($update, $condition)
+    {
         $common_list = $this->getGoodsCommonList($condition, 'goods_commonid', 0);
         if (empty($common_list)) {
             return false;
@@ -564,11 +579,12 @@ class Goods extends BaseModel {
      * @param int|array $commonid_array 商品ID
      * @return boolean|unknown
      */
-    public function editGoodsCommonById($update, $commonid_array) {
+    public function editGoodsCommonById($update, $commonid_array)
+    {
         if (empty($commonid_array)) {
             return true;
         }
-        $result = Db::name('goodscommon')->where('goods_commonid','in',$commonid_array)->update($update);
+        $result = Db::name('goodscommon')->where('goods_commonid', 'in', $commonid_array)->update($update);
         if ($result) {
             foreach ((array) $commonid_array as $val) {
                 $this->_dGoodsCommonCache($val);
@@ -584,10 +600,12 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsCommonLock($condition) {
+    public function editGoodsCommonLock($condition)
+    {
         $update = array('goods_lock' => 1);
         return $this->editGoodsCommon($update, $condition);
     }
+
     /**
      * 锁定商品
      * @access public
@@ -595,10 +613,12 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsLock($condition) {
+    public function editGoodsLock($condition)
+    {
         $update = array('goods_lock' => 1);
         return $this->editGoods($update, $condition);
     }
+
     /**
      * 解锁商品
      * @access public
@@ -606,10 +626,12 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsCommonUnlock($condition) {
+    public function editGoodsCommonUnlock($condition)
+    {
         $update = array('goods_lock' => 0);
         return $this->editGoodsCommon($update, $condition);
     }
+
     /**
      * 解锁商品
      * @access public
@@ -617,10 +639,12 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsUnlock($condition) {
+    public function editGoodsUnlock($condition)
+    {
         $update = array('goods_lock' => 0);
         return $this->editGoods($update, $condition);
     }
+
     /**
      * 更新商品信息
      * @access public
@@ -630,7 +654,8 @@ class Goods extends BaseModel {
      * @param array $update2 更新数据2
      * @return boolean
      */
-    public function editProduces($condition, $update1, $update2 = array()) {
+    public function editProduces($condition, $update1, $update2 = array())
+    {
         $update2 = empty($update2) ? $update1 : $update2;
         $goods_array = $this->getGoodsCommonList($condition, 'goods_commonid', 0);
         if (empty($goods_array)) {
@@ -641,7 +666,7 @@ class Goods extends BaseModel {
             $commonid_array[] = $val['goods_commonid'];
         }
         $return1 = $this->editGoodsCommonById($update1, $commonid_array);
-        $return2 = $this->editGoods($update2, array(array('goods_commonid','in', $commonid_array)));
+        $return2 = $this->editGoods($update2, array(array('goods_commonid', 'in', $commonid_array)));
         if ($return1 && $return2) {
             return true;
         } else {
@@ -658,7 +683,8 @@ class Goods extends BaseModel {
      * @param array $update2 更新数据2
      * @return boolean
      */
-    public function editProducesVerifyFail($condition, $update1, $update2 = array()) {
+    public function editProducesVerifyFail($condition, $update1, $update2 = array())
+    {
         $result = $this->editProduces($condition, $update1, $update2);
         if ($result) {
             $commonlist = $this->getGoodsCommonList($condition, 'goods_commonid,gc_id,goods_name,store_id,goods_verifyremark', 0);
@@ -666,10 +692,10 @@ class Goods extends BaseModel {
                 $message = array();
                 $message['common_id'] = $val['goods_commonid'];
                 $message['remark'] = $val['goods_verifyremark'];
-                $ten_message=array($message['remark'],$message['common_id']);
+                $ten_message = array($message['remark'], $message['common_id']);
                 $weixin_param = array(
-                    'url' => config('ds_config.h5_store_site_url').'/pages/seller/goods/GoodsForm2?commonid='.$val['goods_commonid'].'&class_id='.$val['gc_id'],
-                    'data'=>array(
+                    'url' => config('ds_config.h5_store_site_url') . '/pages/seller/goods/GoodsForm2?commonid=' . $val['goods_commonid'] . '&class_id=' . $val['gc_id'],
+                    'data' => array(
                         "keyword1" => array(
                             "value" => $val['goods_name'],
                             "color" => "#333"
@@ -678,9 +704,9 @@ class Goods extends BaseModel {
                             "value" => $val['goods_verifyremark'],
                             "color" => "#333"
                         )
-                        )
-                    );
-                $this->_sendStoremsg('goods_verify', $val['store_id'], $message,$weixin_param, $message, $ten_message);
+                    )
+                );
+                $this->_sendStoremsg('goods_verify', $val['store_id'], $message, $weixin_param, $message, $ten_message);
             }
         }
     }
@@ -694,8 +720,9 @@ class Goods extends BaseModel {
      * @param array $update2 更新数据2
      * @return boolean
      */
-    public function editProducesNoLock($condition, $update1, $update2 = array()) {
-        $condition[]=array('goods_lock','=',0);
+    public function editProducesNoLock($condition, $update1, $update2 = array())
+    {
+        $condition[] = array('goods_lock', '=', 0);
         return $this->editProduces($condition, $update1, $update2);
     }
 
@@ -706,7 +733,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editProducesOffline($condition) {
+    public function editProducesOffline($condition)
+    {
         $update['goods_state'] = self::STATE0;
         return $this->editProducesNoLock($condition, $update);
     }
@@ -718,11 +746,12 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editProducesOnline($condition) {
+    public function editProducesOnline($condition)
+    {
         $update = array('goods_state' => self::STATE1);
         // 禁售商品、审核失败商品不能上架。
-        $condition[] = array('goods_state','=',self::STATE0);
-        $condition[] = array('goods_verify','<>', self::VERIFY0);
+        $condition[] = array('goods_state', '=', self::STATE0);
+        $condition[] = array('goods_verify', '<>', self::VERIFY0);
         // 修改预约商品状态
         $update['is_appoint'] = 0;
         return $this->editProduces($condition, $update);
@@ -736,7 +765,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editProducesLockUp($update, $condition) {
+    public function editProducesLockUp($update, $condition)
+    {
         $update_param['goods_state'] = self::STATE10;
         $update = array_merge($update, $update_param);
         $return = $this->editProduces($condition, $update, $update_param);
@@ -747,10 +777,10 @@ class Goods extends BaseModel {
                 $message = array();
                 $message['remark'] = $val['goods_stateremark'];
                 $message['common_id'] = $val['goods_commonid'];
-                $ten_message=array($message['remark'],$message['common_id']);
+                $ten_message = array($message['remark'], $message['common_id']);
                 $weixin_param = array(
-                    'url' => config('ds_config.h5_store_site_url').'/pages/seller/goods/GoodsForm2?commonid='.$val['goods_commonid'].'&class_id='.$val['gc_id'],
-                    'data'=>array(
+                    'url' => config('ds_config.h5_store_site_url') . '/pages/seller/goods/GoodsForm2?commonid=' . $val['goods_commonid'] . '&class_id=' . $val['gc_id'],
+                    'data' => array(
                         "keyword1" => array(
                             "value" => $val['goods_name'],
                             "color" => "#333"
@@ -763,9 +793,9 @@ class Goods extends BaseModel {
                             "value" => $val['goods_commonid'],
                             "color" => "#333"
                         )
-                        )
-                    );
-                $this->_sendStoremsg('goods_violation', $val['store_id'], $message,$weixin_param, $message, $ten_message);
+                    )
+                );
+                $this->_sendStoremsg('goods_violation', $val['store_id'], $message, $weixin_param, $message, $ten_message);
             }
             return true;
         } else {
@@ -781,15 +811,15 @@ class Goods extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getGoodsInfo($condition, $field = '*') {
-        $result=Db::name('goods')->field($field)->where($condition);
-        if($this->lock){
-            $result=$result->lock(true);
+    public function getGoodsInfo($condition, $field = '*')
+    {
+        $result = Db::name('goods')->field($field)->where($condition);
+        if ($this->lock) {
+            $result = $result->lock(true);
         }
         return $result->find();
     }
 
-  
     /**
      * 获取单条商品SKU信息及其促销信息
      * @access public
@@ -797,7 +827,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品ID
      * @return type
      */
-    public function getGoodsOnlineInfoForShare($goods_id) {
+    public function getGoodsOnlineInfoForShare($goods_id)
+    {
         $goods_info = $this->getGoodsOnlineInfoAndPromotionById($goods_id);
         if (empty($goods_info)) {
             return array();
@@ -822,7 +853,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品ID
      * @return array
      */
-    public function getGoodsOnlineInfoAndPromotionById($goods_id) {
+    public function getGoodsOnlineInfoAndPromotionById($goods_id)
+    {
         $goods_info = $this->getGoodsInfoAndPromotionById($goods_id);
         if (empty($goods_info) || $goods_info['goods_state'] != self::STATE1 || $goods_info['goods_verify'] != self::VERIFY1) {
             return array();
@@ -837,7 +869,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品ID
      * @return array
      */
-    public function getGoodsInfoAndPromotionById($goods_id) {
+    public function getGoodsInfoAndPromotionById($goods_id)
+    {
         $goods_info = $this->getGoodsInfoByID($goods_id);
         if (empty($goods_info)) {
             return array();
@@ -849,32 +882,32 @@ class Goods extends BaseModel {
         $goods_info['xianshi_info'] = '';
         $goods_info['wholesale_info'] = '';
         $goods_info['mgdiscount_info'] = '';
-        
+
         //原价
-        $goods_info['goods_original_price']=$goods_info['goods_price'];
-        
+        $goods_info['goods_original_price'] = $goods_info['goods_price'];
+
         //抢购
         if (config('ds_config.groupbuy_allow')) {
             $goods_info['groupbuy_info'] = model('groupbuy')->getGroupbuyInfoByGoodsCommonID($goods_info['goods_commonid']);
         }
-        
+
         //拼团
         if (empty($goods_info['groupbuy_info'])) {
             $goods_info['pintuan_info'] = model('ppintuan')->getPintuanInfoByGoodsCommonID($goods_info['goods_commonid']);
         }
-        
+
         //砍价
         if (empty($goods_info['bargain_info'])) {
             $goods_info['bargain_info'] = model('pbargain')->getBargainInfoByGoodsID($goods_info['goods_id']);
         }
-        
+
         //预售
         if (empty($goods_info['presell_info'])) {
             $goods_info['presell_info'] = model('presell')->getPresellInfoByGoodsID($goods_info['goods_id']);
         }
-        
+
         //批发
-        if(config('ds_config.promotion_allow')){
+        if (config('ds_config.promotion_allow')) {
             $goods_info['wholesale_info'] = model('wholesalegoods')->getWholesalegoodsInfoByGoodsID($goods_info['goods_id']);
         }
 
@@ -902,7 +935,8 @@ class Goods extends BaseModel {
      * @param array $goodsid_array 商品ID数组
      * @return array
      */
-    public function getGoodsOnlineListAndPromotionByIdArray($goodsid_array) {
+    public function getGoodsOnlineListAndPromotionByIdArray($goodsid_array)
+    {
         if (empty($goodsid_array) || !is_array($goodsid_array))
             return array();
 
@@ -924,7 +958,8 @@ class Goods extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getGoodsCommonInfo($condition, $field = '*') {
+    public function getGoodsCommonInfo($condition, $field = '*')
+    {
         return Db::name('goodscommon')->field($field)->where($condition)->find();
     }
 
@@ -935,7 +970,8 @@ class Goods extends BaseModel {
      * @param int $goods_commonid 商品ID
      * @return array
      */
-    public function getGoodsCommonInfoByID($goods_commonid) {
+    public function getGoodsCommonInfoByID($goods_commonid)
+    {
         $common_info = $this->_rGoodsCommonCache($goods_commonid);
         if (empty($common_info)) {
             $common_info = $this->getGoodsCommonInfo(array('goods_commonid' => $goods_commonid));
@@ -952,7 +988,8 @@ class Goods extends BaseModel {
      * @param string $field 字段
      * @return boolean
      */
-    public function getGoodsSum($condition, $field) {
+    public function getGoodsSum($condition, $field)
+    {
         return Db::name('goods')->where($condition)->sum($field);
     }
 
@@ -963,7 +1000,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getGoodsCount($condition) {
+    public function getGoodsCount($condition)
+    {
         return Db::name('goods')->where($condition)->count();
     }
 
@@ -975,9 +1013,10 @@ class Goods extends BaseModel {
      * @param string $field 字段
      * @return int
      */
-    public function getGoodsOnlineCount($condition, $field = '*') {
-        $condition[]=array('goods_state','=',self::STATE1);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsOnlineCount($condition, $field = '*')
+    {
+        $condition[] = array('goods_state', '=', self::STATE1);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return Db::name('goods')->where($condition)->count($field);
     }
 
@@ -988,7 +1027,8 @@ class Goods extends BaseModel {
      * @param array $condition
      * @return int
      */
-    public function getGoodsCommonCount($condition) {
+    public function getGoodsCommonCount($condition)
+    {
         return Db::name('goodscommon')->where($condition)->count();
     }
 
@@ -999,9 +1039,10 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getGoodsCommonOnlineCount($condition) {
-        $condition[]=array('goods_state','=',self::STATE1);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonOnlineCount($condition)
+    {
+        $condition[] = array('goods_state', '=', self::STATE1);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsCommonCount($condition);
     }
 
@@ -1012,9 +1053,10 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getGoodsCommonOfflineCount($condition) {
-        $condition[]=array('goods_state','=',self::STATE0);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonOfflineCount($condition)
+    {
+        $condition[] = array('goods_state', '=', self::STATE0);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsCommonCount($condition);
     }
 
@@ -1025,8 +1067,9 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getGoodsCommonWaitVerifyCount($condition) {
-        $condition[]=array('goods_verify','=',self::VERIFY10);
+    public function getGoodsCommonWaitVerifyCount($condition)
+    {
+        $condition[] = array('goods_verify', '=', self::VERIFY10);
         return $this->getGoodsCommonCount($condition);
     }
 
@@ -1037,8 +1080,9 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getGoodsCommonVerifyFailCount($condition) {
-        $condition[]=array('goods_verify','=',self::VERIFY0);
+    public function getGoodsCommonVerifyFailCount($condition)
+    {
+        $condition[] = array('goods_verify', '=', self::VERIFY0);
         return $this->getGoodsCommonCount($condition);
     }
 
@@ -1049,9 +1093,10 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getGoodsCommonLockUpCount($condition) {
-        $condition[]=array('goods_state','=',self::STATE10);
-        $condition[]=array('goods_verify','=',self::VERIFY1);
+    public function getGoodsCommonLockUpCount($condition)
+    {
+        $condition[] = array('goods_state', '=', self::STATE10);
+        $condition[] = array('goods_verify', '=', self::VERIFY1);
         return $this->getGoodsCommonCount($condition);
     }
 
@@ -1064,7 +1109,8 @@ class Goods extends BaseModel {
      * @param string $field 排序
      * @return array
      */
-    public function getGoodsImageList($condition, $field = '*', $order = 'goodsimage_isdefault desc,goodsimage_sort asc') {
+    public function getGoodsImageList($condition, $field = '*', $order = 'goodsimage_isdefault desc,goodsimage_sort asc')
+    {
         return Db::name('goodsimages')->field($field)->where($condition)->order($order)->select()->toArray();
     }
 
@@ -1077,16 +1123,17 @@ class Goods extends BaseModel {
      * @param string $field 排序
      * @return array
      */
-    public function getGoodsVideoList($condition, $field = '*', $order = 'goodsvideo_id desc', $limit = 0, $pagesize = 0) {
-        if($pagesize){
-            $result = Db::name('goodsvideo')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getGoodsVideoList($condition, $field = '*', $order = 'goodsvideo_id desc', $limit = 0, $pagesize = 0)
+    {
+        if ($pagesize) {
+            $result = Db::name('goodsvideo')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
             return Db::name('goodsvideo')->field($field)->where($condition)->order($order)->limit($limit)->select()->toArray();
         }
     }
-    
+
     /**
      * 删除商品SKU信息
      * @access public
@@ -1094,7 +1141,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function delGoods($condition) {
+    public function delGoods($condition)
+    {
         $goods_list = $this->getGoodsList($condition, 'goods_id,goods_commonid,store_id');
         if (!empty($goods_list)) {
             $goodsid_array = array();
@@ -1108,35 +1156,36 @@ class Goods extends BaseModel {
                 $this->_dGoodsSpecCache($val['goods_commonid']);
             }
             // 删除属性关联表数据
-            Db::name('goodsattrindex')->where('goods_id','in',$goodsid_array)->delete();
+            Db::name('goodsattrindex')->where('goods_id', 'in', $goodsid_array)->delete();
             // 删除优惠套装商品
-            model('pbundling')->delBundlingGoods(array(array('goods_id','in', $goodsid_array)));
+            model('pbundling')->delBundlingGoods(array(array('goods_id', 'in', $goodsid_array)));
             // 优惠套餐活动下架
-            model('pbundling')->editBundlingCloseByGoodsIds(array(array('goods_id','in', $goodsid_array)));
+            model('pbundling')->editBundlingCloseByGoodsIds(array(array('goods_id', 'in', $goodsid_array)));
             // 推荐展位商品
-            model('pbooth')->delBoothgoods(array(array('goods_id','in', $goodsid_array)));
+            model('pbooth')->delBoothgoods(array(array('goods_id', 'in', $goodsid_array)));
             // 秒杀
-            model('pxianshigoods')->delXianshigoods(array(array('goods_id','in', $goodsid_array)));
+            model('pxianshigoods')->delXianshigoods(array(array('goods_id', 'in', $goodsid_array)));
             // 预售
-            model('presell')->delPresell(array(array('goods_id','in', $goodsid_array)));
+            model('presell')->delPresell(array(array('goods_id', 'in', $goodsid_array)));
             // 批发
-            model('wholesalegoods')->delWholesalegoods(array(array('goods_id','in', $goodsid_array)));
+            model('wholesalegoods')->delWholesalegoods(array(array('goods_id', 'in', $goodsid_array)));
             //删除商品浏览记录
-            model('goodsbrowse')->delGoodsbrowse(array(array('goods_id','in', $goodsid_array)));
+            model('goodsbrowse')->delGoodsbrowse(array(array('goods_id', 'in', $goodsid_array)));
             // 删除买家收藏表数据
             $condition_fav = array();
-            $condition_fav[] = array('fav_id','in',$goodsid_array);
-            $condition_fav[] = array('fav_type','=','goods');
+            $condition_fav[] = array('fav_id', 'in', $goodsid_array);
+            $condition_fav[] = array('fav_type', '=', 'goods');
             model('favorites')->delFavorites($condition_fav);
             // 删除商品赠品
-            model('goodsgift')->delGoodsgift(array(array('goods_id','in', $goodsid_array)));
-            model('goodsgift')->delGoodsgift(array(array('gift_goodsid','in', $goodsid_array)));
+            model('goodsgift')->delGoodsgift(array(array('goods_id', 'in', $goodsid_array)));
+            model('goodsgift')->delGoodsgift(array(array('gift_goodsid', 'in', $goodsid_array)));
             // 删除推荐组合
-            model('goodscombo')->delGoodscombo(array(array('goods_id','in', $goodsid_array)));
-            model('goodscombo')->delGoodscombo(array(array('combo_goodsid','in', $goodsid_array)));
+            model('goodscombo')->delGoodscombo(array(array('goods_id', 'in', $goodsid_array)));
+            model('goodscombo')->delGoodscombo(array(array('combo_goodsid', 'in', $goodsid_array)));
         }
         return Db::name('goods')->where($condition)->delete();
     }
+
     /**
      * 编辑商品图片表信息
      * @access public
@@ -1144,10 +1193,12 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editGoodsImages($update, $condition) {
+    public function editGoodsImages($update, $condition)
+    {
         $result = Db::name('goodsimages')->where($condition)->update($update);
         return $result;
     }
+
     /**
      * 删除商品图片表信息
      * @access public
@@ -1155,7 +1206,8 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function delGoodsImages($condition) {
+    public function delGoodsImages($condition)
+    {
         $image_list = $this->getGoodsImageList($condition, 'goods_commonid,color_id');
         if (empty($image_list)) {
             return true;
@@ -1168,6 +1220,7 @@ class Goods extends BaseModel {
         }
         return $result;
     }
+
     /**
      * 新增商品视频表信息
      * @access public
@@ -1175,10 +1228,12 @@ class Goods extends BaseModel {
      * @param array $data 条件
      * @return boolean
      */
-    public function addGoodsVideo($data) {
+    public function addGoodsVideo($data)
+    {
         $result = Db::name('goodsvideo')->insertGetId($data);
         return $result;
     }
+
     /**
      * 删除商品视频表信息
      * @access public
@@ -1186,14 +1241,16 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function delGoodsVideo($condition) {
-        $goodsvideo_list=$this->getGoodsVideoList($condition);
-        foreach($goodsvideo_list as $val){
+    public function delGoodsVideo($condition)
+    {
+        $goodsvideo_list = $this->getGoodsVideoList($condition);
+        foreach ($goodsvideo_list as $val) {
             @unlink(BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_STORE . DIRECTORY_SEPARATOR . $val['store_id'] . DIRECTORY_SEPARATOR . $val['goodsvideo_name']);
         }
         $result = Db::name('goodsvideo')->where($condition)->delete();
         return $result;
     }
+
     /**
      * 商品删除及相关信息
      * @access public
@@ -1201,7 +1258,8 @@ class Goods extends BaseModel {
      * @param  array $condition 列表条件
      * @return boolean
      */
-    public function delGoodsAll($condition) {
+    public function delGoodsAll($condition)
+    {
         $goods_list = $this->getGoodsList($condition, 'goods_id,goods_commonid,store_id');
         if (empty($goods_list)) {
             return false;
@@ -1219,14 +1277,14 @@ class Goods extends BaseModel {
         $commonid_array = array_unique($commonid_array);
 
         // 删除商品表数据
-        $this->delGoods(array(array('goods_id','in', $goodsid_array)));
+        $this->delGoods(array(array('goods_id', 'in', $goodsid_array)));
         // 删除商品公共表数据
-        Db::name('goodscommon')->where('goods_commonid','in',$commonid_array)->delete();
+        Db::name('goodscommon')->where('goods_commonid', 'in', $commonid_array)->delete();
         // 删除商品图片表数据
-        $this->delGoodsImages(array(array('goods_commonid','in', $commonid_array)));
+        $this->delGoodsImages(array(array('goods_commonid', 'in', $commonid_array)));
         // 删除商品F码
 
-        model('goodsfcode')->delGoodsfcode(array(array('goods_commonid','in', $commonid_array)));
+        model('goodsfcode')->delGoodsfcode(array(array('goods_commonid', 'in', $commonid_array)));
 
         return true;
     }
@@ -1237,12 +1295,13 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function delGoodsNoLock($condition) {
-        $condition[]=array('goods_lock','=',0);
+    public function delGoodsNoLock($condition)
+    {
+        $condition[] = array('goods_lock', '=', 0);
         $common_array = $this->getGoodsCommonList($condition, 'goods_commonid', 0);
         $common_array = array_under_reset($common_array, 'goods_commonid');
         $commonid_array = array_keys($common_array);
-        return $this->delGoodsAll(array(array('goods_commonid','in', $commonid_array)));
+        return $this->delGoodsAll(array(array('goods_commonid', 'in', $commonid_array)));
     }
 
     /**
@@ -1253,8 +1312,9 @@ class Goods extends BaseModel {
      * @param int $store_id 店铺OD
      * @param array $param 参数
      */
-    private function _sendStoremsg($code, $store_id, $param,$weixin_param=array(),$ali_param=array(),$ten_param=array()) {
-        model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendStoremsg','cron_value'=>serialize(array('code' => $code, 'store_id' => $store_id, 'param' => $param, 'weixin_param' => $weixin_param, 'ali_param' => $ali_param, 'ten_param' => $ten_param))));
+    private function _sendStoremsg($code, $store_id, $param, $weixin_param = array(), $ali_param = array(), $ten_param = array())
+    {
+        model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendStoremsg', 'cron_value' => serialize(array('code' => $code, 'store_id' => $store_id, 'param' => $param, 'weixin_param' => $weixin_param, 'ali_param' => $ali_param, 'ten_param' => $ten_param))));
     }
 
     /**
@@ -1264,18 +1324,19 @@ class Goods extends BaseModel {
      * @param array $condition 条件
      * @return array
      */
-    public function _getRecursiveClass($condition,$gc_id,$prefix='') {
+    public function _getRecursiveClass($condition, $gc_id, $prefix = '')
+    {
         if (!is_array($gc_id)) {
             $gc_list = model('goodsclass')->getGoodsclassForCacheModel();
             if (!empty($gc_list[$gc_id])) {
-                $all_gc_id=array($gc_id);
+                $all_gc_id = array($gc_id);
                 $gcchild_id = empty($gc_list[$gc_id]['child']) ? array() : explode(',', $gc_list[$gc_id]['child']);
                 $gcchildchild_id = empty($gc_list[$gc_id]['childchild']) ? array() : explode(',', $gc_list[$gc_id]['childchild']);
                 $all_gc_id = array_merge($all_gc_id, $gcchild_id, $gcchildchild_id);
-                if($prefix){
-                    $prefix=$prefix.'.';
+                if ($prefix) {
+                    $prefix = $prefix . '.';
                 }
-                $condition[] = array($prefix.'gc_id','in', implode(',', $all_gc_id));
+                $condition[] = array($prefix . 'gc_id', 'in', implode(',', $all_gc_id));
             }
         }
         return $condition;
@@ -1288,7 +1349,8 @@ class Goods extends BaseModel {
      * @param array $goods_id 商品ID
      * @return array
      */
-    public function getVirtualGoodsOnlineInfoByID($goods_id) {
+    public function getVirtualGoodsOnlineInfoByID($goods_id)
+    {
         $goods_info = $this->getGoodsInfoByID($goods_id);
         return $goods_info['is_virtual'] == 1 && $goods_info['virtual_indate'] >= TIMESTAMP ? $goods_info : array();
     }
@@ -1301,7 +1363,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品ID
      * @return array
      */
-    public function getGoodsOnlineInfoByID($goods_id) {
+    public function getGoodsOnlineInfoByID($goods_id)
+    {
         $goods_info = $this->getGoodsInfoByID($goods_id);
         if ($goods_info['goods_state'] != self::STATE1 || $goods_info['goods_verify'] != self::VERIFY1) {
             $goods_info = array();
@@ -1317,7 +1380,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品ID
      * @return array
      */
-    public function getGoodsInfoByID($goods_id) {
+    public function getGoodsInfoByID($goods_id)
+    {
         $goods_info = $this->_rGoodsCache($goods_id);
         if (empty($goods_info) || $this->lock) {
             $goods_info = $this->getGoodsInfo(array('goods_id' => $goods_id));
@@ -1333,7 +1397,8 @@ class Goods extends BaseModel {
      * @param array $goods 商品数组
      * @return boolean
      */
-    public function checkIsGeneral($goods) {
+    public function checkIsGeneral($goods)
+    {
         if ($goods['is_virtual'] == 1 || $goods['is_goodsfcode'] == 1) {
             return false;
         }
@@ -1347,12 +1412,14 @@ class Goods extends BaseModel {
      * @param type $goods 商品
      * @return boolean
      */
-    public function checkGoodsIfAllowGift($goods) {
+    public function checkGoodsIfAllowGift($goods)
+    {
         if ($goods['is_virtual'] == 1) {
             return false;
         }
         return true;
     }
+
     /**
      * 验证是否允许关联套餐
      * @access public
@@ -1360,12 +1427,14 @@ class Goods extends BaseModel {
      * @param type $goods 商品
      * @return boolean
      */
-    public function checkGoodsIfAllowCombo($goods) {
+    public function checkGoodsIfAllowCombo($goods)
+    {
         if ($goods['is_virtual'] == 1 || $goods['is_goodsfcode'] == 1 || $goods['is_appoint'] == 1) {
             return false;
         }
         return true;
     }
+
     /**
      * 获得有库存的商品
      * @access public
@@ -1373,7 +1442,8 @@ class Goods extends BaseModel {
      * @param type $common_id ID编号
      * @return type
      */
-    public function getGoodsStorageByCommonId($common_id) {
+    public function getGoodsStorageByCommonId($common_id)
+    {
         $condition = array();
         $condition[] = array('goods_state', '=', self::STATE1);
         $condition[] = array('goods_verify', '=', self::VERIFY1);
@@ -1391,7 +1461,8 @@ class Goods extends BaseModel {
      * @param type $common_id ID编号
      * @return type
      */
-    public function getGoodsSpecListByCommonId($common_id) {
+    public function getGoodsSpecListByCommonId($common_id)
+    {
         $spec_list = $this->_rGoodsSpecCache($common_id);
         if (empty($spec_list)) {
             $spec_array = $this->getGoodsList(array('goods_commonid' => $common_id), 'goods_spec,goods_id,store_id,goods_image,color_id,goods_storage,virtual_content');
@@ -1409,7 +1480,8 @@ class Goods extends BaseModel {
      * @param type $key 键值
      * @return type
      */
-    public function getGoodsImageByKey($key) {
+    public function getGoodsImageByKey($key)
+    {
         $image_list = $this->_rGoodsImageCache($key);
         if (empty($image_list)) {
             $array = explode('|', $key);
@@ -1429,7 +1501,8 @@ class Goods extends BaseModel {
      * @param type $goods_id 商品id
      * @return type
      */
-    private function _rGoodsCache($goods_id) {
+    private function _rGoodsCache($goods_id)
+    {
         return rcache($goods_id, 'goods');
     }
 
@@ -1441,7 +1514,8 @@ class Goods extends BaseModel {
      * @param array $goods_info 商品信息
      * @return boolean
      */
-    private function _wGoodsCache($goods_id, $goods_info) {
+    private function _wGoodsCache($goods_id, $goods_info)
+    {
         return wcache($goods_id, $goods_info, 'goods');
     }
 
@@ -1452,7 +1526,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品id
      * @return boolean
      */
-    private function _dGoodsCache($goods_id) {
+    private function _dGoodsCache($goods_id)
+    {
         @unlink(BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_TAOBAO . DIRECTORY_SEPARATOR . 'goods_csv_' . $goods_id . '.zip');
         @unlink(BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_TAOBAO . DIRECTORY_SEPARATOR . 'goods_image_' . $goods_id . '.zip');
         return dcache($goods_id, 'goods');
@@ -1465,7 +1540,8 @@ class Goods extends BaseModel {
      * @param int $goods_commonid 商品id
      * @return array
      */
-    private function _rGoodsCommonCache($goods_commonid) {
+    private function _rGoodsCommonCache($goods_commonid)
+    {
         return rcache($goods_commonid, 'goodscommon');
     }
 
@@ -1477,7 +1553,8 @@ class Goods extends BaseModel {
      * @param array $common_info 商品信息
      * @return boolean
      */
-    private function _wGoodsCommonCache($goods_commonid, $common_info) {
+    private function _wGoodsCommonCache($goods_commonid, $common_info)
+    {
         return wcache($goods_commonid, $common_info, 'goodscommon');
     }
 
@@ -1488,7 +1565,8 @@ class Goods extends BaseModel {
      * @param int $goods_commonid 商品ID
      * @return boolean
      */
-    private function _dGoodsCommonCache($goods_commonid) {
+    private function _dGoodsCommonCache($goods_commonid)
+    {
         return dcache($goods_commonid, 'goodscommon');
     }
 
@@ -1499,7 +1577,8 @@ class Goods extends BaseModel {
      * @param int $goods_commonid 商品id
      * @return array
      */
-    private function _rGoodsSpecCache($goods_commonid) {
+    private function _rGoodsSpecCache($goods_commonid)
+    {
         return rcache($goods_commonid, 'goods_spec');
     }
 
@@ -1511,7 +1590,8 @@ class Goods extends BaseModel {
      * @param array $spec_list 规格列表
      * @return boolean
      */
-    private function _wGoodsSpecCache($goods_commonid, $spec_list) {
+    private function _wGoodsSpecCache($goods_commonid, $spec_list)
+    {
         return wcache($goods_commonid, $spec_list, 'goods_spec');
     }
 
@@ -1522,7 +1602,8 @@ class Goods extends BaseModel {
      * @param int $goods_commonid 商品id
      * @return boolean
      */
-    private function _dGoodsSpecCache($goods_commonid) {
+    private function _dGoodsSpecCache($goods_commonid)
+    {
         return dcache($goods_commonid, 'goods_spec');
     }
 
@@ -1533,7 +1614,8 @@ class Goods extends BaseModel {
      * @param int $key ($goods_commonid .'|'. $color_id)
      * @return array
      */
-    private function _rGoodsImageCache($key) {
+    private function _rGoodsImageCache($key)
+    {
         return rcache($key, 'goods_image');
     }
 
@@ -1545,7 +1627,8 @@ class Goods extends BaseModel {
      * @param array $image_list 图片列表
      * @return boolean
      */
-    private function _wGoodsImageCache($key, $image_list) {
+    private function _wGoodsImageCache($key, $image_list)
+    {
         return wcache($key, $image_list, 'goods_image');
     }
 
@@ -1556,7 +1639,8 @@ class Goods extends BaseModel {
      * @param int $key ($goods_commonid .'|'. $color_id)
      * @return boolean
      */
-    private function _dGoodsImageCache($key) {
+    private function _dGoodsImageCache($key)
+    {
         return dcache($key, 'goods_image');
     }
 
@@ -1567,7 +1651,8 @@ class Goods extends BaseModel {
      * @param int $goods_id 商品ID 
      * @return array
      */
-    public function getGoodsDetail($goods_id) {
+    public function getGoodsDetail($goods_id)
+    {
         if ($goods_id <= 0) {
             return null;
         }
@@ -1638,7 +1723,7 @@ class Goods extends BaseModel {
                 $goods_image_mobile[] = goods_cthumb($val['goodsimage_url'], 480, $goods_info['store_id']);
             }
         } else {
-            $goods_image[] = array(goods_thumb($goods_info,240),goods_thumb($goods_info,480),goods_thumb($goods_info,1280));
+            $goods_image[] = array(goods_thumb($goods_info, 240), goods_thumb($goods_info, 480), goods_thumb($goods_info, 1280));
             $goods_image_mobile[] = goods_thumb($goods_info, 480);
         }
 
@@ -1666,12 +1751,12 @@ class Goods extends BaseModel {
             $goods_info['promotion_end_time'] = $goods_info['xianshi_info']['xianshigoods_end_time'];
             unset($goods_info['xianshi_info']);
         }
-        
+
         //预售
-        if(!empty($goods_info['presell_info'])){
+        if (!empty($goods_info['presell_info'])) {
             $goods_info['promotion_type'] = 'presell';
             $goods_info['title'] = '预售';
-            $goods_info['remark'] = $goods_info['presell_info']['presell_type']==1?(date('Y-m-d',$goods_info['presell_info']['presell_shipping_time']).'发货'):('第一阶段支付'.$goods_info['presell_info']['presell_deposit_amount'].'元定金，第二阶段'.date('Y-m-d',$goods_info['presell_info']['presell_end_time']+72*3600).'前支付'.ds_price_format($goods_info['presell_info']['presell_price'] - $goods_info['presell_info']['presell_deposit_amount']).'元尾款');
+            $goods_info['remark'] = $goods_info['presell_info']['presell_type'] == 1 ? (date('Y-m-d', $goods_info['presell_info']['presell_shipping_time']) . '发货') : ('第一阶段支付' . $goods_info['presell_info']['presell_deposit_amount'] . '元定金，第二阶段' . date('Y-m-d', $goods_info['presell_info']['presell_end_time'] + 72 * 3600) . '前支付' . ds_price_format($goods_info['presell_info']['presell_price'] - $goods_info['presell_info']['presell_deposit_amount']) . '元尾款');
             $goods_info['promotion_price'] = $goods_info['presell_info']['presell_price'];
             $goods_info['down_price'] = ds_price_format($goods_info['goods_price'] - $goods_info['presell_info']['presell_price']);
             $goods_info['presell_start_time'] = $goods_info['presell_info']['presell_start_time'];
@@ -1682,10 +1767,10 @@ class Goods extends BaseModel {
             $goods_info['promotion_end_time'] = $goods_info['presell_info']['presell_end_time'];
             unset($goods_info['presell_info']);
         }
-        
+
         //批发
-      
-        
+
+
         //拼团
         if (!empty($goods_info['pintuan_info'])) {
             $goods_info['pintuan_type'] = 'pintuan';
@@ -1701,16 +1786,16 @@ class Goods extends BaseModel {
             $goods_info['pintuangroup_count'] = count($goods_info['pintuangroup_list']);
             unset($goods_info['pintuan_info']);
         }
-        
+
         //会员等级折扣
         if (!empty($goods_info['mgdiscount_info'])) {
             $goods_info['mgdiscount_type'] = 'mgdiscount';
             $goods_info['goods_mgdiscount_arr'] = $goods_info['mgdiscount_info'];
             unset($goods_info['mgdiscount_info']);
         }
-        
+
         // 验证是否允许送赠品
-        $gift_array=array();
+        $gift_array = array();
         if ($this->checkGoodsIfAllowGift($goods_info)) {
             $gift_array = model('goodsgift')->getGoodsgiftListByGoodsId($goods_id);
             if (!empty($gift_array)) {
@@ -1733,9 +1818,9 @@ class Goods extends BaseModel {
         if (isset($goods_info['promotion_type']) && $goods_info['promotion_type'] == 'presell') {
             $goods_info['buynow_text'] = '预售购买';
         }
-        $mansong_info=model('pmansong')->getMansongInfoByStoreID($goods_info['store_id']);
-        if(empty($mansong_info)){
-            $mansong_info=array();
+        $mansong_info = model('pmansong')->getMansongInfoByStoreID($goods_info['store_id']);
+        if (empty($mansong_info)) {
+            $mansong_info = array();
         }
         //满即送
         $mansong_info = ($goods_info['is_virtual'] == 1) ? array() : $mansong_info;
@@ -1745,7 +1830,7 @@ class Goods extends BaseModel {
         if (config('ds_config.cache_open')) {
             wcache('updateRedisDate', array($goods_id => $goods_info['goods_click']), 'goodsClick');
         } else {
-            Db::name('goods')->where('goods_id',$goods_id)->inc('goods_click')->update();
+            Db::name('goods')->where('goods_id', $goods_id)->inc('goods_click')->update();
         }
         $result = array();
         $result['goods_info'] = $goods_info;
@@ -1758,6 +1843,7 @@ class Goods extends BaseModel {
         $result['gift_array'] = $gift_array;
         return $result;
     }
+
     /**
      * 获取移动端商品
      * @access public
@@ -1765,13 +1851,13 @@ class Goods extends BaseModel {
      * @param type $goods_commonid 商品ID
      * @return array
      */
-    public function getMobileBodyByCommonID($goods_commonid) {
+    public function getMobileBodyByCommonID($goods_commonid)
+    {
         $common_info = $this->_rGoodsCommonCache($goods_commonid);
         if (empty($common_info)) {
             $common_info = $this->getGoodsCommonInfo(array('goods_commonid' => $goods_commonid));
             $this->_wGoodsCommonCache($goods_commonid, $common_info);
         }
-
 
         // 手机商品描述
         if ($common_info['mobile_body'] != '') {
@@ -1781,10 +1867,10 @@ class Goods extends BaseModel {
                 foreach ($mobile_body_array as $val) {
                     switch ($val['type']) {
                         case 'text':
-                            $mobile_body .='<div>' . $val['value'] . '</div>';
+                            $mobile_body .= '<div>' . $val['value'] . '</div>';
                             break;
                         case 'image':
-                            $mobile_body .='<img src="' . $val['value'] . '">';
+                            $mobile_body .= '<img src="' . $val['value'] . '">';
                             break;
                     }
                 }
@@ -1798,50 +1884,47 @@ class Goods extends BaseModel {
      * 下单变更库存销量
      * @param unknown $goods_buy_quantity
      */
-    public function createOrderUpdateStorage($goods_buy_quantity,$if_unlimited=false)
+    public function createOrderUpdateStorage($goods_buy_quantity, $if_unlimited = false)
     {
         foreach ($goods_buy_quantity as $goods_id => $quantity) {
             $data = array();
-            if(!$if_unlimited){
-                $data['goods_storage'] = Db::raw('goods_storage-'.$quantity);
+            if (!$if_unlimited) {
+                $data['goods_storage'] = Db::raw('goods_storage-' . $quantity);
             }
-            $data['goods_salenum'] = Db::raw('goods_salenum+'.$quantity);
-            $condition=array();
-            $condition[]=array('goods_id','=',$goods_id);
-            $condition[]=array('goods_storage','>',0);
+            $data['goods_salenum'] = Db::raw('goods_salenum+' . $quantity);
+            $condition = array();
+            $condition[] = array('goods_id', '=', $goods_id);
+            $condition[] = array('goods_storage', '>', 0);
             $result = $this->editGoods($data, $condition);
-            if(!$result){
+            if (!$result) {
                 break;
             }
         }
         if (!$result) {
             return ds_callback(false, '变更商品库存与销量失败');
-        }
-        else {
+        } else {
             return ds_callback(true);
         }
     }
-    
-
 
     /**
      * 取消订单变更库存销量
      * @param unknown $goods_buy_quantity
      */
-    public function cancelOrderUpdateStorage($goods_buy_quantity,$if_unlimited=false)
+    public function cancelOrderUpdateStorage($goods_buy_quantity, $if_unlimited = false)
     {
         foreach ($goods_buy_quantity as $goods_id => $quantity) {
             $data = array();
-            if(!$if_unlimited){
-                $data['goods_storage'] = Db::raw('goods_storage+'.$quantity);
+            if (!$if_unlimited) {
+                $data['goods_storage'] = Db::raw('goods_storage+' . $quantity);
             }
-            $data['goods_salenum'] = Db::raw('goods_salenum-'.$quantity);
+            $data['goods_salenum'] = Db::raw('goods_salenum-' . $quantity);
             $result = $this->editGoodsById($data, $goods_id);
             if (!$result) {
                 return ds_callback(false, '变更商品库存与销量失败');
             }
         }
-            return ds_callback(true);
+        return ds_callback(true);
     }
 
     /**
@@ -1850,25 +1933,25 @@ class Goods extends BaseModel {
      */
     public function getAvailableGoodsCard($goods_info)
     {
-        if($goods_info['virtual_content']){
-            $card_list=explode("\r\n",$goods_info['virtual_content']);
-            $like_card_list=array();
-            foreach($card_list as $val){
-                $like_card_list[]='%'.$val.'%';
+        if ($goods_info['virtual_content']) {
+            $card_list = explode("\r\n", $goods_info['virtual_content']);
+            $like_card_list = array();
+            foreach ($card_list as $val) {
+                $like_card_list[] = '%' . $val . '%';
             }
-            $condition=array();
-            $condition[]=array('goods_id','=',$goods_info['goods_id']);
-            $condition[]=array('virtual_content','like',$like_card_list,'OR');
-            $condition[]=array('order_state','in',[ORDER_STATE_NEW,ORDER_STATE_PAY,ORDER_STATE_SUCCESS]);
-            $temp=Db::name('vrorder')->where($condition)->column('virtual_content');
-            $used_card_list=array();
-            foreach($temp as $val){
-                $used_card_list=array_merge($used_card_list,explode('\r\n',$val));
+            $condition = array();
+            $condition[] = array('goods_id', '=', $goods_info['goods_id']);
+            $condition[] = array('virtual_content', 'like', $like_card_list, 'OR');
+            $condition[] = array('order_state', 'in', [ORDER_STATE_NEW, ORDER_STATE_PAY, ORDER_STATE_SUCCESS]);
+            $temp = Db::name('vrorder')->where($condition)->column('virtual_content');
+            $used_card_list = array();
+            foreach ($temp as $val) {
+                $used_card_list = array_merge($used_card_list, explode('\r\n', $val));
             }
-            $card_list=array_diff($card_list,$used_card_list);
-            return ds_callback(true,'',array('card_list'=> array_values($card_list),'card_num'=>count($card_list)));
-        }else{
-            return ds_callback(true,'',array('card_list'=>array(),'card_num'=>0));
+            $card_list = array_diff($card_list, $used_card_list);
+            return ds_callback(true, '', array('card_list' => array_values($card_list), 'card_num' => count($card_list)));
+        } else {
+            return ds_callback(true, '', array('card_list' => array(), 'card_num' => 0));
         }
     }
 }

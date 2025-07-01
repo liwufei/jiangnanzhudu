@@ -1,32 +1,25 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 快递
  */
-class Express extends BaseModel {
+class Express extends BaseModel
+{
 
     public $page_info;
-    
+
     /**
      * 查询快递列表
      * @access public
      * @author csdeshang
      * @return array
      */
-    public function getExpressList() {
+    public function getExpressList()
+    {
         return rkcache('express', true);
     }
 
@@ -37,7 +30,8 @@ class Express extends BaseModel {
      * @param int $id 快递编号
      * @return array
      */
-    public function getExpressListByID($id = null) {
+    public function getExpressListByID($id = null)
+    {
         $express_list = rkcache('express', true);
 
         if (!empty($id)) {
@@ -60,19 +54,22 @@ class Express extends BaseModel {
      * @param int $id 快递编号
      * @return array
      */
-    public function getExpressInfo($id) {
+    public function getExpressInfo($id)
+    {
         $express_list = $this->getExpressList();
         return $express_list[$id];
     }
+
     /**
      * 获取单个信息
      * @param type $condition
      * @return type
      */
-    public function getOneExpress($condition) {
+    public function getOneExpress($condition)
+    {
         return Db::name('express')->where($condition)->find();
     }
-    
+
     /**
      * 根据快递公司ecode获得快递公司信息
      * @access public
@@ -80,7 +77,8 @@ class Express extends BaseModel {
      * @param $ecode string 快递公司编号
      * @return array 快递公司详情
      */
-    public function getExpressInfoByECode($ecode) {
+    public function getExpressInfoByECode($ecode)
+    {
         $ecode = trim($ecode);
         if (!$ecode) {
             return array('state' => false, 'msg' => '参数错误');
@@ -100,22 +98,25 @@ class Express extends BaseModel {
             return array('state' => true, 'data' => array('express_info' => $express_info));
         }
     }
+
     /**
      * 获取快递列表
      * @param type $condition 条件
      * @param type $pagesize 分页
      * @param type $order 排序
      * @return type
-     */ 
-    public function getAllExpresslist($condition,$pagesize,$order='express_order,express_state desc,express_id'){
-        if($pagesize){
-            $res = Db::name('express')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+     */
+    public function getAllExpresslist($condition, $pagesize, $order = 'express_order,express_state desc,express_id')
+    {
+        if ($pagesize) {
+            $res = Db::name('express')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
             return $res->items();
-        }else{
+        } else {
             return Db::name('express')->where($condition)->order($order)->select()->toArray();
         }
     }
+
     /**
      * 删除物流方式
      * @access public
@@ -123,11 +124,12 @@ class Express extends BaseModel {
      * @param array $condition 检索条件
      * @return boolean
      */
-    public function delExpress($condition) {
+    public function delExpress($condition)
+    {
         dkcache('express');
         return Db::name('express')->where($condition)->delete();
     }
-    
+
     /**
      * 添加物流方式
      * @access public
@@ -135,11 +137,12 @@ class Express extends BaseModel {
      * @param array $data 参数内容
      * @return boolean
      */
-    public function addExpress($data) {
+    public function addExpress($data)
+    {
         dkcache('express');
         return Db::name('express')->insertGetId($data);
     }
-    
+
     /**
      * 编辑物流方式
      * @access public
@@ -148,7 +151,8 @@ class Express extends BaseModel {
      * @param array $update 更新数据
      * @return boolean
      */
-    public function editExpress($condition, $update) {
+    public function editExpress($condition, $update)
+    {
         dkcache('express');
         return Db::name('express')->where($condition)->update($update);
     }
@@ -156,31 +160,31 @@ class Express extends BaseModel {
     /**
      * 快递查询
      */
-    public function queryExpress($express_code,$shipping_code,$phone = ''){
-        
+    public function queryExpress($express_code, $shipping_code, $phone = '')
+    {
         //默认只有快递鸟,后期可新增
-        $result = $this->queryExpressKdniao($express_code,$shipping_code,$phone);
-        
+        $result = $this->queryExpressKdniao($express_code, $shipping_code, $phone);
+
         return $result;
     }
-    
+
     //快递鸟 返回物流信息
-    private function queryExpressKdniao($express_code,$shipping_code,$phone = ''){
-        
-        if ($express_code == 'SF'){
-            $phone = ds_substing($phone,7,4);
+    private function queryExpressKdniao($express_code, $shipping_code, $phone = '')
+    {
+        if ($express_code == 'SF') {
+            $phone = ds_substing($phone, 7, 4);
         }
-        $requestData= "{'OrderCode':'','ShipperCode':'".$express_code."','LogisticCode':'".$shipping_code."','CustomerName':'".$phone."'}";
+        $requestData = "{'OrderCode':'','ShipperCode':'" . $express_code . "','LogisticCode':'" . $shipping_code . "','CustomerName':'" . $phone . "'}";
         $datas = array(
             'EBusinessID' => config('ds_config.expresscf_kdn_id'),
-            'RequestType' => config('ds_config.expresscf_kdn_type'),//1002即时查询 8002快递查询  
-            'RequestData' => urlencode($requestData) ,
+            'RequestType' => config('ds_config.expresscf_kdn_type'), //1002即时查询 8002快递查询  
+            'RequestData' => urlencode($requestData),
             'DataType' => '2',
-            'DataSign' => urlencode(base64_encode(md5($requestData.config('ds_config.expresscf_kdn_key'))))
+            'DataSign' => urlencode(base64_encode(md5($requestData . config('ds_config.expresscf_kdn_key'))))
         );
-        $result = http_request('http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx','post',$datas);
+        $result = http_request('http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx', 'post', $datas);
         $result = json_decode($result, true);
-        
+
         //对获取数据格式处理
         if ($result['Success'] != true) {
             return array();
@@ -198,8 +202,4 @@ class Express extends BaseModel {
         }
         return $output;
     }
-    
-    
 }
-
-?>

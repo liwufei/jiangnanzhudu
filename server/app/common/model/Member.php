@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 会员
  */
-class Member extends BaseModel {
+class Member extends BaseModel
+{
 
     public $page_info;
 
@@ -28,7 +20,8 @@ class Member extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getMemberInfo($condition, $field = '*') {
+    public function getMemberInfo($condition, $field = '*')
+    {
         $res = Db::name('member')->field($field)->where($condition)->find();
         return $res;
     }
@@ -41,7 +34,8 @@ class Member extends BaseModel {
      * @param int $member_id 会员ID
      * @return array
      */
-    public function getMemberInfoByID($member_id) {
+    public function getMemberInfoByID($member_id)
+    {
         $member_info = rcache($member_id, 'member');
         if (empty($member_info)) {
             $member_info = $this->getMemberInfo(array('member_id' => $member_id), '*');
@@ -60,7 +54,8 @@ class Member extends BaseModel {
      * @param string $order    排序
      * @return array 
      */
-    public function getMemberList($condition = array(), $field = '*', $pagesize = 0, $order = 'member_id desc') {
+    public function getMemberList($condition = array(), $field = '*', $pagesize = 0, $order = 'member_id desc')
+    {
         if ($pagesize) {
             $member_list = Db::name('member')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $member_list;
@@ -77,7 +72,8 @@ class Member extends BaseModel {
      * @param array $condition 查询条件
      * @return int
      */
-    public function getMemberCount($condition) {
+    public function getMemberCount($condition)
+    {
         return Db::name('member')->where($condition)->count();
     }
 
@@ -89,7 +85,8 @@ class Member extends BaseModel {
      * @param array $data 数据
      * @return bool 
      */
-    public function editMember($condition, $data, $member_id = 0) {
+    public function editMember($condition, $data, $member_id = 0)
+    {
         $this->validate($data, 'app\common\validate\Member.model_edit');
 
         $update = Db::name('member')->where($condition)->update($data);
@@ -113,7 +110,8 @@ class Member extends BaseModel {
      * @param type $type 类型  login register
      * @return type
      */
-    public function createSession($member_info = array(), $type = '') {
+    public function createSession($member_info = array(), $type = '')
+    {
         if (empty($member_info) || !is_array($member_info)) {
             return;
         }
@@ -179,7 +177,8 @@ class Member extends BaseModel {
      * @access public
      * @author csdeshang
      */
-    public function auto_login() {
+    public function auto_login()
+    {
         // 自动登录标记 保存7天
         cookie('auto_login', ds_encrypt(session('member_id'), MD5_KEY), 7 * 24 * 60 * 60);
     }
@@ -189,7 +188,8 @@ class Member extends BaseModel {
      * @access public
      * @author csdeshang
      */
-    public function set_avatar_cookie() {
+    public function set_avatar_cookie()
+    {
         $avatar = is_null(session('avatar')) ? '' : session('avatar');
         cookie('member_avatar', $avatar, 365 * 24 * 60 * 60);
     }
@@ -202,7 +202,8 @@ class Member extends BaseModel {
      * @param    string $field 显示字段
      * @return    array 数组格式的返回结果
      */
-    public function infoMember($condition, $field = '*') {
+    public function infoMember($condition, $field = '*')
+    {
         if (empty($condition))
             return false;
         $member_info = Db::name('member')->where($condition)->field($field)->find();
@@ -216,7 +217,8 @@ class Member extends BaseModel {
      * @param type $register_info
      * @return type
      */
-    public function register($register_info) {
+    public function register($register_info)
+    {
         $insert_id = $this->addMember($register_info);
         if ($insert_id) {
             $this->addMemberAfter($insert_id, $register_info);
@@ -235,7 +237,8 @@ class Member extends BaseModel {
      * @param type $member_info 会员信息
      * @return type 
      */
-    public function addMemberAfter($member_id, $member_info) {
+    public function addMemberAfter($member_id, $member_info)
+    {
         //添加会员积分
         if (config('ds_config.points_isuse')) {
             model('points')->savePointslog('regist', array('pl_memberid' => $member_id, 'pl_membername' => $member_info['member_name']), false);
@@ -255,7 +258,8 @@ class Member extends BaseModel {
             $inviter_name = ds_getvalue_byname('member', 'member_id', $member_info['inviter_id'], 'member_name');
             if ($inviter_name) {
                 model('points')->savePointslog('inviter', array(
-                    'pl_memberid' => $member_info['inviter_id'], 'pl_membername' => $inviter_name,
+                    'pl_memberid' => $member_info['inviter_id'],
+                    'pl_membername' => $inviter_name,
                     'invited' => $member_info['member_name']
                 ));
             }
@@ -269,7 +273,8 @@ class Member extends BaseModel {
      * @param  array $data 会员信息
      * @return array 数组格式的返回结果
      */
-    public function addMember($data) {
+    public function addMember($data)
+    {
         $this->validate($data, 'app\common\validate\Member.model_add');
 
         Db::startTrans();
@@ -320,7 +325,7 @@ class Member extends BaseModel {
                 $member_info['inviter_id'] = intval($data['inviter_id']);
             }
 
-            //  手机注册登录绑定
+            // 手机注册登录绑定
             if (isset($data['member_mobilebind'])) {
                 $member_info['member_mobile'] = $data['member_mobile'];
                 $member_info['member_mobilebind'] = $data['member_mobilebind'];
@@ -386,7 +391,8 @@ class Member extends BaseModel {
      * @author csdeshang
      * @return bool
      */
-    public function checkloginMember() {
+    public function checkloginMember()
+    {
         if (session('is_login') == '1') {
             @header("Location: " . (string) url('home/Member/index'));
             exit();
@@ -400,7 +406,8 @@ class Member extends BaseModel {
      * @param type $member_id 会员id
      * @return boolean
      */
-    public function isMemberAllowInform($member_id) {
+    public function isMemberAllowInform($member_id)
+    {
         $condition = array();
         $condition[] = array('member_id', '=', $member_id);
         $member_info = $this->getMemberInfo($condition, 'inform_allow');
@@ -418,7 +425,8 @@ class Member extends BaseModel {
      * @param type $member_info 会员信息
      * @return type
      */
-    public function addPoint($member_info) {
+    public function addPoint($member_info)
+    {
         if (!config('ds_config.points_isuse') || empty($member_info))
             return;
 
@@ -439,7 +447,8 @@ class Member extends BaseModel {
      * @author csdeshang
      * @param unknown $member_info 会员信息
      */
-    public function addExppoint($member_info) {
+    public function addExppoint($member_info)
+    {
         if (empty($member_info))
             return;
 
@@ -460,7 +469,8 @@ class Member extends BaseModel {
      * @author csdeshang
      * @param array $member_info 会员信息
      */
-    public function getMemberSecurityLevel($member_info = array()) {
+    public function getMemberSecurityLevel($member_info = array())
+    {
         $tmp_level = 0;
         if ($member_info['member_emailbind'] == '1') {
             $tmp_level += 1;
@@ -483,7 +493,8 @@ class Member extends BaseModel {
      * @param array $cur_level 会员当前等级
      * @return type
      */
-    public function getMemberGradeArr($show_progress = false, $exppoints = 0, $cur_level = '') {
+    public function getMemberGradeArr($show_progress = false, $exppoints = 0, $cur_level = '')
+    {
         $member_grade = config('ds_config.member_grade') ? unserialize(config('ds_config.member_grade')) : array();
         //处理会员等级进度
         if ($member_grade && $show_progress) {
@@ -511,11 +522,12 @@ class Member extends BaseModel {
      * @param array $member_grade 会员等级
      * @return type
      */
-    public function getOneMemberGrade($exppoints, $show_progress = false, $member_grade = array()) {
+    public function getOneMemberGrade($exppoints, $show_progress = false, $member_grade = array())
+    {
         if (!$member_grade) {
             $member_grade = config('ds_config.member_grade') ? unserialize(config('ds_config.member_grade')) : array();
         }
-        if (empty($member_grade)) {//如果会员等级设置为空
+        if (empty($member_grade)) { //如果会员等级设置为空
             $grade_arr['level'] = -1;
             $grade_arr['level_name'] = '暂无等级';
             return $grade_arr;
@@ -533,7 +545,7 @@ class Member extends BaseModel {
         }
         //计算提升进度
         if ($show_progress == true) {
-            if (intval($grade_arr['level']) >= (count($member_grade) - 1)) {//如果已达到顶级会员
+            if (intval($grade_arr['level']) >= (count($member_grade) - 1)) { //如果已达到顶级会员
                 $grade_arr['downgrade'] = $grade_arr['level'] - 1; //下一级会员等级
                 $grade_arr['downgrade_name'] = isset($member_grade[$grade_arr['downgrade']]) ? $member_grade[$grade_arr['downgrade']]['level_name'] : '';
                 $grade_arr['downgrade_exppoints'] = isset($member_grade[$grade_arr['downgrade']]) ? $member_grade[$grade_arr['downgrade']]['exppoints'] : '';
@@ -564,8 +576,8 @@ class Member extends BaseModel {
      * @param type $member_name 会员名字
      * @return type
      */
-    public function getBuyerToken($member_id, $member_name, $openid = '') {
-
+    public function getBuyerToken($member_id, $member_name, $openid = '')
+    {
         //生成新的token
         $platformtoken_data = array();
         $token = md5($member_name . strval(TIMESTAMP) . strval(rand(0, 999999)));
@@ -592,7 +604,8 @@ class Member extends BaseModel {
     /**
      * 获取可以注册的随机用户名
      */
-    public function getRandMembername($prefix = '') {
+    public function getRandMembername($prefix = '')
+    {
         for ($i = 1; $i <= 30; $i++) {
             $member_name = $prefix . get_rand_str(10);
             $condition = array();

@@ -1,23 +1,16 @@
 <?php
+
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 文章
  */
 class Article extends BaseModel
 {
     public $page_info;
+
     /**
      * 获取文章列表
      * @access public
@@ -27,9 +20,10 @@ class Article extends BaseModel
      * @param type $order
      * @return type
      */
-    public function getArticleList($condition,$pagesize='',$order='article_sort asc,article_time desc'){
+    public function getArticleList($condition, $pagesize = '', $order = 'article_sort asc,article_time desc')
+    {
         if ($pagesize) {
-            $result = Db::name('article')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = Db::name('article')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -47,11 +41,11 @@ class Article extends BaseModel
      * @param type $order
      * @return type
      */
-    public function getJoinArticleList($where,$limit=0,$field='*',$order='article.article_sort'){
-        $result = Db::name('article')->alias('article')->join('articleclass article_class','article.ac_id=article_class.ac_id','LEFT')->field($field)->where($where)->limit($limit)->order($order)->select()->toArray();
+    public function getJoinArticleList($where, $limit = 0, $field = '*', $order = 'article.article_sort')
+    {
+        $result = Db::name('article')->alias('article')->join('articleclass article_class', 'article.ac_id=article_class.ac_id', 'LEFT')->field($field)->where($where)->limit($limit)->order($order)->select()->toArray();
         return $result;
     }
-
 
     /**
      * 取单个内容
@@ -60,7 +54,8 @@ class Article extends BaseModel
      * @param int $condition
      * @return array 数组类型的返回结果
      */
-    public function getOneArticle($condition){
+    public function getOneArticle($condition)
+    {
         $result = Db::name('article')->where($condition)->find();
         return $result;
     }
@@ -72,7 +67,8 @@ class Article extends BaseModel
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addArticle($data){
+    public function addArticle($data)
+    {
         $result = Db::name('article')->insertGetId($data);
         return $result;
     }
@@ -84,8 +80,9 @@ class Article extends BaseModel
      * @param array $data 更新数据
      * @return bool 布尔类型的返回结果
      */
-    public function editArticle($data,$article_id){
-        $result = Db::name('article')->where(array('article_id'=>$article_id))->update($data);
+    public function editArticle($data, $article_id)
+    {
+        $result = Db::name('article')->where(array('article_id' => $article_id))->update($data);
         return $result;
     }
 
@@ -96,7 +93,8 @@ class Article extends BaseModel
      * @param int $id 记录ID
      * @return bool 布尔类型的返回结果
      */
-    public function delArticle($article_id){
-        return Db::name('article')->where(array('article_id'=>$article_id))->delete();
+    public function delArticle($article_id)
+    {
+        return Db::name('article')->where(array('article_id' => $article_id))->delete();
     }
 }

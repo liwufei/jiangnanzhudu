@@ -1,24 +1,11 @@
 <?php
-/**
- * 优惠套装
- *
- */
 
 namespace app\common\model;
 
-
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 组合套餐
  */
 class Pbundling extends BaseModel
 {
@@ -55,12 +42,11 @@ class Pbundling extends BaseModel
     public function getBundlingList($condition, $field = '*', $order = 'bl_id desc', $pagesize = 0, $limit = 0, $count = 0)
     {
         if ($pagesize) {
-            $res = Db::name('pbundling')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$res;
+            $res = Db::name('pbundling')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
             return $res->items();
-        }
-        else {
-            return Db::name('pbundling')->where($condition)->order($order)->limit($limit,$count)->select()->toArray();
+        } else {
+            return Db::name('pbundling')->where($condition)->order($order)->limit($limit, $count)->select()->toArray();
         }
     }
 
@@ -76,7 +62,7 @@ class Pbundling extends BaseModel
      */
     public function getBundlingOpenList($condition, $field = '*', $order = 'bl_id desc', $limit = 0)
     {
-        $condition[]=array('bl_state','=',self::STATE1);
+        $condition[] = array('bl_state', '=', self::STATE1);
         return $this->getBundlingList($condition, $field, $order, 0, $limit);
     }
 
@@ -133,7 +119,7 @@ class Pbundling extends BaseModel
                 $blid_array[] = $val['bl_id'];
             }
             $update = array('bl_state' => self::STATE0);
-            return Db::name('pbundling')->where('bl_id','in',$blid_array)->update($update);
+            return Db::name('pbundling')->where('bl_id', 'in', $blid_array)->update($update);
         }
         return true;
     }
@@ -155,22 +141,21 @@ class Pbundling extends BaseModel
             }
         }
         $where = array();
-        $where[] = array('bl_id','in', $blid_array);
-        $where[] = array('store_id','=',$store_id);
+        $where[] = array('bl_id', 'in', $blid_array);
+        $where[] = array('store_id', '=', $store_id);
         $bl_list = $this->getBundlingList($where, 'bl_id');
         $bl_list = array_under_reset($bl_list, 'bl_id');
         $blid_array = array_keys($bl_list);
 
         $where = array();
-        $where[] = array('bl_id','in', $blid_array);
+        $where[] = array('bl_id', 'in', $blid_array);
         $rs = Db::name('pbundling')->where($where)->delete();
         if ($rs) {
-            $res= $this->delBundlingGoods($where);
-            if($res)
+            $res = $this->delBundlingGoods($where);
+            if ($res)
                 return true;
             return false;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -187,8 +172,7 @@ class Pbundling extends BaseModel
         $rs = Db::name('pbundling')->where($condition)->delete();
         if ($rs) {
             return $this->delBundlingGoods($condition);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -215,9 +199,9 @@ class Pbundling extends BaseModel
     public function getBundlingQuotaInfoCurrent($store_id)
     {
         $condition = array();
-        $condition[] = array('store_id','=',$store_id);
-        $condition[] = array('blquota_endtime','>',TIMESTAMP);
-        $condition[] = array('blquota_state','=',1);
+        $condition[] = array('store_id', '=', $store_id);
+        $condition[] = array('blquota_endtime', '>', TIMESTAMP);
+        $condition[] = array('blquota_state', '=', 1);
         return $this->getBundlingQuotaInfo($condition);
     }
 
@@ -233,11 +217,10 @@ class Pbundling extends BaseModel
     public function getBundlingQuotaList($condition, $pagesize = 0, $limit = 0)
     {
         if ($pagesize) {
-            $res = Db::name('pbundlingquota')->where($condition)->order('blquota_id desc')->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $res = Db::name('pbundlingquota')->where($condition)->order('blquota_id desc')->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
             return $res->items();
-        }
-        else {
+        } else {
             return Db::name('pbundlingquota')->where($condition)->order('blquota_id desc')->limit($limit)->select()->toArray();
         }
     }
@@ -253,7 +236,7 @@ class Pbundling extends BaseModel
      */
     public function getBundlingQuotaOpenList($condition, $pagesize = 0, $limit = 0)
     {
-        $condition[]=array('blquota_state','=',self::STATE1);
+        $condition[] = array('blquota_state', '=', self::STATE1);
         return $this->getBundlingQuotaList($condition, $pagesize, $limit);
     }
 
@@ -313,11 +296,11 @@ class Pbundling extends BaseModel
         foreach ($quota_list as $val) {
             $storeid_array[] = $val['store_id'];
         }
-        $where = array(array('store_id','in', $storeid_array));
-        
+        $where = array(array('store_id', 'in', $storeid_array));
+
         $update = array('blquota_state' => self::STATE0);
         $this->editBundlingQuota($update, $where);
-        
+
         $update = array('bl_state' => self::STATE0);
         $this->editBundling($update, $where);
         return true;
@@ -332,16 +315,15 @@ class Pbundling extends BaseModel
      */
     public function editBundlingTimeout($condition)
     {
-        $condition[] = array('blquota_endtime','<', TIMESTAMP);
+        $condition[] = array('blquota_endtime', '<', TIMESTAMP);
         $quota_list = $this->getBundlingQuotaList($condition);
         if (!empty($quota_list)) {
             $quotaid_array = array();
             foreach ($quota_list as $val) {
                 $quotaid_array[] = $val['blquota_id'];
             }
-            return $this->editBundlingQuotaClose(array(array('blquota_id','in', $quotaid_array)));
-        }
-        else {
+            return $this->editBundlingQuotaClose(array(array('blquota_id', 'in', $quotaid_array)));
+        } else {
             return true;
         }
     }
@@ -374,7 +356,7 @@ class Pbundling extends BaseModel
         if ($result) {
             foreach ((array)$data as $v) {
                 // 发布套餐锁定商品
-                $this->_lockGoods($v['goods_commonid'],$v['goods_id']);
+                $this->_lockGoods($v['goods_commonid'], $v['goods_id']);
                 $this->_dGoodsBundlingCache($v['goods_id']);
             }
         }
@@ -399,7 +381,7 @@ class Pbundling extends BaseModel
 
         if ($result) {
             foreach ($list as $v) {
-                $this->_unlockGoods($v['goods_commonid'],$v['goods_id']);
+                $this->_unlockGoods($v['goods_commonid'], $v['goods_id']);
                 $this->_dGoodsBundlingCache($v['goods_id']);
             }
             return true;
@@ -407,22 +389,22 @@ class Pbundling extends BaseModel
         return $result;
     }
 
-     /**
+    /**
      * 锁定商品
      * @access private
      * @author csdeshang
      * @param type $goods_commonid 商品编号
      */
-    private function _lockGoods($goods_commonid,$goods_id)
+    private function _lockGoods($goods_commonid, $goods_id)
     {
         $condition = array();
-        $condition[] = array('goods_commonid','=',$goods_commonid);
+        $condition[] = array('goods_commonid', '=', $goods_commonid);
 
         $goods_model = model('goods');
         $goods_model->editGoodsCommonLock($condition);
-        
+
         $condition = array();
-        $condition[] = array('goods_id','=',$goods_id);
+        $condition[] = array('goods_id', '=', $goods_id);
         $goods_model->editGoodsLock($condition);
     }
 
@@ -432,14 +414,15 @@ class Pbundling extends BaseModel
      * @author csdeshang
      * @param type $goods_commonid 商品编号ID
      */
-    private function _unlockGoods($goods_commonid,$goods_id)
+    private function _unlockGoods($goods_commonid, $goods_id)
     {
         $goods_model = model('goods');
         $goods_model->editGoodsUnlock(array('goods_id' => $goods_id));
-        if(!$goods_model->getGoodsCount(array('goods_commonid' => $goods_commonid,'goods_lock'=>1))){
+        if (!$goods_model->getGoodsCount(array('goods_commonid' => $goods_commonid, 'goods_lock' => 1))) {
             $goods_model->editGoodsCommonUnlock(array('goods_commonid' => $goods_commonid));
         }
     }
+
     /**
      * 根据商品id查询套餐数据
      * @access public
@@ -462,7 +445,7 @@ class Pbundling extends BaseModel
                 }
 
                 // 查询套餐列表
-                $bundling_list = $this->getBundlingOpenList(array(array('bl_id','in', $b_id_array)));
+                $bundling_list = $this->getBundlingOpenList(array(array('bl_id', 'in', $b_id_array)));
                 // 整理
                 if (!empty($bundling_list)) {
                     foreach ($bundling_list as $val) {
@@ -474,16 +457,19 @@ class Pbundling extends BaseModel
                     }
                     $blid_array = array_keys($bundling_array);
 
-                    $b_goods_list = $this->getBundlingGoodsList(array(array('bl_id','in', $blid_array)));
+                    $b_goods_list = $this->getBundlingGoodsList(array(array('bl_id', 'in', $blid_array)));
                     if (!empty($b_goods_list) && count($b_goods_list) > 1) {
                         $goodsid_array = array();
                         foreach ($b_goods_list as $val) {
                             $goodsid_array[] = $val['goods_id'];
                         }
-                        $goods_list = model('goods')->getGoodsList(array(array(
-                                'goods_id', 'in', $goodsid_array
+                        $goods_list = model('goods')->getGoodsList(array(
+                            array(
+                                'goods_id',
+                                'in',
+                                $goodsid_array
                             )
-                                ), 'goods_id,goods_name,goods_price,goods_image');
+                        ), 'goods_id,goods_name,goods_price,goods_image');
                         $goods_list = array_under_reset($goods_list, 'goods_id');
                         foreach ($b_goods_list as $val) {
                             if (isset($goods_list[$val['goods_id']])) {
@@ -500,7 +486,8 @@ class Pbundling extends BaseModel
                 }
             }
             $array = array(
-                'bundling_array' => serialize($bundling_array), 'b_goods_array' => serialize($b_goods_array)
+                'bundling_array' => serialize($bundling_array),
+                'b_goods_array' => serialize($b_goods_array)
             );
             $this->_wGoodsBundlingCache($goods_id, $array);
         }

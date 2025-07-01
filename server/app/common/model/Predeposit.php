@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 充值卡
  */
-class Predeposit extends BaseModel {
+class Predeposit extends BaseModel
+{
 
     public $page_info;
     public $rcblog_type_text = array(
@@ -58,7 +50,8 @@ class Predeposit extends BaseModel {
      * @return type
      * @throws \app\common\model\Exception
      */
-    public function addRechargecard($sn, $member_info) {
+    public function addRechargecard($sn, $member_info)
+    {
         $member_id = $member_info['member_id'];
         $member_name = $member_info['member_name'];
 
@@ -102,7 +95,8 @@ class Predeposit extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getPdRechargeList($condition = array(), $pagesize = '', $fields = '*', $order = '') {
+    public function getPdRechargeList($condition = array(), $pagesize = '', $fields = '*', $order = '')
+    {
         if ($pagesize) {
             $result = Db::name('pdrecharge')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -119,7 +113,8 @@ class Predeposit extends BaseModel {
      * @param type $data 参数内容
      * @return bool
      */
-    public function addPdRecharge($data) {
+    public function addPdRecharge($data)
+    {
         return Db::name('pdrecharge')->insertGetId($data);
     }
 
@@ -131,7 +126,8 @@ class Predeposit extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function editPdRecharge($data, $condition = array()) {
+    public function editPdRecharge($data, $condition = array())
+    {
         return Db::name('pdrecharge')->where($condition)->update($data);
     }
 
@@ -143,7 +139,8 @@ class Predeposit extends BaseModel {
      * @param type $fields 字段
      * @return type
      */
-    public function getPdRechargeInfo($condition = array(), $fields = '*') {
+    public function getPdRechargeInfo($condition = array(), $fields = '*')
+    {
         return Db::name('pdrecharge')->where($condition)->field($fields)->find();
     }
 
@@ -154,7 +151,8 @@ class Predeposit extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getPdRechargeCount($condition = array()) {
+    public function getPdRechargeCount($condition = array())
+    {
         return Db::name('pdrecharge')->where($condition)->count();
     }
 
@@ -165,7 +163,8 @@ class Predeposit extends BaseModel {
      * @param type $condition 条件
      * @return int
      */
-    public function getPdcashCount($condition = array()) {
+    public function getPdcashCount($condition = array())
+    {
         return Db::name('pdcash')->where($condition)->count();
     }
 
@@ -176,7 +175,8 @@ class Predeposit extends BaseModel {
      * @param type $condition 条件
      * @return int
      */
-    public function getPdLogCount($condition = array()) {
+    public function getPdLogCount($condition = array())
+    {
         return Db::name('pdlog')->where($condition)->count();
     }
 
@@ -191,7 +191,8 @@ class Predeposit extends BaseModel {
      * @param type $limit 限制
      * @return array
      */
-    public function getPdLogList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0) {
+    public function getPdLogList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0)
+    {
         if ($pagesize) {
             $pdlog_list_paginate = Db::name('pdlog')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $pdlog_list_paginate;
@@ -210,7 +211,8 @@ class Predeposit extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function changeRcb($type, $data = array()) {
+    public function changeRcb($type, $data = array())
+    {
         $amount = (float) $data['amount'];
         if ($amount < .01) {
             throw new \think\Exception('参数错误', 10006);
@@ -302,7 +304,7 @@ class Predeposit extends BaseModel {
         // 更新会员
         $updateSuccess = model('member')->editMember(array(
             'member_id' => $data['member_id'],
-                ), $update, $data['member_id']);
+        ), $update, $data['member_id']);
 
         if (!$updateSuccess) {
             throw new \think\Exception('操作失败', 10006);
@@ -382,7 +384,8 @@ class Predeposit extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function changePd($change_type, $data = array()) {
+    public function changePd($change_type, $data = array())
+    {
         if (empty($data['member_id']) || intval($data['member_id']) <= 0) {
             throw new \think\Exception('changePd 方法未传 member_id 系统严重错误');
         }
@@ -394,7 +397,6 @@ class Predeposit extends BaseModel {
         if ($data['amount'] <= 0) {
             throw new \think\Exception('changePd 方法 amount金额错误');
         }
-
 
         $data_log = array();
         $data_pd = array();
@@ -570,7 +572,6 @@ class Predeposit extends BaseModel {
                 $data_msg['freeze_amount'] = 0;
                 $data_msg['desc'] = $data_log['lg_desc'];
                 break;
-
             case 'refund':
                 $data_log['lg_av_amount'] = $data['amount'];
                 $data_log['lg_desc'] = '确认退款，订单号: ' . $data['order_sn'];
@@ -711,9 +712,6 @@ class Predeposit extends BaseModel {
                 $data_msg['freeze_amount'] = 0;
                 $data_msg['desc'] = $data_log['lg_desc'];
                 break;
-
-            //end
-
             default:
                 throw new \think\Exception('预存款更新参数错误', 10006);
                 break;
@@ -730,7 +728,6 @@ class Predeposit extends BaseModel {
         } else {
             $data_log['lg_freeze_total_amount'] = $member_info['freeze_predeposit'];
         }
-
 
         $update = model('member')->editMember(array('member_id' => $data['member_id']), $data_pd, $data['member_id']);
 
@@ -784,7 +781,8 @@ class Predeposit extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function delPdRecharge($condition) {
+    public function delPdRecharge($condition)
+    {
         return Db::name('pdrecharge')->where($condition)->delete();
     }
 
@@ -799,7 +797,8 @@ class Predeposit extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function getPdcashList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0) {
+    public function getPdcashList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0)
+    {
         if ($pagesize) {
             $pdcash_list_paginate = Db::name('pdcash')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $pdcash_list_paginate;
@@ -816,7 +815,8 @@ class Predeposit extends BaseModel {
      * @param type $data 数据
      * @return bool
      */
-    public function addPdcash($data) {
+    public function addPdcash($data)
+    {
         return Db::name('pdcash')->insertGetId($data);
     }
 
@@ -828,7 +828,8 @@ class Predeposit extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function editPdcash($data, $condition = array()) {
+    public function editPdcash($data, $condition = array())
+    {
         return Db::name('pdcash')->where($condition)->update($data);
     }
 
@@ -840,7 +841,8 @@ class Predeposit extends BaseModel {
      * @param type $fields 字段
      * @return type
      */
-    public function getPdcashInfo($condition = array(), $fields = '*') {
+    public function getPdcashInfo($condition = array(), $fields = '*')
+    {
         return Db::name('pdcash')->where($condition)->field($fields)->find();
     }
 
@@ -851,7 +853,8 @@ class Predeposit extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function delPdcash($condition) {
+    public function delPdcash($condition)
+    {
         return Db::name('pdcash')->where($condition)->delete();
     }
 }

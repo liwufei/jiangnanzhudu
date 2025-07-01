@@ -1,25 +1,15 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 抢购价格区间
  */
 class Groupbuypricerange extends BaseModel
 {
     public $page_info;
-
 
     /**
      * 读取列表
@@ -30,17 +20,16 @@ class Groupbuypricerange extends BaseModel
      * @param string $order 排序
      * @return array
      */
-    public function getGroupbuypricerangeList($condition = array(), $pagesize = '',$order='gprange_id desc')
+    public function getGroupbuypricerangeList($condition = array(), $pagesize = '', $order = 'gprange_id desc')
     {
         if ($pagesize) {
-            $res = Db::name('groupbuypricerange')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $res = Db::name('groupbuypricerange')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
             return $res->items();
-        }else{
+        } else {
             return Db::name('groupbuypricerange')->where($condition)->order($order)->select()->toArray();
         }
     }
-
 
     /**
      * 根据编号获取单个内容
@@ -49,9 +38,10 @@ class Groupbuypricerange extends BaseModel
      * @param int $id 主键编号
      * @return array 数组类型的返回结果
      */
-    public function getOneGroupbuypricerange($gprange_id) {
+    public function getOneGroupbuypricerange($gprange_id)
+    {
         $condition = array();
-        $condition[] = array('gprange_id','=',$gprange_id);
+        $condition[] = array('gprange_id', '=', $gprange_id);
         $result = Db::name('groupbuypricerange')->where($condition)->find();
         return $result;
     }
@@ -79,7 +69,6 @@ class Groupbuypricerange extends BaseModel
     public function addGroupbuypricerange($data)
     {
         return Db::name('groupbuypricerange')->insertGetId($data);
-
     }
 
     /**
@@ -104,5 +93,4 @@ class Groupbuypricerange extends BaseModel
     {
         return Db::name('groupbuypricerange')->where($condition)->delete();
     }
-
 }

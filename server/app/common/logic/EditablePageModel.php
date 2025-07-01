@@ -3,20 +3,13 @@
 namespace app\common\logic;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
  * 逻辑层模型
  */
-class EditablePageModel {
+class EditablePageModel
+{
 
-    public function modelAdd($page_id, $type, $model_id, $config_id, $store_id = 0) {
+    public function modelAdd($page_id, $type, $model_id, $config_id, $store_id = 0)
+    {
         $editable_page_config_model = model('editable_page_config');
         $editable_page_model_model = model('editable_page_model');
 
@@ -62,12 +55,12 @@ class EditablePageModel {
         $data['editable_page_config_id'] = $new_config_id;
         $data['editable_page_config_content'] = json_decode($data['editable_page_config_content'], true);
 
-
         $data = $this->updatePage($data, $store_id);
         return ds_callback(true, '', $data);
     }
 
-    public function modelMove($direction, $config_id) {
+    public function modelMove($direction, $config_id)
+    {
         $editable_page_config_model = model('editable_page_config');
         $editable_page_config_info = $editable_page_config_model->getOneEditablePageConfig(array('editable_page_config_id' => $config_id));
         if (!$editable_page_config_info) {
@@ -94,7 +87,8 @@ class EditablePageModel {
         return ds_callback(true);
     }
 
-    public function modelSort($direction, $config_id, $o_config_id) {
+    public function modelSort($direction, $config_id, $o_config_id)
+    {
         $editable_page_config_model = model('editable_page_config');
         $editable_page_config_info1 = $editable_page_config_model->getOneEditablePageConfig(array('editable_page_config_id' => $direction ? $config_id : $o_config_id));
         if (!$editable_page_config_info1) {
@@ -132,14 +126,15 @@ class EditablePageModel {
         return ds_callback(true);
     }
 
-    public function modelEdit($editable_page_config_info, $post, $store_id = 0) {
+    public function modelEdit($editable_page_config_info, $post, $store_id = 0)
+    {
         $editable_page_config_model = model('editable_page_config');
         $config_info = json_decode($editable_page_config_info['editable_page_config_content'], true);
         $res = $this->getBaseConfig($editable_page_config_info['editable_page_model_id'], $config_info, $post);
-        if(!$res['code']){
+        if (!$res['code']) {
             return $res;
         }
-        $config_info=$res['data'];
+        $config_info = $res['data'];
         if (!$editable_page_config_model->editEditablePageConfig(array('editable_page_config_id' => $editable_page_config_info['editable_page_config_id']), array('editable_page_config_content' => json_encode($config_info)))) {
             return ds_callback(false, lang('ds_common_op_fail'));
         }
@@ -149,16 +144,15 @@ class EditablePageModel {
         return ds_callback(true, '', $editable_page_config_info);
     }
 
-    public function imageDel($file_id) {
+    public function imageDel($file_id)
+    {
         $upload_model = model('upload');
-        /**
-         * 删除图片
-         */
+
+        // 删除图片
         $file_array = $upload_model->getOneUpload($file_id);
         @unlink(BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_EDITABLE_PAGE . DIRECTORY_SEPARATOR . $file_array['file_name']);
-        /**
-         * 删除信息
-         */
+
+        // 删除信息
         $condition = array();
         $condition[] = array('upload_id', '=', $file_id);
         $upload_model->delUpload($condition);
@@ -168,7 +162,8 @@ class EditablePageModel {
     /**
      * 图片上传
      */
-    public function imageUpload($name, $config_id) {
+    public function imageUpload($name, $config_id)
+    {
         $file_name = '';
         $file_object = request()->file($name);
         if ($file_object) {
@@ -182,13 +177,11 @@ class EditablePageModel {
         } else {
             return ds_callback(false, lang('param_error'));
         }
-        /**
-         * 模型实例化
-         */
+
+        // 模型实例化
         $upload_model = model('upload');
-        /**
-         * 图片数据入库
-         */
+
+        // 图片数据入库
         $insert_array = array();
         $insert_array['file_name'] = $file_name;
         $insert_array['upload_type'] = '7';
@@ -200,18 +193,16 @@ class EditablePageModel {
             $data = array();
             $data['file_id'] = $result;
             $data['file_name'] = $file_name;
-            $data['file_path'] = ds_get_pic(ATTACH_EDITABLE_PAGE , $file_name);
-            /**
-             * 整理为json格式
-             */
+            $data['file_path'] = ds_get_pic(ATTACH_EDITABLE_PAGE, $file_name);
+
             return ds_callback(true, '', $data);
         } else {
             return ds_callback(false, lang('ds_common_op_fail'));
         }
     }
 
-    private function getBaseConfig($model_id, $config_info, $post) {
-
+    private function getBaseConfig($model_id, $config_info, $post)
+    {
         $config_info['back_color'] = $post['back_color'];
         $config_info['margin_top'] = $post['margin_top'];
         $config_info['margin_bottom'] = $post['margin_bottom'];
@@ -275,10 +266,11 @@ class EditablePageModel {
                 $config_info['image'] = array_slice($config_info['goods'], 0, $config_info['image'][0]['count'] + 1);
                 break;
         }
-        return ds_callback(true, '',$config_info);
+        return ds_callback(true, '', $config_info);
     }
 
-    public function updatePage($data, $store_id = 0) {
+    public function updatePage($data, $store_id = 0)
+    {
         $editable_page_config_model = model('editable_page_config');
         $editable_page_config_model->store_id = $store_id;
         //更新页面编辑时间
@@ -308,5 +300,4 @@ class EditablePageModel {
         }
         return $data;
     }
-
 }

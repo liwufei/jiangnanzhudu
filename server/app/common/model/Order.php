@@ -3,21 +3,14 @@
 namespace app\common\model;
 
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 订单
  */
-class Order extends BaseModel {
+class Order extends BaseModel
+{
     public $page_info;
-    public $lock=false;//是否加锁
+    public $lock = false; //是否加锁
 
     /**
      * 取单条订单信息
@@ -30,7 +23,8 @@ class Order extends BaseModel {
      * @param array $group 分组
      * @return array
      */
-    public function getOrderInfo($condition = array(), $extend = array(), $fields = '*', $order = '', $group = '') {
+    public function getOrderInfo($condition = array(), $extend = array(), $fields = '*', $order = '', $group = '')
+    {
         $order_info = Db::name('order')->field($fields)->where($condition)->lock($this->lock)->group($group)->order($order)->find();
         if (empty($order_info)) {
             return array();
@@ -65,21 +59,21 @@ class Order extends BaseModel {
             $order_goods_list = $this->getOrdergoodsList(array('order_id' => $order_info['order_id']));
             $order_info['extend_order_goods'] = $order_goods_list;
         }
-        
+
         //追加返回订单日志
         if (in_array('orderlog', $extend)) {
             //取商品列表
-            $orderlog_list = model('orderlog')->getOrderlogList(array('order_id' => $order_info['order_id'],'log_type' => 'order'));
+            $orderlog_list = model('orderlog')->getOrderlogList(array('order_id' => $order_info['order_id'], 'log_type' => 'order'));
             foreach ($orderlog_list as $orderlog_key => $orderlog) {
-                $orderlog_list[$orderlog_key]['log_time_desc'] = date('Y-m-d H:i:s',$orderlog['log_time']);
+                $orderlog_list[$orderlog_key]['log_time_desc'] = date('Y-m-d H:i:s', $orderlog['log_time']);
             }
             $order_info['extend_orderlog'] = $orderlog_list;
         }
-        
+
         //追加返回拼团订单信息
         if (in_array('ppintuanorder', $extend)) {
             //取拼团订单附加列表
-            $pintuanorder_list = model('ppintuanorder')->getPpintuanorderList(array('ppintuanorder.order_id' => $order_info['order_id'],'pintuanorder_type'=>0));
+            $pintuanorder_list = model('ppintuanorder')->getPpintuanorderList(array('ppintuanorder.order_id' => $order_info['order_id'], 'pintuanorder_type' => 0));
             if (!empty($pintuanorder_list)) {
                 foreach ($pintuanorder_list as $value) {
                     $order_info['pintuan_id'] = $value['pintuan_id'];
@@ -91,7 +85,7 @@ class Order extends BaseModel {
         }
         return $order_info;
     }
-    
+
     /**
      * 获取订单信息
      * @access public
@@ -100,10 +94,11 @@ class Order extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getOrdercommonInfo($condition = array(), $field = '*') {
+    public function getOrdercommonInfo($condition = array(), $field = '*')
+    {
         return Db::name('ordercommon')->where($condition)->find();
     }
-    
+
     /**
      * 获取订单信息
      * @access public
@@ -111,7 +106,8 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function getOrderpayInfo($condition = array()) {
+    public function getOrderpayInfo($condition = array())
+    {
         return Db::name('orderpay')->where($condition)->find();
     }
 
@@ -125,9 +121,10 @@ class Order extends BaseModel {
      * @param string $key 以哪个字段作为下标,这里一般指pay_id
      * @return array
      */
-    public function getOrderpayList($condition,  $field = '*', $order = '', $key = '') {
+    public function getOrderpayList($condition,  $field = '*', $order = '', $key = '')
+    {
         $pay_list = Db::name('orderpay')->field($field)->where($condition)->order($order)->select()->toArray();
-        if($key){
+        if ($key) {
             $pay_list = ds_change_arraykey($pay_list, $key);
         }
         return $pay_list;
@@ -145,8 +142,9 @@ class Order extends BaseModel {
      * @param unknown $extend 追加返回那些表的信息,如array('order_common','order_goods','store')
      * @return Ambigous <multitype:boolean Ambigous <string, mixed> , unknown>
      */
-    public function getNormalOrderList($condition, $pagesize = '', $field = '*', $order = 'order_id desc', $limit = 0, $extend = array()) {
-        $condition[]=array('delete_state','=',0);
+    public function getNormalOrderList($condition, $pagesize = '', $field = '*', $order = 'order_id desc', $limit = 0, $extend = array())
+    {
+        $condition[] = array('delete_state', '=', 0);
         return $this->getOrderList($condition, $pagesize, $field, $order, $limit, $extend);
     }
 
@@ -162,13 +160,13 @@ class Order extends BaseModel {
      * @param unknown $extend 追加返回那些表的信息,如array('order_common','order_goods','store')
      * @return Ambigous <multitype:boolean Ambigous <string, mixed> , unknown>
      */
-    public function getOrderList($condition, $pagesize = '', $field = '*', $order = 'order_id desc', $limit = 0, $extend = array()) {
-
-        if($pagesize){
-            $list_paginate = Db::name('order')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getOrderList($condition, $pagesize = '', $field = '*', $order = 'order_id desc', $limit = 0, $extend = array())
+    {
+        if ($pagesize) {
+            $list_paginate = Db::name('order')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $list_paginate;
             $list = $list_paginate->items();
-        }else{
+        } else {
             $list = Db::name('order')->field($field)->where($condition)->order($order)->limit($limit)->select()->toArray();
         }
 
@@ -190,7 +188,7 @@ class Order extends BaseModel {
 
         //追加返回订单扩展表信息
         if (in_array('order_common', $extend)) {
-            $order_common_list = $this->getOrdercommonList(array(array('order_id','in', array_keys($order_list))));
+            $order_common_list = $this->getOrdercommonList(array(array('order_id', 'in', array_keys($order_list))));
             foreach ($order_common_list as $value) {
                 $order_list[$value['order_id']]['extend_order_common'] = $value;
                 $order_list[$value['order_id']]['extend_order_common']['reciver_info'] = @unserialize($value['reciver_info']);
@@ -210,7 +208,7 @@ class Order extends BaseModel {
                 $store_new_list[$store['store_id']] = $store;
             }
             foreach ($order_list as $order_id => $order) {
-                $order_list[$order_id]['extend_store'] = isset($store_new_list[$order['store_id']])?$store_new_list[$order['store_id']]:'';
+                $order_list[$order_id]['extend_store'] = isset($store_new_list[$order['store_id']]) ? $store_new_list[$order['store_id']] : '';
             }
         }
 
@@ -220,7 +218,6 @@ class Order extends BaseModel {
                 $order_list[$order_id]['extend_member'] = model('member')->getMemberInfoByID($order['buyer_id']);
             }
         }
-
 
         //追加返回商品信息
         if (in_array('order_goods', $extend)) {
@@ -233,16 +230,16 @@ class Order extends BaseModel {
                     $order_list[$value['order_id']]['extend_order_goods'][] = $value;
                 }
             } else {
-                $order_list[$value['order_id']]['extend_order_goods']= array();
+                $order_list[$value['order_id']]['extend_order_goods'] = array();
             }
         }
-        
+
         //追加返回拼团订单信息
         if (in_array('ppintuanorder', $extend)) {
             //取拼团订单附加列表
             $condition = array();
-            $condition[] = array('ppintuanorder.order_id','in', array_keys($order_list));
-            $condition[] = array('pintuanorder_type','=',0);
+            $condition[] = array('ppintuanorder.order_id', 'in', array_keys($order_list));
+            $condition[] = array('pintuanorder_type', '=', 0);
             $pintuanorder_list = model('ppintuanorder')->getPpintuanorderList($condition);
             if (!empty($pintuanorder_list)) {
                 foreach ($pintuanorder_list as $value) {
@@ -266,9 +263,10 @@ class Order extends BaseModel {
      * @param string $key 允许传入  NewCount、PayCount、SendCount、EvalCount、TradeCount，分别取相应数量缓存，只许传入一个
      * @return array
      */
-    public function getOrderCountCache($type, $id, $key) {
-        if (!config('ds_config.cache_open')) return ;
-        $types = $id.'_ordercount' .'_'.$type.'_'. $key;
+    public function getOrderCountCache($type, $id, $key)
+    {
+        if (!config('ds_config.cache_open')) return;
+        $types = $id . '_ordercount' . '_' . $type . '_' . $key;
         $count = rcache($types);
         return $count;
     }
@@ -283,10 +281,11 @@ class Order extends BaseModel {
      * @param array $count 数据
      * @return type
      */
-    public function editOrderCountCache($type, $id, $key,$count) {
+    public function editOrderCountCache($type, $id, $key, $count)
+    {
         if (!config('ds_config.cache_open') || empty($type) || !intval($id))
             return;
-        $types = $id.'_ordercount'.'_'.$type .'_'. $key;
+        $types = $id . '_ordercount' . '_' . $type . '_' . $key;
         wkcache($types, $count);
     }
 
@@ -299,7 +298,8 @@ class Order extends BaseModel {
      * @param string $key 允许传入  NewCount、PayCount、SendCount、EvalCount、TradeCount，分别取相应数量缓存，只许传入一个
      * @return int
      */
-    public function getOrderCountByID($type, $id, $key) {
+    public function getOrderCountByID($type, $id, $key)
+    {
         $cache_info = $this->getOrderCountCache($type, $id, $key);
         if (config('ds_config.cache_open') && is_numeric($cache_info)) {
             //从缓存中取得
@@ -308,10 +308,10 @@ class Order extends BaseModel {
             //从数据库中取得
             $field = $type == 'buyer' ? 'buyer_id' : 'store_id';
             $condition = array();
-            $condition[] = array($field , '=' ,$id);
+            $condition[] = array($field, '=', $id);
             $func = 'getOrderState' . $key;
             $count = $this->$func($condition);
-            $this->editOrderCountCache($type, $id, $key,$count);
+            $this->editOrderCountCache($type, $id, $key, $count);
         }
         return $count;
     }
@@ -324,12 +324,13 @@ class Order extends BaseModel {
      * @param int $id   买家ID、店铺ID
      * @return bool
      */
-    public function delOrderCountCache($type, $id) {
-        $type_NewCount = $id.'_ordercount' . '_'.$type.'_NewCount';
-        $type_PayCount = $id.'_ordercount' . '_'.$type.'_PayCount';
-        $type_SendCount = $id.'_ordercount' . '_'.$type.'_SendCount';
-        $type_EvalCount = $id.'_ordercount' . '_'.$type.'_EvalCount';
-        $type_TradeCount = $id.'_ordercount' . '_'.$type.'_TradeCount';
+    public function delOrderCountCache($type, $id)
+    {
+        $type_NewCount = $id . '_ordercount' . '_' . $type . '_NewCount';
+        $type_PayCount = $id . '_ordercount' . '_' . $type . '_PayCount';
+        $type_SendCount = $id . '_ordercount' . '_' . $type . '_SendCount';
+        $type_EvalCount = $id . '_ordercount' . '_' . $type . '_EvalCount';
+        $type_TradeCount = $id . '_ordercount' . '_' . $type . '_TradeCount';
         dcache($type_NewCount);
         dcache($type_PayCount);
         dcache($type_SendCount);
@@ -344,8 +345,9 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getOrderStateNewCount($condition = array()) {
-        $condition[]=array('order_state','=',ORDER_STATE_NEW);
+    public function getOrderStateNewCount($condition = array())
+    {
+        $condition[] = array('order_state', '=', ORDER_STATE_NEW);
         return $this->getOrderCount($condition);
     }
 
@@ -356,8 +358,9 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getOrderStatePayCount($condition = array()) {
-        $condition[]=array('order_state','=',ORDER_STATE_PAY);
+    public function getOrderStatePayCount($condition = array())
+    {
+        $condition[] = array('order_state', '=', ORDER_STATE_PAY);
         return $this->getOrderCount($condition);
     }
 
@@ -368,8 +371,9 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getOrderStateSendCount($condition = array()) {
-        $condition[]=array('order_state','=',ORDER_STATE_SEND);
+    public function getOrderStateSendCount($condition = array())
+    {
+        $condition[] = array('order_state', '=', ORDER_STATE_SEND);
         return $this->getOrderCount($condition);
     }
 
@@ -380,10 +384,11 @@ class Order extends BaseModel {
      * @param type $condition 检索条件
      * @return type
      */
-    public function getOrderStateEvalCount($condition = array()) {
-        $condition[]=array('order_state','=',ORDER_STATE_SUCCESS);
-        $condition[]=array('evaluation_state','=',0);
-		$condition[]=array('refund_state','=',0);
+    public function getOrderStateEvalCount($condition = array())
+    {
+        $condition[] = array('order_state', '=', ORDER_STATE_SUCCESS);
+        $condition[] = array('evaluation_state', '=', 0);
+        $condition[] = array('refund_state', '=', 0);
         return $this->getOrderCount($condition);
     }
 
@@ -394,8 +399,9 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getOrderStateTradeCount($condition = array()) {
-        $condition[]=array('order_state','not in',array(ORDER_STATE_CANCEL,ORDER_STATE_SUCCESS));
+    public function getOrderStateTradeCount($condition = array())
+    {
+        $condition[] = array('order_state', 'not in', array(ORDER_STATE_CANCEL, ORDER_STATE_SUCCESS));
         return $this->getOrderCount($condition);
     }
 
@@ -406,7 +412,8 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getOrderCount($condition) {
+    public function getOrderCount($condition)
+    {
         return Db::name('order')->where($condition)->count();
     }
 
@@ -419,7 +426,8 @@ class Order extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getOrdergoodsInfo($condition = array(), $fields = '*', $order = '') {
+    public function getOrdergoodsInfo($condition = array(), $fields = '*', $order = '')
+    {
         return Db::name('ordergoods')->where($condition)->field($fields)->order($order)->find();
     }
 
@@ -436,18 +444,19 @@ class Order extends BaseModel {
      * @param type $key 键
      * @return array
      */
-    public function getOrdergoodsList($condition = array(), $fields = '*', $limit = 0, $pagesize = null, $order = 'rec_id desc', $group = null, $key = null) {
+    public function getOrdergoodsList($condition = array(), $fields = '*', $limit = 0, $pagesize = null, $order = 'rec_id desc', $group = null, $key = null)
+    {
         if ($pagesize) {
-            $res= Db::name('ordergoods')->field($fields)->where($condition)->order($order)->group($group)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$res;
+            $res = Db::name('ordergoods')->field($fields)->where($condition)->order($order)->group($group)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
             $ordergoods = $res->items();
-            if(!empty($key)){
+            if (!empty($key)) {
                 $ordergoods = ds_change_arraykey($ordergoods, $key);
             }
             return $ordergoods;
         } else {
             $ordergoods = Db::name('ordergoods')->field($fields)->where($condition)->limit($limit)->order($order)->group($group)->select()->toArray();
-            if(!empty($key)){
+            if (!empty($key)) {
                 $ordergoods = ds_change_arraykey($ordergoods, $key);
             }
             return $ordergoods;
@@ -464,7 +473,8 @@ class Order extends BaseModel {
      * @param int $limit 限制
      * @return array
      */
-    public function getOrdercommonList($condition = array(), $fields = '*', $order = '', $limit = 0) {
+    public function getOrdercommonList($condition = array(), $fields = '*', $order = '', $limit = 0)
+    {
         return Db::name('ordercommon')->field($fields)->where($condition)->order($order)->limit($limit)->select()->toArray();
     }
 
@@ -475,7 +485,8 @@ class Order extends BaseModel {
      * @param array $data 参数内容
      * @return int 返回 insert_id
      */
-    public function addOrderpay($data) {
+    public function addOrderpay($data)
+    {
         return Db::name('orderpay')->insertGetId($data);
     }
 
@@ -486,11 +497,12 @@ class Order extends BaseModel {
      * @param array $data 参数内容
      * @return int 返回 insert_id
      */
-    public function addOrder($data) {
+    public function addOrder($data)
+    {
         $result = Db::name('order')->insertGetId($data);
         if ($result) {
             //更新缓存
-            model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'delOrderCountCache','cron_value'=>serialize(array('buyer_id'=>$data['buyer_id'],'store_id'=>$data['store_id']))));
+            model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'delOrderCountCache', 'cron_value' => serialize(array('buyer_id' => $data['buyer_id'], 'store_id' => $data['store_id']))));
         }
         return $result;
     }
@@ -502,7 +514,8 @@ class Order extends BaseModel {
      * @param array $data 参数内容
      * @return int 返回 insert_id
      */
-    public function addOrdercommon($data) {
+    public function addOrdercommon($data)
+    {
         return Db::name('ordercommon')->insertGetId($data);
     }
 
@@ -513,11 +526,10 @@ class Order extends BaseModel {
      * @param array $data 参数内容
      * @return int 返回 insert_id
      */
-    public function addOrdergoods($data) {
+    public function addOrdergoods($data)
+    {
         return Db::name('ordergoods')->insertAll($data);
     }
-
-
 
     /**
      * 更改订单信息
@@ -528,13 +540,14 @@ class Order extends BaseModel {
      * @param int $limit 限制
      * @return bool
      */
-    public function editOrder($data, $condition, $limit = 0) {
+    public function editOrder($data, $condition, $limit = 0)
+    {
         $update = Db::name('order')->where($condition)->limit($limit)->update($data);
         if ($update) {
             //更新缓存
             $order_list = Db::name('order')->where($condition)->select()->toArray();
             foreach ($order_list as $key => $order) {
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'delOrderCountCache','cron_value'=>serialize(array('buyer_id'=>$order['buyer_id'],'store_id'=>$order['store_id']))));
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'delOrderCountCache', 'cron_value' => serialize(array('buyer_id' => $order['buyer_id'], 'store_id' => $order['store_id']))));
             }
         }
         return $update;
@@ -548,7 +561,8 @@ class Order extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editOrdercommon($data, $condition) {
+    public function editOrdercommon($data, $condition)
+    {
         return Db::name('ordercommon')->where($condition)->update($data);
     }
 
@@ -557,7 +571,8 @@ class Order extends BaseModel {
      * @param unknown_type $data
      * @param unknown_type $condition
      */
-    public function editOrdergoods($data, $condition) {
+    public function editOrdergoods($data, $condition)
+    {
         return Db::name('ordergoods')->where($condition)->update($data);
     }
 
@@ -569,11 +584,10 @@ class Order extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editOrderpay($data, $condition) {
+    public function editOrderpay($data, $condition)
+    {
         return Db::name('orderpay')->where($condition)->update($data);
     }
-
-
 
     /**
      * 返回是否允许某些操作
@@ -583,7 +597,8 @@ class Order extends BaseModel {
      * @param type $order_info 订单信息
      * @return boolean
      */
-    public function getOrderOperateState($operate, $order_info) {
+    public function getOrderOperateState($operate, $order_info)
+    {
         if (!is_array($order_info) || empty($order_info))
             return false;
 
@@ -592,8 +607,8 @@ class Order extends BaseModel {
             //买家取消订单
             case 'buyer_cancel':
                 $state = ($order_info['order_state'] == ORDER_STATE_NEW) ||
-                        ($order_info['order_state'] == ORDER_STATE_DEPOSIT) ||
-                        ($order_info['order_state'] == ORDER_STATE_REST);
+                    ($order_info['order_state'] == ORDER_STATE_DEPOSIT) ||
+                    ($order_info['order_state'] == ORDER_STATE_REST);
                 break;
 
             //申请退款
@@ -608,15 +623,15 @@ class Order extends BaseModel {
             //商家取消订单
             case 'store_cancel':
                 $state = ($order_info['order_state'] == ORDER_STATE_NEW) ||
-                        ($order_info['order_state'] == ORDER_STATE_DEPOSIT) ||
-                        ($order_info['order_state'] == ORDER_STATE_REST);
+                    ($order_info['order_state'] == ORDER_STATE_DEPOSIT) ||
+                    ($order_info['order_state'] == ORDER_STATE_REST);
                 break;
 
             //平台取消订单
             case 'system_cancel':
                 $state = ($order_info['order_state'] == ORDER_STATE_NEW) ||
-                        ($order_info['order_state'] == ORDER_STATE_DEPOSIT) ||
-                        ($order_info['order_state'] == ORDER_STATE_REST);
+                    ($order_info['order_state'] == ORDER_STATE_DEPOSIT) ||
+                    ($order_info['order_state'] == ORDER_STATE_REST);
                 break;
 
             //平台收款
@@ -627,7 +642,7 @@ class Order extends BaseModel {
             //买家投诉
             case 'complain':
                 $state = in_array($order_info['order_state'], array(ORDER_STATE_PAY, ORDER_STATE_SEND)) ||
-                        intval($order_info['finnshed_time']) > (TIMESTAMP - config('ds_config.complain_time_limit'));
+                    intval($order_info['finnshed_time']) > (TIMESTAMP - config('ds_config.complain_time_limit'));
                 break;
 
             case 'payment':
@@ -694,13 +709,14 @@ class Order extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getOrderAndOrderGoodsList($condition, $field = '*', $pagesize = 0, $order = 'rec_id desc') {
-        if($pagesize){
-            $list = Db::name('ordergoods')->alias('order_goods')->where($condition)->field($field)->join('order order','order_goods.order_id=order.order_id','LEFT')->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getOrderAndOrderGoodsList($condition, $field = '*', $pagesize = 0, $order = 'rec_id desc')
+    {
+        if ($pagesize) {
+            $list = Db::name('ordergoods')->alias('order_goods')->where($condition)->field($field)->join('order order', 'order_goods.order_id=order.order_id', 'LEFT')->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $list;
             return $list->items();
-        }else{
-            $list = Db::name('ordergoods')->alias('order_goods')->where($condition)->field($field)->join('order order','order_goods.order_id=order.order_id','LEFT')->select()->toArray();
+        } else {
+            $list = Db::name('ordergoods')->alias('order_goods')->where($condition)->field($field)->join('order order', 'order_goods.order_id=order.order_id', 'LEFT')->select()->toArray();
             return $list;
         }
     }
@@ -715,9 +731,9 @@ class Order extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getOrderAndOrderGoodsSalesRecordList($condition, $field = "*", $pagesize = 0, $order = 'rec_id desc') {
-        $condition[] = array('order_state','in', array(ORDER_STATE_PAY, ORDER_STATE_SEND, ORDER_STATE_SUCCESS));
+    public function getOrderAndOrderGoodsSalesRecordList($condition, $field = "*", $pagesize = 0, $order = 'rec_id desc')
+    {
+        $condition[] = array('order_state', 'in', array(ORDER_STATE_PAY, ORDER_STATE_SEND, ORDER_STATE_SUCCESS));
         return $this->getOrderAndOrderGoodsList($condition, $field, $pagesize, $order);
     }
-
 }

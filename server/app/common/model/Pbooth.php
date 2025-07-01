@@ -1,24 +1,11 @@
 <?php
-/**
- * 推荐展位管理
- *
- */
 
 namespace app\common\model;
 
-
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 推荐展位
  */
 class Pbooth extends BaseModel
 {
@@ -39,11 +26,11 @@ class Pbooth extends BaseModel
      */
     public function getBoothquotaList($condition, $field = '*', $pagesize = 0, $order = 'boothquota_id desc')
     {
-        if($pagesize){
-        $res= Db::name('pboothquota')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-        $this->page_info=$res;
-        return $res->items();
-        }else{
+        if ($pagesize) {
+            $res = Db::name('pboothquota')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
+            return $res->items();
+        } else {
             return Db::name('pboothquota')->field($field)->where($condition)->order($order)->select()->toArray();
         }
     }
@@ -72,9 +59,9 @@ class Pbooth extends BaseModel
     public function getBoothquotaInfoCurrent($store_id)
     {
         $condition = array();
-        $condition[] = array('store_id','=',$store_id);
-        $condition[] = array('boothquota_endtime','>',TIMESTAMP);
-        $condition[] = array('boothquota_state','=',1);
+        $condition[] = array('store_id', '=', $store_id);
+        $condition[] = array('boothquota_endtime', '>', TIMESTAMP);
+        $condition[] = array('boothquota_state', '=', 1);
         return $this->getBoothquotaInfo($condition);
     }
 
@@ -130,10 +117,11 @@ class Pbooth extends BaseModel
      * @param string $order 排序
      * @return array
      */
-    public function getBoothgoodsList($condition, $field = '*', $pagesize = 0, $limit = 0, $order = 'boothgoods_id asc') {
-//        $condition = $this->_getRecursiveClass($condition);
+    public function getBoothgoodsList($condition, $field = '*', $pagesize = 0, $limit = 0, $order = 'boothgoods_id asc')
+    {
+        // $condition = $this->_getRecursiveClass($condition);
         if ($pagesize) {
-            $res = Db::name('pboothgoods')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $res = Db::name('pboothgoods')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
             return $res->items();
         } else {
@@ -182,10 +170,10 @@ class Pbooth extends BaseModel
         foreach ($quota_list as $val) {
             $storeid_array[] = $val['store_id'];
         }
-        $where = array(array('store_id','in', $storeid_array));
+        $where = array(array('store_id', 'in', $storeid_array));
         $update = array('boothquota_state' => self::STATE0);
         $this->editBoothquota($update, $where);
-        
+
         $update = array('boothgoods_state' => self::STATE0);
         $this->editBooth($update, $where);
         return true;
@@ -210,7 +198,7 @@ class Pbooth extends BaseModel
      * @param array $condition 查询条件
      * @return array
      */
-    public function _getRecursiveClass($condition,$gc_id)
+    public function _getRecursiveClass($condition, $gc_id)
     {
         if (!is_array($gc_id)) {
             $gc_list = model('goodsclass')->getGoodsclassForCacheModel();
@@ -219,7 +207,7 @@ class Pbooth extends BaseModel
                 $gcchild_id = empty($gc_list[$gc_id]['child']) ? array() : explode(',', $gc_list[$gc_id]['child']);
                 $gcchildchild_id = empty($gc_list[$gc_id]['childchild']) ? array() : explode(',', $gc_list[$gc_id]['childchild']);
                 $all_gc_id = array_merge($all_gc_id, $gcchild_id, $gcchildchild_id);
-                $condition[] = array('gc_id','in', $all_gc_id);
+                $condition[] = array('gc_id', 'in', $all_gc_id);
             }
         }
         return $condition;

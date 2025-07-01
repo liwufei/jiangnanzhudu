@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 礼品购物车
  */
-class Pointcart extends BaseModel {
+class Pointcart extends BaseModel
+{
 
     /**
      * 礼品购物车保存
@@ -25,7 +17,8 @@ class Pointcart extends BaseModel {
      * @param type $data 数据
      * @return boolean
      */
-    public function addPointcart($data) {
+    public function addPointcart($data)
+    {
         if (empty($data)) {
             return false;
         }
@@ -47,7 +40,8 @@ class Pointcart extends BaseModel {
      * @param type $field 字段
      * @return type 
      */
-    public function getPointcartList($where, $field = '*') {
+    public function getPointcartList($where, $field = '*')
+    {
         $cartgoods_list = Db::name('pointscart')->field($field)->where($where)->select()->toArray();
         if ($cartgoods_list) {
             foreach ($cartgoods_list as $k => $v) {
@@ -70,7 +64,8 @@ class Pointcart extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getPCartListAndAmount($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function getPCartListAndAmount($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         $cartgoods_list = $this->getPointcartList($where);
         //兑换礼品总积分
         $cartgoods_pointall = 0;
@@ -98,7 +93,8 @@ class Pointcart extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getPointcartInfo($where, $field = '*', $order = '') {
+    public function getPointcartInfo($where, $field = '*', $order = '')
+    {
         return Db::name('pointscart')->field($field)->where($where)->order($order)->find();
     }
 
@@ -109,7 +105,8 @@ class Pointcart extends BaseModel {
      * @param type $member_id 会员id
      * @return type
      */
-    public function getPointcartCount($member_id) {
+    public function getPointcartCount($member_id)
+    {
         $info = rcache($member_id, 'm_pointcart');
         if (!isset($info['pointcart_count']) || $info['pointcart_count'] == 0) {
             $pointcart_count = Db::name('pointscart')->where(array('pmember_id' => $member_id))->count();
@@ -129,7 +126,8 @@ class Pointcart extends BaseModel {
      * @param type $member_id 会员ID
      * @return boolean
      */
-    public function delPointcartById($pc_id, $member_id = 0) {
+    public function delPointcartById($pc_id, $member_id = 0)
+    {
         if (empty($pc_id)) {
             return false;
         }
@@ -155,7 +153,8 @@ class Pointcart extends BaseModel {
      * @param type $member_id 会员id
      * @return type
      */
-    public function delPointcart($where, $member_id = 0) {
+    public function delPointcart($where, $member_id = 0)
+    {
         $result = Db::name('pointscart')->where($where)->delete();
         //清除相关缓存
         if ($result && $member_id > 0) {
@@ -172,7 +171,8 @@ class Pointcart extends BaseModel {
      * @param type $data 修改信息数组
      * @return boolean
      */
-    public function editPointcart($condition, $data) {
+    public function editPointcart($condition, $data)
+    {
         if (empty($data)) {
             return false;
         }
@@ -187,7 +187,8 @@ class Pointcart extends BaseModel {
      * @param type $member_id 会员ID 
      * @return type
      */
-    public function checkExchange($pgoods_id, $quantity, $member_id) {
+    public function checkExchange($pgoods_id, $quantity, $member_id)
+    {
         $pgoods_id = intval($pgoods_id);
         $quantity = intval($quantity);
         if ($pgoods_id <= 0 || $quantity <= 0) {
@@ -255,7 +256,8 @@ class Pointcart extends BaseModel {
      * @param array $member_id 会员编号
      * @return array 兑换数量是否合法及其错误数组
      */
-    public function checkPointProdExnum($prodinfo, $quantity, $member_id) {
+    public function checkPointProdExnum($prodinfo, $quantity, $member_id)
+    {
         $data = $this->getPointProdExnum($prodinfo, $quantity, $member_id);
         if (!$data['state']) {
             return array('state' => false, 'msg' => $data['msg']);
@@ -276,7 +278,8 @@ class Pointcart extends BaseModel {
      * @param array $member_id 会员编号
      * @return array 兑换数量及其错误数组
      */
-    public function getPointProdExnum($prodinfo, $quantity, $member_id) {
+    public function getPointProdExnum($prodinfo, $quantity, $member_id)
+    {
         if ($quantity <= 0) {
             return array('state' => false, 'msg' => '兑换数量错误');
         }
@@ -321,7 +324,8 @@ class Pointcart extends BaseModel {
      * @param type $member_id 会员ID
      * @return type
      */
-    public function getPointcartAmount($member_id) {
+    public function getPointcartAmount($member_id)
+    {
         if ($member_id <= 0) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -337,7 +341,8 @@ class Pointcart extends BaseModel {
      * @param type $member_id 会员id
      * @return type
      */
-    public function getCartGoodsList($member_id, $post = array()) {
+    public function getCartGoodsList($member_id, $post = array())
+    {
         $return_array = array();
         //获取礼品购物车内信息
         if (!empty($post) && isset($post['ifcart']) && !$post['ifcart'] && isset($post['cart_id'])) {
@@ -433,7 +438,8 @@ class Pointcart extends BaseModel {
             return array('state' => false, 'msg' => '购物车信息错误');
         }
         return array(
-            'state' => true, 'data' => array('pointprod_list' => $pointprod_list, 'pgoods_pointall' => $pgoods_pointall)
+            'state' => true,
+            'data' => array('pointprod_list' => $pointprod_list, 'pgoods_pointall' => $pgoods_pointall)
         );
     }
 
@@ -446,7 +452,8 @@ class Pointcart extends BaseModel {
      * @param $member_info array 会员详细信息，不必须
      * @return bool 积分是否足够
      */
-    public function checkPointEnough($points, $member_id, $member_info = array()) {
+    public function checkPointEnough($points, $member_id, $member_info = array())
+    {
         $points = intval($points);
         if ($member_id <= 0) {
             return array('state' => false, 'msg' => '会员信息错误');

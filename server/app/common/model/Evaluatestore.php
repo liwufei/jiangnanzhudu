@@ -1,23 +1,16 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺评分
  */
-class Evaluatestore extends BaseModel {
-public $page_info;
+class Evaluatestore extends BaseModel
+{
+    public $page_info;
+
     /**
      * 查询店铺评分列表
      * @access public
@@ -28,12 +21,13 @@ public $page_info;
      * @param string $field 字段
      * @return array
      */
-    public function getEvaluatestoreList($condition, $pagesize = null, $order = 'seval_id desc', $field = '*') {
-        if($pagesize){
-            $list = Db::name('evaluatestore')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$list;
+    public function getEvaluatestoreList($condition, $pagesize = null, $order = 'seval_id desc', $field = '*')
+    {
+        if ($pagesize) {
+            $list = Db::name('evaluatestore')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $list;
             return $list->items();
-        }else{
+        } else {
             return Db::name('evaluatestore')->field($field)->where($condition)->order($order)->select()->toArray();
         }
     }
@@ -46,7 +40,8 @@ public $page_info;
      * @param type $field 字段
      * @return type
      */
-    public function getEvaluatestoreInfo($condition, $field = '*') {
+    public function getEvaluatestoreInfo($condition, $field = '*')
+    {
         $list = Db::name('evaluatestore')->field($field)->where($condition)->find();
         return $list;
     }
@@ -59,7 +54,8 @@ public $page_info;
      * @param int $storeclass_id 分类编号，如果传入分类编号同时返回行业对比数据
      * @return array
      */
-    public function getEvaluatestoreInfoByStoreID($store_id, $storeclass_id = 0) {
+    public function getEvaluatestoreInfoByStoreID($store_id, $storeclass_id = 0)
+    {
         $prefix = 'evaluate_store_info';
         $info = rcache($store_id, $prefix);
         if (empty($info)) {
@@ -108,13 +104,14 @@ public $page_info;
      * @param int $storeclass_id 店铺分类编号
      * @return array
      */
-    public function getEvaluatestoreInfoByScID($storeclass_id) {
+    public function getEvaluatestoreInfoByScID($storeclass_id)
+    {
         $prefix = 'sc_evaluate_store_info';
         $info = rcache($storeclass_id, $prefix);
         if (empty($info)) {
             $store_model = model('store');
-            $store_id_string = $store_model->getStoreIDString(array(array('storeclass_id' ,'=', $storeclass_id)));
-            $info = $this->_getEvaluatestore(array(array('seval_storeid','in', $store_id_string)));
+            $store_id_string = $store_model->getStoreIDString(array(array('storeclass_id', '=', $storeclass_id)));
+            $info = $this->_getEvaluatestore(array(array('seval_storeid', 'in', $store_id_string)));
             $cache = array();
             $cache['evaluate_store_info'] = serialize($info);
             wcache($storeclass_id, $cache, $prefix, 60 * 24);
@@ -131,7 +128,8 @@ public $page_info;
      * @param array $condition 查询条件
      * @return array
      */
-    public function _getEvaluatestore($condition) {
+    public function _getEvaluatestore($condition)
+    {
         $result = array();
         $field = 'AVG(seval_desccredit) as store_desccredit,';
         $field .= 'AVG(seval_servicecredit) as store_servicecredit,';
@@ -160,9 +158,10 @@ public $page_info;
      * @param array $data 参数数据
      * @return type
      */
-    public function addEvaluatestore($data) {
+    public function addEvaluatestore($data)
+    {
         dcache($data['seval_storeid'], 'evaluate_store_info');
-        $storeclass_id=Db::name('store')->where(array(array('store_id','=',$data['seval_storeid'])))->value('storeclass_id');
+        $storeclass_id = Db::name('store')->where(array(array('store_id', '=', $data['seval_storeid'])))->value('storeclass_id');
         dcache($storeclass_id, 'sc_evaluate_store_info');
         return Db::name('evaluatestore')->insertGetId($data);
     }
@@ -174,14 +173,14 @@ public $page_info;
      * @param array $condition 条件
      * @return type
      */
-    public function delEvaluatestore($condition) {
+    public function delEvaluatestore($condition)
+    {
         $storeid_array = Db::name('evaluatestore')->where($condition)->column('seval_storeid');
         foreach ($storeid_array as $store_id) {
             dcache($store_id, 'evaluate_store_info');
-            $storeclass_id=Db::name('store')->where(array(array('store_id','=',$store_id)))->value('storeclass_id');
+            $storeclass_id = Db::name('store')->where(array(array('store_id', '=', $store_id)))->value('storeclass_id');
             dcache($storeclass_id, 'sc_evaluate_store_info');
         }
         return Db::name('evaluatestore')->where($condition)->delete();
     }
-
 }

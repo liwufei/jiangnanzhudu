@@ -1,27 +1,14 @@
 <?php
 
-
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 卖家发货地址
  */
 class Daddress extends BaseModel
 {
-    
-
-
     /**
      * 新增
      * @access public
@@ -29,7 +16,8 @@ class Daddress extends BaseModel
      * @param type $data 数据
      * @return type
      */
-    public function addDaddress($data) {
+    public function addDaddress($data)
+    {
         return Db::name('daddress')->insertGetId($data);
     }
 
@@ -40,9 +28,11 @@ class Daddress extends BaseModel
      * @param type $condition 条件
      * @return type
      */
-    public function delDaddress($condition) {
+    public function delDaddress($condition)
+    {
         return Db::name('daddress')->where($condition)->delete();
     }
+
     /**
      * 编辑更新
      * @access public
@@ -51,10 +41,10 @@ class Daddress extends BaseModel
      * @param type $condition 条件
      * @return type
      */
-    public function editDaddress($data, $condition) {
+    public function editDaddress($data, $condition)
+    {
         return Db::name('daddress')->where($condition)->update($data);
     }
-
 
     /**
      * 查询单条
@@ -64,7 +54,8 @@ class Daddress extends BaseModel
      * @param type $fields 字段
      * @return type
      */
-    public function getAddressInfo($condition, $fields = '*') {
+    public function getAddressInfo($condition, $fields = '*')
+    {
         return Db::name('daddress')->field($fields)->where($condition)->find();
     }
 
@@ -78,8 +69,8 @@ class Daddress extends BaseModel
      * @param type $limit 限制
      * @return type
      */
-    public function getAddressList($condition, $fields = '*', $order = '', $limit = 0) {
+    public function getAddressList($condition, $fields = '*', $order = '', $limit = 0)
+    {
         return Db::name('daddress')->field($fields)->where($condition)->order($order)->limit($limit)->select()->toArray();
     }
-    
 }

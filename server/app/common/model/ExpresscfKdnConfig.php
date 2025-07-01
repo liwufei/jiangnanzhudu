@@ -5,22 +5,15 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSKMS多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 快递公司
  */
-class ExpresscfKdnConfig extends BaseModel {
+class ExpresscfKdnConfig extends BaseModel
+{
 
     public $page_info;
 
-    public function getExpresscfKdnConfigList($condition, $field = '*', $pagesize = 10, $order = 'expresscf_kdn_config_id desc') {
+    public function getExpresscfKdnConfigList($condition, $field = '*', $pagesize = 10, $order = 'expresscf_kdn_config_id desc')
+    {
         if ($pagesize) {
             $result = Db::name('expresscf_kdn_config')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -38,7 +31,8 @@ class ExpresscfKdnConfig extends BaseModel {
      * @param int $id 分类ID
      * @return array 数组类型的返回结果
      */
-    public function getExpresscfKdnConfigInfo($condition) {
+    public function getExpresscfKdnConfigInfo($condition)
+    {
         $result = Db::name('expresscf_kdn_config')->where($condition)->find();
         return $result;
     }
@@ -50,7 +44,8 @@ class ExpresscfKdnConfig extends BaseModel {
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addExpresscfKdnConfig($data) {
+    public function addExpresscfKdnConfig($data)
+    {
         $result = Db::name('expresscf_kdn_config')->insertGetId($data);
         return $result;
     }
@@ -63,7 +58,8 @@ class ExpresscfKdnConfig extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editExpresscfKdnConfig($data, $condition) {
+    public function editExpresscfKdnConfig($data, $condition)
+    {
         $result = Db::name('expresscf_kdn_config')->where($condition)->update($data);
         return $result;
     }
@@ -75,11 +71,13 @@ class ExpresscfKdnConfig extends BaseModel {
      * @param int $condition 记录ID
      * @return bool 
      */
-    public function delExpresscfKdnConfig($condition) {
+    public function delExpresscfKdnConfig($condition)
+    {
         return Db::name('expresscf_kdn_config')->where($condition)->delete();
     }
 
-    public function requestExpresscfKdnApi($requestData, $RequestType, $EBusinessID, $ApiKey) {
+    public function requestExpresscfKdnApi($requestData, $RequestType, $EBusinessID, $ApiKey)
+    {
         $requestData = json_encode($requestData, JSON_UNESCAPED_UNICODE);
         // 组装系统级参数
         $datas = array(
@@ -96,7 +94,8 @@ class ExpresscfKdnConfig extends BaseModel {
         return $result;
     }
 
-    public function printExpresscfKdnOrder($requestData, $EBusinessID, $ApiKey) {
+    public function printExpresscfKdnOrder($requestData, $EBusinessID, $ApiKey)
+    {
         $requestData = json_encode($requestData, JSON_UNESCAPED_UNICODE);
         $data_sign = urlencode(base64_encode(md5($this->get_ip() . $requestData . $ApiKey)));
         //是否预览，0-不预览 1-预览
@@ -112,7 +111,8 @@ class ExpresscfKdnConfig extends BaseModel {
      * @param ip IP
      * @return 是否内网IP
      */
-    private function is_private_ip($ip) {
+    private function is_private_ip($ip)
+    {
         return !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
     }
 
@@ -120,7 +120,8 @@ class ExpresscfKdnConfig extends BaseModel {
      * 获取客户端IP(非用户服务器IP)
      * @return 客户端IP
      */
-    private function get_ip() {
+    private function get_ip()
+    {
         //获取客户端IP
         if (getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
             $ip = getenv('HTTP_CLIENT_IP');
@@ -143,5 +144,4 @@ class ExpresscfKdnConfig extends BaseModel {
             return $ip;
         }
     }
-
 }

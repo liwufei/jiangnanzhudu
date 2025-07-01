@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 限时折扣
  */
-class Pxianshi extends BaseModel {
+class Pxianshi extends BaseModel
+{
 
     public $page_info;
 
@@ -41,7 +33,8 @@ class Pxianshi extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getXianshiList($condition, $pagesize = null, $order = '', $field = '*') {
+    public function getXianshiList($condition, $pagesize = null, $order = '', $field = '*')
+    {
         if ($pagesize) {
             $res = Db::name('pxianshi')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -66,7 +59,8 @@ class Pxianshi extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getXianshiInfo($condition) {
+    public function getXianshiInfo($condition)
+    {
         $xianshi_info = Db::name('pxianshi')->where($condition)->find();
         $xianshi_info = $this->getXianshiExtendInfo($xianshi_info);
         return $xianshi_info;
@@ -80,7 +74,8 @@ class Pxianshi extends BaseModel {
      * @param type $store_id 如果提供店铺编号，判断是否为该店铺活动，如果不是返回null
      * @return array
      */
-    public function getXianshiInfoByID($xianshi_id, $store_id = 0) {
+    public function getXianshiInfoByID($xianshi_id, $store_id = 0)
+    {
         if (intval($xianshi_id) <= 0) {
             return null;
         }
@@ -101,7 +96,8 @@ class Pxianshi extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getXianshiStateArray() {
+    public function getXianshiStateArray()
+    {
         return $this->xianshi_state_array;
     }
 
@@ -112,7 +108,8 @@ class Pxianshi extends BaseModel {
      * @param array $data 数据
      * @return bool
      */
-    public function addXianshi($data) {
+    public function addXianshi($data)
+    {
         $data['xianshi_state'] = self::XIANSHI_STATE_NORMAL;
         return Db::name('pxianshi')->insertGetId($data);
     }
@@ -125,7 +122,8 @@ class Pxianshi extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editXianshi($update, $condition) {
+    public function editXianshi($update, $condition)
+    {
         return Db::name('pxianshi')->where($condition)->update($update);
     }
 
@@ -136,7 +134,8 @@ class Pxianshi extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function delXianshi($condition) {
+    public function delXianshi($condition)
+    {
         $xianshi_list = $this->getXianshiList($condition);
         $xianshi_id_string = '';
         if (!empty($xianshi_list)) {
@@ -161,7 +160,8 @@ class Pxianshi extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function cancelXianshi($condition) {
+    public function cancelXianshi($condition)
+    {
         $xianshi_list = $this->getXianshiList($condition);
         $xianshi_id_string = '';
         if (!empty($xianshi_list)) {
@@ -191,7 +191,8 @@ class Pxianshi extends BaseModel {
      * @param type $xianshi_info 秒杀信息
      * @return boolean
      */
-    public function getXianshiExtendInfo($xianshi_info) {
+    public function getXianshiExtendInfo($xianshi_info)
+    {
         if ($xianshi_info['xianshi_end_time'] > TIMESTAMP) {
             $xianshi_info['xianshi_state_text'] = $this->xianshi_state_array[$xianshi_info['xianshi_state']];
         } else {
@@ -214,7 +215,8 @@ class Pxianshi extends BaseModel {
      * @param type $condition
      * @return boolean
      */
-    public function editExpireXianshi($condition) {
+    public function editExpireXianshi($condition)
+    {
         $condition[] = array('xianshi_end_time', '<', TIMESTAMP);
 
         // 更新商品促销价格
@@ -246,7 +248,8 @@ class Pxianshi extends BaseModel {
      * @author csdeshang
      * @param type $goods_commonid 商品编号ID
      */
-    private function _unlockGoods($goods_commonid) {
+    private function _unlockGoods($goods_commonid)
+    {
         $goods_model = model('goods');
         $goods_model->editGoodsCommonUnlock(array('goods_commonid' => $goods_commonid));
         $goods_model->editGoodsUnlock(array('goods_commonid' => $goods_commonid));

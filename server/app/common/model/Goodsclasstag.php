@@ -4,21 +4,13 @@ namespace app\common\model;
 
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * TAG分类
  */
-class Goodsclasstag extends BaseModel {
+class Goodsclasstag extends BaseModel
+{
     public $page_info;
+
     /**
      * 删除TAG分类
      * @access public
@@ -26,7 +18,8 @@ class Goodsclasstag extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function delGoodsclasstag($condition) {
+    public function delGoodsclasstag($condition)
+    {
         return Db::name('goodsclasstag')->where($condition)->delete();
     }
 
@@ -39,9 +32,10 @@ class Goodsclasstag extends BaseModel {
      * @param str $field 字段
      * @return array 数组结构的返回结果
      */
-    public function getGoodsclasstagList($condition = array(), $pagesize = '', $field = '*') {
+    public function getGoodsclasstagList($condition = array(), $pagesize = '', $field = '*')
+    {
         if ($pagesize) {
-            $result = Db::name('goodsclasstag')->field($field)->where($condition)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = Db::name('goodsclasstag')->field($field)->where($condition)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -57,7 +51,8 @@ class Goodsclasstag extends BaseModel {
      * @param array $param 参数数据
      * @return bool
      */
-    public function addGoodsclasstag($param) {
+    public function addGoodsclasstag($param)
+    {
         $class_id_1 = '';
         $class_id_2 = '';
         $class_id_3 = '';
@@ -111,7 +106,7 @@ class Goodsclasstag extends BaseModel {
         }
 
         $condition_str = trim($condition_str, ',');
-        return Db::execute("insert into `" . config('database.connections.mysql.prefix')."goodsclasstag` (`gc_id_1`,`gc_id_2`,`gc_id_3`,`gctag_name`,`gctag_value`,`gc_id`,`type_id`) values " . $condition_str);
+        return Db::execute("insert into `" . config('database.connections.mysql.prefix') . "goodsclasstag` (`gc_id_1`,`gc_id_2`,`gc_id_3`,`gctag_name`,`gctag_value`,`gc_id`,`type_id`) values " . $condition_str);
     }
 
     /**
@@ -120,7 +115,8 @@ class Goodsclasstag extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function clearGoodsclasstag() {
+    public function clearGoodsclasstag()
+    {
         return Db::execute("TRUNCATE TABLE `" . config('database.connections.mysql.prefix') . "goodsclasstag`");
     }
 
@@ -132,9 +128,10 @@ class Goodsclasstag extends BaseModel {
      * @param type $gctag_id tagID 
      * @return bool
      */
-    public function editGoodsclasstag($param,$gctag_id) {
+    public function editGoodsclasstag($param, $gctag_id)
+    {
         $condition = array();
-        $condition[] = array('gctag_id','=',$gctag_id);
+        $condition[] = array('gctag_id', '=', $gctag_id);
         return Db::name('goodsclasstag')->where($condition)->update($param);
     }
 
@@ -145,13 +142,10 @@ class Goodsclasstag extends BaseModel {
      * @param int $id
      * @return bool
      */
-    public function delGoodsclasstagByIds($id) {
+    public function delGoodsclasstagByIds($id)
+    {
         $condition = array();
-        $condition[] = array('gctag_id','in',$id);
+        $condition[] = array('gctag_id', 'in', $id);
         return Db::name('goodsclasstag')->where($condition)->delete();
     }
-
-
 }
-
-?>

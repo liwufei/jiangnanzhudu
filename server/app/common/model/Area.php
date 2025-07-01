@@ -4,23 +4,11 @@ namespace app\common\model;
 
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 地区
  */
 class Area extends BaseModel
 {
-
-
     /**
      * 获取地址列表
      * @access public
@@ -32,7 +20,7 @@ class Area extends BaseModel
      * @param str $order 排序
      * @return array
      */
-    public function getAreaList($condition = array(), $fields = '*', $group = '', $limit = 0, $order='')
+    public function getAreaList($condition = array(), $fields = '*', $group = '', $limit = 0, $order = '')
     {
         return Db::name('area')->where($condition)->field($fields)->limit($limit)->order($order)->group($group)->select()->toArray();
     }
@@ -72,7 +60,7 @@ class Area extends BaseModel
     public function getTopLevelAreas()
     {
         $data = $this->getCache();
-        
+
         $arr = array();
         foreach ($data['children'][0] as $i) {
             $arr[$i] = $data['name'][$i];
@@ -181,7 +169,7 @@ class Area extends BaseModel
      * 删除地区
      * @access public
      * @author csdeshang
-     * @param array $area_ids 地区id
+     * @param $area_ids 地区id
      * @return boolean
      */
     public function delAreaByAreaIds($area_ids)
@@ -191,7 +179,7 @@ class Area extends BaseModel
             return false;
         }
         $condition = array();
-        $condition[] = array('area_parent_id','in', $area_arr);
+        $condition[] = array('area_parent_id', 'in', $area_arr);
         $child_list = $this->getAreaList($condition);
         if (!empty($child_list)) {
             foreach ($child_list as $v) {
@@ -203,7 +191,7 @@ class Area extends BaseModel
         }
         // 删除地区
         $condition = array();
-        $condition[] = array('area_id','in', $area_arr);
+        $condition[] = array('area_id', 'in', $area_arr);
         $this->delArea($condition);
     }
 
@@ -220,7 +208,6 @@ class Area extends BaseModel
         $this->dropCache();
         return Db::name('area')->where($condition)->delete();
     }
-
 
     /**
      * 删除缓存数据
@@ -312,8 +299,6 @@ class Area extends BaseModel
         return $data;
     }
 
-
-
     /**
      * 从缓存获取分类 通过上级分类id
      * @access public
@@ -394,7 +379,7 @@ class Area extends BaseModel
         }
         return $ret;
     }
-    
+
     /**
      * 获取子节点名称通过id
      * @access public
@@ -402,9 +387,11 @@ class Area extends BaseModel
      * @param int $pid id
      * @return array
      */
-    public function GetChildName($pid){
-        return Db::name('area')->field('area_id,area_name')->where(array('area_parent_id'=>$pid))->select()->toArray();
+    public function GetChildName($pid)
+    {
+        return Db::name('area')->field('area_id,area_name')->where(array('area_parent_id' => $pid))->select()->toArray();
     }
+
     /**
      * 获取列表 根据id
      * @access public
@@ -412,7 +399,8 @@ class Area extends BaseModel
      * @param type $parent_id id
      * @return array
      */
-    public function getAreaChild($parent_id=-1){
+    public function getAreaChild($parent_id = -1)
+    {
         $map = array();
         if ($parent_id >= 0) {
             $map['area_parent_id'] = $parent_id;

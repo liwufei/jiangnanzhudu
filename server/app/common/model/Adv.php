@@ -1,22 +1,14 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 广告
  */
-class Adv extends BaseModel {
+class Adv extends BaseModel
+{
 
     public $page_info;
 
@@ -26,7 +18,8 @@ class Adv extends BaseModel {
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addAdvposition($data) {
+    public function addAdvposition($data)
+    {
         return Db::name('advposition')->insertGetId($data);
     }
 
@@ -36,7 +29,8 @@ class Adv extends BaseModel {
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addAdv($data) {
+    public function addAdv($data)
+    {
         $result = Db::name('adv')->insertGetId($data);
         $apId = (int) $data['ap_id'];
         dkcache("adv/{$apId}");
@@ -49,16 +43,17 @@ class Adv extends BaseModel {
      * @param array $adv_id 广告id
      * @return bool 布尔类型的返回结果
      */
-    public function delAdv($adv_id) {
+    public function delAdv($adv_id)
+    {
         $condition = array();
-        $condition[] = array('adv_id','=',$adv_id);
+        $condition[] = array('adv_id', '=', $adv_id);
         $adv = Db::name('adv')->where($condition)->find();
         if ($adv) {
             // drop cache
             $apId = (int) $adv['ap_id'];
             dkcache("adv/{$apId}");
         }
-        ds_del_pic(ATTACH_ADV,$adv['adv_code']);
+        ds_del_pic(ATTACH_ADV, $adv['adv_code']);
         return Db::name('adv')->where($condition)->delete();
     }
 
@@ -68,10 +63,11 @@ class Adv extends BaseModel {
      * @param array $ap_id 广告位id
      * @return bool 布尔类型的返回结果
      */
-    public function delAdvposition($ap_id) {
+    public function delAdvposition($ap_id)
+    {
         dkcache("adv/{$ap_id}");
         $condition = array();
-        $condition[] = array('ap_id','=',$ap_id);
+        $condition[] = array('ap_id', '=', $ap_id);
         return Db::name('advposition')->where($condition)->delete();
     }
 
@@ -83,9 +79,10 @@ class Adv extends BaseModel {
      * @param str $orderby 排序
      * @return array 二维数组
      */
-    public function getAdvpositionList($condition = array(), $pagesize = '', $orderby = 'ap_id desc') {
+    public function getAdvpositionList($condition = array(), $pagesize = '', $orderby = 'ap_id desc')
+    {
         if ($pagesize) {
-            $result = Db::name('advposition')->where($condition)->order($orderby)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = Db::name('advposition')->where($condition)->order($orderby)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -93,11 +90,13 @@ class Adv extends BaseModel {
         }
     }
 
-    public function getOneAdvposition($condition = array()) {
+    public function getOneAdvposition($condition = array())
+    {
         return Db::name('advposition')->where($condition)->find();
     }
 
-    public function getOneAdv($condition = array()) {
+    public function getOneAdv($condition = array())
+    {
         return Db::name('adv')->where($condition)->find();
     }
 
@@ -110,9 +109,10 @@ class Adv extends BaseModel {
      * @param str $orderby 排序
      * @return array 二维数组
      */
-    public function getAdvList($condition = array(), $pagesize = '', $limit = 0, $orderby = 'adv_id desc') {
+    public function getAdvList($condition = array(), $pagesize = '', $limit = 0, $orderby = 'adv_id desc')
+    {
         if ($pagesize) {
-            $result = Db::name('adv')->where($condition)->order($orderby)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+            $result = Db::name('adv')->where($condition)->order($orderby)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
         } else {
@@ -127,10 +127,10 @@ class Adv extends BaseModel {
      * @param str $orderby 排序
      * @return array
      */
-    public function mbadvlist($condition,$orderby='adv_sort desc'){
-         return Db::name('adv')->alias('a')->join('advposition n','a.ap_id=n.ap_id')->where($condition)->order($orderby)->select()->toArray();
+    public function mbadvlist($condition, $orderby = 'adv_sort desc')
+    {
+        return Db::name('adv')->alias('a')->join('advposition n', 'a.ap_id=n.ap_id')->where($condition)->order($orderby)->select()->toArray();
     }
-
 
     /**
      * 更新记录
@@ -138,14 +138,15 @@ class Adv extends BaseModel {
      * @param array $data 更新内容
      * @return bool
      */
-    public function editAdv($adv_id,$data) {
-        $adv_array = Db::name('adv')->where(array('adv_id'=>$adv_id))->find();
+    public function editAdv($adv_id, $data)
+    {
+        $adv_array = Db::name('adv')->where(array('adv_id' => $adv_id))->find();
         if ($adv_array) {
             // drop cache
             $apId = (int) $adv_array['ap_id'];
             dkcache("adv/{$apId}");
         }
-        return Db::name('adv')->where(array('adv_id'=>$adv_id))->update($data);
+        return Db::name('adv')->where(array('adv_id' => $adv_id))->update($data);
     }
 
     /**
@@ -154,15 +155,11 @@ class Adv extends BaseModel {
      * @param array $data 更新内容
      * @return bool
      */
-    public function editAdvposition($ap_id,$data) {
+    public function editAdvposition($ap_id, $data)
+    {
         dkcache("adv/{$ap_id}");
         $condition = array();
-        $condition[] = array('ap_id','=',$ap_id);
+        $condition[] = array('ap_id', '=', $ap_id);
         return Db::name('advposition')->where($condition)->update($data);
     }
-
-
-
 }
-
-?>

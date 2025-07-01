@@ -1,8 +1,8 @@
 <?php
 
 namespace app\common\model;
-use think\facade\Db;
 
+use think\facade\Db;
 
 //以下是定义结算单状态
 //默认
@@ -15,18 +15,10 @@ define('BILL_STATE_SYSTEM_CHECK', 3);
 define('BILL_STATE_SUCCESS', 4);
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 账单
  */
-class Bill extends BaseModel {
+class Bill extends BaseModel
+{
     public $page_info;
 
     /**
@@ -40,12 +32,13 @@ class Bill extends BaseModel {
      * @param int $limit 数量限制
      * @return array
      */
-    public function getOrderstatisList($condition = array(), $fields = '*', $pagesize = null, $order = '', $limit = 0) {
-        if($pagesize){
-            $result = Db::name('orderstatis')->where($condition)->field($fields)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getOrderstatisList($condition = array(), $fields = '*', $pagesize = null, $order = '', $limit = 0)
+    {
+        if ($pagesize) {
+            $result = Db::name('orderstatis')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
-        }else{
+        } else {
             return Db::name('orderstatis')->where($condition)->field($fields)->order($order)->limit($limit)->select()->toArray();
         }
     }
@@ -59,10 +52,11 @@ class Bill extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getOrderstatisInfo($condition = array(), $fields = '*', $order = null) {
+    public function getOrderstatisInfo($condition = array(), $fields = '*', $order = null)
+    {
         return Db::name('orderstatis')->where($condition)->field($fields)->order($order)->find();
     }
-    
+
     /**
      * 取得店铺月结算单列表
      * @access public
@@ -74,16 +68,15 @@ class Bill extends BaseModel {
      * @param int $limit 数量限制
      * @return array
      */
-    public function getOrderbillList($condition = array(), $fields = '*', $pagesize = null, $order = '', $limit = 0) {
-        if($pagesize){
-            $result = Db::name('orderbill')->where($condition)->field($fields)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getOrderbillList($condition = array(), $fields = '*', $pagesize = null, $order = '', $limit = 0)
+    {
+        if ($pagesize) {
+            $result = Db::name('orderbill')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             return $result->items();
-        }else{
+        } else {
             return Db::name('orderbill')->where($condition)->field($fields)->order($order)->limit($limit)->select()->toArray();
         }
-        
-        
     }
 
     /**
@@ -94,10 +87,10 @@ class Bill extends BaseModel {
      * @param string $fields 字段
      * @return array
      */
-    public function getOrderbillInfo($condition = array(), $fields = '*') {
+    public function getOrderbillInfo($condition = array(), $fields = '*')
+    {
         return Db::name('orderbill')->where($condition)->field($fields)->find();
     }
-
 
     /**
      * 取得订单数量
@@ -106,7 +99,8 @@ class Bill extends BaseModel {
      * @param array $condition 检索条件
      * @return int
      */
-    public function getOrderbillCount($condition) {
+    public function getOrderbillCount($condition)
+    {
         return Db::name('orderbill')->where($condition)->count();
     }
 
@@ -117,7 +111,8 @@ class Bill extends BaseModel {
      * @param array $condition 检索条件
      * @return int
      */
-    public function getOrderstatisCount($condition) {
+    public function getOrderstatisCount($condition)
+    {
         return Db::name('orderstatis')->where($condition)->count();
     }
 
@@ -128,9 +123,11 @@ class Bill extends BaseModel {
      * @param type $data 参数内容
      * @return type
      */
-    public function addOrderstatis($data) {
+    public function addOrderstatis($data)
+    {
         return Db::name('orderstatis')->insert($data);
     }
+
     /**
      * 添加订单账单
      * @access public
@@ -138,10 +135,11 @@ class Bill extends BaseModel {
      * @param array $data 参数数据
      * @return type
      */
-    public function addOrderbill($data) {
+    public function addOrderbill($data)
+    {
         return Db::name('orderbill')->insertGetId($data);
     }
-    
+
     /**
      * 编辑订单账单
      * @access public
@@ -150,10 +148,8 @@ class Bill extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editOrderbill($data, $condition = array()) {
+    public function editOrderbill($data, $condition = array())
+    {
         return Db::name('orderbill')->where($condition)->update($data);
     }
-
 }
-
-?>

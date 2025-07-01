@@ -3,21 +3,15 @@
 namespace app\common\model;
 
 use think\facade\Db;
+
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 经验值
  */
-class Exppoints extends BaseModel {
+class Exppoints extends BaseModel
+{
 
     public $page_info;
+
     /**
      * 操作经验值
      * @access public
@@ -26,12 +20,13 @@ class Exppoints extends BaseModel {
      * @param  array $insertarr 该数组可能包含信息 array('explog_memberid'=>'会员编号','explog_membername'=>'会员名称','explog_points'=>'经验值','explog_desc'=>'描述','orderprice'=>'订单金额','order_sn'=>'订单编号','order_id'=>'订单序号');
      * @return bool
      */
-    function saveExppointslog($stage, $insertarr) {
+    function saveExppointslog($stage, $insertarr)
+    {
         if (!$insertarr['explog_memberid']) {
             return false;
         }
         $exppoints_rule = config("ds_config.exppoints_rule") ? unserialize(config("ds_config.exppoints_rule")) : array();
-        if(empty($exppoints_rule['exp_login'])){
+        if (empty($exppoints_rule['exp_login'])) {
             return;
         }
         //记录原因文字
@@ -87,8 +82,8 @@ class Exppoints extends BaseModel {
             //更新member内容
             $obj_member = model('member');
             $upmember_array = array();
-            $upmember_array['member_exppoints'] = Db::raw('member_exppoints+'.$insertarr['explog_points']);
-            $obj_member->editMember(array('member_id' => $insertarr['explog_memberid']), $upmember_array,$insertarr['explog_memberid']);
+            $upmember_array['member_exppoints'] = Db::raw('member_exppoints+' . $insertarr['explog_points']);
+            $obj_member->editMember(array('member_id' => $insertarr['explog_memberid']), $upmember_array, $insertarr['explog_memberid']);
             return true;
         } else {
             return false;
@@ -102,7 +97,8 @@ class Exppoints extends BaseModel {
      * @param array $data 添加信息数组
      * @return array
      */
-    public function addExppointslog($data) {
+    public function addExppointslog($data)
+    {
         if (empty($data)) {
             return false;
         }
@@ -118,7 +114,8 @@ class Exppoints extends BaseModel {
      * @param string $field 查询字段
      * @return int
      */
-    public function getExppointslogCount($where, $field = '*') {
+    public function getExppointslogCount($where, $field = '*')
+    {
         $count = Db::name('exppointslog')->field($field)->where($where)->count();
         return $count;
     }
@@ -133,12 +130,13 @@ class Exppoints extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getExppointslogList($where, $field = '*', $pagesize = 0, $order = '') {
-        if($pagesize){
-            $result = Db::name('exppointslog')->field($field)->where($where)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getExppointslogList($where, $field = '*', $pagesize = 0, $order = '')
+    {
+        if ($pagesize) {
+            $result = Db::name('exppointslog')->field($field)->where($where)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
             $res = $result->items();
-        }else{
+        } else {
             $res = Db::name('exppointslog')->field($field)->where($where)->order($order)->select()->toArray();
         }
         return $res;
@@ -150,7 +148,8 @@ class Exppoints extends BaseModel {
      * @author csdeshang
      * @return string
      */
-    public function getExppointsStage() {
+    public function getExppointsStage()
+    {
         $stage_arr = array();
         $stage_arr['login'] = '会员登录';
         $stage_arr['comments'] = '商品评论';
@@ -158,7 +157,4 @@ class Exppoints extends BaseModel {
         $stage_arr['system'] = '系统调整';
         return $stage_arr;
     }
-
 }
-
-?>

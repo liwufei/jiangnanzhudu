@@ -1,22 +1,14 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 购物车
  */
-class Cart extends BaseModel {
+class Cart extends BaseModel
+{
 
     /**
      * 购物车商品总金额
@@ -28,6 +20,8 @@ class Cart extends BaseModel {
      */
     private $cart_goods_num = 0;
 
+    private $error_code = 0;
+    private $error_message = '';
 
     /**
      * 取属性值魔术方法
@@ -36,7 +30,8 @@ class Cart extends BaseModel {
      * @param type $name 名称
      * @return type
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         return $this->$name;
     }
 
@@ -47,7 +42,8 @@ class Cart extends BaseModel {
      * @param array $condition 检索条件
      * @return bool
      */
-    public function checkCart($condition = array()) {
+    public function checkCart($condition = array())
+    {
         return Db::name('cart')->where($condition)->find();
     }
 
@@ -58,7 +54,8 @@ class Cart extends BaseModel {
      * @param int $memberId 会员ID
      * @return int
      */
-    public function getCartCountByMemberId($memberId) {
+    public function getCartCountByMemberId($memberId)
+    {
         $memberId = intval($memberId);
         return Db::name('cart')->where(array('buyer_id' => $memberId,))->sum('goods_num');
     }
@@ -71,7 +68,8 @@ class Cart extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getCartInfo($condition = array(), $field = '*') {
+    public function getCartInfo($condition = array(), $field = '*')
+    {
         return Db::name('cart')->field($field)->where($condition)->find();
     }
 
@@ -84,14 +82,15 @@ class Cart extends BaseModel {
      * @param int $quantity 购物数量
      * @return type
      */
-    public function addCart($data = array(), $save_type = '', $quantity = null) {
+    public function addCart($data = array(), $save_type = '', $quantity = null)
+    {
         $method = '_addCartdb';
         $result = $this->$method($data, $quantity);
-        if(!$result){
+        if (!$result) {
             return false;
         }
         //更改购物车总商品数和总金额，传递数组参数只是给DB使用
-        $this->getCartNum('db', array('buyer_id' => isset($data['buyer_id'])?$data['buyer_id']:0));
+        $this->getCartNum('db', array('buyer_id' => isset($data['buyer_id']) ? $data['buyer_id'] : 0));
         return $result;
     }
 
@@ -103,29 +102,29 @@ class Cart extends BaseModel {
      * @param int $quantity 购物数量
      * @return type
      */
-    private function _addCartDb($goods_info = array(), $quantity) {
+    private function _addCartDb($goods_info = array(), $quantity)
+    {
         //验证购物车商品是否已经存在
         $condition = array();
-        $condition[] = array('goods_id','=',$goods_info['goods_id']);
-        $condition[] = array('buyer_id','=',$goods_info['buyer_id']);
+        $condition[] = array('goods_id', '=', $goods_info['goods_id']);
+        $condition[] = array('buyer_id', '=', $goods_info['buyer_id']);
         if (isset($goods_info['bl_id'])) {
-            $condition[] = array('bl_id','=',$goods_info['bl_id']);
+            $condition[] = array('bl_id', '=', $goods_info['bl_id']);
         } else {
-            $condition[] = array('bl_id','=',0);
+            $condition[] = array('bl_id', '=', 0);
         }
         //如果购物车
         $check_cart = $this->checkCart($condition);
-        
+
         if (!empty($check_cart)) {
             $quantity = $check_cart['goods_num'] + $quantity;
-            if($quantity>$goods_info['goods_storage']){
+            if ($quantity > $goods_info['goods_storage']) {
                 $this->error_code = 10001;
                 $this->error_message = '库存不足';
                 return false;
             }
             //如果商品存在则更新数量
-            return Db::name('cart')->where($condition)->update(array('goods_num'=>$quantity));
-            
+            return Db::name('cart')->where($condition)->update(array('goods_num' => $quantity));
         } else {
             //如果商品存在则插入
             $array = array();
@@ -140,9 +139,6 @@ class Cart extends BaseModel {
             $array['bl_id'] = isset($goods_info['bl_id']) ? $goods_info['bl_id'] : 0;
             return Db::name('cart')->insertGetId($array);
         }
-            
-
-        
     }
 
     /**
@@ -153,7 +149,8 @@ class Cart extends BaseModel {
      * @param	array	$condition 检索条件
      * @return bool
      */
-    public function editCart($data, $condition,$buyer_id) {
+    public function editCart($data, $condition, $buyer_id)
+    {
         $result = Db::name('cart')->where($condition)->update($data);
         if ($result) {
             $this->getCartNum('db', array('buyer_id' => $buyer_id));
@@ -170,9 +167,9 @@ class Cart extends BaseModel {
      * @param int $limit 限制
      * @return array
      */
-    public function getCartList($type, $condition = array(), $limit = 0) {
-
-            $cart_list = Db::name('cart')->where($condition)->limit($limit)->select()->toArray();
+    public function getCartList($type, $condition = array(), $limit = 0)
+    {
+        $cart_list = Db::name('cart')->where($condition)->limit($limit)->select()->toArray();
 
         $cart_list = is_array($cart_list) ? $cart_list : array();
         //顺便设置购物车商品数和总金额
@@ -195,9 +192,9 @@ class Cart extends BaseModel {
      * @param array $condition 检索条件
      * @return bool
      */
-    public function delCart($type, $condition = array(),$buyer_id) {
-
-            $result = Db::name('cart')->where($condition)->delete();
+    public function delCart($type, $condition = array(), $buyer_id)
+    {
+        $result = Db::name('cart')->where($condition)->delete();
 
         //重新计算购物车商品数和总金额
         if ($result) {
@@ -214,10 +211,9 @@ class Cart extends BaseModel {
      * @param array $condition 检索条件
      * @return bool
      */
-    public function clearCart($type, $condition = array()) {
-
-            //数据库暂无浅清空操作
-       
+    public function clearCart($type, $condition = array())
+    {
+        //数据库暂无浅清空操作
     }
 
     /**
@@ -228,23 +224,19 @@ class Cart extends BaseModel {
      * @param array $condition 只有登录后操作购物车表时才会用到该参数
      * @return type
      */
-    public function getCartNum($type, $condition = array()) {
-
-            $cart_all_price = 0;
-            $cart_goods = $this->getCartList('db', $condition);
-            $this->cart_goods_num = count($cart_goods);
-            if (!empty($cart_goods) && is_array($cart_goods)) {
-                foreach ($cart_goods as $val) {
-                    $cart_all_price += $val['goods_price'] * $val['goods_num'];
-                }
+    public function getCartNum($type, $condition = array())
+    {
+        $cart_all_price = 0;
+        $cart_goods = $this->getCartList('db', $condition);
+        $this->cart_goods_num = count($cart_goods);
+        if (!empty($cart_goods) && is_array($cart_goods)) {
+            foreach ($cart_goods as $val) {
+                $cart_all_price += $val['goods_price'] * $val['goods_num'];
             }
-            $this->cart_all_price = ds_price_format($cart_all_price);
+        }
+        $this->cart_all_price = ds_price_format($cart_all_price);
 
         @cookie('cart_goods_num', $this->cart_goods_num, 2 * 3600);
         return $this->cart_goods_num;
     }
-
-
 }
-
-?>

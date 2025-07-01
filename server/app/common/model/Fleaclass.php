@@ -1,21 +1,9 @@
 <?php
 
 namespace app\common\model;
+
 use think\facade\Db;
 
-
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
- */
 class Fleaclass extends BaseModel
 {
     /**
@@ -25,12 +13,11 @@ class Fleaclass extends BaseModel
      * @param array $condition 检索条件
      * @return array 数组结构的返回结果
      */
-    public function getFleaclassList($condition,$field = '*',$order='fleaclass_parent_id asc,fleaclass_sort asc,fleaclass_id asc')
+    public function getFleaclassList($condition, $field = '*', $order = 'fleaclass_parent_id asc,fleaclass_sort asc,fleaclass_id asc')
     {
         $result = Db::name('fleaclass')->field($field)->where($condition)->order($order)->select()->toArray();
         return $result;
     }
-
 
     /**
      * 取单个分类的内容
@@ -42,10 +29,9 @@ class Fleaclass extends BaseModel
     public function getOneFleaclass($id)
     {
         if (intval($id) > 0) {
-            $result = Db::name('fleaclass')->where(array('fleaclass_id'=>$id))->find();
+            $result = Db::name('fleaclass')->where(array('fleaclass_id' => $id))->find();
             return $result;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -59,17 +45,11 @@ class Fleaclass extends BaseModel
      */
     public function getFleaclassNow($id = 0)
     {
-        /**
-         * 初始化链接数组
-         */
         if (intval($id) > 0) {
-            /**
-             * 取当前类别信息
-             */
+            // 取当前类别信息
             $class = self::getOneFleaclass(intval($id));
-            /**
-             * 是否是子类
-             */
+
+            // 是否是子类
             if ($class['fleaclass_parent_id'] != 0) {
                 $parent_1 = self::getOneFleaclass($class['fleaclass_parent_id']);
                 if ($parent_1['fleaclass_parent_id'] != 0) {
@@ -94,7 +74,8 @@ class Fleaclass extends BaseModel
      * @param array $data 参数内容
      * @return bool 布尔类型的返回结果
      */
-    public function addFleaclass($data) {
+    public function addFleaclass($data)
+    {
         $result = Db::name('fleaclass')->insertGetId($data);
         return $result;
     }
@@ -106,7 +87,8 @@ class Fleaclass extends BaseModel
      * @param array $data 更新数据
      * @return bool 布尔类型的返回结果
      */
-    public function editFleaclass($condition, $data) {
+    public function editFleaclass($condition, $data)
+    {
         $result = Db::name('fleaclass')->where($condition)->update($data);
         return $result;
     }
@@ -124,12 +106,10 @@ class Fleaclass extends BaseModel
             $where = " fleaclass_id = '" . intval($id) . "'";
             $result = Db::name('fleaclass')->where($where)->delete();
             return $result;
-        }
-        else {
+        } else {
             return false;
         }
     }
-
 
     /**
      * 取分类列表，按照深度归类
@@ -152,7 +132,6 @@ class Fleaclass extends BaseModel
                     }
                 }
             }
-
         }
         return $result;
     }
@@ -168,7 +147,7 @@ class Fleaclass extends BaseModel
      */
     private function _getTreeClassList($parent_id, $class_list, $deep = 1)
     {
-        $result=array();
+        $result = array();
         if (is_array($class_list)) {
             foreach ($class_list as $k => $v) {
                 if ($v['fleaclass_parent_id'] == $parent_id) {
@@ -201,7 +180,7 @@ class Fleaclass extends BaseModel
             }
             $result = array();
             foreach ($all_class as $k => $v) {
-                $fleaclass_id = $v['fleaclass_id'];//返回的结果包括父类
+                $fleaclass_id = $v['fleaclass_id']; //返回的结果包括父类
                 $fleaclass_parent_id = $v['fleaclass_parent_id'];
                 if (in_array($fleaclass_id, $parent_id) || in_array($fleaclass_parent_id, $parent_id)) {
                     $parent_id[] = $v['fleaclass_id'];
@@ -209,8 +188,7 @@ class Fleaclass extends BaseModel
                 }
             }
             return $result;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -224,7 +202,7 @@ class Fleaclass extends BaseModel
      */
     public function getNextLevelGoodsclassById($fleaclass_id)
     {
-        return Db::name('fleaclass')->where('fleaclass_parent_id',$fleaclass_id)->select()->toArray();
+        return Db::name('fleaclass')->where('fleaclass_parent_id', $fleaclass_id)->select()->toArray();
     }
 
     /**
@@ -268,8 +246,7 @@ class Fleaclass extends BaseModel
             $where = " fcindex_code = '" . $data['fcindex_code'] . "'";
             $result = Db::name('fleaclassindex')->where($where)->update($tmp);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
