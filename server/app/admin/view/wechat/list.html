@@ -1,14 +1,13 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
             <div class="subject">
                 <h3>{$Think.lang.wechat_message_send}</h3>
             </div>
-            <a href="javascript:dsLayerOpen('{:url('Wechat/Sendgroup')}','{$Think.lang.ds_add}{$Think.lang.keywords}')"  class="btn btn-small" style="float: right">{$Think.lang.sendgroup}</a>
+            <a href="javascript:dsLayerOpen('{:url('Wechat/Sendgroup')}','{$Think.lang.ds_add}{$Think.lang.keywords}')"
+                class="btn btn-small" style="float: right">{$Think.lang.sendgroup}</a>
         </div>
     </div>
     <table class="ds-default-table">
@@ -32,20 +31,22 @@
                 <td>{$list.type}</td>
                 <td>{$list.content|raw}</td>
                 <td>{:date('Y-m-d H:i:s',$list.createtime)}</td>
-                <td>{if $list.issend}{$Think.lang.issend_1}{else/}<span style="color: red">{$Think.lang.issend_0}</span>{/if}</td>
+                <td>{if $list.issend}{$Think.lang.issend_1}{else/}<span
+                        style="color: red">{$Think.lang.issend_0}</span>{/if}</td>
                 <td>
-                    <a href="javascript:submit_delete({$list.id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:submit_delete({$list.id})" class="dsui-btn-del"><i
+                            class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}
         </tbody>
-        
         <tfoot>
             {notempty name="lists"}
             <tr class="tfoot">
                 <td><input type="checkbox" class="checkall" id="checkallBottom"></td>
                 <td colspan="16"><label for="checkallBottom">{$Think.lang.ds_select_all}</label>
-                    &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn btn-small" onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
+                    &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn btn-small"
+                        onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
                 </td>
             </tr>
             {/notempty}
@@ -91,10 +92,10 @@
 </div>
 
 <script>
-    $('.news').click(function() {
-        $( "#dialog" ).dialog("open");
-        });
-    $( "#dialog" ).dialog({
+    $('.news').click(function () {
+        $("#dialog").dialog("open");
+    });
+    $("#dialog").dialog({
         autoOpen: false,
         modal: true,
         width: 500,
@@ -108,9 +109,7 @@
             duration: 1000
         }
     });
-
-    var content= $.attr('content');
-
+    var content = $.attr('content');
 </script>
 
 <script type="text/javascript">

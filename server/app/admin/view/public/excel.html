@@ -10,7 +10,8 @@
     </div>
     <div class="ds-search-form">
         {foreach name='export_list' item='v' key='k'}
-        <a href="{$Request.url}&page={$k}" class="btn btn-small" style="margin-bottom:10px">{$Think.lang.ds_download}{$k} ({$v})</a>
-        {/foreach}  
+        <a href="{$Request.url}&page={$k}" class="btn btn-small"
+            style="margin-bottom:10px">{$Think.lang.ds_download}{$k} ({$v})</a>
+        {/foreach}
     </div>
 </div>

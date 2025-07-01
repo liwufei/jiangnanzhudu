@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -16,15 +14,16 @@
         <div class="ds-search-form">
             <dl>
                 <dt>{$Think.lang.ds_store_name}</dt>
-                <dd><input type="text" value="{$Request.param.store_name}" name="store_name" id="store_name" class="txt"></dd>
+                <dd><input type="text" value="{$Request.param.store_name}" name="store_name" id="store_name"
+                        class="txt"></dd>
             </dl>
             <div class="btn_group">
                 <input type="submit" class="btn" value="{$Think.lang.ds_search}">
-                <a href="{:url('Store/store')}" class="btn btn-default" title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
+                <a href="{:url('Store/store')}" class="btn btn-default"
+                    title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
             </div>
         </div>
     </form>
-
 
     <table class="ds-default-table">
         <thead>
@@ -47,10 +46,12 @@
                 <td>{$v.seller_name}</td>
                 <td>
                     {foreach name="$v.store_mgdiscount_arr" item="store_mgdiscount"}
-                    {$store_mgdiscount.level_name}/{$store_mgdiscount.level_discount}{$Think.lang.level_discount}<br/>
+                    {$store_mgdiscount.level_name}/{$store_mgdiscount.level_discount}{$Think.lang.level_discount}<br />
                     {/foreach}
                 </td>
-                <td class="align-center w72"><?php echo $v['store_mgdiscount_state']?lang('ds_open'):lang('ds_close');?></td>
+                <td class="align-center w72">
+                    <?php echo $v['store_mgdiscount_state']?lang('ds_open'):lang('ds_close');?>
+                </td>
             </tr>
             {/foreach}
             {else /}

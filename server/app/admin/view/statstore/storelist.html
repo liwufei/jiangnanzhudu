@@ -1,21 +1,22 @@
 {include file="public/header" /}
 
-
 <div class="page">
-    <div class="fixed-bar">
-        <div class="item-title">
-            <div class="subject">
-                <h3>{$Think.lang.ds_statstore}</h3>
-                <h5></h5>
-            </div>
-            {include file="public/admin_items" /}
-        </div>
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>{$Think.lang.ds_statstore}</h3>
+        <h5></h5>
+      </div>
+      {include file="public/admin_items" /}
     </div>
+  </div>
 
   <div class="fixed-empty"></div>
   <div style="width:100%; text-align:right;padding-top:10px;">
-  	<input type="hidden" id="export_type" data-url="{:url(request()->controller().'/'.request()->action())}/exporttype/excel" name="export_type" data-param='{"url":"{$actionurl}&exporttype=excel"}' value="excel"/>
-  	<a class="btn btn-mini" href="javascript:void(0);" id="export_btn">{$Think.lang.ds_export}Excel</a>
+    <input type="hidden" id="export_type"
+      data-url="{:url(request()->controller().'/'.request()->action())}/exporttype/excel" name="export_type"
+      data-param='{"url":"{$actionurl}&exporttype=excel"}' value="excel" />
+    <a class="btn btn-mini" href="javascript:void(0);" id="export_btn">{$Think.lang.ds_export}Excel</a>
   </div>
   <form method="post" id="form_member">
     <table class="ds-default-table nobdb">
@@ -35,8 +36,12 @@
           <td class="align-center">{$v.store_name}</td>
           <td class="align-center">{$v.member_name}</td>
           <td class="align-center">{$v.seller_name}</td>
-          <td class="align-center"><?php echo ($t = $search_grade_list[$v['grade_id']])?$t:lang('ds_ownshop'); ?></td>
-          <td class="align-center"><?php echo $v['store_endtime']?date('Y-m-d', $v['store_endtime']):lang('state_no_tile_limit'); ?></td>
+          <td class="align-center">
+            <?php echo ($t = $search_grade_list[$v['grade_id']])?$t:lang('ds_ownshop'); ?>
+          </td>
+          <td class="align-center">
+            <?php echo $v['store_endtime']?date('Y-m-d', $v['store_endtime']):lang('state_no_tile_limit'); ?>
+          </td>
           <td class="align-center">{$v.store_addtime|date="Y-m-d"}</td>
         </tr>
         {/foreach}
@@ -47,20 +52,20 @@
         {/notempty}
       </tbody>
     </table>
-      {$show_page|raw}
+    {$show_page|raw}
   </form>
 
 </div>
 <script src="{$Think.PLUGINS_SITE_ROOT}/statistics.js"></script>
 <script>
-$(function(){
+  $(function () {
     //导出图表
-    $("#export_btn").click(function(){
-        var item = $("#export_type");
-        var type = $(item).val();
-        if(type == 'excel'){
-            export_xls(item.attr('data-url').replace('.html',''));
-        }
+    $("#export_btn").click(function () {
+      var item = $("#export_type");
+      var type = $(item).val();
+      if (type == 'excel') {
+        export_xls(item.attr('data-url').replace('.html', ''));
+      }
     });
-});
+  });
 </script>

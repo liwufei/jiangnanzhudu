@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -13,7 +9,7 @@
             {include file="public/admin_items" /}
         </div>
     </div>
-    
+
     <div class="explanation" id="explanation">
         <div class="title" id="checkZoom">
             <h4 title="{$Think.lang.ds_explanation_tip}">{$Think.lang.ds_explanation}</h4>
@@ -24,7 +20,6 @@
             <li>{$Think.lang.refund_reason_help2}</li>
         </ul>
     </div>
-
 
     <table class="ds-default-table">
         <thead>
@@ -41,8 +36,10 @@
                 <td class="w48 sort">{$val.reason_sort}</td>
                 <td>{$val.reason_info}</td>
                 <td class="w150 align-center">
-                    <a href="javascript:dsLayerOpen('{:url('Refund/edit_reason',['reason_id'=>$val.reason_id])}','{$Think.lang.ds_edit}-{$val.reason_info}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Refund/del_reason',['reason_id'=>$val.reason_id])}','{$Think.lang.ds_ensure_del}',{$val.reason_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Refund/edit_reason',['reason_id'=>$val.reason_id])}','{$Think.lang.ds_edit}-{$val.reason_info}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Refund/del_reason',['reason_id'=>$val.reason_id])}','{$Think.lang.ds_ensure_del}',{$val.reason_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}
@@ -51,8 +48,8 @@
                 <td colspan="15">{$Think.lang.ds_no_record}</td>
             </tr>
             {/notempty}
-        </tbody>   
-        
+        </tbody>
+
     </table>
     {$show_page|raw}
 </div>

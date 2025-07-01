@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -21,7 +19,8 @@
             </dl>
             <dl>
                 <dt>{$Think.lang.rc_batchflag}</dt>
-                <dd><input class="txt" type="text" name="batchflag" id="search-batchflag" value="{$Request.get.batchflag}" /></dd>
+                <dd><input class="txt" type="text" name="batchflag" id="search-batchflag"
+                        value="{$Request.get.batchflag}" /></dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.rc_state}</dt>
@@ -34,9 +33,12 @@
                 </dd>
             </dl>
             <div class="btn_group">
-                <a href="javascript:document.formSearch.submit();" class="btn " title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
-                <a class="btn btn-default" href="{:url('Rechargecard/index')}" title="{$Think.lang.ds_cancel_search}"><span>{$Think.lang.ds_cancel_search}</span></a>
-                <a class="btn" href="javascript:export_xls('{:url('Rechargecard/export_step1')}')" target="_blank">{$Think.lang.ds_export}Excel</a>
+                <a href="javascript:document.formSearch.submit();" class="btn "
+                    title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
+                <a class="btn btn-default" href="{:url('Rechargecard/index')}"
+                    title="{$Think.lang.ds_cancel_search}"><span>{$Think.lang.ds_cancel_search}</span></a>
+                <a class="btn" href="javascript:export_xls('{:url('Rechargecard/export_step1')}')"
+                    target="_blank">{$Think.lang.ds_export}Excel</a>
             </div>
         </div>
     </form>
@@ -51,8 +53,8 @@
         </ul>
     </div>
 
-        <table class="ds-default-table">
-            <thead>
+    <table class="ds-default-table">
+        <thead>
             <tr class="thead">
                 <th class="w24"> </th>
                 <th>{$Think.lang.rc_sn}</th>
@@ -63,15 +65,15 @@
                 <th class="w270 align-center">{$Think.lang.rc_state}</th>
                 <th class="w60 align-center">{$Think.lang.ds_handle} </th>
             </tr>
-            </thead>
-            {empty name="card_list"}
-            <tbody>
+        </thead>
+        {empty name="card_list"}
+        <tbody>
             <tr class="no_data">
                 <td colspan="20">{$Think.lang.ds_no_record}</td>
             </tr>
-            </tbody>
-           {else /}
-            <tbody>
+        </tbody>
+        {else /}
+        <tbody>
             {foreach name="card_list" item="val"}
             <tr class="space" id="ds_row_{$val.rc_id}">
                 <td class="w24">
@@ -88,34 +90,37 @@
                 <td class="align-center">{$val.rc_tscreated|date="Y-m-d H:i:s"}</td>
                 <td class="align-center">
                     {if $val.rc_state == 1 && $val.member_id >0 && $val.rc_tsused >0}
-                    {$Think.lang.ds_member} {$val.member_name} {$Think.lang.rechargecard_at} {$val.rc_tsused|date="Y-m-d H:i:s"}{$Think.lang.rc_state_receive}
+                    {$Think.lang.ds_member} {$val.member_name} {$Think.lang.rechargecard_at} {$val.rc_tsused|date="Y-m-d
+                    H:i:s"}{$Think.lang.rc_state_receive}
                     {else /}
                     {$Think.lang.rc_state_not_receive}
-                   {/if}
+                    {/if}
                 </td>
                 <td class="align-center">
                     {if $val.rc_state == 0}
-                    <a href="javascript:dsLayerConfirm('{:url('Rechargecard/del_card',['rc_id'=>$val.rc_id])}','{$Think.lang.ds_ensure_del}',{$val.rc_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Rechargecard/del_card',['rc_id'=>$val.rc_id])}','{$Think.lang.ds_ensure_del}',{$val.rc_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                     {/if}
                 </td>
             </tr>
             {/foreach}
-            </tbody>
-            <tfoot>
+        </tbody>
+        <tfoot>
             <tr class="tfoot">
                 <td><input type="checkbox" class="checkall" id="checkallBottom"></td>
                 <td colspan="16"><label for="checkallBottom">{$Think.lang.ds_select_all}</label>
-                   &nbsp;&nbsp;<a href="javascript:void(0);" class="btn btn-small" onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
+                    &nbsp;&nbsp;<a href="javascript:void(0);" class="btn btn-small"
+                        onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
                 </td>
             </tr>
-            </tfoot>
-            {/empty}
-        </table>
-        {$show_page|raw}
+        </tfoot>
+        {/empty}
+    </table>
+    {$show_page|raw}
 </div>
 <script type="text/javascript">
-    function submit_delete(ids_str){
-        _uri = ADMINSITEURL+"/Rechargecard/del_card.html?rc_id=" + ids_str;
-        dsLayerConfirm(_uri,'{$Think.lang.ds_ensure_del}');
+    function submit_delete(ids_str) {
+        _uri = ADMINSITEURL + "/Rechargecard/del_card.html?rc_id=" + ids_str;
+        dsLayerConfirm(_uri, '{$Think.lang.ds_ensure_del}');
     }
 </script>

@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <table class="ds-default-table">
         <tbody>
@@ -44,7 +40,8 @@
                     {foreach name="pic_list" item="val" key="key" }
                     {notempty name="val"}
                     <a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image">
-                        <img width="64" height="64" class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a>
+                        <img width="64" height="64" class="show_image"
+                            src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a>
                     {/notempty}
                     {/foreach}
                     {/notempty}

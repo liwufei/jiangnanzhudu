@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -13,7 +9,7 @@
             {include file="public/admin_items" /}
         </div>
     </div>
-    
+
     <div class="explanation" id="explanation">
         <div class="title" id="checkZoom">
             <h4 title="{$Think.lang.ds_explanation_tip}">{$Think.lang.ds_explanation}</h4>
@@ -23,17 +19,22 @@
             <li>{$Think.lang.refund_manage_help1}</li>
         </ul>
     </div>
-    
+
     <form method="get">
         <div class="ds-search-form">
             <dl>
                 <dt>
                     <select name="type">
-                        <option value="order_sn" {if condition="$Request.param.type eq 'order_sn'"}selected{/if}>{$Think.lang.ds_order_sn}</option>
-                        <option value="refund_sn" {if condition="$Request.param.type eq 'refund_sn'"}selected{/if}>{$Think.lang.ds_refund_sn}</option>
-                        <option value="store_name" {if condition="$Request.param.type eq 'store_name'"}selected{/if}>{$Think.lang.ds_store_name}</option>
-                        <option value="goods_name" {if condition="$Request.param.type eq 'goods_name'"}selected{/if}>{$Think.lang.ds_goods_name}</option>
-                        <option value="buyer_name" {if condition="$Request.param.type eq 'buyer_name'"}selected{/if}>{$Think.lang.ds_buyer_name}</option>
+                        <option value="order_sn" {if condition="$Request.param.type eq 'order_sn'" }selected{/if}>
+                            {$Think.lang.ds_order_sn}</option>
+                        <option value="refund_sn" {if condition="$Request.param.type eq 'refund_sn'" }selected{/if}>
+                            {$Think.lang.ds_refund_sn}</option>
+                        <option value="store_name" {if condition="$Request.param.type eq 'store_name'" }selected{/if}>
+                            {$Think.lang.ds_store_name}</option>
+                        <option value="goods_name" {if condition="$Request.param.type eq 'goods_name'" }selected{/if}>
+                            {$Think.lang.ds_goods_name}</option>
+                        <option value="buyer_name" {if condition="$Request.param.type eq 'buyer_name'" }selected{/if}>
+                            {$Think.lang.ds_buyer_name}</option>
                     </select>
                 </dt>
                 <dd><input type="text" class="text" name="key" value="{$Request.param.key}" /></dd>
@@ -41,18 +42,20 @@
             <dl>
                 <dt>{$Think.lang.refund_order_add_time}</dt>
                 <dd>
-                    <input class="txt date" type="text" value="{$Request.param.add_time_from}" id="add_time_from" name="add_time_from">
-                    ~ 
-                    <input class="txt date" type="text" value="{$Request.param.add_time_to}" id="add_time_to" name="add_time_to"/>
+                    <input class="txt date" type="text" value="{$Request.param.add_time_from}" id="add_time_from"
+                        name="add_time_from">
+                    ~
+                    <input class="txt date" type="text" value="{$Request.param.add_time_to}" id="add_time_to"
+                        name="add_time_to" />
                 </dd>
             </dl>
             <div class="btn_group">
                 <input type="submit" class="btn" value="{$Think.lang.ds_search}">
-                <a href="{:url('Refund/refund_manage')}" class="btn btn-default" title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
+                <a href="{:url('Refund/refund_manage')}" class="btn btn-default"
+                    title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
             </div>
         </div>
     </form>
-
 
     <table class="ds-default-table">
         <thead>
@@ -71,7 +74,7 @@
         {notempty name="refund_list"}
         <tbody>
             {foreach name="refund_list" item="val" key="key" }
-            <tr class="bd-line" >
+            <tr class="bd-line">
                 <td>{$val.order_sn}</td>
                 <td>{$val.refund_sn}</td>
                 <td>{$val.store_name}</td>
@@ -81,10 +84,11 @@
                 <td class="align-center">{$val.seller_time|date="Y-m-d H:i:s"}</td>
                 <td class="align-center">{$val.refund_amount}</td>
                 <td class="align-center">
-                    <a href="javascript:dsLayerOpen('{:url('Refund/edit',['refund_id'=>$val.refund_id])}','{$Think.lang.refund_order}-{$val.order_sn}')" class="dsui-btn-add">{$Think.lang.ds_verify}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Refund/edit',['refund_id'=>$val.refund_id])}','{$Think.lang.refund_order}-{$val.order_sn}')"
+                        class="dsui-btn-add">{$Think.lang.ds_verify}</a>
                 </td>
             </tr>
-           {/foreach}
+            {/foreach}
         </tbody>
         {else/}
         <tbody>
@@ -98,8 +102,8 @@
 </div>
 
 <script type="text/javascript">
-    $(function() {
-        $('#add_time_from').datepicker({dateFormat: 'yy-mm-dd'});
-        $('#add_time_to').datepicker({dateFormat: 'yy-mm-dd'});
+    $(function () {
+        $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd' });
+        $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd' });
     });
 </script>

@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -12,7 +8,8 @@
                 <h5></h5>
             </div>
             <ul class="tab-base ds-row">
-                <li><a href="JavaScript:void(0);" dstype="index" class="current"><span>{$Think.lang.seo_set_index}</span></a></li>
+                <li><a href="JavaScript:void(0);" dstype="index"
+                        class="current"><span>{$Think.lang.seo_set_index}</span></a></li>
                 <li><a href="JavaScript:void(0);" dstype="group"><span>{$Think.lang.seo_set_group}</span></a></li>
                 <li><a href="JavaScript:void(0);" dstype="brand"><span>{$Think.lang.seo_set_brand}</span></a></li>
                 <li><a href="JavaScript:void(0);" dstype="point"><span>{$Think.lang.seo_set_point}</span></a></li>
@@ -50,25 +47,28 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[index][seo_title]" name="SEO[index][seo_title]" value="{$seo['index']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[index][seo_title]" name="SEO[index][seo_title]" value="{$seo['index']['seo_title']}"
+                        class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[index][seo_keywords]" name="SEO[index][seo_keywords]" value="{$seo['index']['seo_keywords']}" class="w830" type="text" maxlength="200" />
+                    <input id="SEO[index][seo_keywords]" name="SEO[index][seo_keywords]"
+                        value="{$seo['index']['seo_keywords']}" class="w830" type="text" maxlength="200" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[index][seo_description]" name="SEO[index][seo_description]" value="{$seo['index']['seo_description']}" class="w830" type="text" maxlength="200"/>
+                    <input id="SEO[index][seo_description]" name="SEO[index][seo_description]"
+                        value="{$seo['index']['seo_description']}" class="w830" type="text" maxlength="200" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
@@ -85,19 +85,22 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[group][seo_title]" name="SEO[group][seo_title]" value="{$seo['group']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[group][seo_title]" name="SEO[group][seo_title]" value="{$seo['group']['seo_title']}"
+                        class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[group][seo_keywords]" name="SEO[group][seo_keywords]" value="{$seo['group']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[group][seo_keywords]" name="SEO[group][seo_keywords]"
+                        value="{$seo['group']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[group][seo_description]" name="SEO[group][seo_description]" value="{$seo['group']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[group][seo_description]" name="SEO[group][seo_description]"
+                        value="{$seo['group']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
@@ -108,30 +111,32 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[group_content][seo_title]" name="SEO[group_content][seo_title]" value="{$seo['group_content']['seo_title']}" class="w830" type="text" />
+                    <input id="SEO[group_content][seo_title]" name="SEO[group_content][seo_title]"
+                        value="{$seo['group_content']['seo_title']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[group_content][seo_keywords]" name="SEO[group_content][seo_keywords]" value="{$seo['group_content']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[group_content][seo_keywords]" name="SEO[group_content][seo_keywords]"
+                        value="{$seo['group_content']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[group_content][seo_description]" name="SEO[group_content][seo_description]" value="{$seo['group_content']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[group_content][seo_description]" name="SEO[group_content][seo_description]"
+                        value="{$seo['group_content']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
     </form>
-
 
     <form method="post" name="form_brand" id="form_brand">
         <div class="ncap-form-default">
@@ -144,19 +149,22 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[brand][seo_title]" name="SEO[brand][seo_title]" value="{$seo['brand']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[brand][seo_title]" name="SEO[brand][seo_title]" value="{$seo['brand']['seo_title']}"
+                        class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[brand][seo_keywords]" name="SEO[brand][seo_keywords]" value="{$seo['brand']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[brand][seo_keywords]" name="SEO[brand][seo_keywords]"
+                        value="{$seo['brand']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[brand][seo_description]" name="SEO[brand][seo_description]" value="{$seo['brand']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[brand][seo_description]" name="SEO[brand][seo_description]"
+                        value="{$seo['brand']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
@@ -167,30 +175,32 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[brand_list][seo_title]" name="SEO[brand_list][seo_title]" value="{$seo['brand_list']['seo_title']}" class="w830" type="text" />
+                    <input id="SEO[brand_list][seo_title]" name="SEO[brand_list][seo_title]"
+                        value="{$seo['brand_list']['seo_title']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[brand_list][seo_keywords]" name="SEO[brand_list][seo_keywords]" value="{$seo['brand_list']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[brand_list][seo_keywords]" name="SEO[brand_list][seo_keywords]"
+                        value="{$seo['brand_list']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[brand_list][seo_description]" name="SEO[brand_list][seo_description]" value="{$seo['brand_list']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[brand_list][seo_description]" name="SEO[brand_list][seo_description]"
+                        value="{$seo['brand_list']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
     </form>
-
 
     <form method="post" name="form_point" id="form_point">
         <div class="ncap-form-default">
@@ -203,19 +213,22 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[point][seo_title]" name="SEO[point][seo_title]" value="{$seo['point']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[point][seo_title]" name="SEO[point][seo_title]" value="{$seo['point']['seo_title']}"
+                        class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[point][seo_keywords]" name="SEO[point][seo_keywords]" value="{$seo['point']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[point][seo_keywords]" name="SEO[point][seo_keywords]"
+                        value="{$seo['point']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[point][seo_description]" name="SEO[point][seo_description]" value="{$seo['point']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[point][seo_description]" name="SEO[point][seo_description]"
+                        value="{$seo['point']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
@@ -226,25 +239,28 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[point_content][seo_title]" name="SEO[point_content][seo_title]" value="{$seo['point_content']['seo_title']}" class="w830" type="text" />
+                    <input id="SEO[point_content][seo_title]" name="SEO[point_content][seo_title]"
+                        value="{$seo['point_content']['seo_title']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[point_content][seo_keywords]" name="SEO[point_content][seo_keywords]" value="{$seo['point_content']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[point_content][seo_keywords]" name="SEO[point_content][seo_keywords]"
+                        value="{$seo['point_content']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[point_content][seo_description]" name="SEO[point_content][seo_description]" value="{$seo['point_content']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[point_content][seo_description]" name="SEO[point_content][seo_description]"
+                        value="{$seo['point_content']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
@@ -261,19 +277,22 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[article][seo_title]" name="SEO[article][seo_title]" value="{$seo['article']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[article][seo_title]" name="SEO[article][seo_title]"
+                        value="{$seo['article']['seo_title']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[article][seo_keywords]" name="SEO[article][seo_keywords]" value="{$seo['article']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[article][seo_keywords]" name="SEO[article][seo_keywords]"
+                        value="{$seo['article']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[article][seo_description]" name="SEO[article][seo_description]" value="{$seo['article']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[article][seo_description]" name="SEO[article][seo_description]"
+                        value="{$seo['article']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
@@ -284,30 +303,32 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[article_content][seo_title]" name="SEO[article_content][seo_title]" value="{$seo['article_content']['seo_title']}" class="w830" type="text" />
+                    <input id="SEO[article_content][seo_title]" name="SEO[article_content][seo_title]"
+                        value="{$seo['article_content']['seo_title']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[article_content][seo_keywords]" name="SEO[article_content][seo_keywords]" value="{$seo['article_content']['seo_keywords']}" class="w830" type="text" />
+                    <input id="SEO[article_content][seo_keywords]" name="SEO[article_content][seo_keywords]"
+                        value="{$seo['article_content']['seo_keywords']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[article_content][seo_description]" name="SEO[article_content][seo_description]" value="{$seo['article_content']['seo_description']}" class="w830" type="text" />
+                    <input id="SEO[article_content][seo_description]" name="SEO[article_content][seo_description]"
+                        value="{$seo['article_content']['seo_description']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
     </form>
-
 
     <form method="post" name="form_shop" id="form_shop">
         <div class="ncap-form-default">
@@ -320,30 +341,32 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[shop][seo_title]" name="SEO[shop][seo_title]" value="{$seo['shop']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[shop][seo_title]" name="SEO[shop][seo_title]" value="{$seo['shop']['seo_title']}"
+                        class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[shop][seo_keywords]" name="SEO[shop][seo_keywords]" value="{$seo['shop']['seo_keywords']}" class="w830" type="text" maxlength="200" />
+                    <input id="SEO[shop][seo_keywords]" name="SEO[shop][seo_keywords]"
+                        value="{$seo['shop']['seo_keywords']}" class="w830" type="text" maxlength="200" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[shop][seo_description]" name="SEO[shop][seo_description]" value="{$seo['shop']['seo_description']}" class="w830" type="text" maxlength="200"/>
+                    <input id="SEO[shop][seo_description]" name="SEO[shop][seo_description]"
+                        value="{$seo['shop']['seo_description']}" class="w830" type="text" maxlength="200" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
     </form>
-
 
     <form method="post" name="form_product" id="form_product">
         <div class="ncap-form-default">
@@ -356,72 +379,75 @@
             <dl>
                 <dt>{$Think.lang.title}</dt>
                 <dd>
-                    <input id="SEO[product][seo_title]" name="SEO[product][seo_title]" value="{$seo['product']['seo_title']}" class="w830" type="text"/>
+                    <input id="SEO[product][seo_title]" name="SEO[product][seo_title]"
+                        value="{$seo['product']['seo_title']}" class="w830" type="text" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.keywords}</dt>
                 <dd>
-                    <input id="SEO[product][seo_keywords]" name="SEO[product][seo_keywords]" value="{$seo['product']['seo_keywords']}" class="w830" type="text" maxlength="200" />
+                    <input id="SEO[product][seo_keywords]" name="SEO[product][seo_keywords]"
+                        value="{$seo['product']['seo_keywords']}" class="w830" type="text" maxlength="200" />
                 </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.description}</dt>
                 <dd>
-                    <input id="SEO[product][seo_description]" name="SEO[product][seo_description]" value="{$seo['product']['seo_description']}" class="w830" type="text" maxlength="200"/>
+                    <input id="SEO[product][seo_description]" name="SEO[product][seo_description]"
+                        value="{$seo['product']['seo_description']}" class="w830" type="text" maxlength="200" />
                 </dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd>
-                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}"/>
+                    <input class="btn" type="submit" value="{$Think.lang.ds_submit}" />
                 </dd>
             </dl>
         </div>
     </form>
 </div>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#form_index').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_index');
             },
         });
         $('#form_group').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_group');
             },
         });
         $('#form_brand').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_brand');
             },
         });
         $('#form_point').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_point');
             },
         });
         $('#form_article').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_article');
             },
         });
         $('#form_shop').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_shop');
             },
         });
         $('#form_product').validate({
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('form_product');
             },
         });
     });
 </script>
 <script type="text/javascript">
-    $(function() {
-        $('.tab-base').find('a').bind('click', function() {
+    $(function () {
+        $('.tab-base').find('a').bind('click', function () {
             $('.tab-base').find('a').removeClass('current');
             $(this).addClass('current');
             $('form').css('display', 'none');
@@ -432,7 +458,7 @@
         $('form').css('display', 'none');
         $('form[name="form_index"]').css('display', '');
 
-        $('#toggmore').bind('click', function() {
+        $('#toggmore').bind('click', function () {
             $('li[dstype="vmore"]').toggle();
         });
         $('li[dstype="vmore"]').hide();

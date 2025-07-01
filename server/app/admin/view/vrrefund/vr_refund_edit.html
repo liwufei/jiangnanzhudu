@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <form id="post_form" method="post" action="{:url('Vrrefund/edit',['refund_id'=>$refund.refund_id])}">
         <table class="ds-default-table">
@@ -13,7 +11,8 @@
                 </tr>
                 <tr>
                     <td>{$Think.lang.ds_goods_name}{$Think.lang.ds_colon}</td>
-                    <td class="vatop rowform"><a href="{:url('/home/Goods/index',['goods_id'=>$refund.goods_id])}" target="_blank">{$refund.goods_name}</a></td>
+                    <td class="vatop rowform"><a href="{:url('/home/Goods/index',['goods_id'=>$refund.goods_id])}"
+                            target="_blank">{$refund.goods_name}</a></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr>
@@ -36,10 +35,14 @@
                     <td><label class="validation">{$Think.lang.vrrefund_if_agree}{$Think.lang.ds_colon}</label>
                     </td>
                     <td class="vatop rowform onoff">
-                        <label for="state1" class="cb-enable" title="{$Think.lang.ds_yes} {if condition='$refund.admin_state eq 2'}selected{/if}"><span>{$Think.lang.ds_yes}</span></label>
-                        <label for="state0" class="cb-disable" title="{$Think.lang.ds_no} {if condition='$refund.admin_state eq 3'}selected{/if}"><span>{$Think.lang.ds_no}</span></label>
-                        <input id="state1" name="admin_state"  value="2" type="radio" {if condition="$refund.admin_state eq 2"} checked="checked"{/if}>
-                               <input id="state0" name="admin_state" value="3" type="radio" {if condition="$refund.admin_state eq 3"} checked="checked"{/if}>
+                        <label for="state1" class="cb-enable"
+                            title="{$Think.lang.ds_yes} {if condition='$refund.admin_state eq 2'}selected{/if}"><span>{$Think.lang.ds_yes}</span></label>
+                        <label for="state0" class="cb-disable"
+                            title="{$Think.lang.ds_no} {if condition='$refund.admin_state eq 3'}selected{/if}"><span>{$Think.lang.ds_no}</span></label>
+                        <input id="state1" name="admin_state" value="2" type="radio" {if
+                            condition="$refund.admin_state eq 2" } checked="checked" {/if}>
+                        <input id="state0" name="admin_state" value="3" type="radio" {if
+                            condition="$refund.admin_state eq 3" } checked="checked" {/if}>
                     </td>
                     <td class="vatop tips"></td>
                 </tr>
@@ -53,16 +56,16 @@
             </tbody>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="15" ><input class="btn" type="submit" value="{$Think.lang.ds_submit}"/></td>
+                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}" /></td>
                 </tr>
             </tfoot>
         </table>
     </form>
 </div>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $('#post_form').validate({
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.appendTo(element.parent().parent().find('td:last'));
             },
             rules: {

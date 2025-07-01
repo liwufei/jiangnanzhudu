@@ -1,6 +1,5 @@
 {include file="public/header" /}
 
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -16,11 +15,13 @@
         <div class="ds-search-form">
             <dl>
                 <dt>{$Think.lang.mansong_name}</dt>
-                <dd><input type="text" value="{$Request.get.mansong_name}" name="mansong_name" id="mansong_name" class="txt" style="width:100px;"></dd>
+                <dd><input type="text" value="{$Request.get.mansong_name}" name="mansong_name" id="mansong_name"
+                        class="txt" style="width:100px;"></dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.ds_store_name}</dt>
-                <dd><input type="text" value="{$Request.get.store_name}" name="store_name" id="store_name" class="txt" style="width:100px;"></dd>
+                <dd><input type="text" value="{$Request.get.store_name}" name="store_name" id="store_name" class="txt"
+                        style="width:100px;"></dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.ds_state}</dt>
@@ -28,15 +29,17 @@
                     <select name="state">
                         {notempty name="mansong_state_array"}
                         {foreach name="mansong_state_array" item="val"}
-                        <option value="{$key}" {eq name="key" value="$Request.get.state"}selected{/eq}>{$val}</option>
+                        <option value="{$key}" {eq name="key" value="$Request.get.state" }selected{/eq}>{$val}</option>
                         {/foreach}
                         {/notempty}
                     </select>
                 </dd>
             </dl>
             <div class="btn_group">
-                <a href="javascript:document.formSearch.submit();" class="btn " title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
-                <a href="{:url('Promotionmansong/index')}" class="btn btn-default" title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
+                <a href="javascript:document.formSearch.submit();" class="btn "
+                    title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
+                <a href="{:url('Promotionmansong/index')}" class="btn btn-default"
+                    title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
             </div>
         </div>
     </form>
@@ -52,11 +55,9 @@
             <li>{$Think.lang.mansong_list_help3}</li>
         </ul>
     </div>
-
-    
     <!-- 列表 -->
-        <table class="ds-default-table">
-            <thead>
+    <table class="ds-default-table">
+        <thead>
             <tr class="thead">
                 <th class="w24"></th>
                 <th class="align-left"><span>{$Think.lang.mansong_name}</span></th>
@@ -66,8 +67,8 @@
                 <th class="align-center" width="80"><span>{$Think.lang.ds_state}</span></th>
                 <th class="align-center" width="200"><span>{$Think.lang.ds_handle}</span></th>
             </tr>
-            </thead>
-            <tbody id="treet1">
+        </thead>
+        <tbody id="treet1">
             {notempty name="mansong_list"}
             {foreach name="mansong_list" item="val"}
             <tr class="hover" id="ds_row_{$val.mansong_id}">
@@ -82,12 +83,14 @@
 
                 <td class="nowrap align-center">
                     <!-- 详细按钮 -->
-                    <a href="javascript:dsLayerOpen('{:url('Promotionmansong/mansong_detail',['mansong_id'=>$val.mansong_id])}','{$val.mansong_name}{$Think.lang.ds_detail}')" class="dsui-btn-view"><i class="iconfont"></i>{$Think.lang.ds_detail}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Promotionmansong/mansong_detail',['mansong_id'=>$val.mansong_id])}','{$val.mansong_name}{$Think.lang.ds_detail}')"
+                        class="dsui-btn-view"><i class="iconfont"></i>{$Think.lang.ds_detail}</a>
                     {if $val.editable}
-                    <a href="javascript:dsLayerConfirm('{:url('Promotionmansong/mansong_cancel',['mansong_id'=>$val.mansong_id])}','{$Think.lang.ds_ensure_cancel}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_cancel}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Promotionmansong/mansong_cancel',['mansong_id'=>$val.mansong_id])}','{$Think.lang.ds_ensure_cancel}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_cancel}</a>
                     {/if}
-                    <a href="javascript:dsLayerConfirm('{:url('Promotionmansong/mansong_del',['mansong_id'=>$val.mansong_id])}','{$Think.lang.ds_ensure_del}',{$val.mansong_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
-
+                    <a href="javascript:dsLayerConfirm('{:url('Promotionmansong/mansong_del',['mansong_id'=>$val.mansong_id])}','{$Think.lang.ds_ensure_del}',{$val.mansong_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}
@@ -96,19 +99,20 @@
                 <td colspan="16">{$Think.lang.ds_no_record}</td>
             </tr>
             {/notempty}
-            </tbody>
-            <tfoot>
+        </tbody>
+        <tfoot>
             {notempty name="mansong_list"}
             <tr class="tfoot">
                 <td><input type="checkbox" class="checkall" id="checkallBottom"></td>
                 <td colspan="16"><label for="checkallBottom">{$Think.lang.ds_select_all}</label>
-                    &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn btn-small" onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
+                    &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn btn-small"
+                        onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
                 </td>
             </tr>
             {/notempty}
         </tfoot>
-        </table>
-        {$show_page|raw}
+    </table>
+    {$show_page|raw}
 
 </div>
 

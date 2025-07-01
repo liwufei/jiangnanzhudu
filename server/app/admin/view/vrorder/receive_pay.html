@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
   <form method="post" name="form1" id="form1">
     <table class="ds-default-table">
@@ -17,7 +15,7 @@
           <td class="vatop rowform">{$order_info.pay_sn}</td>
           <td class="vatop tips"></td>
         </tr>
-       {/if}
+        {/if}
         <tr>
           <td><label for="site_name">{$Think.lang.ds_order_amount} {$Think.lang.ds_colon}</label></td>
           <td class="vatop rowform">{$order_info.order_amount}</td>
@@ -25,17 +23,18 @@
         </tr>
         <tr>
           <td class="required"><label for="site_name">{$Think.lang.ds_payment_time}{$Think.lang.ds_colon}</label></td>
-          <td class="vatop rowform"><input readonly id="payment_time" class="" name="payment_time" value="" type="text" /></td>
+          <td class="vatop rowform"><input readonly id="payment_time" class="" name="payment_time" value=""
+              type="text" /></td>
           <td class="vatop tips"></td>
         </tr>
         <tr>
           <td class="required"><label for="site_name">{$Think.lang.ds_payment_code} {$Think.lang.ds_colon}</label></td>
           <td class="vatop rowform">
             <select name="payment_code" class="querySelect">
-            <option value="">{$Think.lang.ds_please_choose}</option>
+              <option value="">{$Think.lang.ds_please_choose}</option>
               {foreach name="payment_list" item="val"}
               <option value="{$val.payment_code}">{$val.payment_name}</option>
-             {/foreach}
+              {/foreach}
             </select>
           </td>
           <td class="vatop tips"></td>
@@ -48,51 +47,52 @@
       </tbody>
       <tfoot id="submit-holder">
         <tr class="tfoot">
-          <td colspan="3" ><a href="JavaScript:void(0);" id="dssubmit" class="btn"><span>{$Think.lang.ds_submit}</span></a></td>
+          <td colspan="3"><a href="JavaScript:void(0);" id="dssubmit"
+              class="btn"><span>{$Think.lang.ds_submit}</span></a></td>
         </tr>
       </tfoot>
     </table>
   </form>
 </div>
 <script type="text/javascript">
-$(function(){
-    $('#payment_time').datepicker({dateFormat: 'yy-mm-dd',maxDate: '{:date('Y-m-d',$Think.TIMESTAMP)}'});
-    $('#dssubmit').click(function(){
-        if($("#form1").valid()){
-            layer.confirm("{$Think.lang.receive_pay_confirm}", {
-                btn: ['{$Think.lang.ds_ok}', '{$Think.lang.ds_cancel}'],
-                title: false,
-            }, function () {
-                $('#form1').submit();
-            });
-        }
-    });
-    $("#form1").validate({
-        errorPlacement: function(error, element){
-            error.appendTo(element.parent().parent().find('td:last'));
-        },
-        rules : {
-            payment_time : {
-                required : true
-            },
-            payment_code : {
-                required : true
-            },
-            trade_no    :{
-                required : true
-            }
-        },
-        messages : {
-            payment_time : {
-                required : '{$Think.lang.payment_time_required}'
-            },
-            payment_code : {
-                required : '{$Think.lang.payment_code_required}'
-            },
-            trade_no : {
-                required : '{$Think.lang.trade_no_required}'
-            }
-        }
-    });
+  $(function () {
+    $('#payment_time').datepicker({ dateFormat: 'yy-mm-dd', maxDate: '{:date('Y- m - d',$Think.TIMESTAMP)}'});
+  $('#dssubmit').click(function () {
+    if ($("#form1").valid()) {
+      layer.confirm("{$Think.lang.receive_pay_confirm}", {
+        btn: ['{$Think.lang.ds_ok}', '{$Think.lang.ds_cancel}'],
+        title: false,
+      }, function () {
+        $('#form1').submit();
+      });
+    }
+  });
+  $("#form1").validate({
+    errorPlacement: function (error, element) {
+      error.appendTo(element.parent().parent().find('td:last'));
+    },
+    rules: {
+      payment_time: {
+        required: true
+      },
+      payment_code: {
+        required: true
+      },
+      trade_no: {
+        required: true
+      }
+    },
+    messages: {
+      payment_time: {
+        required: '{$Think.lang.payment_time_required}'
+      },
+      payment_code: {
+        required: '{$Think.lang.payment_code_required}'
+      },
+      trade_no: {
+        required: '{$Think.lang.trade_no_required}'
+      }
+    }
+  });
 });
-</script> 
+</script>

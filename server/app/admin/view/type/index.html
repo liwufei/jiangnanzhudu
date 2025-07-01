@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -37,8 +35,10 @@
                 <td>{$type.type_name}</td>
                 <td>{$type.class_name}</td>
                 <td>
-                    <a href="{:url('Type/type_edit',['type_id'=>$type.type_id])}" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Type/type_drop',['type_id'=>$type.type_id])}','{$Think.lang.ds_ensure_del}',{$type.type_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="{:url('Type/type_edit',['type_id'=>$type.type_id])}" class="dsui-btn-edit"><i
+                            class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Type/type_drop',['type_id'=>$type.type_id])}','{$Think.lang.ds_ensure_del}',{$type.type_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}

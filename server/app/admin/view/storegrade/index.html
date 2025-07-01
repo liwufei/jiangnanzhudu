@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -16,16 +14,19 @@
         <div class="ds-search-form">
             <dl>
                 <dt>{$Think.lang.store_grade_name}</dt>
-                <dd><input type="text" value="{$like_storegrade_name|default=''}" name="like_storegrade_name" id="like_storegrade_name" class="txt"></dd>
+                <dd><input type="text" value="{$like_storegrade_name|default=''}" name="like_storegrade_name"
+                        id="like_storegrade_name" class="txt"></dd>
             </dl>
             <dl>
                 <dt></dt>
                 <dd></dd>
             </dl>
             <div class="btn_group">
-                <a href="javascript:document.formSearch.submit();" class="btn " title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
+                <a href="javascript:document.formSearch.submit();" class="btn "
+                    title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
                 {notempty name="like_storegrade_name"}
-                <a class="btn btn-small " href="{:url('Storegrade/index')}" title="{$Think.lang.cancel_search}"><span>{$Think.lang.cancel_search}</span></a>
+                <a class="btn btn-small " href="{:url('Storegrade/index')}"
+                    title="{$Think.lang.cancel_search}"><span>{$Think.lang.cancel_search}</span></a>
                 {/notempty}
             </div>
         </div>
@@ -43,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-            {notempty  name="storegrade_list"}
+            {notempty name="storegrade_list"}
             {foreach name="storegrade_list" item="storegrade"}
             <tr id="ds_row_{$storegrade.storegrade_id}">
                 <td>{$storegrade.storegrade_sort}</td>
@@ -52,8 +53,10 @@
                 <td>{$storegrade.storegrade_album_limit}</td>
                 <td>{$storegrade.storegrade_price}{$Think.lang.ds_yuan}/{$Think.lang.ds_year}</td>
                 <td>
-                    <a href="javascript:dsLayerOpen('{:url('Storegrade/edit',['storegrade_id'=>$storegrade.storegrade_id])}','{$Think.lang.ds_edit}-{$storegrade.storegrade_name}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Storegrade/drop',['storegrade_id'=>$storegrade.storegrade_id])}','{$Think.lang.storegrade_drop_confrim}',{$storegrade.storegrade_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Storegrade/edit',['storegrade_id'=>$storegrade.storegrade_id])}','{$Think.lang.ds_edit}-{$storegrade.storegrade_name}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Storegrade/drop',['storegrade_id'=>$storegrade.storegrade_id])}','{$Think.lang.storegrade_drop_confrim}',{$storegrade.storegrade_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}

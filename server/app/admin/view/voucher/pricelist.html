@@ -1,6 +1,5 @@
 {include file="public/header" /}
 
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -21,7 +20,7 @@
             <li>{$Think.lang.admin_voucher_price_tip1}</li>
         </ul>
     </div>
-    
+
     <table class="ds-default-table">
         <thead>
             <tr class="thead">
@@ -36,13 +35,16 @@
             {notempty name="voucherprice_list"}
             {foreach name="voucherprice_list" item="v"}
             <tr class="hover" id="ds_row_{$v.voucherprice_id}">
-                <td><input type="checkbox" name='voucher_price_checkbox' value="{$v.voucherprice_id}" class="checkitem"></td>
+                <td><input type="checkbox" name='voucher_price_checkbox' value="{$v.voucherprice_id}" class="checkitem">
+                </td>
                 <td><span>{$v.voucherprice_describe}</span></td>
                 <td><span>{$v.voucherprice}</span></td>
                 <td><span>{$v.voucherprice_defaultpoints}</span></td>
                 <td class="w120 align-center">
-                    <a href="javascript:dsLayerOpen('{:url('Voucher/priceedit',['priceid'=>$v.voucherprice_id])}','{$Think.lang.ds_edit}')"  class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Voucher/pricedrop',['voucher_price_id'=>$v.voucherprice_id])}','{$Think.lang.ds_ensure_del}',{$v.voucherprice_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Voucher/priceedit',['priceid'=>$v.voucherprice_id])}','{$Think.lang.ds_edit}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Voucher/pricedrop',['voucher_price_id'=>$v.voucherprice_id])}','{$Think.lang.ds_ensure_del}',{$v.voucherprice_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
                 {/foreach}
                 {else /}
@@ -59,11 +61,12 @@
                     {/notempty}
                 <td colspan="16">
                     <label for="checkallBottom">{$Think.lang.ds_select_all}</label>&nbsp;&nbsp;
-                    <a href="JavaScript:void(0);" class="btn btn-small" onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
+                    <a href="JavaScript:void(0);" class="btn btn-small"
+                        onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
                 </td>
             </tr>
         </tfoot>
         {/notempty}
     </table>
-     {$show_page|raw}
+    {$show_page|raw}
 </div>

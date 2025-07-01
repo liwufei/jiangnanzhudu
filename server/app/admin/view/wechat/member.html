@@ -1,4 +1,5 @@
 {include file="public/header" /}
+
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -28,8 +29,10 @@
                 <td class="align-center">{$val.member_name}</td>
                 <td class="align-center">{:date('Y_m_d H:i:s',$val.member_addtime)}</td>
                 <td class="align-center">
-                    <a href="javascript:dsLayerOpen('{:url('Member/edit',['member_id'=>$val.member_id])}','{$val.member_name}-{$Think.lang.ds_edit}')" class="dsui-btn-view"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerOpen('{:url('Wechat/msend',['member_id'=>$val.member_id,'openid'=>$val.member_h5_wxopenid])}','{$Think.lang.wechat_message_send}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.wechat_message_send}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Member/edit',['member_id'=>$val.member_id])}','{$val.member_name}-{$Think.lang.ds_edit}')"
+                        class="dsui-btn-view"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Wechat/msend',['member_id'=>$val.member_id,'openid'=>$val.member_h5_wxopenid])}','{$Think.lang.wechat_message_send}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.wechat_message_send}</a>
                 </td>
             </tr>
             {/foreach}

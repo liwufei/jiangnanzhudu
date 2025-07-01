@@ -1,14 +1,13 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
             <div class="subject">
                 <h3>{$Think.lang.keywords}{$Think.lang.k_value}</h3>
             </div>
-            <a href="javascript:dsLayerOpen('{:url('Wechat/text_form')}','{$Think.lang.ds_add}{$Think.lang.keywords}')"  class="btn btn-small" style="float: right">{$Think.lang.ds_add}{$Think.lang.keywords}</a>
+            <a href="javascript:dsLayerOpen('{:url('Wechat/text_form')}','{$Think.lang.ds_add}{$Think.lang.keywords}')"
+                class="btn btn-small" style="float: right">{$Think.lang.ds_add}{$Think.lang.keywords}</a>
         </div>
     </div>
     <table class="ds-default-table">
@@ -26,8 +25,10 @@
                 <td>{$list.keyword}</td>
                 <td>{$list.text}</td>
                 <td>
-                    <a href="javascript:dsLayerOpen('{:url('Wechat/text_form',['id'=>$list.id])}','{$Think.lang.ds_edit}-{$list.keyword}')"  class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Wechat/del_text',['id'=>$list.id])}','{$Think.lang.ds_ensure_del}')"  class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Wechat/text_form',['id'=>$list.id])}','{$Think.lang.ds_edit}-{$list.keyword}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Wechat/del_text',['id'=>$list.id])}','{$Think.lang.ds_ensure_del}')"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}
