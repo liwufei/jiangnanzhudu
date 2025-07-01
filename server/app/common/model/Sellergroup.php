@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 卖家分组
  */
-class Sellergroup extends BaseModel {
+class Sellergroup extends BaseModel
+{
 
     /**
      * 读取列表
@@ -25,7 +17,8 @@ class Sellergroup extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getSellergroupList($condition) {
+    public function getSellergroupList($condition)
+    {
         $result = Db::name('sellergroup')->where($condition)->select()->toArray();
         return $result;
     }
@@ -37,7 +30,8 @@ class Sellergroup extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getSellergroupInfo($condition) {
+    public function getSellergroupInfo($condition)
+    {
         $result = Db::name('sellergroup')->where($condition)->find();
         return $result;
     }
@@ -49,7 +43,8 @@ class Sellergroup extends BaseModel {
      * @param type $condition 条件
      * @return boolean
      */
-    public function isSellergroupExist($condition) {
+    public function isSellergroupExist($condition)
+    {
         $result = Db::name('sellergroup')->where($condition)->find();
         if (empty($result)) {
             return FALSE;
@@ -65,7 +60,8 @@ class Sellergroup extends BaseModel {
      * @param array $data 参数内容
      * @return bool
      */
-    public function addSellergroup($data) {
+    public function addSellergroup($data)
+    {
         return Db::name('sellergroup')->insertGetId($data);
     }
 
@@ -77,7 +73,8 @@ class Sellergroup extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editSellergroup($update, $condition) {
+    public function editSellergroup($update, $condition)
+    {
         return Db::name('sellergroup')->where($condition)->update($update);
     }
 
@@ -88,7 +85,8 @@ class Sellergroup extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function delSellergroup($condition) {
+    public function delSellergroup($condition)
+    {
         return Db::name('sellergroup')->where($condition)->delete();
     }
 }

@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 交易
  */
-class Trade extends BaseModel {
+class Trade extends BaseModel
+{
 
     /**
      * 订单处理天数
@@ -25,7 +17,8 @@ class Trade extends BaseModel {
      * @param type $day_type 天数类型
      * @return int
      */
-    public function getMaxDay($day_type = 'all') {
+    public function getMaxDay($day_type = 'all')
+    {
         $max_data = array(
             'order_refund' => 7, //收货完成后可以申请退款退货
             'refund_confirm' => 7, //卖家不处理退款退货申请时按同意处理
@@ -47,7 +40,8 @@ class Trade extends BaseModel {
      * @param int $store_id 店铺编号
      * @return type 
      */
-    public function editRefundConfirm($member_id = 0, $store_id = 0) {
+    public function editRefundConfirm($member_id = 0, $store_id = 0)
+    {
         $refund_confirm = $this->getMaxDay('refund_confirm'); //卖家不处理退款申请时按同意并弃货处理
         $day = TIMESTAMP - $refund_confirm * 60 * 60 * 24;
         $condition = " refundreturn_seller_state=1 and refundreturn_add_time<" . $day; //状态:1为待审核,2为同意,3为不同意
@@ -88,10 +82,10 @@ class Trade extends BaseModel {
                 )
             );
             if (intval($val['refund_type']) == 1) {
-// 退款
+                // 退款
                 $this->sendStoremsg('refund_auto_process', $val['store_id'], $message, $weixin_param, $message, $ten_message);
             } else {
-// 退货
+                // 退货
                 $this->sendStoremsg('return_auto_process', $val['store_id'], $message, $weixin_param, $message, $ten_message);
             }
         }
@@ -145,9 +139,8 @@ class Trade extends BaseModel {
      * @param int $store_id 店铺ID
      * @param array $message 消息
      */
-    private function sendStoremsg($code, $store_id, $message, $weixin_param = array(), $ali_param = array(), $ten_param = array()) {
+    private function sendStoremsg($code, $store_id, $message, $weixin_param = array(), $ali_param = array(), $ten_param = array())
+    {
         model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendStoremsg', 'cron_value' => serialize(array('code' => $code, 'store_id' => $store_id, 'param' => $message, 'weixin_param' => $weixin_param, 'ali_param' => $ali_param, 'ten_param' => $ten_param))));
     }
 }
-
-?>

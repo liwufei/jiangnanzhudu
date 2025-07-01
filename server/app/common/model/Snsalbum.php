@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 相册
  */
-class Snsalbum extends BaseModel {
+class Snsalbum extends BaseModel
+{
 
     public $page_info;
 
@@ -27,7 +19,8 @@ class Snsalbum extends BaseModel {
      * @param type $member_id 会员id
      * @return bool
      */
-    public function getSnsAlbumClassDefault($member_id) {
+    public function getSnsAlbumClassDefault($member_id)
+    {
         if (empty($member_id)) {
             return '0';
         }
@@ -51,7 +44,8 @@ class Snsalbum extends BaseModel {
      * @param type $field
      * @return type
      */
-    public function getSnsalbumclassList($condition, $pagesize, $field) {
+    public function getSnsalbumclassList($condition, $pagesize, $field)
+    {
         if ($pagesize) {
             $result = Db::name('snsalbumclass')->alias('a')->field('a.*,m.member_name')->join('member m', 'a.member_id=m.member_id', 'LEFT')->where($condition)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -68,7 +62,8 @@ class Snsalbum extends BaseModel {
      * @param type $group
      * @return type
      */
-    public function getSnsalbumpicCountList($condition, $field, $group) {
+    public function getSnsalbumpicCountList($condition, $field, $group)
+    {
         return Db::name('snsalbumpic')->field($field)->where($condition)->group($group)->select()->toArray();
     }
 
@@ -77,7 +72,8 @@ class Snsalbum extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getSnsalbumpicList($condition, $pagesize = '') {
+    public function getSnsalbumpicList($condition, $pagesize = '')
+    {
         if ($pagesize) {
             $pic_list = Db::name('snsalbumpic')->where($condition)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $pic_list;
@@ -93,7 +89,8 @@ class Snsalbum extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delSnsalbumpic($condition) {
+    public function delSnsalbumpic($condition)
+    {
         return Db::name('snsalbumpic')->where($condition)->delete();
     }
 
@@ -102,7 +99,8 @@ class Snsalbum extends BaseModel {
      * @param type $id
      * @return type
      */
-    public function getOneSnsalbumpic($id) {
+    public function getOneSnsalbumpic($id)
+    {
         return Db::name('snsalbumpic')->find($id);
     }
 
@@ -111,7 +109,8 @@ class Snsalbum extends BaseModel {
      * @param type $id
      * @return type
      */
-    public function delPic($id) {
+    public function delPic($id)
+    {
         return Db::name('snsalbumpic')->delete($id);
     }
 }

@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺商品分类
  */
-class Storegoodsclass extends BaseModel {
+class Storegoodsclass extends BaseModel
+{
 
     /**
      * 单个类别内容提取
@@ -26,7 +18,8 @@ class Storegoodsclass extends BaseModel {
      * @param string $field 字段
      * @return array|bool
      */
-    public function getStoregoodsclassInfo($condition, $field = '*') {
+    public function getStoregoodsclassInfo($condition, $field = '*')
+    {
         if (empty($condition)) {
             return false;
         }
@@ -40,7 +33,8 @@ class Storegoodsclass extends BaseModel {
      * @param array $data 分类数据
      * @return bool 
      */
-    public function addStoregoodsclass($data) {
+    public function addStoregoodsclass($data)
+    {
         $result = Db::name('storegoodsclass')->insertGetId($data);
         if ($result) {
             $this->_dStoregoodsclassCache($data['store_id']);
@@ -57,7 +51,8 @@ class Storegoodsclass extends BaseModel {
      * @param type $store_id
      * @return boolean
      */
-    public function editStoregoodsclass($data, $where, $store_id) {
+    public function editStoregoodsclass($data, $where, $store_id)
+    {
         if (empty($data)) {
             return false;
         }
@@ -75,7 +70,8 @@ class Storegoodsclass extends BaseModel {
      * @param type $where 条件
      * @return boolean
      */
-    public function delStoregoodsclass($where, $store_id) {
+    public function delStoregoodsclass($where, $store_id)
+    {
         if (empty($where)) {
             return false;
         }
@@ -94,7 +90,8 @@ class Storegoodsclass extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getStoregoodsclassList($condition, $order = 'storegc_parent_id asc,storegc_sort asc,storegc_id asc') {
+    public function getStoregoodsclassList($condition, $order = 'storegc_parent_id asc,storegc_sort asc,storegc_id asc')
+    {
         $result = Db::name('storegoodsclass')->where($condition)->order($order)->select()->toArray();
         return $result;
     }
@@ -106,7 +103,8 @@ class Storegoodsclass extends BaseModel {
      * @param type $store_id 店铺id
      * @return type
      */
-    public function getShowTreeList($store_id) {
+    public function getShowTreeList($store_id)
+    {
         $info = $this->_rStoregoodsclassCache($store_id);
         if (empty($info)) {
             $show_class = array();
@@ -137,7 +135,8 @@ class Storegoodsclass extends BaseModel {
      * @param int $show_deep 显示深度
      * @return array 数组类型的返回结果
      */
-    public function getTreeClassList($condition, $show_deep = '2') {
+    public function getTreeClassList($condition, $show_deep = '2')
+    {
         $class_list = $this->getStoregoodsclassList($condition);
         $show_deep = intval($show_deep);
         $result = array();
@@ -158,20 +157,21 @@ class Storegoodsclass extends BaseModel {
      * @param int $i 上次循环编号
      * @return array 返回数组形式的查询结果
      */
-    private function _getTreeClassList($show_deep, $class_list, $deep = 1, $parent_id = 0, $i = 0) {
+    private function _getTreeClassList($show_deep, $class_list, $deep = 1, $parent_id = 0, $i = 0)
+    {
         static $show_class = array(); //树状的平行数组
         if (is_array($class_list) && !empty($class_list)) {
             $size = count($class_list);
             if ($i == 0)
                 $show_class = array(); //从0开始时清空数组，防止多次调用后出现重复
-            for ($i; $i < $size; $i++) {//$i为上次循环到的分类编号，避免重新从第一条开始
+            for ($i; $i < $size; $i++) { //$i为上次循环到的分类编号，避免重新从第一条开始
                 $val = $class_list[$i];
                 $storegc_id = $val['storegc_id'];
                 $storegc_parent_id = $val['storegc_parent_id'];
                 if ($storegc_parent_id == $parent_id) {
                     $val['deep'] = $deep;
                     $show_class[] = $val;
-                    if ($deep < $show_deep && $deep < 2) {//本次深度小于显示深度时执行，避免取出的数据无用
+                    if ($deep < $show_deep && $deep < 2) { //本次深度小于显示深度时执行，避免取出的数据无用
                         $this->_getTreeClassList($show_deep, $class_list, $deep + 1, $storegc_id, $i + 1);
                     }
                 }
@@ -189,7 +189,8 @@ class Storegoodsclass extends BaseModel {
      * @param array $condition 条件
      * @return array
      */
-    public function getClassTree($condition) {
+    public function getClassTree($condition)
+    {
         $class_list = $this->getStoregoodsclassList($condition);
         $d = array();
         if (is_array($class_list)) {
@@ -212,7 +213,8 @@ class Storegoodsclass extends BaseModel {
      * @param INT $store_id 店铺ID
      * @return type
      */
-    private function _rStoregoodsclassCache($store_id) {
+    private function _rStoregoodsclassCache($store_id)
+    {
         return rcache($store_id, 'store_goods_class');
     }
 
@@ -224,7 +226,8 @@ class Storegoodsclass extends BaseModel {
      * @param array $info 信息
      * @return boolean
      */
-    private function _wStoregoodsclassCache($store_id, $info) {
+    private function _wStoregoodsclassCache($store_id, $info)
+    {
         return wcache($store_id, $info, 'store_goods_class');
     }
 
@@ -235,9 +238,8 @@ class Storegoodsclass extends BaseModel {
      * @param int $store_id 店铺ID
      * @return boolean
      */
-    private function _dStoregoodsclassCache($store_id) {
+    private function _dStoregoodsclassCache($store_id)
+    {
         return dcache($store_id, 'store_goods_class');
     }
 }
-
-?>

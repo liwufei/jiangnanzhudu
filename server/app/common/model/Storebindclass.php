@@ -1,27 +1,15 @@
 <?php
 
-/**
- * 店铺分类分佣比例
- *
- */
-
 namespace app\common\model;
 
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺绑定类目
  */
-class Storebindclass extends BaseModel {
+class Storebindclass extends BaseModel
+{
+    private $page_info;
 
     /**
      * 读取列表
@@ -33,7 +21,8 @@ class Storebindclass extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getStorebindclassList($condition, $pagesize = '', $order = '', $field = '*') {
+    public function getStorebindclassList($condition, $pagesize = '', $order = '', $field = '*')
+    {
         if ($pagesize) {
             $result = Db::name('storebindclass')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -51,7 +40,8 @@ class Storebindclass extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getStorebindclassInfo($condition) {
+    public function getStorebindclassInfo($condition)
+    {
         $result = Db::name('storebindclass')->where($condition)->find();
         return $result;
     }
@@ -63,7 +53,8 @@ class Storebindclass extends BaseModel {
      * @param array $data 数据
      * @return bool
      */
-    public function addStorebindclass($data) {
+    public function addStorebindclass($data)
+    {
         return Db::name('storebindclass')->insertGetId($data);
     }
 
@@ -74,7 +65,8 @@ class Storebindclass extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function addStorebindclassAll($data) {
+    public function addStorebindclassAll($data)
+    {
         return Db::name('storebindclass')->insertAll($data);
     }
 
@@ -86,7 +78,8 @@ class Storebindclass extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editStorebindclass($update, $condition) {
+    public function editStorebindclass($update, $condition)
+    {
         return Db::name('storebindclass')->where($condition)->update($update);
     }
 
@@ -97,7 +90,8 @@ class Storebindclass extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function delStorebindclass($condition) {
+    public function delStorebindclass($condition)
+    {
         return Db::name('storebindclass')->where($condition)->delete();
     }
 
@@ -108,7 +102,8 @@ class Storebindclass extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getStorebindclassCount($condition = array()) {
+    public function getStorebindclassCount($condition = array())
+    {
         return Db::name('storebindclass')->where($condition)->count();
     }
 
@@ -119,11 +114,10 @@ class Storebindclass extends BaseModel {
      * @param array $goods_list 商品列表
      * @return array
      */
-    public function getStoreGcidCommisRateList($goods_list) {
-
+    public function getStoreGcidCommisRateList($goods_list)
+    {
         if (empty($goods_list) || !is_array($goods_list))
             return array();
-
 
         //定义返回数组
         $store_gc_id_commis_rate = array();

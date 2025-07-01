@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * SMS记录
  */
-class Smslog extends BaseModel {
+class Smslog extends BaseModel
+{
 
     public $page_info;
 
@@ -32,7 +24,8 @@ class Smslog extends BaseModel {
      * @param type $if_queue 是否放入队列
      * @return type
      */
-    function sendSms($smslog_phone, $smslog_param, $smslog_type = '', $smslog_captcha = '', $member_id = '0', $member_name = '', $if_queue = false) {
+    function sendSms($smslog_phone, $smslog_param, $smslog_type = '', $smslog_captcha = '', $member_id = '0', $member_name = '', $if_queue = false)
+    {
         $smslog_msg = $smslog_param['message'];
         //通过手机号判断是否允许发送短信
         $begin_add_time = strtotime(date('Y-m-d', TIMESTAMP));
@@ -113,7 +106,8 @@ class Smslog extends BaseModel {
      * @param type $log_array 日志数组
      * @return type
      */
-    public function editSms($update, $condition) {
+    public function editSms($update, $condition)
+    {
         return Db::name('smslog')->where($condition)->update($update);
     }
 
@@ -124,7 +118,8 @@ class Smslog extends BaseModel {
      * @param type $log_array 日志数组
      * @return type
      */
-    public function addSms($log_array) {
+    public function addSms($log_array)
+    {
         $log_id = Db::name('smslog')->insertGetId($log_array);
         return $log_id;
     }
@@ -136,7 +131,8 @@ class Smslog extends BaseModel {
      * @param type $condition 条件
      * @return boolean
      */
-    public function getSmsInfo($condition) {
+    public function getSmsInfo($condition)
+    {
         if (empty($condition)) {
             return false;
         }
@@ -154,7 +150,8 @@ class Smslog extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getSmsList($condition = array(), $pagesize = '', $limit = 0, $order = 'smslog_id desc') {
+    public function getSmsList($condition = array(), $pagesize = '', $limit = 0, $order = 'smslog_id desc')
+    {
         if ($pagesize) {
             $result = Db::name('smslog')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -173,16 +170,16 @@ class Smslog extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getSmsCount($condition) {
+    public function getSmsCount($condition)
+    {
         return Db::name('smslog')->where($condition)->count();
     }
 
     /**
      * 删除短信记录
      */
-    public function delSmsLog($condition) {
+    public function delSmsLog($condition)
+    {
         return Db::name('smslog')->where($condition)->delete();
     }
 }
-
-?>

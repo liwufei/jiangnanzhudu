@@ -1,26 +1,14 @@
 <?php
 
-/**
- * 店铺模型管理
- */
-
 namespace app\common\model;
 
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 版式
  */
-class Storeplate extends BaseModel {
+class Storeplate extends BaseModel
+{
 
     public $page_info;
 
@@ -33,7 +21,8 @@ class Storeplate extends BaseModel {
      * @param int $pagesize 分页
      * @return array
      */
-    public function getStoreplateList($condition, $field = '*', $pagesize = 0) {
+    public function getStoreplateList($condition, $field = '*', $pagesize = 0)
+    {
         if ($pagesize) {
             $result = Db::name('storeplate')->field($field)->where($condition)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -50,11 +39,13 @@ class Storeplate extends BaseModel {
      * @param array $condition 条件
      * @return array
      */
-    public function getStoreplateInfo($condition) {
+    public function getStoreplateInfo($condition)
+    {
         return Db::name('storeplate')->where($condition)->find();
     }
 
-    public function getStoreplateInfoByID($storeplate_id) {
+    public function getStoreplateInfoByID($storeplate_id)
+    {
         $info = $this->_rStoreplateCache($storeplate_id);
         if (empty($info)) {
             $info = $this->getStoreplateInfo(array('storeplate_id' => $storeplate_id));
@@ -70,7 +61,8 @@ class Storeplate extends BaseModel {
      * @param array $data 参数内容
      * @return boolean
      */
-    public function addStoreplate($data) {
+    public function addStoreplate($data)
+    {
         return Db::name('storeplate')->insertGetId($data);
     }
 
@@ -82,7 +74,8 @@ class Storeplate extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function editStoreplate($data, $condition) {
+    public function editStoreplate($data, $condition)
+    {
         $list = $this->getStoreplateList($condition, 'storeplate_id');
         if (empty($list)) {
             return true;
@@ -104,7 +97,8 @@ class Storeplate extends BaseModel {
      * @param array $condition 条件
      * @return boolean
      */
-    public function delStoreplate($condition) {
+    public function delStoreplate($condition)
+    {
         $list = $this->getStoreplateList($condition, 'storeplate_id');
         if (empty($list)) {
             return true;
@@ -125,7 +119,8 @@ class Storeplate extends BaseModel {
      * @param int $storeplate_id 店铺关联版式id
      * @return array
      */
-    private function _rStoreplateCache($storeplate_id) {
+    private function _rStoreplateCache($storeplate_id)
+    {
         return rcache($storeplate_id, 'store_plate');
     }
 
@@ -137,7 +132,8 @@ class Storeplate extends BaseModel {
      * @param array $info
      * @return boolean
      */
-    private function _wStoreplateCache($storeplate_id, $info) {
+    private function _wStoreplateCache($storeplate_id, $info)
+    {
         return wcache($storeplate_id, $info, 'store_plate');
     }
 
@@ -148,7 +144,8 @@ class Storeplate extends BaseModel {
      * @param int $storeplate_id 店铺关联版式id
      * @return boolean
      */
-    private function _dStoreplateCache($storeplate_id) {
+    private function _dStoreplateCache($storeplate_id)
+    {
         return dcache($storeplate_id, 'store_plate');
     }
 }

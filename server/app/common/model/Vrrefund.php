@@ -2,23 +2,15 @@
 
 namespace app\common\model;
 
-
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 虚拟退款
  */
-class Vrrefund extends BaseModel {
+class Vrrefund extends BaseModel
+{
     public $page_info;
-   
+
     /**
      * 增加退款
      * @access public
@@ -27,7 +19,8 @@ class Vrrefund extends BaseModel {
      * @param type $order 排序
      * @return boolean
      */
-    public function addVrrefund($refund_array, $order = array()) {
+    public function addVrrefund($refund_array, $order = array())
+    {
         if (!empty($order) && is_array($order)) {
             $refund_array['order_id'] = $order['order_id'];
             $refund_array['order_sn'] = $order['order_sn'];
@@ -47,7 +40,7 @@ class Vrrefund extends BaseModel {
             $refund_id = Db::name('vrrefund')->insertGetId($refund_array);
             $code_array = explode(',', $refund_array['redeemcode_sn']);
             $vrorder_model = model('vrorder');
-            $vrorder_model->editVrorderCode(array('refund_lock' => 1), array(array('vr_code','in', $code_array))); //退款锁定
+            $vrorder_model->editVrorderCode(array('refund_lock' => 1), array(array('vr_code', 'in', $code_array))); //退款锁定
             Db::commit();
             return $refund_id;
         } catch (\Exception $e) {
@@ -63,8 +56,8 @@ class Vrrefund extends BaseModel {
      * @param type $refund 退款
      * @return boolean
      */
-    public function editVrorderRefund($refund) {
-
+    public function editVrorderRefund($refund)
+    {
         $refund_id = $refund['refund_id'];
         $refund_lock = '0'; //退款锁定状态:0为正常,1为锁定,2为同意
         $vrorder_model = model('vrorder');
@@ -89,7 +82,7 @@ class Vrrefund extends BaseModel {
             $refundreturn_model = model('refundreturn');
             $refundreturn_model->refundAmount($order, $order['order_amount'], 'vrorder');
 
-            if ($order['order_promotion_type'] == 2) {//如果是拼团
+            if ($order['order_promotion_type'] == 2) { //如果是拼团
                 $ppintuangroup_info = Db::name('ppintuangroup')->where('pintuangroup_id', $order['promotions_id'])->find();
                 if ($ppintuangroup_info && $ppintuangroup_info['pintuangroup_state'] == 1) {
                     if ($ppintuangroup_info['pintuangroup_joined'] > 0) {
@@ -131,7 +124,8 @@ class Vrrefund extends BaseModel {
      * @param type $data 数据
      * @return boolean
      */
-    public function editVrrefund($condition, $data) {
+    public function editVrrefund($condition, $data)
+    {
         $result = Db::name('vrrefund')->where($condition)->update($data);
         return $result;
     }
@@ -143,7 +137,8 @@ class Vrrefund extends BaseModel {
      * @param type $store_id 店铺ID
      * @return string
      */
-    public function getVrrefundSn($store_id) {
+    public function getVrrefundSn($store_id)
+    {
         $result = mt_rand(100, 999) . substr(500 + $store_id, -3) . date('ymdHis');
         return $result;
     }
@@ -159,7 +154,8 @@ class Vrrefund extends BaseModel {
      * @return type
      */
 
-    public function getVrrefundList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0) {
+    public function getVrrefundList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0)
+    {
         if ($pagesize) {
             $result = Db::name('vrrefund')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -167,11 +163,10 @@ class Vrrefund extends BaseModel {
         } else {
             $result = Db::name('vrrefund')->field($field)->where($condition)->order($order)->limit($limit)->select()->toArray();
         }
-        
+
         foreach ($result as $key => $vrrefund) {
             $result[$key]['admin_state_desc'] = get_vrrefund_admin_state($vrrefund['admin_state']);
         }
-
 
         return $result;
     }
@@ -183,7 +178,8 @@ class Vrrefund extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getVrrefundCount($condition) {
+    public function getVrrefundCount($condition)
+    {
         $result = Db::name('vrrefund')->where($condition)->count();
         return $result;
     }
@@ -195,7 +191,8 @@ class Vrrefund extends BaseModel {
      * @param type $order_condition 条件
      * @return type
      */
-    public function getRightVrorderList($order_condition,$order_id) {
+    public function getRightVrorderList($order_condition, $order_id)
+    {
         $vrorder_model = model('vrorder');
         $order_info = $vrorder_model->getVrorderInfo($order_condition);
 
@@ -209,11 +206,11 @@ class Vrrefund extends BaseModel {
         //显示退款
         $order_info['if_refund'] = $vrorder_model->getVrorderOperateState('refund', $order_info);
 
-        $code_list=array();
+        $code_list = array();
         if ($order_info['if_refund']) {
             $code_list = $order_info['code_list'];
         }
-        return array('order_info'=>$order_info,'store'=>$store,'code_list'=>$code_list);
+        return array('order_info' => $order_info, 'store' => $store, 'code_list' => $code_list);
     }
 
     /**
@@ -223,7 +220,8 @@ class Vrrefund extends BaseModel {
      * @param type $list 列表
      * @return type
      */
-    public function getVrrefundStoreList($list) {
+    public function getVrrefundStoreList($list)
+    {
         $store_ids = array();
         if (!empty($list) && is_array($list)) {
             foreach ($list as $key => $value) {
@@ -233,7 +231,7 @@ class Vrrefund extends BaseModel {
         $field = 'store_id,store_name,member_id,member_name,seller_name,store_company_name,store_qq,store_ww,store_phone';
         return model('store')->getStoreMemberIDList($store_ids, $field);
     }
- 
+
     /**
      * 获取一条退款记录
      * @access public
@@ -241,15 +239,14 @@ class Vrrefund extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getOneVrrefund($condition){
+    public function getOneVrrefund($condition)
+    {
         $refund = Db::name('vrrefund')->where($condition)->find();
-        
-        if(!empty($refund)){
+
+        if (!empty($refund)) {
             $refund['admin_state_desc'] = get_vrrefund_admin_state($refund['admin_state']);
         }
-        
+
         return $refund;
     }
-
-
 }

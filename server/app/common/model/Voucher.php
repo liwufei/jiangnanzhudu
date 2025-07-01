@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 代金券
  */
-class Voucher extends BaseModel {
+class Voucher extends BaseModel
+{
 
     const VOUCHER_STATE_UNUSED = 1;
     const VOUCHER_STATE_USED = 2;
@@ -24,15 +16,19 @@ class Voucher extends BaseModel {
 
     public $page_info;
     private $voucher_state_array = array(
-        self::VOUCHER_STATE_UNUSED => '未使用', self::VOUCHER_STATE_USED => '已使用', self::VOUCHER_STATE_EXPIRE => '已过期',
+        self::VOUCHER_STATE_UNUSED => '未使用',
+        self::VOUCHER_STATE_USED => '已使用',
+        self::VOUCHER_STATE_EXPIRE => '已过期',
     );
 
     const VOUCHER_GETTYPE_DEFAULT = 'points'; //默认领取方式
 
     private $voucher_gettype_array = array(
-        'points' => array('sign' => 1, 'name' => '积分兑换'), 'pwd' => array('sign' => 2, 'name' => '卡密兑换'),
+        'points' => array('sign' => 1, 'name' => '积分兑换'),
+        'pwd' => array('sign' => 2, 'name' => '卡密兑换'),
         'free' => array('sign' => 3, 'name' => '免费领取')
     );
+
     private $quotastate_arr;
 
     /**
@@ -40,7 +36,8 @@ class Voucher extends BaseModel {
      * @access public
      * @author csdeshang
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         //套餐状态
         $this->quotastate_arr = array(
@@ -56,7 +53,8 @@ class Voucher extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getVoucherState() {
+    public function getVoucherState()
+    {
         return array(
             'unused' => array(1, lang('voucher_voucher_state_unused')),
             'used' => array(2, lang('voucher_voucher_state_used')),
@@ -72,7 +70,8 @@ class Voucher extends BaseModel {
      * @param int $goods_total 商品总金额
      * @return string
      */
-    public function getCurrentAvailableVoucher($condition = array(), $goods_total = 0) {
+    public function getCurrentAvailableVoucher($condition = array(), $goods_total = 0)
+    {
         $condition[] = array('voucher_state', '=', 1);
         $condition[] = array('voucher_enddate', '>', TIMESTAMP);
 
@@ -101,7 +100,8 @@ class Voucher extends BaseModel {
      * @param type $member_id 会员ID
      * @return type
      */
-    public function getCurrentAvailableVoucherCount($member_id) {
+    public function getCurrentAvailableVoucherCount($member_id)
+    {
         $info = rcache($member_id, 'm_voucher');
         if (empty($info)) {
             $condition = array();
@@ -124,7 +124,8 @@ class Voucher extends BaseModel {
      * @param type $store_id 店铺ID
      * @return boolean|array
      */
-    public function getVoucherquotaCurrent($store_id) {
+    public function getVoucherquotaCurrent($store_id)
+    {
         $store_id = intval($store_id);
         if ($store_id <= 0) {
             return false;
@@ -144,7 +145,8 @@ class Voucher extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getVoucherList($where, $field = '*') {
+    public function getVoucherList($where, $field = '*')
+    {
         $voucher_list = array();
         $voucher_list = Db::name('voucher')->field($field)->where($where)->select()->toArray();
         return $voucher_list;
@@ -158,7 +160,8 @@ class Voucher extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getVoucherUnusedList($where, $field = '*') {
+    public function getVoucherUnusedList($where, $field = '*')
+    {
         $where[] = array('voucher_state', '=', 1);
         return $this->getVoucherList($where, $field);
     }
@@ -172,7 +175,8 @@ class Voucher extends BaseModel {
      * @param type $store_id 店铺id
      * @return type
      */
-    public function getCanChangeTemplateInfo($vid, $member_id, $store_id = 0, $no_point = false) {
+    public function getCanChangeTemplateInfo($vid, $member_id, $store_id = 0, $no_point = false)
+    {
         if ($vid <= 0 || $member_id <= 0) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -185,7 +189,7 @@ class Voucher extends BaseModel {
         if (empty($template_info)) {
             return array('state' => false, 'msg' => '优惠券不存在');
         }
-        if ($template_info['vouchertemplate_total'] <= $template_info['vouchertemplate_giveout']) {//代金券不存在或者已兑换完
+        if ($template_info['vouchertemplate_total'] <= $template_info['vouchertemplate_giveout']) { //代金券不存在或者已兑换完
             return array('state' => false, 'msg' => '代金券已兑换完');
         }
         //验证是否为店铺自己
@@ -265,7 +269,8 @@ class Voucher extends BaseModel {
      * @param type $member_id 会员id
      * @return type
      */
-    public function getVoucherCode($member_id = 0) {
+    public function getVoucherCode($member_id = 0)
+    {
         static $num = 1;
         $sign_arr = array();
         $sign_arr[] = sprintf('%02d', mt_rand(10, 99));
@@ -295,7 +300,8 @@ class Voucher extends BaseModel {
      * @param type $vouchertemplate_id 卡密ID编号
      * @return boolean|array
      */
-    public function createVoucherPwd($vouchertemplate_id) {
+    public function createVoucherPwd($vouchertemplate_id)
+    {
         if ($vouchertemplate_id <= 0) {
             return false;
         }
@@ -332,7 +338,8 @@ class Voucher extends BaseModel {
      * @param type $pwd 卡密
      * @return string
      */
-    public function getVoucherPwd($pwd) {
+    public function getVoucherPwd($pwd)
+    {
         if (!$pwd) {
             return '';
         }
@@ -352,7 +359,8 @@ class Voucher extends BaseModel {
      * @param type $member_id 会员id
      * @return type
      */
-    public function editVoucher($data, $condition, $member_id = 0) {
+    public function editVoucher($data, $condition, $member_id = 0)
+    {
         $result = Db::name('voucher')->where($condition)->update($data);
         if ($result && $member_id > 0) {
             wcache($member_id, array('voucher_count' => null), 'm_voucher');
@@ -366,7 +374,8 @@ class Voucher extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    public function getVoucherStateArray() {
+    public function getVoucherStateArray()
+    {
         return $this->voucher_state_array;
     }
 
@@ -376,7 +385,8 @@ class Voucher extends BaseModel {
      * @author csdeshang
      * @return array
      */
-    public function getVoucherGettypeArray() {
+    public function getVoucherGettypeArray()
+    {
         return $this->voucher_gettype_array;
     }
 
@@ -389,7 +399,8 @@ class Voucher extends BaseModel {
      * @param int $pagesize 分页数
      * @return array
      */
-    public function getMemberVoucherList($member_id, $voucher_state, $pagesize = null) {
+    public function getMemberVoucherList($member_id, $voucher_state, $pagesize = null)
+    {
         if (empty($member_id)) {
             return false;
         }
@@ -434,7 +445,8 @@ class Voucher extends BaseModel {
      * @param type $member_id 会员ID
      * @return type 
      */
-    private function _checkVoucherExpire($member_id) {
+    private function _checkVoucherExpire($member_id)
+    {
         $condition = array();
         $condition[] = array('voucher_owner_id', '=', $member_id);
         $condition[] = array('voucher_state', '=', self::VOUCHER_STATE_UNUSED);
@@ -454,7 +466,8 @@ class Voucher extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getVouchertemplateList($where, $field = '*', $limit = 0, $pagesize = 0, $order = '') {
+    public function getVouchertemplateList($where, $field = '*', $limit = 0, $pagesize = 0, $order = '')
+    {
         $voucher_list = array();
         if ($pagesize) {
             $result = Db::name('vouchertemplate')->field($field)->where($where)->order($order)->paginate(['list_rows' => 10, 'query' => request()->param()], false);
@@ -507,7 +520,8 @@ class Voucher extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function editVouchertemplate($where, $data) {
+    public function editVouchertemplate($where, $data)
+    {
         return Db::name('vouchertemplate')->where($where)->update($data);
     }
 
@@ -517,7 +531,8 @@ class Voucher extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getVoucherPriceList($pagesize = '', $order = 'voucherprice asc') {
+    public function getVoucherPriceList($pagesize = '', $order = 'voucherprice asc')
+    {
         if ($pagesize) {
             $voucherprice_list = Db::name('voucherprice')->order('voucherprice asc')->paginate(['list_rows' => 10, 'query' => request()->param()], false);
             $this->page_info = $voucherprice_list;
@@ -534,7 +549,8 @@ class Voucher extends BaseModel {
      * @param int $num 查询条数
      * @return array 
      */
-    public function getRecommendTemplate($num) {
+    public function getRecommendTemplate($num)
+    {
         //查询推荐的热门代金券列表
         $where = array();
         $where[] = array('vouchertemplate_recommend', '=', 1);
@@ -555,7 +571,8 @@ class Voucher extends BaseModel {
      * @param type $member_name 会员名
      * @return type
      */
-    public function exchangeVoucher($template_info, $member_id, $member_name = '', $no_point = false) {
+    public function exchangeVoucher($template_info, $member_id, $member_name = '', $no_point = false)
+    {
         if (intval($member_id) <= 0 || empty($template_info)) {
             return array('state' => false, 'msg' => '参数错误');
         }
@@ -621,7 +638,8 @@ class Voucher extends BaseModel {
      * @param type $insert_arr 参数数据
      * @return type
      */
-    public function addVoucherBatch($insert_arr) {
+    public function addVoucherBatch($insert_arr)
+    {
         return Db::name('voucher')->insertAll($insert_arr);
     }
 
@@ -632,7 +650,8 @@ class Voucher extends BaseModel {
      * @param type $where 条件
      * @return int
      */
-    public function getVouchertemplateCount($where) {
+    public function getVouchertemplateCount($where)
+    {
         return Db::name('vouchertemplate')->where($where)->count();
     }
 
@@ -643,7 +662,8 @@ class Voucher extends BaseModel {
      * @param type $where 条件
      * @return int
      */
-    public function getVoucherCount($where) {
+    public function getVoucherCount($where)
+    {
         return Db::name('voucher')->where($where)->count();
     }
 
@@ -656,7 +676,8 @@ class Voucher extends BaseModel {
      * @param type $order 排序
      * @return array
      */
-    public function getVouchertemplateInfo($where = array(), $field = '*', $order = '') {
+    public function getVouchertemplateInfo($where = array(), $field = '*', $order = '')
+    {
         $info = Db::name('vouchertemplate')->where($where)->field($field)->order($order)->find();
         if (!$info) {
             return array();
@@ -698,7 +719,8 @@ class Voucher extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getVoucherInfo($where = array(), $field = '*', $order = '') {
+    public function getVoucherInfo($where = array(), $field = '*', $order = '')
+    {
         $info = Db::name('voucher')->where($where)->field($field)->order($order)->find();
         if ($info['voucher_state']) {
             $info['voucher_state_text'] = $this->voucher_state_array[$info['voucher_state']];
@@ -711,7 +733,8 @@ class Voucher extends BaseModel {
      * @param type $where
      * @return type
      */
-    public function getOneVoucherprice($condition = array()) {
+    public function getOneVoucherprice($condition = array())
+    {
         return Db::name('voucherprice')->where($condition)->find();
     }
 
@@ -720,7 +743,8 @@ class Voucher extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function addVoucherprice($data) {
+    public function addVoucherprice($data)
+    {
         return Db::name('voucherprice')->insert($data);
     }
 
@@ -730,7 +754,8 @@ class Voucher extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editVoucherprice($condition, $data) {
+    public function editVoucherprice($condition, $data)
+    {
         return Db::name('voucherprice')->where($condition)->update($data);
     }
 
@@ -739,7 +764,8 @@ class Voucher extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delVoucherprice($condition) {
+    public function delVoucherprice($condition)
+    {
         return Db::name('voucherprice')->where($condition)->delete();
     }
 
@@ -749,7 +775,8 @@ class Voucher extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editVoucherquota($condition, $data) {
+    public function editVoucherquota($condition, $data)
+    {
         return Db::name('voucherquota')->where($condition)->update($data);
     }
 
@@ -760,7 +787,8 @@ class Voucher extends BaseModel {
      * @param type $order
      * @return type
      */
-    public function getVoucherquotaList($condition, $pagesize, $order) {
+    public function getVoucherquotaList($condition, $pagesize, $order)
+    {
         if ($pagesize) {
             $voucherquota_list = Db::name('voucherquota')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $voucherquota_list;
@@ -776,7 +804,8 @@ class Voucher extends BaseModel {
      * @param $input_voucher_list
      * @throws Exception
      */
-    public function editVoucherState($voucher_list) {
+    public function editVoucherState($voucher_list)
+    {
         $send = new \sendmsg\sendMemberMsg();
         foreach ($voucher_list as $store_id => $voucher_info) {
             $update = $this->editVoucher(array('voucher_state' => 2), array('voucher_id' => $voucher_info['voucher_id']), $voucher_info['voucher_owner_id']);
@@ -811,5 +840,3 @@ class Voucher extends BaseModel {
         return ds_callback(true);
     }
 }
-
-?>

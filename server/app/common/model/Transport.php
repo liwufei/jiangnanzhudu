@@ -2,21 +2,13 @@
 
 namespace app\common\model;
 
-
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 售卖区域
  */
-class Transport extends BaseModel {
+class Transport extends BaseModel
+{
 
     public $page_info;
 
@@ -27,7 +19,8 @@ class Transport extends BaseModel {
      * @param type $data 参数内容
      * @return type
      */
-    public function addTransport($data) {
+    public function addTransport($data)
+    {
         return Db::name('transport')->insertGetId($data);
     }
 
@@ -38,7 +31,8 @@ class Transport extends BaseModel {
      * @param array $data
      * @return bool
      */
-    public function addExtend($data) {
+    public function addExtend($data)
+    {
         return Db::name('transportextend')->insertAll($data);
     }
 
@@ -49,7 +43,8 @@ class Transport extends BaseModel {
      * @param array $condition 条件
      * @return array
      */
-    public function getTransportInfo($condition) {
+    public function getTransportInfo($condition)
+    {
         return Db::name('transport')->where($condition)->find();
     }
 
@@ -60,7 +55,8 @@ class Transport extends BaseModel {
      * @param array $condition 条件
      * @return array
      */
-    public function getExtendInfo($condition) {
+    public function getExtendInfo($condition)
+    {
         return Db::name('transportextend')->where($condition)->order('transportext_is_default desc')->select()->toArray();
     }
 
@@ -71,13 +67,13 @@ class Transport extends BaseModel {
      * @param int $transport_id 条件
      * @return boolean
      */
-    public function delTansport($transport_id) {
-        
+    public function delTansport($transport_id)
+    {
         Db::startTrans();
         try {
-            $delete = Db::name('transport')->where('transport_id',$transport_id)->delete();
+            $delete = Db::name('transport')->where('transport_id', $transport_id)->delete();
             if ($delete) {
-                $delete = Db::name('transportextend')->where('transport_id',$transport_id)->delete();
+                $delete = Db::name('transportextend')->where('transport_id', $transport_id)->delete();
             }
             Db::commit();
         } catch (\Exception $e) {
@@ -85,7 +81,6 @@ class Transport extends BaseModel {
 
             return false;
         }
-
         return true;
     }
 
@@ -96,7 +91,8 @@ class Transport extends BaseModel {
      * @param int $transport_id 售卖区域ID
      * @return bool
      */
-    public function delTransportextend($transport_id) {
+    public function delTransportextend($transport_id)
+    {
         return Db::name('transportextend')->where(array('transport_id' => $transport_id))->delete();
     }
 
@@ -109,16 +105,15 @@ class Transport extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getTransportList($condition = array(), $pagesize = '', $order = 'transport_id desc') {
-        if($pagesize){
-            $res = Db::name('transport')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-            $this->page_info=$res;
+    public function getTransportList($condition = array(), $pagesize = '', $order = 'transport_id desc')
+    {
+        if ($pagesize) {
+            $res = Db::name('transport')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
             return $res->items();
-        }else{
+        } else {
             return Db::name('transport')->where($condition)->order($order)->select()->toArray();
         }
-        
-        
     }
 
     /**
@@ -129,10 +124,11 @@ class Transport extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getTransportextendList($condition = array(), $order = 'transportext_id asc') {
+    public function getTransportextendList($condition = array(), $order = 'transportext_id asc')
+    {
         return Db::name('transportextend')->where($condition)->order($order)->select()->toArray();
     }
-    
+
     /**
      * 编辑更新售卖区域
      * @access public
@@ -141,7 +137,8 @@ class Transport extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editTransport($data, $condition = array()) {
+    public function editTransport($data, $condition = array())
+    {
         return Db::name('transport')->where($condition)->update($data);
     }
 
@@ -152,7 +149,8 @@ class Transport extends BaseModel {
      * @param type $id ID编号
      * @return boolean
      */
-    public function isTransportUsing($id) {
+    public function isTransportUsing($id)
+    {
         if (!is_numeric($id)) {
             return false;
         }
@@ -170,7 +168,8 @@ class Transport extends BaseModel {
      * @param int $count 计数
      * @return number/boolean
      */
-    public function calcTransport($transport_id, $area_id,$count=1,$weight=0) {
+    public function calcTransport($transport_id, $area_id, $count = 1, $weight = 0)
+    {
         if (empty($transport_id)) {
             return 0;
         }
@@ -179,7 +178,7 @@ class Transport extends BaseModel {
         if (empty($extend_list) || !$transport) {
             return false;
         } else {
-            return $this->_calc_unit($area_id,$transport, $extend_list,$count,$weight);
+            return $this->_calc_unit($area_id, $transport, $extend_list, $count, $weight);
         }
     }
 
@@ -192,11 +191,12 @@ class Transport extends BaseModel {
      * @param type $count 计数
      * @return type
      */
-    private function _calc_unit($area_id, $transport,$extend, $count,$weight) {
-        if($transport['transport_type']){
-            $amount=$weight;
-        }else{
-            $amount=$count;
+    private function _calc_unit($area_id, $transport, $extend, $count, $weight)
+    {
+        if ($transport['transport_type']) {
+            $amount = $weight;
+        } else {
+            $amount = $count;
         }
         if (!empty($extend) && is_array($extend)) {
             foreach ($extend as $v) {
@@ -227,5 +227,4 @@ class Transport extends BaseModel {
 
         return isset($calc_total) ? ds_price_format($calc_total) : false;
     }
-
 }

@@ -2,21 +2,13 @@
 
 namespace app\common\model;
 
-
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 虚拟订单
  */
-class Vrorder extends BaseModel {
+class Vrorder extends BaseModel
+{
     public $page_info;
 
     /**
@@ -27,7 +19,8 @@ class Vrorder extends BaseModel {
      * @param type $fields 字段
      * @return type
      */
-    public function getVrorderInfo($condition = array(), $fields = '*',$extend = array()) {
+    public function getVrorderInfo($condition = array(), $fields = '*', $extend = array())
+    {
         $order_info = Db::name('vrorder')->field($fields)->where($condition)->find();
         if (empty($order_info)) {
             return array();
@@ -40,17 +33,17 @@ class Vrorder extends BaseModel {
         if (isset($order_info['payment_code'])) {
             $order_info['payment_name'] = get_order_payment_name($order_info['payment_code']);
         }
-        
+
         //追加返回订单日志
         if (in_array('orderlog', $extend)) {
             //取商品列表
-            $orderlog_list = model('orderlog')->getOrderlogList(array('order_id' => $order_info['order_id'],'log_type' => 'vrorder'));
+            $orderlog_list = model('orderlog')->getOrderlogList(array('order_id' => $order_info['order_id'], 'log_type' => 'vrorder'));
             foreach ($orderlog_list as $orderlog_key => $orderlog) {
-                $orderlog_list[$orderlog_key]['log_time_desc'] = date('Y-m-d H:i:s',$orderlog['log_time']);
+                $orderlog_list[$orderlog_key]['log_time_desc'] = date('Y-m-d H:i:s', $orderlog['log_time']);
             }
             $order_info['extend_orderlog'] = $orderlog_list;
         }
-        
+
         return $order_info;
     }
 
@@ -61,7 +54,8 @@ class Vrorder extends BaseModel {
      * @param type $data 参数内容
      * @return type
      */
-    public function addVrorder($data) {
+    public function addVrorder($data)
+    {
         return Db::name('vrorder')->insertGetId($data);
     }
 
@@ -72,7 +66,8 @@ class Vrorder extends BaseModel {
      * @param type $order_info 订单信息
      * @return boolean
      */
-    public function addVrorderCode($order_info) {
+    public function addVrorderCode($order_info)
+    {
         $vrc_num = Db::name('vrordercode')->where(array('order_id' => $order_info['order_id']))->count();
         if (!empty($vrc_num) && intval($vrc_num) >= intval($order_info['goods_num']))
             return false;
@@ -101,8 +96,8 @@ class Vrorder extends BaseModel {
         }
 
         //将因舍出小数部分出现的差值补到最后一个商品的实际成交价中
-//         $diff_amount = $order_info['order_amount'] - $each_pay_price * $order_info['goods_num'];
-//         $order_code[$i-1]['pay_price'] += $diff_amount;
+        //         $diff_amount = $order_info['order_amount'] - $each_pay_price * $order_info['goods_num'];
+        //         $order_code[$i-1]['pay_price'] += $diff_amount;
 
         return Db::name('vrordercode')->insertAll($order_code);
     }
@@ -116,7 +111,8 @@ class Vrorder extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function editVrorder($data, $condition, $limit = 0) {
+    public function editVrorder($data, $condition, $limit = 0)
+    {
         return Db::name('vrorder')->where($condition)->limit($limit)->update($data);
     }
 
@@ -128,7 +124,8 @@ class Vrorder extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editVrorderCode($data, $condition) {
+    public function editVrorderCode($data, $condition)
+    {
         return Db::name('vrordercode')->where($condition)->update($data);
     }
 
@@ -142,15 +139,15 @@ class Vrorder extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getVrordercodeList($condition = array(), $fields = '*', $pagesize = '', $order = 'rec_id desc') {
-        if($pagesize){
-            $res = Db::name('vrordercode')->field($fields)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getVrordercodeList($condition = array(), $fields = '*', $pagesize = '', $order = 'rec_id desc')
+    {
+        if ($pagesize) {
+            $res = Db::name('vrordercode')->field($fields)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
             return $res->items();
-        }else{
+        } else {
             return Db::name('vrordercode')->field($fields)->where($condition)->order($order)->select()->toArray();
         }
-
     }
 
     /**
@@ -161,9 +158,10 @@ class Vrorder extends BaseModel {
      * @param type $fields 字段
      * @return type
      */
-    public function getCodeUnusedList($condition = array(), $fields = '*') {
-        $condition[]=array('vr_state','=',0);
-        $condition[]=array('refund_lock','=',0);
+    public function getCodeUnusedList($condition = array(), $fields = '*')
+    {
+        $condition[] = array('vr_state', '=', 0);
+        $condition[] = array('refund_lock', '=', 0);
         return $this->getVrordercodeList($condition, $fields);
     }
 
@@ -174,7 +172,8 @@ class Vrorder extends BaseModel {
      * @param type $order_list 订单列表
      * @return type
      */
-    public function getCodeRefundList($order_list = array()) {
+    public function getCodeRefundList($order_list = array())
+    {
         if (!empty($order_list) && is_array($order_list)) {
             $order_ids = array(); //订单编号数组
             foreach ($order_list as $key => $value) {
@@ -182,14 +181,14 @@ class Vrorder extends BaseModel {
                 $order_ids[$order_id] = $key;
             }
             $condition = array();
-            $condition[] = array('order_id','in', array_keys($order_ids));
-            $condition[] = array('refund_lock','=','0');//退款锁定状态:0为正常(能退款),1为锁定(待审核),2为同意
+            $condition[] = array('order_id', 'in', array_keys($order_ids));
+            $condition[] = array('refund_lock', '=', '0'); //退款锁定状态:0为正常(能退款),1为锁定(待审核),2为同意
             $code_list = $this->getVrordercodeList($condition);
             if (!empty($code_list) && is_array($code_list)) {
                 foreach ($code_list as $key => $value) {
                     $order_id = $value['order_id']; //虚拟订单编号
                     $rec_id = $value['rec_id']; //兑换码表编号
-                    if ($value['vr_state'] != '1') {//使用状态 0:未使用1:已使用2:已过期
+                    if ($value['vr_state'] != '1') { //使用状态 0:未使用1:已使用2:已过期
                         $order_key = $order_ids[$order_id];
                         $order_list[$order_key]['code_list'][$rec_id] = $value;
                     }
@@ -207,7 +206,8 @@ class Vrorder extends BaseModel {
      * @param type $fields 字段
      * @return array
      */
-    public function getShowVrordercodeList($condition = array(), $fields = '*') {
+    public function getShowVrordercodeList($condition = array(), $fields = '*')
+    {
         $code_list = $this->getVrordercodeList($condition);
         //进一步处理
         if (!empty($code_list)) {
@@ -242,7 +242,8 @@ class Vrorder extends BaseModel {
      * @param type $fields 字段
      * @return type
      */
-    public function getVrordercodeInfo($condition = array(), $fields = '*') {
+    public function getVrordercodeInfo($condition = array(), $fields = '*')
+    {
         return Db::name('vrordercode')->field($fields)->where($condition)->find();
     }
 
@@ -253,7 +254,8 @@ class Vrorder extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getVrordercodeCount($condition) {
+    public function getVrordercodeCount($condition)
+    {
         return Db::name('vrordercode')->where($condition)->count();
     }
 
@@ -267,10 +269,11 @@ class Vrorder extends BaseModel {
      * @param type $num 数字
      * @return string
      */
-    private function _makeVrordercode($perfix, $store_id, $member_id, $num) {
+    private function _makeVrordercode($perfix, $store_id, $member_id, $num)
+    {
         $perfix .= sprintf('%04d', (int) $store_id * $member_id % 10000)
-                . sprintf('%02d', (int) $member_id % 100)
-                . sprintf('%03d', (float) microtime() * 1000);
+            . sprintf('%02d', (int) $member_id % 100)
+            . sprintf('%03d', (float) microtime() * 1000);
 
         $code_list = array();
         for ($i = 0; $i < $num; $i++) {
@@ -290,16 +293,15 @@ class Vrorder extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function getVrorderList($condition, $pagesize = '', $field = '*', $order = 'order_id desc', $limit = 0) {
-        if($pagesize){
-            $list = Db::name('vrorder')->field($field)->where($condition)->order($order)->limit($limit)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+    public function getVrorderList($condition, $pagesize = '', $field = '*', $order = 'order_id desc', $limit = 0)
+    {
+        if ($pagesize) {
+            $list = Db::name('vrorder')->field($field)->where($condition)->order($order)->limit($limit)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $list;
             $list = $list->items();
-        }else{
+        } else {
             $list = Db::name('vrorder')->field($field)->where($condition)->order($order)->limit($limit)->select()->toArray();
         }
-
-
 
         if (empty($list))
             return array();
@@ -322,7 +324,8 @@ class Vrorder extends BaseModel {
      * @param type $order_state 订单状态
      * @return type
      */
-    private function _vrorderState($order_state) {
+    private function _vrorderState($order_state)
+    {
         switch ($order_state) {
             case ORDER_STATE_CANCEL:
                 $order_state = '<span style="color:#999">已取消</span>';
@@ -341,8 +344,7 @@ class Vrorder extends BaseModel {
                 $order_state_text = '已完成';
                 break;
         }
-        return array($order_state, $order_state_text);
-        ;
+        return array($order_state, $order_state_text);;
     }
 
     /**
@@ -353,7 +355,8 @@ class Vrorder extends BaseModel {
      * @param type $order_info 订单信息
      * @return boolean
      */
-    public function getVrorderOperateState($operate, $order_info) {
+    public function getVrorderOperateState($operate, $order_info)
+    {
         $state = false;
         if (!is_array($order_info) || empty($order_info))
             return false;
@@ -393,12 +396,12 @@ class Vrorder extends BaseModel {
             //买家退款
             case 'refund':
                 $state = false;
-                $code_list = isset($order_info['code_list'])?$order_info['code_list']:''; //没有使用的兑换码列表
-                if (!empty($code_list) && is_array($code_list)) {//没结算可以退款
-                    if ($order_info['vr_indate'] > TIMESTAMP) {//有效期内的能退款
+                $code_list = isset($order_info['code_list']) ? $order_info['code_list'] : ''; //没有使用的兑换码列表
+                if (!empty($code_list) && is_array($code_list)) { //没结算可以退款
+                    if ($order_info['vr_indate'] > TIMESTAMP) { //有效期内的能退款
                         $state = true;
                     }
-                    if ($order_info['vr_invalid_refund'] == 1 && ($order_info['vr_indate'] + 60 * 60 * 24 * config('ds_config.code_invalid_refund')) > TIMESTAMP) {//兑换码过期后可退款
+                    if ($order_info['vr_invalid_refund'] == 1 && ($order_info['vr_indate'] + 60 * 60 * 24 * config('ds_config.code_invalid_refund')) > TIMESTAMP) { //兑换码过期后可退款
                         $state = true;
                     }
                 }
@@ -414,7 +417,8 @@ class Vrorder extends BaseModel {
      * @param array $order_info 订单信息
      * @return array
      */
-    public function getVrorderStep($order_info) {
+    public function getVrorderStep($order_info)
+    {
         if (!is_array($order_info) || empty($order_info))
             return array();
         $step_list = array();
@@ -436,7 +440,8 @@ class Vrorder extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getVrorderCount($condition) {
+    public function getVrorderCount($condition)
+    {
         return Db::name('vrorder')->where($condition)->count();
     }
 
@@ -450,9 +455,10 @@ class Vrorder extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getVrorderAndOrderGoodsSalesRecordList($condition, $field = "*", $pagesize = 0, $order = 'order_id desc') {
-        $condition[] = array('order_state','in', array(ORDER_STATE_PAY, ORDER_STATE_SUCCESS));
-        return $this->getVrorderList($condition, $pagesize,$field , $order);
+    public function getVrorderAndOrderGoodsSalesRecordList($condition, $field = "*", $pagesize = 0, $order = 'order_id desc')
+    {
+        $condition[] = array('order_state', 'in', array(ORDER_STATE_PAY, ORDER_STATE_SUCCESS));
+        return $this->getVrorderList($condition, $pagesize, $field, $order);
     }
 
     /**
@@ -465,10 +471,10 @@ class Vrorder extends BaseModel {
         if (empty($param) && !is_array($param))
             return ds_callback(true);
         $condition = array();
-        $condition[] = array('order_id','=',$param['order_id']);
-        $condition[] = array('buyer_id','=',$param['buyer_id']);
-        $condition[] = array('vr_state','=',0);
-        $condition[] = array('refund_lock','=',0);
+        $condition[] = array('order_id', '=', $param['order_id']);
+        $condition[] = array('buyer_id', '=', $param['buyer_id']);
+        $condition[] = array('vr_state', '=', 0);
+        $condition[] = array('refund_lock', '=', 0);
         $code_list = $this->getShowVrordercodeList($condition, 'vr_code,vr_indate');
         if (empty($code_list))
             return ds_callback(true);
@@ -481,20 +487,19 @@ class Vrorder extends BaseModel {
         $tpl_info = model('mailtemplates')->getTplInfo(array('mailmt_code' => 'send_vr_code'));
         $data = array();
         $data['vr_code'] = rtrim($content, ',');
-        $ten_data=array($data['vr_code']);
+        $ten_data = array($data['vr_code']);
         $message = ds_replace_text($tpl_info['mailmt_content'], $data);
-        $smslog_param=array(
-                    'ali_template_code'=>$tpl_info['ali_template_code'],
-                    'ali_template_param'=>$data,
-                    'ten_template_code'=>$tpl_info['ten_template_code'],
-                    'ten_template_param'=>$ten_data,
-                    'message'=>$message,
-                );
+        $smslog_param = array(
+            'ali_template_code' => $tpl_info['ali_template_code'],
+            'ali_template_param' => $data,
+            'ten_template_code' => $tpl_info['ten_template_code'],
+            'ten_template_param' => $ten_data,
+            'message' => $message,
+        );
         $result = model('smslog')->sendSms($param["buyer_phone"], $smslog_param);
         if (!$result) {
             return ds_callback(false, '兑换码发送失败order_id:' . $param['order_id']);
-        }
-        else {
+        } else {
             return ds_callback(true);
         }
     }

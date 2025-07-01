@@ -4,20 +4,11 @@ namespace app\common\model;
 
 use think\facade\Db;
 
-
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型 [会员标签]
+ * 会员标签
  */
-class Snsmember extends BaseModel {
+class Snsmember extends BaseModel
+{
 
     public $page_info;
 
@@ -26,7 +17,8 @@ class Snsmember extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delSnsmembertag($condition) {
+    public function delSnsmembertag($condition)
+    {
         return Db::name('snsmembertag')->where($condition)->delete();
     }
 
@@ -36,7 +28,8 @@ class Snsmember extends BaseModel {
      * @param type $pagesize
      * @return type
      */
-    public function getSnsmembertagList($order, $pagesize) {
+    public function getSnsmembertagList($order, $pagesize)
+    {
         if ($pagesize) {
             $tag_list = Db::name('snsmembertag')->order($order)->paginate(['list_rows' => 10, 'query' => request()->param()], false);
             $this->page_info = $tag_list;
@@ -51,7 +44,8 @@ class Snsmember extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function addSnsmembertag($data) {
+    public function addSnsmembertag($data)
+    {
         return Db::name('snsmembertag')->insert($data);
     }
 
@@ -60,7 +54,8 @@ class Snsmember extends BaseModel {
      * @param type $update
      * @return type
      */
-    public function editSnsmembertag($update) {
+    public function editSnsmembertag($update)
+    {
         return $result = Db::name('snsmembertag')->update($update);
     }
 
@@ -69,7 +64,8 @@ class Snsmember extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getOneSnsmembertag($condition) {
+    public function getOneSnsmembertag($condition)
+    {
         return Db::name('snsmembertag')->find($condition);
     }
 
@@ -78,7 +74,8 @@ class Snsmember extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getSnstagmemberCount($condition) {
+    public function getSnstagmemberCount($condition)
+    {
         return Db::name('snsmtagmember')->where($condition)->count();
     }
 
@@ -91,7 +88,8 @@ class Snsmember extends BaseModel {
      * @param type $count
      * @return type
      */
-    public function getSnsmtagmemberList($condition, $field, $pagesize, $order, $count) {
+    public function getSnsmtagmemberList($condition, $field, $pagesize, $order, $count)
+    {
         if ($pagesize) {
             $result = Db::name('snsmtagmember')->alias('s')->field($field)->join('member m', 's.member_id=m.member_id', 'LEFT')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -107,11 +105,13 @@ class Snsmember extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delSnsmtagmember($condition) {
+    public function delSnsmtagmember($condition)
+    {
         return Db::name('snsmtagmember')->where($condition)->delete();
     }
 
-    public function editSnsmtagmember($condition, $update) {
+    public function editSnsmtagmember($condition, $update)
+    {
         return Db::name('snsmtagmember')->where($condition)->update($update);
     }
 }

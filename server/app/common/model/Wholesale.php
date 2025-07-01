@@ -1,27 +1,14 @@
 <?php
 
-/**
- * 批发活动模型 
- *
- */
-
 namespace app\common\model;
 
-
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 批发
  */
-class Wholesale extends BaseModel {
+class Wholesale extends BaseModel
+{
 
     public $page_info;
     const WHOLESALE_STATE_NORMAL = 1;
@@ -45,21 +32,22 @@ class Wholesale extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getWholesaleList($condition, $pagesize = null, $order = '', $field = '*') {
-        if($pagesize){
-        $res = Db::name('wholesale')->field($field)->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
-        $this->page_info=$res;
-        $wholesale_list= $res->items();
-        }else{
-            $wholesale_list= Db::name('wholesale')->field($field)->where($condition)->order($order)->select()->toArray();
+    public function getWholesaleList($condition, $pagesize = null, $order = '', $field = '*')
+    {
+        if ($pagesize) {
+            $res = Db::name('wholesale')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
+            $this->page_info = $res;
+            $wholesale_list = $res->items();
+        } else {
+            $wholesale_list = Db::name('wholesale')->field($field)->where($condition)->order($order)->select()->toArray();
         }
-        
+
         if (!empty($wholesale_list)) {
             for ($i = 0, $j = count($wholesale_list); $i < $j; $i++) {
                 $wholesale_list[$i] = $this->getWholesaleExtendInfo($wholesale_list[$i]);
             }
         }
-        
+
         return $wholesale_list;
     }
 
@@ -70,7 +58,8 @@ class Wholesale extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getWholesaleInfo($condition) {
+    public function getWholesaleInfo($condition)
+    {
         $wholesale_info = Db::name('wholesale')->where($condition)->find();
         $wholesale_info = $this->getWholesaleExtendInfo($wholesale_info);
         return $wholesale_info;
@@ -84,13 +73,14 @@ class Wholesale extends BaseModel {
      * @param type $store_id 如果提供店铺编号，判断是否为该店铺活动，如果不是返回null
      * @return array
      */
-    public function getWholesaleInfoByID($wholesale_id, $store_id = 0) {
+    public function getWholesaleInfoByID($wholesale_id, $store_id = 0)
+    {
         if (intval($wholesale_id) <= 0) {
             return null;
         }
 
         $condition = array();
-        $condition[] = array('wholesale_id','=',$wholesale_id);
+        $condition[] = array('wholesale_id', '=', $wholesale_id);
         $wholesale_info = $this->getWholesaleInfo($condition);
         if ($store_id > 0 && $wholesale_info['store_id'] != $store_id) {
             return null;
@@ -105,7 +95,8 @@ class Wholesale extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getWholesaleStateArray() {
+    public function getWholesaleStateArray()
+    {
         return $this->wholesale_state_array;
     }
 
@@ -116,7 +107,8 @@ class Wholesale extends BaseModel {
      * @param array $data 数据
      * @return bool
      */
-    public function addWholesale($data) {
+    public function addWholesale($data)
+    {
         $data['wholesale_state'] = self::WHOLESALE_STATE_NORMAL;
         return Db::name('wholesale')->insertGetId($data);
     }
@@ -129,7 +121,8 @@ class Wholesale extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editWholesale($update, $condition) {
+    public function editWholesale($update, $condition)
+    {
         return Db::name('wholesale')->where($condition)->update($update);
     }
 
@@ -140,7 +133,8 @@ class Wholesale extends BaseModel {
      * @param type $condition 条件
      * @return bool
      */
-    public function delWholesale($condition) {
+    public function delWholesale($condition)
+    {
         $wholesale_list = $this->getWholesaleList($condition);
         $wholesale_id_string = '';
         if (!empty($wholesale_list)) {
@@ -152,7 +146,7 @@ class Wholesale extends BaseModel {
         //删除批发商品
         if ($wholesale_id_string !== '') {
             $wholesalegoods_model = model('wholesalegoods');
-            $wholesalegoods_model->delWholesalegoods(array(array('wholesale_id','in', $wholesale_id_string)));
+            $wholesalegoods_model->delWholesalegoods(array(array('wholesale_id', 'in', $wholesale_id_string)));
         }
 
         return Db::name('wholesale')->where($condition)->delete();
@@ -165,7 +159,8 @@ class Wholesale extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function cancelWholesale($condition) {
+    public function cancelWholesale($condition)
+    {
         $wholesale_list = $this->getWholesaleList($condition);
         $wholesale_id_string = '';
         if (!empty($wholesale_list)) {
@@ -181,8 +176,8 @@ class Wholesale extends BaseModel {
         if ($wholesale_id_string !== '') {
             $wholesalegoods_model = model('wholesalegoods');
             $condition = array();
-            $condition[] = array('wholesalegoods_state','=',self::WHOLESALE_STATE_CANCEL);
-            $condition[] = array('wholesale_id','in',$wholesale_id_string);
+            $condition[] = array('wholesalegoods_state', '=', self::WHOLESALE_STATE_CANCEL);
+            $condition[] = array('wholesale_id', 'in', $wholesale_id_string);
             $wholesalegoods_model->editWholesalegoods($condition);
         }
 
@@ -196,8 +191,9 @@ class Wholesale extends BaseModel {
      * @param type $wholesale_info 批发信息
      * @return boolean
      */
-    public function getWholesaleExtendInfo($wholesale_info) {
-        if(!$wholesale_info){
+    public function getWholesaleExtendInfo($wholesale_info)
+    {
+        if (!$wholesale_info) {
             return false;
         }
         if ($wholesale_info['wholesale_end_time'] > TIMESTAMP) {
@@ -222,13 +218,14 @@ class Wholesale extends BaseModel {
      * @param type $condition
      * @return boolean
      */
-    public function editExpireWholesale($condition) {
-        $condition[] = array('wholesale_end_time','<', TIMESTAMP);
+    public function editExpireWholesale($condition)
+    {
+        $condition[] = array('wholesale_end_time', '<', TIMESTAMP);
 
         // 更新商品促销价格
-        $wholesalegoods_list = model('wholesalegoods')->getWholesalegoodsList(array(array('wholesale_end_time','<', TIMESTAMP)));
+        $wholesalegoods_list = model('wholesalegoods')->getWholesalegoodsList(array(array('wholesale_end_time', '<', TIMESTAMP)));
 
-        $condition[] = array('wholesale_state','=',self::WHOLESALE_STATE_NORMAL);
+        $condition[] = array('wholesale_state', '=', self::WHOLESALE_STATE_NORMAL);
 
         $update = array();
         $update['wholesale_state'] = self::WHOLESALE_STATE_CLOSE;
@@ -240,7 +237,7 @@ class Wholesale extends BaseModel {
         }
         return true;
     }
-    
+
     /**
      * 解锁商品
      * @access private
@@ -253,5 +250,4 @@ class Wholesale extends BaseModel {
         $goods_model->editGoodsCommonUnlock(array('goods_commonid' => $goods_commonid));
         $goods_model->editGoodsUnlock(array('goods_commonid' => $goods_commonid));
     }
-
 }

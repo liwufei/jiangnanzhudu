@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 限时折扣商品
  */
-class Pxianshigoods extends BaseModel {
+class Pxianshigoods extends BaseModel
+{
 
     public $page_info;
 
@@ -34,7 +26,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $limit 个数限制
      * @return array 秒杀商品列表
      */
-    public function getXianshigoodsList($condition, $pagesize = null, $order = '', $field = '*', $limit = 0) {
+    public function getXianshigoodsList($condition, $pagesize = null, $order = '', $field = '*', $limit = 0)
+    {
         if ($pagesize) {
             $res = Db::name('pxianshigoods')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -55,7 +48,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $limit 个数限制
      * @return array 
      */
-    public function getXianshigoodsExtendList($condition, $pagesize = null, $order = '', $field = '*', $limit = 0) {
+    public function getXianshigoodsExtendList($condition, $pagesize = null, $order = '', $field = '*', $limit = 0)
+    {
         $xianshigoods_list = $this->getXianshigoodsList($condition, $pagesize, $order, $field, $limit);
         if (!empty($xianshigoods_list)) {
             for ($i = 0, $j = count($xianshigoods_list); $i < $j; $i++) {
@@ -76,7 +70,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function getXianshigoodsExtendIds($condition, $pagesize = null, $order = '', $field = 'goods_id', $limit = 0) {
+    public function getXianshigoodsExtendIds($condition, $pagesize = null, $order = '', $field = 'goods_id', $limit = 0)
+    {
         $xianshigoods_id_list = $this->getXianshigoodsList($condition, $pagesize, $order, $field, $limit);
 
         if (!empty($xianshigoods_id_list)) {
@@ -96,7 +91,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $condition 条件
      * @return array
      */
-    public function getXianshigoodsInfo($condition) {
+    public function getXianshigoodsInfo($condition)
+    {
         $result = Db::name('pxianshigoods')->where($condition)->find();
         return $result;
     }
@@ -109,7 +105,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $store_id 店铺ID
      * @return type
      */
-    public function getXianshigoodsInfoByID($xianshigoods_id, $store_id = 0) {
+    public function getXianshigoodsInfoByID($xianshigoods_id, $store_id = 0)
+    {
         if (intval($xianshigoods_id) <= 0) {
             return null;
         }
@@ -132,7 +129,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $xianshigoods_info 秒杀商品信息
      * @return bool
      */
-    public function addXianshigoods($xianshigoods_info) {
+    public function addXianshigoods($xianshigoods_info)
+    {
         $xianshigoods_info['xianshigoods_state'] = self::XIANSHI_GOODS_STATE_NORMAL;
         $xianshigoods_id = Db::name('pxianshigoods')->insertGetId($xianshigoods_info);
         if ($xianshigoods_id) {
@@ -155,7 +153,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editXianshigoods($update, $condition) {
+    public function editXianshigoods($update, $condition)
+    {
         $result = Db::name('pxianshigoods')->where($condition)->update($update);
         if ($result) {
             $xianshigoods_list = $this->getXianshigoodsList($condition, null, '', 'goods_id');
@@ -178,7 +177,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function delXianshigoods($condition) {
+    public function delXianshigoods($condition)
+    {
         $xianshigoods_list = $this->getXianshigoodsList($condition, null, '', 'goods_id,goods_commonid');
         $result = Db::name('pxianshigoods')->where($condition)->delete();
         if ($result) {
@@ -202,7 +202,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $xianshi_info  信息
      * @return string
      */
-    public function getXianshigoodsExtendInfo($xianshi_info) {
+    public function getXianshigoodsExtendInfo($xianshi_info)
+    {
         $xianshi_info['goods_url'] = (string) url('/home/Goods/index', array('goods_id' => $xianshi_info['goods_id']));
         $xianshi_info['image_url'] = goods_cthumb($xianshi_info['goods_image'], 60, $xianshi_info['store_id']);
         $xianshi_info['xianshigoods_price'] = ds_price_format($xianshi_info['xianshigoods_price']);
@@ -217,7 +218,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $count 推荐数量
      * @return type
      */
-    public function getXianshigoodsCommendList($count = 4) {
+    public function getXianshigoodsCommendList($count = 4)
+    {
         $condition = array();
         $condition[] = array('xianshigoods_state', '=', self::XIANSHI_GOODS_STATE_NORMAL);
         $condition[] = array('xianshigoods_starttime', '<', TIMESTAMP);
@@ -232,7 +234,8 @@ class Pxianshigoods extends BaseModel {
      * @author csdeshang
      * @param type $goods_commonid 商品编号
      */
-    private function _lockGoods($goods_commonid, $goods_id) {
+    private function _lockGoods($goods_commonid, $goods_id)
+    {
         $condition = array();
         $condition[] = array('goods_commonid', '=', $goods_commonid);
 
@@ -250,7 +253,8 @@ class Pxianshigoods extends BaseModel {
      * @author csdeshang
      * @param type $goods_commonid 商品编号ID
      */
-    private function _unlockGoods($goods_commonid, $goods_id) {
+    private function _unlockGoods($goods_commonid, $goods_id)
+    {
         $goods_model = model('goods');
         $goods_model->editGoodsUnlock(array('goods_id' => $goods_id));
         if (!$goods_model->getGoodsCount(array('goods_commonid' => $goods_commonid, 'goods_lock' => 1))) {
@@ -265,7 +269,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $goods_id 商品id
      * @return array
      */
-    public function getXianshigoodsInfoByGoodsID($goods_id) {
+    public function getXianshigoodsInfoByGoodsID($goods_id)
+    {
         $info = $this->_rGoodsXianshiCache($goods_id);
         if (empty($info)) {
             $condition = array();
@@ -290,7 +295,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $goods_string 商品编号字符串，例：'11,22,33'
      * @return type
      */
-    public function getXianshigoodsListByGoodsString($goods_string) {
+    public function getXianshigoodsListByGoodsString($goods_string)
+    {
         $xianshigoods_list = $this->_getXianshigoodsListByGoods($goods_string);
         $xianshigoods_list = array_under_reset($xianshigoods_list, 'goods_id');
         return $xianshigoods_list;
@@ -303,7 +309,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $goods_id_string  商品编号字符串
      * @return type
      */
-    private function _getXianshigoodsListByGoods($goods_id_string) {
+    private function _getXianshigoodsListByGoods($goods_id_string)
+    {
         $condition = array();
         $condition[] = array('xianshigoods_state', '=', self::XIANSHI_GOODS_STATE_NORMAL);
         $condition[] = array('xianshigoods_starttime', '<', TIMESTAMP);
@@ -320,7 +327,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $goods_id 商品id
      * @return type
      */
-    private function _rGoodsXianshiCache($goods_id) {
+    private function _rGoodsXianshiCache($goods_id)
+    {
         return rcache($goods_id, 'goods_xianshi');
     }
 
@@ -332,7 +340,8 @@ class Pxianshigoods extends BaseModel {
      * @param array $info 信息
      * @return boolean
      */
-    private function _wGoodsXianshiCache($goods_id, $info) {
+    private function _wGoodsXianshiCache($goods_id, $info)
+    {
         return wcache($goods_id, $info, 'goods_xianshi');
     }
 
@@ -343,7 +352,8 @@ class Pxianshigoods extends BaseModel {
      * @param type $goods_id 商品id
      * @return bool
      */
-    private function _dGoodsXianshiCache($goods_id) {
+    private function _dGoodsXianshiCache($goods_id)
+    {
         return dcache($goods_id, 'goods_xianshi');
     }
 }

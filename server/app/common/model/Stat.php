@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 统计
  */
-class Stat extends BaseModel {
+class Stat extends BaseModel
+{
 
     public $page_info;
 
@@ -28,7 +20,8 @@ class Stat extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function statByMember($where, $field = '*', $pagesize = 0, $order = '', $group = '') {
+    public function statByMember($where, $field = '*', $pagesize = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('member')->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -48,7 +41,8 @@ class Stat extends BaseModel {
      * @param string $group 分组
      * @return array
      */
-    public function getOneByMember($where, $field = '*', $order = '', $group = '') {
+    public function getOneByMember($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('member')->field($field)->where($where)->order($order)->group($group)->find();
     }
 
@@ -62,7 +56,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getOneByStore($where, $field = '*', $order = '', $group = '') {
+    public function getOneByStore($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('store')->field($field)->where($where)->order($order)->group($group)->find();
     }
 
@@ -76,7 +71,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByStore($where, $field = '*', $order = '', $group = '') {
+    public function statByStore($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('store')->field($field)->where($where)->group($group)->order($order)->select()->toArray();
     }
 
@@ -92,7 +88,8 @@ class Stat extends BaseModel {
      * @param sting $group 分组
      * @return array
      */
-    public function getNewStoreStatList($condition, $field = '*', $pagesize = 0, $order = 'store_id desc', $limit = 0, $group = '') {
+    public function getNewStoreStatList($condition, $field = '*', $pagesize = 0, $order = 'store_id desc', $limit = 0, $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('store')->field($field)->where($condition)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -112,7 +109,8 @@ class Stat extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getMemberList($where, $field = '*', $pagesize = 0, $order = 'member_id desc') {
+    public function getMemberList($where, $field = '*', $pagesize = 0, $order = 'member_id desc')
+    {
         if ($pagesize) {
             $res = Db::name('member')->field($field)->where($where)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -128,7 +126,8 @@ class Stat extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getStoreDegree() {
+    public function getStoreDegree()
+    {
         $tmp = Db::name('storegrade')->field('storegrade_id,storegrade_name')->where(true)->select()->toArray();
         $sd_list = array();
         if (!empty($tmp)) {
@@ -151,7 +150,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return array
      */
-    public function statByStatmember($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByStatmember($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('statmember')->field($field)->where($where)->limit($limit)->order($order)->group($group)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -168,7 +168,8 @@ class Stat extends BaseModel {
      * @param type $where 条件
      * @return type
      */
-    public function getGoodsNum($where) {
+    public function getGoodsNum($where)
+    {
         $rs = Db::name('goodscommon')->field('count(*) as allnum')->where($where)->select()->toArray();
         return $rs[0]['allnum'];
     }
@@ -185,7 +186,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getPredepositInfo($condition, $field = '*', $pagesize = 0, $order = 'lg_addtime desc', $limit = 0, $group = '') {
+    public function getPredepositInfo($condition, $field = '*', $pagesize = 0, $order = 'lg_addtime desc', $limit = 0, $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('pdlog')->field($field)->where($condition)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -207,7 +209,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByOrderGoods($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByOrderGoods($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('ordergoods')->alias('ordergoods')->field($field)->join('order order', 'ordergoods.order_id=order.order_id', 'left')->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -229,7 +232,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByOrderLog($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByOrderLog($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('orderlog')->alias('orderlog')->field($field)->join('order order', 'orderlog.order_id = order.order_id', 'left')->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -251,7 +255,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByRefundreturn($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByRefundreturn($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('refundreturn')->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -273,7 +278,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByStoreAndEvaluatestore($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByStoreAndEvaluatestore($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('evaluatestore')->alias('evaluatestore')->field($field)->join('store store', 'evaluatestore.seval_storeid=store.store_id', 'left')->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -290,7 +296,8 @@ class Stat extends BaseModel {
      * @param type $search_arr 搜索数组
      * @return type
      */
-    public function dealwithSearchTime($search_arr) {
+    public function dealwithSearchTime($search_arr)
+    {
         //初始化时间
         //天
         if (!isset($search_arr['search_time'])) {
@@ -335,7 +342,8 @@ class Stat extends BaseModel {
      * @param type $search_arr 搜索数组
      * @return type
      */
-    public function getStarttimeAndEndtime($search_arr) {
+    public function getStarttimeAndEndtime($search_arr)
+    {
         $stime = array();
         $etime = array();
         if (isset($search_arr['search_type']) && $search_arr['search_type'] == 'day') {
@@ -364,7 +372,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getOneStatmember($where, $field = '*', $order = '', $group = '') {
+    public function getOneStatmember($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('statmember')->field($field)->where($where)->group($group)->order($order)->find();
     }
 
@@ -376,7 +385,8 @@ class Stat extends BaseModel {
      * @param type $update_arr 更新数据
      * @return type
      */
-    public function editStatmember($where, $update_arr) {
+    public function editStatmember($where, $update_arr)
+    {
         return Db::name('statmember')->where($where)->update($update_arr);
     }
 
@@ -391,7 +401,8 @@ class Stat extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function statByOrder($where, $field = '*', $pagesize = 0, $limit = 0, $order = '') {
+    public function statByOrder($where, $field = '*', $pagesize = 0, $limit = 0, $order = '')
+    {
         if ($pagesize) {
             $res = Db::name('order')->field($field)->where($where)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -412,8 +423,8 @@ class Stat extends BaseModel {
      * @param string $order 排序
      * @param string $group 分组
      */
-    public function statByPointslog($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
-
+    public function statByPointslog($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('pointslog')->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -429,7 +440,8 @@ class Stat extends BaseModel {
      * @author csdeshang
      * @param type $where 条件数组
      */
-    public function delByStatmember($where = array()) {
+    public function delByStatmember($where = array())
+    {
         Db::name('statmember')->where($where)->delete();
     }
 
@@ -443,7 +455,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getoneByStatordergoods($where, $field = '*', $order = '', $group = '') {
+    public function getoneByStatordergoods($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('statordergoods')->field($field)->where($where)->group($group)->order($order)->find();
     }
 
@@ -459,8 +472,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByStatordergoods($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
-
+    public function statByStatordergoods($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('statordergoods')->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -480,7 +493,8 @@ class Stat extends BaseModel {
      * @param string $group 分组
      * @return array
      */
-    public function getoneByStatorder($where, $field = '*', $order = '', $group = '') {
+    public function getoneByStatorder($where, $field = '*', $order = '', $group = '')
+    {
         return Db::name('statorder')->field($field)->where($where)->group($group)->order($order)->find();
     }
 
@@ -496,7 +510,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByStatorder($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByStatorder($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('statorder')->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -518,7 +533,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function statByGoods($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByGoods($where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name('goods')->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;
@@ -539,7 +555,8 @@ class Stat extends BaseModel {
      * @param type $group 分组
      * @return type
      */
-    public function getoneByFlowstat($tablename = 'flowstat', $where, $field = '*', $order = '', $group = '') {
+    public function getoneByFlowstat($tablename = 'flowstat', $where, $field = '*', $order = '', $group = '')
+    {
         return Db::name($tablename)->field($field)->where($where)->group($group)->order($order)->find();
     }
 
@@ -556,7 +573,8 @@ class Stat extends BaseModel {
      * @param string $group 分组
      * @return array
      */
-    public function statByFlowstat($tablename = 'flowstat', $where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '') {
+    public function statByFlowstat($tablename = 'flowstat', $where, $field = '*', $pagesize = 0, $limit = 0, $order = '', $group = '')
+    {
         if ($pagesize) {
             $res = Db::name($tablename)->field($field)->where($where)->group($group)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $res;

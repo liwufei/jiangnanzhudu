@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 退款退货
  */
-class Refundreturn extends BaseModel {
+class Refundreturn extends BaseModel
+{
 
     public $page_info;
 
@@ -29,7 +21,8 @@ class Refundreturn extends BaseModel {
      * @param type $goods 商品数组
      * @return type
      */
-    public function addRefundreturn($refund_array, $order = array(), $goods = array()) {
+    public function addRefundreturn($refund_array, $order = array(), $goods = array())
+    {
         if (!empty($order) && is_array($order)) {
             $refund_array['order_id'] = $order['order_id'];
             $refund_array['order_sn'] = $order['order_sn'];
@@ -88,7 +81,8 @@ class Refundreturn extends BaseModel {
      * @param type $order_id 订单编号
      * @return boolean
      */
-    public function editOrderLock($order_id) {
+    public function editOrderLock($order_id)
+    {
         $order_id = intval($order_id);
         if ($order_id > 0) {
             $condition = array();
@@ -109,7 +103,8 @@ class Refundreturn extends BaseModel {
      * @param type $order_id 订单编号
      * @return boolean
      */
-    public function editOrderUnlock($order_id) {
+    public function editOrderUnlock($order_id)
+    {
         $order_id = intval($order_id);
         if ($order_id > 0) {
             $condition = array();
@@ -134,7 +129,8 @@ class Refundreturn extends BaseModel {
      * @param type $data 数据
      * @return boolean
      */
-    public function editRefundreturn($condition, $data) {
+    public function editRefundreturn($condition, $data)
+    {
         if (empty($condition)) {
             return false;
         }
@@ -153,7 +149,8 @@ class Refundreturn extends BaseModel {
      * @param type $refund 退款
      * @return boolean
      */
-    public function refundAmount($order, $refund_amount, $refund_type = 'order') {
+    public function refundAmount($order, $refund_amount, $refund_type = 'order')
+    {
         $order_model = model('order');
         //生成out_request_no 支付宝部分退款必传唯一的标识一次退款请求号
         if (!isset($order['out_request_no']) && !empty($order['out_request_no'])) {
@@ -224,9 +221,7 @@ class Refundreturn extends BaseModel {
             }
         }
 
-
-
-        if (($rcb_amount > 0) && ($refund_amount > $predeposit_amount) && $not_trade_refund) {//退充值卡
+        if (($rcb_amount > 0) && ($refund_amount > $predeposit_amount) && $not_trade_refund) { //退充值卡
             $log_array = array();
             $log_array['member_id'] = $order['buyer_id'];
             $log_array['member_name'] = $order['buyer_name'];
@@ -242,7 +237,6 @@ class Refundreturn extends BaseModel {
                 throw new \think\Exception('充值卡退回失败', 10006);
             }
         }
-
 
         //全部退回预存款
         if ($predeposit_amount > 0 && $not_trade_refund) {
@@ -261,7 +255,6 @@ class Refundreturn extends BaseModel {
                 throw new \think\Exception('预存款退回失败', 10006);
             }
         }
-
 
         //实物订单记录退款日志
         if ($refund_type == 'order') {
@@ -309,7 +302,8 @@ class Refundreturn extends BaseModel {
      * @param type $refund 退款
      * @return boolean
      */
-    public function editOrderRefund($refund) {
+    public function editOrderRefund($refund)
+    {
         $refund_id = intval($refund['refund_id']);
         if ($refund_id > 0) {
             $order_id = $refund['order_id']; //订单编号
@@ -342,12 +336,12 @@ class Refundreturn extends BaseModel {
 
                 //库存处理
                 $data = array();
-                if ($refund['refundreturn_goods_state'] == '4') {//如果是已收到退货信息，则增加商品库存
+                if ($refund['refundreturn_goods_state'] == '4') { //如果是已收到退货信息，则增加商品库存
                     $data[$refund['goods_id']] = $refund['goods_num'];
                 }
                 $pintuan_list = array(); //需要后续处理的促销活动
                 foreach ($goods_list as $goods) {
-                    if ($refund['goods_id'] == 0) {//全部退款表示是发货前的退款，则增加商品库存
+                    if ($refund['goods_id'] == 0) { //全部退款表示是发货前的退款，则增加商品库存
                         $data[$goods['goods_id']] = $goods['goods_num'];
                     }
                     //如果是拼团
@@ -377,9 +371,6 @@ class Refundreturn extends BaseModel {
                         }
                     }
                 }
-
-
-
 
                 if ($state) {
                     $order_array = array();
@@ -428,7 +419,8 @@ class Refundreturn extends BaseModel {
      * @param type $reason_array 原因数组
      * @return type
      */
-    public function addReason($reason_array) {
+    public function addReason($reason_array)
+    {
         $reason_id = Db::name('refundreason')->insertGetId($reason_array);
         return $reason_id;
     }
@@ -441,7 +433,8 @@ class Refundreturn extends BaseModel {
      * @param type $data 数据
      * @return boolean
      */
-    public function editReason($condition, $data) {
+    public function editReason($condition, $data)
+    {
         if (empty($condition)) {
             return false;
         }
@@ -460,7 +453,8 @@ class Refundreturn extends BaseModel {
      * @param type $condition 条件
      * @return boolean
      */
-    public function delReason($condition) {
+    public function delReason($condition)
+    {
         if (empty($condition)) {
             return false;
         } else {
@@ -479,7 +473,8 @@ class Refundreturn extends BaseModel {
      * @param type $fields 字段
      * @return array
      */
-    public function getReasonList($condition = array(), $pagesize = '', $limit = 0, $fields = '*') {
+    public function getReasonList($condition = array(), $pagesize = '', $limit = 0, $fields = '*')
+    {
         if ($pagesize) {
             $result_paginate = Db::name('refundreason')->field($fields)->where($condition)->order('reason_sort asc,reason_id desc')->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result_paginate;
@@ -501,7 +496,8 @@ class Refundreturn extends BaseModel {
      * @param type $limit 限制
      * @return type
      */
-    public function getRefundreturnList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0) {
+    public function getRefundreturnList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0)
+    {
         if ($pagesize) {
             $result = Db::name('refundreturn')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -526,10 +522,11 @@ class Refundreturn extends BaseModel {
      * @param type $pagesize 分页
      * @return type
      */
-    public function getRefundList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0) {
-//        if(!isset($condition['refund_type'])){
-//            $condition['refund_type'] = '1'; //类型:1为退款,2为退货
-//        }
+    public function getRefundList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0)
+    {
+        //        if(!isset($condition['refund_type'])){
+        //            $condition['refund_type'] = '1'; //类型:1为退款,2为退货
+        //        }
         $result = $this->getRefundreturnList($condition, $pagesize, $field, $order, $limit);
         return $result;
     }
@@ -542,7 +539,8 @@ class Refundreturn extends BaseModel {
      * @param type $pagesize 分页
      * @return type
      */
-    public function getReturnList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0) {
+    public function getReturnList($condition = array(), $pagesize = '', $field = '*', $order = 'refund_id desc', $limit = 0)
+    {
         $condition[] = array('refund_type', '=', '2'); //类型:1为退款,2为退货
         $result = $this->getRefundreturnList($condition, $pagesize, $field, $order, $limit);
         return $result;
@@ -555,7 +553,8 @@ class Refundreturn extends BaseModel {
      * @param type $store_id 店铺id
      * @return string
      */
-    public function getRefundsn($store_id) {
+    public function getRefundsn($store_id)
+    {
         $result = mt_rand(100, 999) . substr(100 + $store_id, -3) . date('ymdHis');
         return $result;
     }
@@ -568,7 +567,8 @@ class Refundreturn extends BaseModel {
      * @param type $fields 字段
      * @return type
      */
-    public function getRefundreturnInfo($condition = array(), $fields = '*') {
+    public function getRefundreturnInfo($condition = array(), $fields = '*')
+    {
         $result = Db::name('refundreturn')->where($condition)->field($fields)->find();
         if (!empty($result)) {
             $result['refundreturn_seller_state_desc'] = get_refundreturn_seller_state($result['refundreturn_seller_state']);
@@ -584,7 +584,8 @@ class Refundreturn extends BaseModel {
      * @param type $order_list 订单列表与退款合并
      * @return string
      */
-    public function getGoodsRefundList($order_list = array()) {
+    public function getGoodsRefundList($order_list = array())
+    {
         $order_ids = array(); //订单编号数组
         $order_ids = array_keys($order_list);
         $condition = array();
@@ -624,7 +625,7 @@ class Refundreturn extends BaseModel {
                     $if_allow_goods_refund = $this->getOrderAllowRefundState($value);
                     foreach ($goods_list as $k => $v) {
                         $goods_id = $v['rec_id']; //订单商品表编号
-                        if ($v['goods_pay_price'] > 0) {//实际支付额大于0的可以退款
+                        if ($v['goods_pay_price'] > 0) { //实际支付额大于0的可以退款
                             $v['if_allow_goods_refund'] = $if_allow_goods_refund;
                         }
                         if (!empty($refund_goods[$order_id][$goods_id])) {
@@ -655,7 +656,8 @@ class Refundreturn extends BaseModel {
      * @param type $order_goods_id 订单商品id
      * @return type
      */
-    public function getRightOrderList($order_condition, $order_goods_id = 0) {
+    public function getRightOrderList($order_condition, $order_goods_id = 0)
+    {
         $order_model = model('order');
         $order_info = $order_model->getOrderInfo($order_condition, array('order_common', 'store'));
 
@@ -692,7 +694,8 @@ class Refundreturn extends BaseModel {
      * @param type $order 订单
      * @return bool
      */
-    public function getOrderAllowRefundState($order) {
+    public function getOrderAllowRefundState($order)
+    {
         //默认不允许退款退货
         $refund = '0';
         $order_state = $order['order_state']; //订单状态
@@ -724,7 +727,8 @@ class Refundreturn extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getRefundreturnCount($condition) {
+    public function getRefundreturnCount($condition)
+    {
         return Db::name('refundreturn')->where($condition)->count();
     }
 
@@ -735,7 +739,8 @@ class Refundreturn extends BaseModel {
      * @param array $condition 条件
      * @return type
      */
-    public function getRefundCount($condition) {
+    public function getRefundCount($condition)
+    {
         $condition[] = array('refund_type', '=', 1);
         return Db::name('refundreturn')->where($condition)->count();
     }
@@ -747,7 +752,8 @@ class Refundreturn extends BaseModel {
      * @param array $condition 条件
      * @return int
      */
-    public function getReturnCount($condition) {
+    public function getReturnCount($condition)
+    {
         $condition[] = array('refund_type', '=', 2);
         return Db::name('refundreturn')->where($condition)->count();
     }
@@ -759,7 +765,8 @@ class Refundreturn extends BaseModel {
      * @param type $list 店铺列表
      * @return array
      */
-    public function getRefundStoreList($list) {
+    public function getRefundStoreList($list)
+    {
         $store_ids = array();
         if (!empty($list) && is_array($list)) {
             foreach ($list as $key => $value) {
@@ -770,5 +777,3 @@ class Refundreturn extends BaseModel {
         return model('store')->getStoreMemberIDList($store_ids, $field);
     }
 }
-
-?>

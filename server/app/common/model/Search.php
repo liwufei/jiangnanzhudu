@@ -3,20 +3,13 @@
 namespace app\common\model;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 搜索
  */
-class Search extends BaseModel {
+class Search extends BaseModel
+{
 
-    public function __get($key) {
+    public function __get($key)
+    {
         return $this->$key;
     }
 
@@ -28,7 +21,8 @@ class Search extends BaseModel {
      * @param type $default_classid 默认分类id
      * @return type
      */
-    public function getAttribute($get, $default_classid) {
+    public function getAttribute($get, $default_classid)
+    {
         if (!empty($get['a_id'])) {
             $attr_ids = explode('_', $get['a_id']);
         }
@@ -150,7 +144,8 @@ class Search extends BaseModel {
      * @param type $keyword 
      * @return type
      */
-    public function getTagCategory($keyword = '') {
+    public function getTagCategory($keyword = '')
+    {
         $data = array();
         if ($keyword != '') {
             // 跟据class_tag缓存搜索出与keyword相关的分类
@@ -176,7 +171,8 @@ class Search extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    private function _getParentCategory($gc_id, $goods_class, $data) {
+    private function _getParentCategory($gc_id, $goods_class, $data)
+    {
         array_unshift($data, $gc_id);
         if (isset($goods_class[$gc_id]['gc_parent_id']) && $goods_class[$gc_id]['gc_parent_id'] != 0) {
             return $this->_getParentCategory($goods_class[$gc_id]['gc_parent_id'], $goods_class, $data);
@@ -193,7 +189,8 @@ class Search extends BaseModel {
      * @param type $sign 0为取得最后一级的同级分类，1为不取得
      * @return type
      */
-    public function getLeftCategory($param, $sign = 0) {
+    public function getLeftCategory($param, $sign = 0)
+    {
         $data = array();
         if (!empty($param)) {
             $goods_class = model('goodsclass')->getGoodsclassForCacheModel();
@@ -266,5 +263,3 @@ class Search extends BaseModel {
         return $tpl_data;
     }
 }
-
-?>

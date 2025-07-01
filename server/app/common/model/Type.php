@@ -1,25 +1,19 @@
 <?php
+
 namespace app\common\model;
 
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型【类型管理】
+ * 类型
  */
-class Type extends BaseModel {
+class Type extends BaseModel
+{
 
     public $page_info;
 
-    public function getTypebrandList($condition, $field = '*') {
+    public function getTypebrandList($condition, $field = '*')
+    {
         return Db::name('typebrand')->field($field)->where($condition)->select()->toArray();
     }
 
@@ -32,8 +26,8 @@ class Type extends BaseModel {
      * @param  string  $order  排序
      * @return array   返回数组
      */
-    public function getSpecByType($where, $field, $order = 's.sp_sort asc, s.sp_id asc') {
-
+    public function getSpecByType($where, $field, $order = 's.sp_sort asc, s.sp_id asc')
+    {
         $result = Db::name('typespec')->alias('t')->field($field)->where($where)->join('spec s', 't.sp_id = s.sp_id')->order($order)->select()->toArray();
         return $result;
     }
@@ -47,7 +41,8 @@ class Type extends BaseModel {
      * @param int $gc_id 商品分类ID
      * @return array
      */
-    public function getAttribute($type_id, $store_id, $gc_id) {
+    public function getAttribute($type_id, $store_id, $gc_id)
+    {
         $spec_list = $attr_list = $brand_list = array();
         if ($type_id > 0) {
             $spec_list = $this->typeRelatedJoinList(array(array('type_id', '=', $type_id)), 'spec', 'spec.sp_id as sp_id, spec.sp_name as sp_name');
@@ -82,7 +77,7 @@ class Type extends BaseModel {
                     $a['attrvalue_id'] = $val['attrvalue_id'];
                     $a['attrvalue_name'] = $val['attrvalue_name'];
 
-                    $array[$val['attr_id']]['attr_name'] = $val ['attr_name'];
+                    $array[$val['attr_id']]['attr_name'] = $val['attr_name'];
                     $array[$val['attr_id']]['value'][] = $a;
                 }
                 $attr_list = $array;
@@ -105,7 +100,8 @@ class Type extends BaseModel {
      * @param array $data 数据
      * @return boolean
      */
-    public function addGoodsType($goods_id, $commonid, $data) {
+    public function addGoodsType($goods_id, $commonid, $data)
+    {
         // 商品与属性对应
         $sa_array = array();
         $sa_array['goods_id'] = $goods_id;
@@ -128,7 +124,8 @@ class Type extends BaseModel {
      * @param array $conditoin 条件
      * @return bool
      */
-    public function delGoodsAttr($conditoin) {
+    public function delGoodsAttr($conditoin)
+    {
         return Db::name('goodsattrindex')->where($conditoin)->delete();
     }
 
@@ -142,7 +139,8 @@ class Type extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getTypeList($condition, $pagesize = '', $field = '*', $order = 'type_sort asc,type_id desc') {
+    public function getTypeList($condition, $pagesize = '', $field = '*', $order = 'type_sort asc,type_id desc')
+    {
         if ($pagesize) {
             $result = Db::name('type')->where($condition)->field($field)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -161,7 +159,8 @@ class Type extends BaseModel {
      * @param array $data 数据
      * @return bool
      */
-    public function typeAdd($table, $data) {
+    public function typeAdd($table, $data)
+    {
         return Db::name($table)->insertGetId($data);
     }
 
@@ -175,7 +174,8 @@ class Type extends BaseModel {
      * @param string $row 列名
      * @return bool
      */
-    public function typeRelatedAdd($table, $data, $id, $row = '') {
+    public function typeRelatedAdd($table, $data, $id, $row = '')
+    {
         $insert_str = '';
         if (is_array($data)) {
             foreach ($data as $v) {
@@ -197,18 +197,19 @@ class Type extends BaseModel {
      * @param type $type 类型
      * @return type 
      */
-    public function typeGoodsRelatedAdd($data, $table, $type = "") {
-        if (is_array($data ['value']) && !empty($data ['value'])) {
+    public function typeGoodsRelatedAdd($data, $table, $type = "")
+    {
+        if (is_array($data['value']) && !empty($data['value'])) {
             $insert_array = array();
-            foreach ($data ['value'] as $key => $val) {
+            foreach ($data['value'] as $key => $val) {
                 if (is_array($val) && !empty($val)) {
                     foreach ($val as $k => $v) {
                         if (intval($k) > 0 && $k != 'name') {
                             $insert = array();
-                            $insert['goods_id'] = $data ['goods_id'];
-                            $insert['goods_commonid'] = $data ['goods_commonid'];
-                            $insert['gc_id'] = $data ['gc_id'];
-                            $insert['type_id'] = $data ['type_id'];
+                            $insert['goods_id'] = $data['goods_id'];
+                            $insert['goods_commonid'] = $data['goods_commonid'];
+                            $insert['gc_id'] = $data['gc_id'];
+                            $insert['type_id'] = $data['type_id'];
                             $insert['attr_id'] = $key;
                             $insert['attrvalue_id'] = $k;
                             $insert_array[] = $insert;
@@ -229,7 +230,8 @@ class Type extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function typeRelatedList($table, $condition, $field = '*') {
+    public function typeRelatedList($table, $condition, $field = '*')
+    {
         $list_type = Db::name($table)->field($field)->where($condition)->select()->toArray();
         return $list_type;
     }
@@ -241,7 +243,8 @@ class Type extends BaseModel {
      * @param type $condition 条件
      * @return int
      */
-    public function getTypebrandCount($condition) {
+    public function getTypebrandCount($condition)
+    {
         return Db::name('typebrand')->where($condition)->count();
     }
 
@@ -255,7 +258,8 @@ class Type extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function typeRelatedJoinList($condition, $type = '', $field = '*', $order = '') {
+    public function typeRelatedJoinList($condition, $type = '', $field = '*', $order = '')
+    {
         $array = array();
         switch ($type) {
             case 'spec':
@@ -280,7 +284,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delType($condition) {
+    public function delType($condition)
+    {
         return Db::name('type')->where($condition)->delete();
     }
 
@@ -289,7 +294,8 @@ class Type extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function addTypebrand($data) {
+    public function addTypebrand($data)
+    {
         return Db::name('typebrand')->insertAll($data);
     }
 
@@ -298,7 +304,8 @@ class Type extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function addTypespec($data) {
+    public function addTypespec($data)
+    {
         return Db::name('typespec')->insertAll($data);
     }
 
@@ -307,7 +314,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getOneType($condition) {
+    public function getOneType($condition)
+    {
         return Db::name('type')->where($condition)->find();
     }
 
@@ -317,7 +325,8 @@ class Type extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editType($condition, $data) {
+    public function editType($condition, $data)
+    {
         return Db::name('type')->where($condition)->update($data);
     }
 
@@ -326,7 +335,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getOneAttribute($condition) {
+    public function getOneAttribute($condition)
+    {
         return Db::name('attribute')->where($condition)->find();
     }
 
@@ -335,7 +345,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getAttributevalueList($condition) {
+    public function getAttributevalueList($condition)
+    {
         return Db::name('attributevalue')->where($condition)->select()->toArray();
     }
 
@@ -345,7 +356,8 @@ class Type extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editAttributevalue($condition, $data) {
+    public function editAttributevalue($condition, $data)
+    {
         return Db::name('attributevalue')->where($condition)->update($data);
     }
 
@@ -354,7 +366,8 @@ class Type extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function addAttributevalue($data) {
+    public function addAttributevalue($data)
+    {
         return Db::name('attributevalue')->insert($data);
     }
 
@@ -364,7 +377,8 @@ class Type extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editAttribute($condition, $data) {
+    public function editAttribute($condition, $data)
+    {
         return Db::name('attribute')->where($condition)->update($data);
     }
 
@@ -373,7 +387,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delAttributevalue($condition) {
+    public function delAttributevalue($condition)
+    {
         return Db::name('attributevalue')->where($condition)->delete();
     }
 
@@ -382,7 +397,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delTypebrand($condition) {
+    public function delTypebrand($condition)
+    {
         return Db::name('typebrand')->where($condition)->delete();
     }
 
@@ -391,7 +407,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delTypespec($condition) {
+    public function delTypespec($condition)
+    {
         return Db::name('typespec')->where($condition)->delete();
     }
 
@@ -400,7 +417,8 @@ class Type extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delAttribute($condition) {
+    public function delAttribute($condition)
+    {
         return Db::name('attribute')->where($condition)->delete();
     }
 }

@@ -2,32 +2,23 @@
 
 namespace app\common\validate;
 
-
 use think\Validate;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 验证器
+ * 砍价
  */
-class  Pbargain extends Validate
+class Pbargain extends Validate
 {
     protected $rule = [
-        'bargain_name'=>'require|max:50',
-        'bargain_limit'=>'require|integer|egt:0',
-        'bargain_time'=>'require|integer|egt:1|elt:48',
-        'bargain_floorprice'=>'require|float|gt:0',
-        'bargain_total'=>'require|integer|egt:1',
-        'bargain_max'=>'require|float|gt:0',
-        'bargain_remark'=>'max:50',
-        'bargain_begintime'=>'require|date',
-        'bargain_endtime'=>'require|date',
+        'bargain_name' => 'require|max:50',
+        'bargain_limit' => 'require|integer|egt:0',
+        'bargain_time' => 'require|integer|egt:1|elt:48',
+        'bargain_floorprice' => 'require|float|gt:0',
+        'bargain_total' => 'require|integer|egt:1',
+        'bargain_max' => 'require|float|gt:0',
+        'bargain_remark' => 'max:50',
+        'bargain_begintime' => 'require|date',
+        'bargain_endtime' => 'require|date',
     ];
     protected $message  =   [
         'bargain_name.require' => '请填写砍价名称',
@@ -57,5 +48,4 @@ class  Pbargain extends Validate
     protected $scene = [
         'pbargin_save' => ['bargain_name', 'bargain_limit', 'bargain_time', 'bargain_floorprice', 'bargain_total', 'bargain_max', 'bargain_remark', 'bargain_begintime', 'bargain_endtime'],
     ];
-
 }

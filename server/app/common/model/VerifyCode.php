@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 验证码
  */
-class VerifyCode extends BaseModel {
+class VerifyCode extends BaseModel
+{
 
     public $page_info;
 
@@ -29,7 +21,8 @@ class VerifyCode extends BaseModel {
      * @param type $order
      * @return type
      */
-    public function getVerifyCodeList($condition, $pagesize = '', $order = 'verify_code_id desc') {
+    public function getVerifyCodeList($condition, $pagesize = '', $order = 'verify_code_id desc')
+    {
         if ($pagesize) {
             $result = Db::name('VerifyCode')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -48,7 +41,8 @@ class VerifyCode extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getVerifyCodeInfo($condition = array(), $fields = '*') {
+    public function getVerifyCodeInfo($condition = array(), $fields = '*')
+    {
         return Db::name('VerifyCode')->where($condition)->field($fields)->order('verify_code_id desc')->find();
     }
 
@@ -59,7 +53,8 @@ class VerifyCode extends BaseModel {
      * @param array $data 参数数据
      * @return type
      */
-    public function addVerifyCode($data) {
+    public function addVerifyCode($data)
+    {
         return Db::name('VerifyCode')->insertGetId($data);
     }
 
@@ -71,7 +66,8 @@ class VerifyCode extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editVerifyCode($data, $condition = array()) {
+    public function editVerifyCode($data, $condition = array())
+    {
         return Db::name('VerifyCode')->where($condition)->update($data);
     }
 
@@ -82,18 +78,19 @@ class VerifyCode extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function getVerifyCodeCount($condition = array()) {
+    public function getVerifyCodeCount($condition = array())
+    {
         return Db::name('VerifyCode')->where($condition)->count();
     }
 
-    /*
+    /**
      * 发送频率
      * @param int $verify_code_type 验证码类型
      * @param int $verify_code_user_type 用户类型
      * @return array
      */
-
-    public function isVerifyCodeFrequant($verify_code_type, $verify_code_user_type) {
+    public function isVerifyCodeFrequant($verify_code_type, $verify_code_user_type)
+    {
         $ip = request()->ip();
         if ($this->getVerifyCodeCount(array(array('verify_code_ip', '=', $ip), array('verify_code_type', '=', $verify_code_type), array('verify_code_user_type', '=', $verify_code_user_type), array('verify_code_add_time', '>', TIMESTAMP - 60)))) {
             return ds_callback(false, '请60秒以后再发');
@@ -104,14 +101,14 @@ class VerifyCode extends BaseModel {
         return ds_callback(true);
     }
 
-    /*
+    /**
      * 生成验证码
      * @param int $verify_code_type 验证码类型
      * @param int $verify_code_user_type 用户类型
      * @return array
      */
-
-    public function genVerifyCode($verify_code_type, $verify_code_user_type) {
+    public function genVerifyCode($verify_code_type, $verify_code_user_type)
+    {
         $verify_code = str_pad(strval(rand(0, 999999)), 6, '0', STR_PAD_LEFT);
         $i = 0;
         while ($i < 100 && $this->getVerifyCodeCount(array(array('verify_code', '=', $verify_code), array('verify_code_type', '=', $verify_code_type), array('verify_code_user_type', '=', $verify_code_user_type), array('verify_code_add_time', '>', TIMESTAMP - VERIFY_CODE_INVALIDE_MINUTE * 60)))) {
@@ -124,5 +121,3 @@ class VerifyCode extends BaseModel {
         return false;
     }
 }
-
-?>

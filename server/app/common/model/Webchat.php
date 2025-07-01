@@ -3,21 +3,13 @@
 namespace app\common\model;
 
 use think\facade\Db;
+
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 聊天记录
  */
 class Webchat extends BaseModel
 {
-   
+
     /**
      * 新增聊天记录
      * @access public
@@ -28,7 +20,7 @@ class Webchat extends BaseModel
     public function addChatmsg($msg)
     {
         $msg['f_ip'] = request()->ip();
-        $msg['r_state'] = '2';//state:1--read ,2--unread
+        $msg['r_state'] = '2'; //state:1--read ,2--unread
         $msg['chatmsg_addtime'] = TIMESTAMP;
         $m_id = Db::name('chatmsg')->insertGetId($msg);
         if ($m_id > 0) {
@@ -44,11 +36,11 @@ class Webchat extends BaseModel
             $goods_info = false;
             $pattern = '#' . HOME_SITE_URL . '/goods/index.html?goods_id=(\d+)$#';
             preg_match($pattern, $t_msg, $matches);
-            if (isset($matches[1]) && intval($matches[1]) < 1) {//伪静态
+            if (isset($matches[1]) && intval($matches[1]) < 1) { //伪静态
                 $pattern = '#' . HOME_SITE_URL . '/item-(\d+)\.html$#';
                 preg_match($pattern, $t_msg, $matches);
             }
-            $goods_id = isset($matches[1])?intval($matches[1]):0;
+            $goods_id = isset($matches[1]) ? intval($matches[1]) : 0;
             if ($goods_id >= 1) {
                 $goods_info = $this->getGoodsInfo($goods_id);
                 $goods_id = intval($goods_info['goods_id']);
@@ -56,8 +48,7 @@ class Webchat extends BaseModel
             $msg['goods_id'] = $goods_id;
             $msg['goods_info'] = $goods_info;
             return $msg;
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -78,7 +69,6 @@ class Webchat extends BaseModel
         return $member;
     }
 
-
     /**
      * 获取聊天记录
      * @access public
@@ -90,14 +80,14 @@ class Webchat extends BaseModel
      */
     public function getChatlogList($condition = array(), $pagesize = 10, $order = 'm_id desc')
     {
-        $list = Db::name('chatlog')->where($condition)->order($order)->paginate(['list_rows'=>$pagesize,'query' => request()->param()],false);
+        $list = Db::name('chatlog')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
         if (!empty($list->items()) && is_array($list->items())) {
             foreach ($list as $k => $v) {
                 $v['add_time'] = date("Y-m-d H:i:s", $v['chatlog_addtime']);
                 $list[$k] = $v;
             }
         }
-        $this->page_info=$list;
+        $this->page_info = $list;
         return $list->items();
     }
 
@@ -124,7 +114,7 @@ class Webchat extends BaseModel
      */
     public function getFriendList($condition = array(), $limit = 50, $member_list = array())
     {
-        $list = Db::name('snsfriend')->where($condition)->order('friend_addtime desc')->paginate(['list_rows'=>$limit,'query' => request()->param()],false);
+        $list = Db::name('snsfriend')->where($condition)->order('friend_addtime desc')->paginate(['list_rows' => $limit, 'query' => request()->param()], false);
         if ($list) {
             foreach ($list as $k => $v) {
                 $member = array();
@@ -136,7 +126,7 @@ class Webchat extends BaseModel
                 $member_list[$u_id] = $member;
             }
         }
-        $this->page_info=$list;
+        $this->page_info = $list;
         return $member_list;
     }
 
@@ -154,7 +144,7 @@ class Webchat extends BaseModel
         $seller_model = model('seller');
         $list = $seller_model->getSellerList($condition, 'seller_id desc');
         if (!empty($list) && is_array($list)) {
-            $member_ids = array();//会员编号数组
+            $member_ids = array(); //会员编号数组
             foreach ($list as $k => $v) {
                 $member = array();
                 $u_id = $v['member_id'];
@@ -169,11 +159,11 @@ class Webchat extends BaseModel
             }
             $member_model = model('member');
             $condition = array();
-            $condition[] = array('member_id','in', $member_ids);
+            $condition[] = array('member_id', 'in', $member_ids);
             $m_list = $member_model->getMemberList($condition);
             if (!empty($m_list) && is_array($m_list)) {
                 foreach ($m_list as $key => $value) {
-                    $u_id = $value['member_id'];//会员编号
+                    $u_id = $value['member_id']; //会员编号
                     $member_list[$u_id]['u_name'] = $value['member_name'];
                 }
             }
@@ -204,8 +194,7 @@ class Webchat extends BaseModel
                 $member['time'] = date("Y-m-d H:i:s", $v['addtime']);
                 if (empty($member_list[$u_id])) {
                     $member_list[$u_id] = $member;
-                }
-                else {
+                } else {
                     $member_list[$u_id]['recent'] = 1;
                     $member_list[$u_id]['time'] = date("Y-m-d H:i:s", $v['addtime']);
                 }
@@ -238,8 +227,7 @@ class Webchat extends BaseModel
                 $member['r_state'] = $v['r_state'];
                 if (empty($member_list[$u_id])) {
                     $member_list[$u_id] = $member;
-                }
-                else {
+                } else {
                     $member_list[$u_id]['recent'] = 1;
                     $member_list[$u_id]['time'] = date("Y-m-d H:i:s", $v['addtime']);
                     $member_list[$u_id]['r_state'] = $v['r_state'];
@@ -261,12 +249,12 @@ class Webchat extends BaseModel
     public function getMemberRecentList($condition = array(), $pagesize = '', $limit = 0)
     {
         $list = array();
-//        $msg = Db::name('chatmsg')->field('count(DISTINCT t_id) as count')->where($condition)->find();
-//        if ($msg['count'] > 0) {
-//            $count = intval($msg['count']);
-            $field = 't_id,t_name,max(chatmsg_addtime) as addtime';
-            $list = Db::name('chatmsg')->field($field)->group('t_id')->where($condition)->limit($limit)->order('addtime desc')->select()->toArray();
-//        }
+        //        $msg = Db::name('chatmsg')->field('count(DISTINCT t_id) as count')->where($condition)->find();
+        //        if ($msg['count'] > 0) {
+        //            $count = intval($msg['count']);
+        $field = 't_id,t_name,max(chatmsg_addtime) as addtime';
+        $list = Db::name('chatmsg')->field($field)->group('t_id')->where($condition)->limit($limit)->order('addtime desc')->select()->toArray();
+        //        }
         return $list;
     }
 
@@ -282,12 +270,12 @@ class Webchat extends BaseModel
     public function getMemberFromList($condition = array(), $pagesize = '', $limit = 0)
     {
         $list = array();
-//        $msg = Db::name('chatmsg')->field('count(DISTINCT f_id) as count')->where($condition)->find();
-//        if ($msg['count'] > 0) {
-//            $count = intval($msg['count']);
-            $field = 'max(r_state) as r_state,f_id,f_name,max(chatmsg_addtime) as addtime';
-            $list = Db::name('chatmsg')->field($field)->group('f_id')->where($condition)->limit($limit)->order('addtime desc')->select()->toArray();
-//        }
+        //        $msg = Db::name('chatmsg')->field('count(DISTINCT f_id) as count')->where($condition)->find();
+        //        if ($msg['count'] > 0) {
+        //            $count = intval($msg['count']);
+        $field = 'max(r_state) as r_state,f_id,f_name,max(chatmsg_addtime) as addtime';
+        $list = Db::name('chatmsg')->field($field)->group('f_id')->where($condition)->limit($limit)->order('addtime desc')->select()->toArray();
+        //        }
         return $list;
     }
 
@@ -308,8 +296,7 @@ class Webchat extends BaseModel
             $t_id = intval($special_condition['t_id']);
             if ($t_id > 0) {
                 $condition_sql = " ((f_id = '" . $f_id . "' and t_id = '" . $t_id . "') or (f_id = '" . $t_id . "' and t_id = '" . $f_id . "'))";
-            }
-            else {
+            } else {
                 $condition_sql = " (f_id = '" . $f_id . "' or t_id = '" . $f_id . "')";
             }
             $add_time_from = trim($special_condition['add_time_from']);
@@ -322,7 +309,7 @@ class Webchat extends BaseModel
                 $add_time_to = strtotime($add_time_to) + 60 * 60 * 24;
                 $condition_sql .= " and chatlog_addtime <= '" . $add_time_to . "'";
             }
-            $t_msg = isset($special_condition['t_msg'])?trim($special_condition['t_msg']):'';
+            $t_msg = isset($special_condition['t_msg']) ? trim($special_condition['t_msg']) : '';
             if (!empty($t_msg)) {
                 $condition_sql .= " and t_msg like '%" . $t_msg . "%'";
             }
@@ -342,7 +329,7 @@ class Webchat extends BaseModel
     {
         $member_model = model('member');
         $member = $member_model->getMemberInfo($condition, 'member_id,member_name,member_avatar');
-        if(empty($member)){
+        if (empty($member)) {
             return;
         }
         $member['store_id'] = '';
@@ -379,7 +366,7 @@ class Webchat extends BaseModel
         $goods_id = intval($goods_id);
         $goods = $goods_model->getGoodsInfoByID($goods_id);
         if (is_array($goods) && !empty($goods)) {
-            $goods['url'] = (string)url('home/Goods/index',['goods_id'=>$goods['goods_id']]);
+            $goods['url'] = (string)url('home/Goods/index', ['goods_id' => $goods['goods_id']]);
             $goods['goods_promotion_price'] = ds_price_format($goods['goods_promotion_price']);
             $goods['pic'] = goods_thumb($goods, 60);
             $goods['pic24'] = goods_thumb($goods, 240);
@@ -398,7 +385,7 @@ class Webchat extends BaseModel
     {
         return (int)Db::name('chatmsg')->where($condition)->count();
     }
-    
+
     /**
      * 删除聊天记录
      * @access public
@@ -408,10 +395,9 @@ class Webchat extends BaseModel
      */
     public function delChatmsg($condition)
     {
-        if(empty($condition)){
+        if (empty($condition)) {
             return;
         }
         return Db::name('chatmsg')->where($condition)->delete();
     }
-    
 }

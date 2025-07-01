@@ -1,31 +1,17 @@
 <?php
 
-/**
- * 店铺设置
- *
- */
-
 namespace app\common\model;
 
 use app\common\model\Storedepositlog;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺
  */
-class Store extends BaseModel {
+class Store extends BaseModel
+{
 
     public $page_info;
-
 
     /**
      * 查询店铺列表
@@ -38,7 +24,8 @@ class Store extends BaseModel {
      * @param string $limit 限制条数
      * @return array
      */
-    public function getStoreList($condition, $pagesize = null, $order = '', $field = '*', $limit = 0) {
+    public function getStoreList($condition, $pagesize = null, $order = '', $field = '*', $limit = 0)
+    {
         if ($pagesize) {
             $result = Db::name('store')->field($field)->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $result;
@@ -59,7 +46,8 @@ class Store extends BaseModel {
      * @param string $field 字段
      * @return array
      */
-    public function getStoreOnlineList($condition, $pagesize = null, $order = '', $field = '*') {
+    public function getStoreOnlineList($condition, $pagesize = null, $order = '', $field = '*')
+    {
         $condition[] = array('store_state', '=', 1);
         return $this->getStoreList($condition, $pagesize, $order, $field);
     }
@@ -71,7 +59,8 @@ class Store extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getStoreCount($condition) {
+    public function getStoreCount($condition)
+    {
         return Db::name('store')->where($condition)->count();
     }
 
@@ -83,7 +72,8 @@ class Store extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getStoreMemberIDList($storeid_array, $field = 'store_id,member_id,store_name') {
+    public function getStoreMemberIDList($storeid_array, $field = 'store_id,member_id,store_name')
+    {
         $store_list = Db::name('store')->where('store_id', 'in', $storeid_array)->field($field)->select()->toArray();
         $store_list = ds_change_arraykey($store_list, 'store_id');
         return $store_list;
@@ -96,7 +86,8 @@ class Store extends BaseModel {
      * @param array $condition 查询条件
      * @return array
      */
-    public function getStoreInfo($condition) {
+    public function getStoreInfo($condition)
+    {
         $store_info = Db::name('store')->where($condition)->find();
         if (!empty($store_info)) {
             if (!empty($store_info['store_presales']))
@@ -124,7 +115,8 @@ class Store extends BaseModel {
      * @param int $store_id 店铺编号
      * @return array
      */
-    public function getStoreInfoByID($store_id) {
+    public function getStoreInfoByID($store_id)
+    {
         $prefix = 'store_info';
 
         $store_info = rcache($store_id, $prefix);
@@ -147,7 +139,8 @@ class Store extends BaseModel {
      * @param type $store_id 店铺ID
      * @return type 
      */
-    public function getStoreOnlineInfoByID($store_id) {
+    public function getStoreOnlineInfoByID($store_id)
+    {
         $store_info = $this->getStoreInfoByID($store_id);
         if (empty($store_info) || $store_info['store_state'] == '0') {
             return array();
@@ -163,7 +156,8 @@ class Store extends BaseModel {
      * @param array $condition 条件
      * @return string
      */
-    public function getStoreIDString($condition) {
+    public function getStoreIDString($condition)
+    {
         $condition[] = array('store_state', '=', 1);
         $store_list = $this->getStoreList($condition);
         $store_id_string = '';
@@ -180,7 +174,8 @@ class Store extends BaseModel {
      * @param type $data 店铺数据
      * @return type
      */
-    public function addStore($data) {
+    public function addStore($data)
+    {
         $this->validate($data, 'app\common\validate\Store.model_add');
 
         return Db::name('store')->insertGetId($data);
@@ -194,7 +189,8 @@ class Store extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function editStore($data, $condition) {
+    public function editStore($data, $condition)
+    {
         $this->validate($data, 'app\common\validate\Store.model_edit');
 
         //清空缓存
@@ -213,8 +209,10 @@ class Store extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function delStore($condition) {
+    public function delStore($condition)
+    {
         $store_info = $this->getStoreInfo($condition);
+
         //删除店铺相关图片
         ds_del_pic(ATTACH_STORE . '/' . $store_info['store_id'], $store_info['store_logo']);
         ds_del_pic(ATTACH_STORE . '/' . $store_info['store_id'], $store_info['store_banner']);
@@ -236,7 +234,8 @@ class Store extends BaseModel {
      * @author csdeshang
      * @param type $condition 条件
      */
-    public function delStoreEntirely($condition) {
+    public function delStoreEntirely($condition)
+    {
         $this->delStore($condition);
         model('seller')->delSeller($condition);
         model('sellergroup')->delSellergroup($condition);
@@ -258,7 +257,8 @@ class Store extends BaseModel {
      * @param int $limit 限制数量
      * @return array
      */
-    public function getHotSalesList($store_id, $limit = 5) {
+    public function getHotSalesList($store_id, $limit = 5)
+    {
         $prefix = 'store_hot_sales_list_' . $limit;
         $hot_sales_list = rcache($store_id, $prefix);
         if (empty($hot_sales_list)) {
@@ -281,7 +281,8 @@ class Store extends BaseModel {
      * @param int $limit 限制数量
      * @return array	商品信息
      */
-    public function getHotCollectList($store_id, $limit = 5) {
+    public function getHotCollectList($store_id, $limit = 5)
+    {
         $prefix = 'store_collect_sales_list_' . $limit;
         $hot_collect_list = rcache($store_id, $prefix);
         if (empty($hot_collect_list)) {
@@ -303,7 +304,8 @@ class Store extends BaseModel {
      * @param array $store_array 店铺数组
      * @return array 包含近期销量和8个推荐商品的店铺数组
      */
-    public function getStoreSearchList($store_array) {
+    public function getStoreSearchList($store_array)
+    {
         $store_array_new = array();
         if (!empty($store_array)) {
             $no_cache_store = array();
@@ -342,7 +344,8 @@ class Store extends BaseModel {
      * @param type $day  天数
      * @return type
      */
-    public function getStoreInfoBasic($list, $day = 0) {
+    public function getStoreInfoBasic($list, $day = 0)
+    {
         $list_new = array();
         if (!empty($list) && is_array($list)) {
             foreach ($list as $key => $value) {
@@ -389,7 +392,8 @@ class Store extends BaseModel {
      * @param type $store_array 店铺数组
      * @return type
      */
-    public function getGoodsCountByStoreArray($store_array) {
+    public function getGoodsCountByStoreArray($store_array)
+    {
         $store_array_new = array();
         $no_cache_store = '';
 
@@ -432,7 +436,8 @@ class Store extends BaseModel {
      * @param type $store_array 店铺数组
      * @return type
      */
-    private function getGoodsCountJq($store_array) {
+    private function getGoodsCountJq($store_array)
+    {
         $order_count_array = Db::name('order')->field('store_id,count(*) as order_count')->where('store_id', 'in', implode(',', array_keys($store_array)))->where('order_state', '<>', '0')->where('add_time', '>', TIMESTAMP - 3600 * 24 * 90)->group('store_id')->select()->toArray();
         foreach ((array) $order_count_array as $value) {
             $store_array[$value['store_id']]['num_sales_jq'] = $value['order_count'];
@@ -447,7 +452,8 @@ class Store extends BaseModel {
      * @param type $store_array 店铺数组
      * @return type
      */
-    private function getGoodsListBySales($store_array) {
+    private function getGoodsListBySales($store_array)
+    {
         $field = 'goods_id,store_id,goods_name,goods_image,goods_price,goods_salenum';
         foreach ($store_array as $value) {
             $store_array[$value['store_id']]['search_list_goods'] = Db::name('goods')->field($field)->where(array('store_id' => $value['store_id'], 'goods_state' => 1))->order('goods_salenum desc')->limit(8)->select()->toArray();
@@ -460,7 +466,8 @@ class Store extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function addStoreextend($condition) {
+    public function addStoreextend($condition)
+    {
         return Db::name('storeextend')->insert($condition);
     }
 
@@ -470,16 +477,18 @@ class Store extends BaseModel {
      * @param type $field
      * @return type
      */
-    public function getOneStore($condition, $field) {
+    public function getOneStore($condition, $field)
+    {
         return Db::name('store')->field($field)->where($condition)->find();
     }
-    
+
     /**
      * 当店铺修改了店铺名称，同时修改该店铺其他位置的店铺名称
      * @param type $store_id
      * @param type $store_name
      */
-    public function updateAllStorename($store_id, $store_name) {
+    public function updateAllStorename($store_id, $store_name)
+    {
         $goods_model = model('goods');
         $goods_model->editGoodsCommon(array('store_name' => $store_name), array('store_id' => $store_id));
         $goods_model->editGoods(array('store_name' => $store_name), array('store_id' => $store_id));
@@ -488,7 +497,8 @@ class Store extends BaseModel {
     /**
      *  店铺流量统计入库
      */
-    public function flowstat_record($store_id, $goods_id, $controller_param, $action_param, $store_info) {
+    public function flowstat_record($store_id, $goods_id, $controller_param, $action_param, $store_info)
+    {
         if (!empty($store_info)) {
             if ($store_id <= 0 || $store_info['store_id'] == $store_id) {
                 return false;
@@ -509,7 +519,7 @@ class Store extends BaseModel {
             $flow_tablename_condition = array('flowstat_stattime' => $stattime, 'store_id' => $store_id, 'flowstat_type' => 'sum');
         }
         $store_exist = $stat_model->getoneByFlowstat($flow_tablename, $flow_tablename_condition);
-        if ($controller_param == 'Goods' && $action_param == 'index') {//统计商品页面流量
+        if ($controller_param == 'Goods' && $action_param == 'index') { //统计商品页面流量
             $goods_id = intval($goods_id);
             if ($goods_id <= 0) {
                 return false;
@@ -528,7 +538,7 @@ class Store extends BaseModel {
         } else {
             $insert_arr[] = array('flowstat_stattime' => $stattime, 'flowstat_clicknum' => 1, 'store_id' => $store_id, 'flowstat_type' => 'sum', 'goods_id' => 0);
         }
-        if ($controller_param == 'Goods' && $action_param == 'index') {//已经存在数据则更新
+        if ($controller_param == 'Goods' && $action_param == 'index') { //已经存在数据则更新
             if ($goods_exist) {
                 Db::name($flow_tablename)->where(array('flowstat_stattime' => $stattime, 'goods_id' => $goods_id, 'flowstat_type' => 'goods'))->inc('flowstat_clicknum')->update();
             } else {
@@ -546,7 +556,8 @@ class Store extends BaseModel {
      * @param type $field
      * @return type
      */
-    public function setStoreOpen($joinin_detail, $param) {
+    public function setStoreOpen($joinin_detail, $param)
+    {
         $storejoinin_model = model('storejoinin');
         $seller_model = model('seller');
         //验证卖家用户名是否已经存在
@@ -588,7 +599,6 @@ class Store extends BaseModel {
         $shop_array['store_longitude'] = $joinin_detail['store_longitude'];
         $shop_array['store_latitude'] = $joinin_detail['store_latitude'];
         $shop_array['area_info'] = $joinin_detail['company_address'];
-
         $shop_array['store_address'] = $joinin_detail['company_address_detail'];
         $shop_array['store_zip'] = '';
         $shop_array['store_mainbusiness'] = '';

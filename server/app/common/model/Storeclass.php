@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺类别
  */
-class Storeclass extends BaseModel {
+class Storeclass extends BaseModel
+{
 
     public $page_info;
 
@@ -30,8 +22,8 @@ class Storeclass extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getStoreclassList($condition = array(), $pagesize = '', $limit = 0, $order = 'storeclass_sort asc,storeclass_id asc') {
-
+    public function getStoreclassList($condition = array(), $pagesize = '', $limit = 0, $order = 'storeclass_sort asc,storeclass_id asc')
+    {
         if ($pagesize) {
             $list = Db::name('storeclass')->where($condition)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $list;
@@ -48,7 +40,8 @@ class Storeclass extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getStoreclassInfo($condition = array()) {
+    public function getStoreclassInfo($condition = array())
+    {
         return Db::name('storeclass')->where($condition)->find();
     }
 
@@ -59,7 +52,8 @@ class Storeclass extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function delStoreclass($condition = array()) {
+    public function delStoreclass($condition = array())
+    {
         return Db::name('storeclass')->where($condition)->delete();
     }
 
@@ -70,7 +64,8 @@ class Storeclass extends BaseModel {
      * @param array $data 数据
      * @return bool
      */
-    public function addStoreclass($data) {
+    public function addStoreclass($data)
+    {
         return Db::name('storeclass')->insertGetId($data);
     }
 
@@ -82,9 +77,8 @@ class Storeclass extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editStoreclass($data, $condition) {
+    public function editStoreclass($data, $condition)
+    {
         return Db::name('storeclass')->where($condition)->update($data);
     }
 }
-
-?>

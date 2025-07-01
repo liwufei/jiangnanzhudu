@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 好友
  */
-class Snsfriend extends BaseModel {
+class Snsfriend extends BaseModel
+{
 
     public $page_info;
 
@@ -27,7 +19,8 @@ class Snsfriend extends BaseModel {
      * @param type $data 数据
      * @return type
      */
-    public function addSnsfriend($data) {
+    public function addSnsfriend($data)
+    {
         $result = Db::name('snsfriend')->insertGetId($data);
         return $result;
     }
@@ -42,7 +35,8 @@ class Snsfriend extends BaseModel {
      * @param type $type 类型
      * @return type
      */
-    public function getSnsfriendList($condition, $field = '*', $pagesize = '', $type = 'simple') {
+    public function getSnsfriendList($condition, $field = '*', $pagesize = '', $type = 'simple')
+    {
         //得到条件语句
         switch ($type) {
             case 'simple':
@@ -77,7 +71,8 @@ class Snsfriend extends BaseModel {
      * @param type $member_list 会员列表
      * @return array
      */
-    public function getFriendList($condition = array(), $limit = 50, $member_list = array()) {
+    public function getFriendList($condition = array(), $limit = 50, $member_list = array())
+    {
         $list = Db::name('snsfriend')->where($condition)->order('friend_addtime desc')->paginate(['list_rows' => $limit, 'query' => request()->param()], false);
         if ($list) {
             foreach ($list as $k => $v) {
@@ -102,7 +97,8 @@ class Snsfriend extends BaseModel {
      * @param type $field 字段
      * @return type
      */
-    public function getOneSnsfriend($condition, $field = '*') {
+    public function getOneSnsfriend($condition, $field = '*')
+    {
         return Db::name('snsfriend')->where($condition)->field($field)->find();
     }
 
@@ -113,7 +109,8 @@ class Snsfriend extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getSnsfriendCount($condition) {
+    public function getSnsfriendCount($condition)
+    {
         //得到条件语句
         $count = Db::name('snsfriend')->where($condition)->count();
         return $count;
@@ -127,7 +124,8 @@ class Snsfriend extends BaseModel {
      * @param type $condition 条件
      * @return boolean
      */
-    public function editSnsfriend($data, $condition) {
+    public function editSnsfriend($data, $condition)
+    {
         if (empty($data)) {
             return false;
         }
@@ -143,7 +141,8 @@ class Snsfriend extends BaseModel {
      * @param type $condition
      * @return boolean
      */
-    public function delSnsfriend($condition) {
+    public function delSnsfriend($condition)
+    {
         if (empty($condition)) {
             return false;
         }

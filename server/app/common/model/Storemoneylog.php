@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺金额日志
  */
-class Storemoneylog extends BaseModel {
+class Storemoneylog extends BaseModel
+{
 
     //订单确认收货
     const TYPE_ORDER_SUCCESS = 1;
@@ -56,7 +48,8 @@ class Storemoneylog extends BaseModel {
      * @param type $condition 条件
      * @return int
      */
-    public function getStoremoneylogWithdrawCount($condition = array()) {
+    public function getStoremoneylogWithdrawCount($condition = array())
+    {
         return Db::name('storemoneylog')->where(array('storemoneylog_type' => self::TYPE_WITHDRAW))->where($condition)->count();
     }
 
@@ -68,8 +61,8 @@ class Storemoneylog extends BaseModel {
      * @param type $fields 字段
      * @return array
      */
-    public function getStoremoneylogInfo($condition = array(), $fields = '') {
-
+    public function getStoremoneylogInfo($condition = array(), $fields = '')
+    {
         $pdlog_list_paginate = Db::name('storemoneylog')->where($condition)->field($fields)->find();
         return $pdlog_list_paginate;
     }
@@ -82,8 +75,8 @@ class Storemoneylog extends BaseModel {
      * @param type $data 字段
      * @return array
      */
-    public function editStoremoneylog($condition = array(), $data = array()) {
-
+    public function editStoremoneylog($condition = array(), $data = array())
+    {
         $pdlog_list_paginate = Db::name('storemoneylog')->where($condition)->update($data);
         return $pdlog_list_paginate;
     }
@@ -99,7 +92,8 @@ class Storemoneylog extends BaseModel {
      * @param type $limit 限制
      * @return array
      */
-    public function getStoremoneylogList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0) {
+    public function getStoremoneylogList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0)
+    {
         if ($pagesize) {
             $pdlog_list_paginate = Db::name('storemoneylog')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $pdlog_list_paginate;
@@ -117,7 +111,8 @@ class Storemoneylog extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function changeStoremoney($data = array()) {
+    public function changeStoremoney($data = array())
+    {
         if (!isset($data['store_id'])) {
             throw new \think\Exception(lang('param_error'), 10006);
         }
@@ -128,13 +123,13 @@ class Storemoneylog extends BaseModel {
         $data['store_name'] = $store_info['store_name'];
         $store_data = array();
         if (isset($data['storemoneylog_avaliable_money']) && $data['storemoneylog_avaliable_money'] != 0) {
-            if ($data['storemoneylog_avaliable_money'] < 0 && $store_info['store_avaliable_money'] < abs($data['storemoneylog_avaliable_money'])) {//检查资金是否充足
+            if ($data['storemoneylog_avaliable_money'] < 0 && $store_info['store_avaliable_money'] < abs($data['storemoneylog_avaliable_money'])) { //检查资金是否充足
                 throw new \think\Exception(lang('ds_store_avaliable_money_is_not_enough'), 10006);
             }
             $store_data['store_avaliable_money'] = bcadd($store_info['store_avaliable_money'], $data['storemoneylog_avaliable_money'], 2);
         }
         if (isset($data['storemoneylog_freeze_money']) && $data['storemoneylog_freeze_money'] != 0) {
-            if ($data['storemoneylog_freeze_money'] < 0 && $store_info['store_freeze_money'] < abs($data['storemoneylog_freeze_money'])) {//检查资金是否充足
+            if ($data['storemoneylog_freeze_money'] < 0 && $store_info['store_freeze_money'] < abs($data['storemoneylog_freeze_money'])) { //检查资金是否充足
                 throw new \think\Exception(lang('ds_store_freeze_money_is_not_enough'), 10006);
             }
             $store_data['store_freeze_money'] = bcadd($store_info['store_freeze_money'], $data['storemoneylog_freeze_money'], 2);

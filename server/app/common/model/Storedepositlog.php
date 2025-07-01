@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 店铺保证金日志
  */
-class Storedepositlog extends BaseModel {
+class Storedepositlog extends BaseModel
+{
 
     const TYPE_RECHARGE = 1;
     const TYPE_WITHDRAW = 2;
@@ -41,7 +33,8 @@ class Storedepositlog extends BaseModel {
      * @param type $condition 条件
      * @return int
      */
-    public function getStoredepositlogWithdrawCount($condition = array()) {
+    public function getStoredepositlogWithdrawCount($condition = array())
+    {
         return Db::name('storedepositlog')->where(array('storedepositlog_type' => self::TYPE_WITHDRAW))->where($condition)->count();
     }
 
@@ -53,7 +46,8 @@ class Storedepositlog extends BaseModel {
      * @param type $fields 字段
      * @return array
      */
-    public function getStoredepositlogInfo($condition = array(), $fields = '') {
+    public function getStoredepositlogInfo($condition = array(), $fields = '')
+    {
 
         $pdlog_list_paginate = Db::name('storedepositlog')->where($condition)->field($fields)->find();
         return $pdlog_list_paginate;
@@ -67,8 +61,8 @@ class Storedepositlog extends BaseModel {
      * @param type $data 字段
      * @return array
      */
-    public function editStoredepositlog($condition = array(), $data = array()) {
-
+    public function editStoredepositlog($condition = array(), $data = array())
+    {
         $pdlog_list_paginate = Db::name('storedepositlog')->where($condition)->update($data);
         return $pdlog_list_paginate;
     }
@@ -84,7 +78,8 @@ class Storedepositlog extends BaseModel {
      * @param type $limit 限制
      * @return array
      */
-    public function getStoredepositlogList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0) {
+    public function getStoredepositlogList($condition = array(), $pagesize = '', $fields = '*', $order = '', $limit = 0)
+    {
         if ($pagesize) {
             $pdlog_list_paginate = Db::name('storedepositlog')->where($condition)->field($fields)->order($order)->paginate(['list_rows' => $pagesize, 'query' => request()->param()], false);
             $this->page_info = $pdlog_list_paginate;
@@ -102,7 +97,8 @@ class Storedepositlog extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function changeStoredeposit($data = array()) {
+    public function changeStoredeposit($data = array())
+    {
         if (!isset($data['store_id'])) {
             throw new \think\Exception(lang('param_error'), 10006);
         }
@@ -113,21 +109,21 @@ class Storedepositlog extends BaseModel {
         $data['store_name'] = $store_info['store_name'];
         $store_data = array();
         if (isset($data['storedepositlog_avaliable_deposit']) && $data['storedepositlog_avaliable_deposit'] != 0) {
-            if ($data['storedepositlog_avaliable_deposit'] < 0 && $store_info['store_avaliable_deposit'] < abs($data['storedepositlog_avaliable_deposit'])) {//检查资金是否充足
+            if ($data['storedepositlog_avaliable_deposit'] < 0 && $store_info['store_avaliable_deposit'] < abs($data['storedepositlog_avaliable_deposit'])) { //检查资金是否充足
                 throw new \think\Exception(lang('ds_store_avaliable_deposit_is_not_enough'), 10006);
             }
             $store_data['store_avaliable_deposit'] = bcadd($store_info['store_avaliable_deposit'], $data['storedepositlog_avaliable_deposit'], 2);
         }
 
         if (isset($data['storedepositlog_freeze_deposit']) && $data['storedepositlog_freeze_deposit'] != 0) {
-            if ($data['storedepositlog_freeze_deposit'] < 0 && $store_info['store_freeze_deposit'] < abs($data['storedepositlog_freeze_deposit'])) {//检查资金是否充足
+            if ($data['storedepositlog_freeze_deposit'] < 0 && $store_info['store_freeze_deposit'] < abs($data['storedepositlog_freeze_deposit'])) { //检查资金是否充足
                 throw new \think\Exception(lang('ds_store_freeze_deposit_is_not_enough'), 10006);
             }
             $store_data['store_freeze_deposit'] = bcadd($store_info['store_freeze_deposit'], $data['storedepositlog_freeze_deposit'], 2);
         }
 
         if (isset($data['storedepositlog_payable_deposit']) && $data['storedepositlog_payable_deposit'] != 0) {
-            if ($data['storedepositlog_payable_deposit'] < 0 && $store_info['store_payable_deposit'] < abs($data['storedepositlog_payable_deposit'])) {//检查资金是否充足
+            if ($data['storedepositlog_payable_deposit'] < 0 && $store_info['store_payable_deposit'] < abs($data['storedepositlog_payable_deposit'])) { //检查资金是否充足
                 throw new \think\Exception(lang('ds_store_payable_deposit_is_not_enough'), 10006);
             }
             $store_data['store_payable_deposit'] = bcadd($store_info['store_payable_deposit'], $data['storedepositlog_payable_deposit'], 2);

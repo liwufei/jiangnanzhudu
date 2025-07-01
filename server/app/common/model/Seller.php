@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 卖家
  */
-class Seller extends BaseModel {
+class Seller extends BaseModel
+{
 
     /**
      * 登录时创建会话SESSION
@@ -27,7 +19,8 @@ class Seller extends BaseModel {
      * @param type $seller_info 卖家信息
      * @param type $seller_group_info 分组信息
      */
-    public function createSellerSession($member_info, $store_info, $seller_info, $seller_group_info) {
+    public function createSellerSession($member_info, $store_info, $seller_info, $seller_group_info)
+    {
         if (empty($member_info) || !is_array($member_info)) {
             return;
         }
@@ -77,7 +70,8 @@ class Seller extends BaseModel {
      * @param string $order 排序
      * @return array
      */
-    public function getSellerList($condition, $order = '') {
+    public function getSellerList($condition, $order = '')
+    {
         $result = Db::name('seller')->alias('seller')->join('member member', 'member.member_id = seller.member_id', 'LEFT')->field('seller.*,member.member_name')->where($condition)->order($order)->select()->toArray();
         return $result;
     }
@@ -89,7 +83,8 @@ class Seller extends BaseModel {
      * @param type $condition 条件
      * @return type
      */
-    public function getSellerInfo($condition) {
+    public function getSellerInfo($condition)
+    {
         $result = Db::name('seller')->where($condition)->find();
         return $result;
     }
@@ -101,7 +96,8 @@ class Seller extends BaseModel {
      * @param type $condition 条件
      * @return boolean
      */
-    public function isSellerExist($condition) {
+    public function isSellerExist($condition)
+    {
         $result = $this->getSellerInfo($condition);
         if (empty($result)) {
             return FALSE;
@@ -117,7 +113,8 @@ class Seller extends BaseModel {
      * @param array $data 数据
      * @return bool
      */
-    public function addSeller($data) {
+    public function addSeller($data)
+    {
         return Db::name('seller')->insertGetId($data);
     }
 
@@ -129,7 +126,8 @@ class Seller extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function editSeller($update, $condition) {
+    public function editSeller($update, $condition)
+    {
         return Db::name('seller')->where($condition)->update($update);
     }
 
@@ -140,15 +138,16 @@ class Seller extends BaseModel {
      * @param array $condition 条件
      * @return bool
      */
-    public function delSeller($condition) {
+    public function delSeller($condition)
+    {
         return Db::name('seller')->where($condition)->delete();
     }
 
     /**
      * 登录生成token
      */
-    public function getSellerToken($seller_id, $seller_name) {
-
+    public function getSellerToken($seller_id, $seller_name)
+    {
         //生成新的token
         $platformtoken_data = array();
         $token = md5($seller_name . strval(TIMESTAMP) . strval(rand(0, 999999)));

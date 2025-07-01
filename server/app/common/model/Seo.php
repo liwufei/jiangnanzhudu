@@ -3,25 +3,12 @@
 namespace app\common\model;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * SEO
  */
-class Seo extends BaseModel {
+class Seo extends BaseModel
+{
 
-    /**
-     * 存放SEO信息
-     * @access private
-     * @author csdeshang
-     * @var obj
-     */
+    // 存放SEO信息
     private $seo;
 
     /**
@@ -31,7 +18,8 @@ class Seo extends BaseModel {
      * @param array/string $type 类型
      * @return obj
      */
-    public function type($type) {
+    public function type($type)
+    {
         if (is_array($type)) { //商品分类
             $this->seo['seo_title'] = isset($type[1]) ? $type[1] : '';
             $this->seo['seo_keywords'] = isset($type[2]) ? $type[2] : '';
@@ -54,7 +42,8 @@ class Seo extends BaseModel {
      * @param string $type 类型
      * @return array
      */
-    private function getSeo($type) {
+    private function getSeo($type)
+    {
         $list = rkcache('seo', true);
         return $list[$type];
     }
@@ -66,7 +55,8 @@ class Seo extends BaseModel {
      * @param array $array 参数数组
      * @return obj
      */
-    public function param($array = null) {
+    public function param($array = null)
+    {
         if (!is_array($this->seo))
             return $this;
         if (is_array($array)) {
@@ -87,7 +77,8 @@ class Seo extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function show() {
+    public function show()
+    {
         $this->seo['seo_title'] = preg_replace("/{.*}/siU", '', $this->seo['seo_title']);
         $this->seo['seo_keywords'] = preg_replace("/{.*}/siU", '', $this->seo['seo_keywords']);
         $this->seo['seo_description'] = preg_replace("/{.*}/siU", '', $this->seo['seo_description']);
@@ -98,5 +89,3 @@ class Seo extends BaseModel {
         );
     }
 }
-
-?>

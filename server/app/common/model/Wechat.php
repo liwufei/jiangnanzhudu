@@ -5,18 +5,10 @@ namespace app\common\model;
 use think\facade\Db;
 
 /**
- * ============================================================================
- * 通用文件
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 数据层模型
+ * 微信配置
  */
-class Wechat extends BaseModel {
+class Wechat extends BaseModel
+{
 
     public $page_info;
     public $wxconfig;
@@ -29,7 +21,8 @@ class Wechat extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getOneWxconfig() {
+    public function getOneWxconfig()
+    {
         $this->wxconfig = Db::name('wxconfig')->where('1=1')->find();
         return $this->wxconfig;
     }
@@ -39,7 +32,8 @@ class Wechat extends BaseModel {
      * @access public
      * @author csdeshang
      */
-    public function addWxconfig($data) {
+    public function addWxconfig($data)
+    {
         return Db::name('wxconfig')->insert($data);
     }
 
@@ -48,7 +42,8 @@ class Wechat extends BaseModel {
      * @access public
      * @author csdeshang
      */
-    public function editWxconfig($condition, $data) {
+    public function editWxconfig($condition, $data)
+    {
         return Db::name('wxconfig')->where($condition)->update($data);
     }
 
@@ -57,7 +52,8 @@ class Wechat extends BaseModel {
      * @access public
      * @author csdeshang
      */
-    public function getWxmenuList($condition, $order = 'id asc', $field = '*') {
+    public function getWxmenuList($condition, $order = 'id asc', $field = '*')
+    {
         return Db::name('wxmenu')->field($field)->where($condition)->order($order)->select()->toArray();
     }
 
@@ -70,7 +66,8 @@ class Wechat extends BaseModel {
      * @param type $order 排序
      * @return type
      */
-    public function getOneJoinWxkeyword($condition, $field = '', $order = 't.createtime DESC') {
+    public function getOneJoinWxkeyword($condition, $field = '', $order = 't.createtime DESC')
+    {
         $condition[] = array('k.type', '=', 'TEXT');
         $lists = Db::name('wxkeyword')->alias('k')->join('wxtext t', 't.id=k.pid', 'LEFT')->where($condition)->field($field)->order($order)->find();
         return $lists;
@@ -81,7 +78,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getOneWxkeyword($condition) {
+    public function getOneWxkeyword($condition)
+    {
         return Db::name('wxkeyword')->where($condition)->find();
     }
 
@@ -93,7 +91,8 @@ class Wechat extends BaseModel {
      * @param type $order
      * @return type
      */
-    public function getWxkeywordList($condition, $field = '*', $pagesize = '', $order = 't.createtime DESC') {
+    public function getWxkeywordList($condition, $field = '*', $pagesize = '', $order = 't.createtime DESC')
+    {
         if ($pagesize) {
             $lists = Db::name('wxkeyword')->alias('k')->join('wxtext t', 't.id=k.pid', 'LEFT')->where($condition)->field($field)->order($order)->paginate(['list_rows' => 10, 'query' => request()->param()], false);
             $this->page_info = $lists;
@@ -108,7 +107,8 @@ class Wechat extends BaseModel {
      * @param type $add
      * @return type
      */
-    public function addWxkeyword($add) {
+    public function addWxkeyword($add)
+    {
         return Db::name('wxkeyword')->insert($add);
     }
 
@@ -118,7 +118,8 @@ class Wechat extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editWxkeyword($condition, $data) {
+    public function editWxkeyword($condition, $data)
+    {
         return Db::name('wxkeyword')->where($condition)->update($data);
     }
 
@@ -127,7 +128,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delWxkeyword($condition) {
+    public function delWxkeyword($condition)
+    {
         return Db::name('wxkeyword')->where($condition)->delete();
     }
 
@@ -136,7 +138,8 @@ class Wechat extends BaseModel {
      * @param array $add
      * @return type
      */
-    public function addWxtext($add) {
+    public function addWxtext($add)
+    {
         return Db::name('wxtext')->insertGetId($add);
     }
 
@@ -146,7 +149,8 @@ class Wechat extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editWxtext($condition, $data) {
+    public function editWxtext($condition, $data)
+    {
         return Db::name('wxtext')->where($condition)->update($data);
     }
 
@@ -155,7 +159,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delWxtext($condition) {
+    public function delWxtext($condition)
+    {
         return Db::name('wxtext')->where($condition)->delete();
     }
 
@@ -165,7 +170,8 @@ class Wechat extends BaseModel {
      * @author csdeshang
      * @return type
      */
-    public function getWxmemberList() {
+    public function getWxmemberList()
+    {
         $info = Db::name('member')->where('member_h5_wxopenid', '<>', '')->where('member_wxunionid', '<>', '')->field('member_name,member_addtime,member_wxunionid,member_h5_wxopenid,member_id')->paginate(['list_rows' => 8, 'query' => request()->param()], false);
         $this->page_info = $info;
         return $info->items();
@@ -178,7 +184,8 @@ class Wechat extends BaseModel {
      * @param type $data 数据
      * @return type 
      */
-    public function addWxmsg($data) {
+    public function addWxmsg($data)
+    {
         Db::name('wxmsg')->insertGetId($data);
     }
 
@@ -189,7 +196,8 @@ class Wechat extends BaseModel {
      * @param type $where 条件
      * @return type
      */
-    public function getWxmsgList($where = '') {
+    public function getWxmsgList($where = '')
+    {
         $res = Db::name('wxmsg')->alias('w')->join('member m', 'w.member_id=m.member_id', 'LEFT')->where($where)->field('w.*,m.member_name')->order('createtime DESC')->paginate(['list_rows' => 10, 'query' => request()->param()], false);
         $this->page_info = $res;
         return $res->items();
@@ -200,7 +208,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delWxmsg($condition) {
+    public function delWxmsg($condition)
+    {
         return Db::name('wxmsg')->where($condition)->delete();
     }
 
@@ -209,7 +218,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getOneWxmenu($condition) {
+    public function getOneWxmenu($condition)
+    {
         return Db::name('wxmenu')->where($condition)->find();
     }
 
@@ -218,7 +228,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getWxmenuCount($condition) {
+    public function getWxmenuCount($condition)
+    {
         return Db::name('wxmenu')->where($condition)->count();
     }
 
@@ -228,7 +239,8 @@ class Wechat extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function editWxmenu($condition, $data) {
+    public function editWxmenu($condition, $data)
+    {
         return Db::name('wxmenu')->where($condition)->update($data);
     }
 
@@ -237,7 +249,8 @@ class Wechat extends BaseModel {
      * @param type $data
      * @return type
      */
-    public function addWxmenu($data) {
+    public function addWxmenu($data)
+    {
         return Db::name('wxmenu')->insert($data);
     }
 
@@ -246,7 +259,8 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function delWxmenu($condition) {
+    public function delWxmenu($condition)
+    {
         return Db::name('wxmenu')->where($condition)->delete();
     }
 
@@ -255,13 +269,14 @@ class Wechat extends BaseModel {
      * @param type $condition
      * @return type
      */
-    public function getMenulist($condition) {
+    public function getMenulist($condition)
+    {
         return Db::name('wxmenu')->where($condition)->select()->toArray();
     }
 
     //校验AccessToken 是否可用及返回新的
-    public function getAccessToken($from = '', $force = 0) {
-
+    public function getAccessToken($from = '', $force = 0)
+    {
         if ($from == 'miniprogram') {
             $expires_in = $this->wxconfig['xcx_expires_in'];
             $appid = $this->wxconfig['xcx_appid'];
@@ -273,7 +288,6 @@ class Wechat extends BaseModel {
             $appsecret = $this->wxconfig['appsecret'];
             $access_token = $this->wxconfig['access_token'];
         }
-
 
         //token过期，重新拉去
         if ($expires_in < TIMESTAMP + 7200) {
@@ -299,7 +313,8 @@ class Wechat extends BaseModel {
         return $access_token;
     }
 
-    function getMiniProCode($scene, $page = 'pages/index/index') {
+    function getMiniProCode($scene, $page = 'pages/index/index')
+    {
         $accessToken = $this->getAccessToken('miniprogram', 0);
         $url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=" . $accessToken;
         $data = http_request($url, 'POST', json_encode(array(
@@ -318,7 +333,8 @@ class Wechat extends BaseModel {
         return $data;
     }
 
-    function getJsapiTicket() {
+    function getJsapiTicket()
+    {
         $ticket = $this->wxconfig['ticket'];
         if ($this->wxconfig['ticket_expires_in'] < TIMESTAMP) {
             $accessToken = $this->getAccessToken();
@@ -339,7 +355,8 @@ class Wechat extends BaseModel {
         return $ticket;
     }
 
-    public function getSignPackage($url = '') {
+    public function getSignPackage($url = '')
+    {
         $jsapiTicket = $this->getJsapiTicket();
 
         // 注意 URL 一定要动态获取，不能 hardcode.
@@ -380,8 +397,8 @@ class Wechat extends BaseModel {
      * @param type $data
      * @param type $topcolor
      */
-    function sendMessageTemplate($openid, $template_id, $url, $data, $topcolor = '#333') {
-
+    function sendMessageTemplate($openid, $template_id, $url, $data, $topcolor = '#333')
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -405,15 +422,15 @@ class Wechat extends BaseModel {
         }
     }
 
-    /*
+    /**
      * 新增临时素材
      * @param type $type 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
      * @param type $type 文件路径
      * @param type $type 文件类型
      * @param type $type 文件名称
      */
-
-    function uploadMedia($type, $file_path, $file_tpe, $file_name) {
+    function uploadMedia($type, $file_path, $file_tpe, $file_name)
+    {
         $accessToken = $this->getAccessToken('miniprogram', 0);
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -430,7 +447,6 @@ class Wechat extends BaseModel {
         $oCurl = curl_init();
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-
         curl_setopt($oCurl, CURLOPT_URL, $url);
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($oCurl, CURLOPT_POST, true);
@@ -446,7 +462,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function addMaterial($template) {
+    function addMaterial($template)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -462,7 +479,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function uploadMaterialImage($file, $media_type = 1) {
+    function uploadMaterialImage($file, $media_type = 1)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -488,7 +506,6 @@ class Wechat extends BaseModel {
         $oCurl = curl_init();
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
-
         curl_setopt($oCurl, CURLOPT_URL, $url);
         curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($oCurl, CURLOPT_POST, true);
@@ -504,7 +521,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function editMaterial($template) {
+    function editMaterial($template)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -520,7 +538,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function getMaterialInfo($media_id) {
+    function getMaterialInfo($media_id)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -539,7 +558,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function getImage($media_id) {
+    function getImage($media_id)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -553,7 +573,8 @@ class Wechat extends BaseModel {
         return $dataRes;
     }
 
-    function getMaterialList($template) {
+    function getMaterialList($template)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -569,7 +590,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function delMaterial($media_id) {
+    function delMaterial($media_id)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -588,7 +610,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function submitFreepublish($media_id) {
+    function submitFreepublish($media_id)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -607,7 +630,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function delFreepublish($template) {
+    function delFreepublish($template)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -626,7 +650,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function getFreepublishList($template) {
+    function getFreepublishList($template)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
@@ -642,7 +667,8 @@ class Wechat extends BaseModel {
         }
     }
 
-    function getFreepublishInfo($article_id) {
+    function getFreepublishInfo($article_id)
+    {
         $accessToken = $this->getAccessToken();
         if ($this->error_code) {
             return ds_callback(false, $this->error_message);
