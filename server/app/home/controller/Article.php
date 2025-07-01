@@ -73,9 +73,8 @@ class Article extends BaseMall
         $article_list = $article_model->getArticleList($condition, 10);
         View::assign('article', $article_list);
         View::assign('show_page', $article_model->page_info->render());
-        /**
-         * 最新文章列表
-         */
+
+        // 最新文章列表
         $count = count($article_list);
         $new_article_list = array();
         if (!empty($article_list) && is_array($article_list)) {
@@ -101,9 +100,8 @@ class Article extends BaseMall
         if (empty($article_id)) {
             $this->error(lang('param_error')); //'缺少参数:文章编号'
         }
-        /**
-         * 根据文章编号获取文章信息
-         */
+
+        // 根据文章编号获取文章信息
         $article_model = model('article');
         $condition = array();
         $condition[] = array('article_id', '=', $article_id);
@@ -113,18 +111,15 @@ class Article extends BaseMall
         }
         View::assign('article', $article);
 
-        /**
-         * 根据类别编号获取文章类别信息
-         */
+        // 根据类别编号获取文章类别信息
         $articleclass_model = model('articleclass');
         $article_class = $articleclass_model->getOneArticleclass($article['ac_id']);
         if (empty($article_class) || !is_array($article_class)) {
             $this->error(lang('article_show_delete')); //'该文章已随所属类别被删除'
         }
         $default_count = 5; //定义最新文章列表显示文章的数量
-        /**
-         * 分类导航
-         */
+
+        // 分类导航
         $nav_link = array(
             array(
                 'title' => lang('homepage'),
@@ -139,16 +134,14 @@ class Article extends BaseMall
             )
         );
         View::assign('nav_link_list', $nav_link);
-        /**
-         * 左侧分类导航
-         */
+
+        // 左侧分类导航
         $articleclass_list = $articleclass_model->getArticleclassList(array());
         $tree = new \mall\Tree();
         $tree->setTree($articleclass_list, 'ac_id', 'ac_parent_id', 'ac_name');
         View::assign('sub_class_list', $tree->getArrayList());
-        /**
-         * 文章列表
-         */
+
+        // 文章列表
         $child_class_list = $articleclass_model->getChildClass($article_class['ac_id']);
         $ac_ids = array();
         if (!empty($child_class_list) && is_array($child_class_list)) {
@@ -162,9 +155,8 @@ class Article extends BaseMall
         $condition[] = array('ac_id', 'in', $ac_ids);
         $condition[] = array('article_show', '=', '1');
         $article_list = $article_model->getArticleList($condition);
-        /**
-         * 寻找上一篇与下一篇
-         */
+
+        // 寻找上一篇与下一篇
         $pre_article = $next_article = array();
         if (!empty($article_list) && is_array($article_list)) {
             $pos = 0;
@@ -183,9 +175,8 @@ class Article extends BaseMall
         }
         View::assign('pre_article', $pre_article);
         View::assign('next_article', $next_article);
-        /**
-         * 最新文章列表
-         */
+
+        // 最新文章列表
         $count = count($article_list);
         $new_article_list = array();
         if (!empty($article_list) && is_array($article_list)) {
