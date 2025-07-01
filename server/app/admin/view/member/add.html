@@ -1,47 +1,52 @@
 {include file="public/header" /}
 
 <div class="page">
-
     <form id="user_form" enctype="multipart/form-data" method="post">
         <table class="ds-default-table">
             <tbody>
                 <tr class="noborder">
-                    <td class="required w120"><label class="validation" for="member_name">{$Think.lang.ds_member_name}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" name="member_name" id="member_name" class="txt"></td>
+                    <td class="required w120"><label class="validation"
+                            for="member_name">{$Think.lang.ds_member_name}:</label></td>
+                    <td class="vatop rowform"><input type="text" value="" name="member_name" id="member_name"
+                            class="txt"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
-                    <td class="required"><label class="validation" for="member_password">{$Think.lang.ds_member_password}:</label></td>
-                    <td class="vatop rowform"><input type="text" id="member_password" name="member_password" class="txt"></td>
+                    <td class="required"><label class="validation"
+                            for="member_password">{$Think.lang.ds_member_password}:</label></td>
+                    <td class="vatop rowform"><input type="text" id="member_password" name="member_password"
+                            class="txt"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label for="member_email">{$Think.lang.member_email}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" id="member_email" name="member_email" class="txt"></td>
+                    <td class="vatop rowform"><input type="text" value="" id="member_email" name="member_email"
+                            class="txt"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label for="member_truename">{$Think.lang.member_truename}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" id="member_truename" name="member_truename" class="txt"></td>
+                    <td class="vatop rowform"><input type="text" value="" id="member_truename" name="member_truename"
+                            class="txt"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label> {$Think.lang.member_edit_sex}:</label></td>
                     <td class="vatop rowform">
                         <label class="radio-label">
-                            <i  class="radio-common selected">
+                            <i class="radio-common selected">
                                 <input type="radio" value="0" name="member_sex" checked="checked">
                             </i>
                             <span>{$Think.lang.member_edit_secret}</span>
                         </label>
                         <label class="radio-label">
-                            <i  class="radio-common">
+                            <i class="radio-common">
                                 <input type="radio" value="1" name="member_sex">
                             </i>
                             <span>{$Think.lang.member_edit_male}</span>
                         </label>
                         <label class="radio-label">
-                            <i  class="radio-common">
+                            <i class="radio-common">
                                 <input type="radio" value="2" name="member_sex">
                             </i>
                             <span>{$Think.lang.member_edit_female}</span>
@@ -51,27 +56,29 @@
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label for="member_qq">QQ:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" id="member_qq" name="member_qq" class="txt"></td>
+                    <td class="vatop rowform"><input type="text" value="" id="member_qq" name="member_qq" class="txt">
+                    </td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label class="member_ww">{$Think.lang.member_ww}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" id="member_ww" name="member_ww" class="txt"></td>
+                    <td class="vatop rowform"><input type="text" value="" id="member_ww" name="member_ww" class="txt">
+                    </td>
                     <td class="vatop tips"></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}"/></td>
+                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}" /></td>
                 </tr>
             </tfoot>
         </table>
     </form>
 </div>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $('#user_form').validate({
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.appendTo(element.parent().parent().find('td:last'));
             },
             rules: {
@@ -83,10 +90,10 @@
                         url: "{:url('Member/ajax',['branch'=>'check_user_name'])}",
                         type: 'get',
                         data: {
-                            user_name: function() {
+                            user_name: function () {
                                 return $('#member_name').val();
                             },
-                            member_id:'{$member_array.member_id|default=0}'
+                            member_id: '{$member_array.member_id|default=0}'
                         }
                     }
                 },
@@ -101,7 +108,7 @@
                         url: "{:url('Member/ajax',['branch'=>'check_email'])}",
                         type: 'get',
                         data: {
-                            user_name: function() {
+                            user_name: function () {
                                 return $('#member_email').val();
                             },
                             member_id: '{$member_array.member_id|default=0}'

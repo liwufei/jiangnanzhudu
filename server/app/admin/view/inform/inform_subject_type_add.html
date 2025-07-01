@@ -1,25 +1,29 @@
 {include file="public/header" /}
+
 <div class="page">
-    <form id="add_form" method="post" enctype="multipart/form-data"  name="form1">
+    <form id="add_form" method="post" enctype="multipart/form-data" name="form1">
         <table class="ds-default-table">
             <tbody>
                 <tr class="noborder">
                     <td colspan="2" class="required"><label class="validation">{$Think.lang.inform_type}:</label></td>
                 </tr>
                 <tr class="noborder">
-                    <td class="vatop rowform"><input type="text" id="informtype_name" name="informtype_name" class="txt"></td>
+                    <td class="vatop rowform"><input type="text" id="informtype_name" name="informtype_name"
+                            class="txt"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="required"><label class="validation">{$Think.lang.informtype_desc}:</label></td>
+                    <td colspan="2" class="required"><label class="validation">{$Think.lang.informtype_desc}:</label>
+                    </td>
                 </tr>
                 <tr class="noborder">
-                    <td class="vatop rowform"><textarea name="informtype_desc" rows="6" id="informtype_desc" class="tarea"></textarea></td>
+                    <td class="vatop rowform"><textarea name="informtype_desc" rows="6" id="informtype_desc"
+                            class="tarea"></textarea></td>
                     <td class="vatop tips"></td>
                 </tr>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="2" ><input class="btn" type="submit" value="{$Think.lang.ds_submit}"/></td>
+                    <td colspan="2"><input class="btn" type="submit" value="{$Think.lang.ds_submit}" /></td>
                 </tr>
             </tfoot>
         </table>
@@ -52,6 +56,4 @@
             }
         }
     });
-
-
 </script>

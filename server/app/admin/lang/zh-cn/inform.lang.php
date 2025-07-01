@@ -1,7 +1,6 @@
 <?php
 
 $lang['inform'] = '举报';
-
 $lang['inform_state_handled'] = '已处理';
 $lang['inform_state_unhandle'] = '未处理';
 $lang['inform_member_name'] = '举报人';
@@ -22,7 +21,6 @@ $lang['inform_handle_type_venom_message'] = '恶意举报--该用户的所有未
 $lang['inform_handle_type_valid_message'] = '有效举报--商品将被违规下架';
 $lang['inform_subject_add'] = '添加主题';
 $lang['inform_type_add'] = '添加类型';
-
 $lang['inform_text_none'] = '无';
 $lang['inform_text_handle'] = '处理';
 $lang['inform_text_select'] = '请选择...';

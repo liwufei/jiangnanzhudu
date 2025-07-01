@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -12,13 +10,15 @@
         </div>
     </div>
     <style>
-        .adv_template{margin:50px 0 0 100px;}
-        .adv_template a{}
+        .adv_template {
+            margin: 50px 0 0 100px;
+        }
+
+        /* .adv_template a {} */
     </style>
     <div class="adv_template">
         {foreach name="pages" item="page" key="page_k"}
         <a href="{$page}" class="btn btn-red">{$page_k}{$Think.lang.ds_edit}</a>
         {/foreach}
     </div>
-
 </div>

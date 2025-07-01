@@ -124,212 +124,317 @@
             <div class="link-item" onclick="setLink('/pages/member/auth/Auth')">会员认证</div>
             <div class="link-item" onclick="setLink('/pages/member/sellerjoinin/Step1')">店铺入驻</div>
         </div>
-
         <div id="load_html"></div>
     </div>
 </div>
 
-
 <style>
-    body{background-color: #fff;}
-    .link-wrapper{display:flex;background-color:#fff;align-items: stretch;}
-    .link-wrapper .link-left{padding:20px;margin-right:20px;border-right:1px solid #eee}
-    .link-wrapper .link-left .link-menu{line-height: 40px;cursor: pointer;font-size: 14px;}
-    .link-wrapper .link-left .link-menu.active{color:#3297ff}
-    .link-wrapper .link-right{flex:1;padding-right: 20px;padding-top:20px}
-    .link-wrapper .link-right .link-list .link-item{cursor: pointer;display:inline-block;line-height: 20px;padding:5px 10px;border-radius:2px;border:1px solid #eee;margin:5px 10px;white-space: nowrap;}
-    .link-path{margin-bottom: 10px;cursor: pointer;}
-    .link-path .leaf{color:#999;cursor: default;}
+    body {
+        background-color: #fff;
+    }
 
-    .data-search{display: flex;border: 1px solid #e1e1e1;align-items: stretch;height: 30px;line-height: 30px;width:200px;}
-    .data-search input{border:0;flex:1;width: 100%;}
-    .data-search .iconfont{border-left:1px solid #e1e1e1;padding:0 10px;cursor: pointer;}
-    .data-list{height: 250px;overflow: hidden;overflow-y: auto;}
-    .data-list .data-item{width:450px;cursor: pointer;padding: 10px 0;border-bottom: 1px dashed #eee;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;font-size:14px}
-    .data-list .data-item img{width:50px;height: 50px;margin-right: 10px;vertical-align: middle;border-radius: 3px;}
-    .data-list .no-data{text-align: center;padding-top:100px}
-    .data-class{margin-left:-20px}
-    .data-class-item{display: flex;font-size: 14px;line-height: 30px;cursor: pointer;}
-    .data-class-item .iconfont{color:#3297ff;font-size: 14px;width: 20px;}
-    .data-class-children{padding-left:20px;display: none;}
-    .data-class .active[data-parent_id] > .data-class-children{display: block;}
+    .link-wrapper {
+        display: flex;
+        background-color: #fff;
+        align-items: stretch;
+    }
+
+    .link-wrapper .link-left {
+        padding: 20px;
+        margin-right: 20px;
+        border-right: 1px solid #eee
+    }
+
+    .link-wrapper .link-left .link-menu {
+        line-height: 40px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .link-wrapper .link-left .link-menu.active {
+        color: #3297ff
+    }
+
+    .link-wrapper .link-right {
+        flex: 1;
+        padding-right: 20px;
+        padding-top: 20px
+    }
+
+    .link-wrapper .link-right .link-list .link-item {
+        cursor: pointer;
+        display: inline-block;
+        line-height: 20px;
+        padding: 5px 10px;
+        border-radius: 2px;
+        border: 1px solid #eee;
+        margin: 5px 10px;
+        white-space: nowrap;
+    }
+
+    .link-path {
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .link-path .leaf {
+        color: #999;
+        cursor: default;
+    }
+
+    .data-search {
+        display: flex;
+        border: 1px solid #e1e1e1;
+        align-items: stretch;
+        height: 30px;
+        line-height: 30px;
+        width: 200px;
+    }
+
+    .data-search input {
+        border: 0;
+        flex: 1;
+        width: 100%;
+    }
+
+    .data-search .iconfont {
+        border-left: 1px solid #e1e1e1;
+        padding: 0 10px;
+        cursor: pointer;
+    }
+
+    .data-list {
+        height: 250px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    .data-list .data-item {
+        width: 450px;
+        cursor: pointer;
+        padding: 10px 0;
+        border-bottom: 1px dashed #eee;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px
+    }
+
+    .data-list .data-item img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        vertical-align: middle;
+        border-radius: 3px;
+    }
+
+    .data-list .no-data {
+        text-align: center;
+        padding-top: 100px
+    }
+
+    .data-class {
+        margin-left: -20px
+    }
+
+    .data-class-item {
+        display: flex;
+        font-size: 14px;
+        line-height: 30px;
+        cursor: pointer;
+    }
+
+    .data-class-item .iconfont {
+        color: #3297ff;
+        font-size: 14px;
+        width: 20px;
+    }
+
+    .data-class-children {
+        padding-left: 20px;
+        display: none;
+    }
+
+    .data-class .active[data-parent_id]>.data-class-children {
+        display: block;
+    }
 </style>
 <script>
-    function showBlock(index){
+    function showBlock(index) {
         $('.link-path').hide()
         $('#load_html').hide()
         $('.link-menu').removeClass('active')
         $('.link-list').hide()
-        $('.link-menu[data-id='+index+']').addClass('active')
-        $('.link-list[data-id='+index+']').show()
+        $('.link-menu[data-id=' + index + ']').addClass('active')
+        $('.link-list[data-id=' + index + ']').show()
     }
-    function loadActivity(){
+    function loadActivity() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(2)">营销页面</span>/<span class="leaf">活动详情</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_activity');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_activity');
     }
-    function loadLive(){
+    function loadLive() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(2)">营销页面</span>/<span class="leaf">直播详情</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_live');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_live');
     }
-    function loadMarket(id){
+    function loadMarket(id) {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
-        var text=''
-        var path=''
-        switch(id){
+        var text = ''
+        var path = ''
+        switch (id) {
             case 1:
-                path='%2Fpages%2Fhome%2Fmarketmanage%2FMarketcard'
-                text='刮刮卡'
+                path = '%2Fpages%2Fhome%2Fmarketmanage%2FMarketcard'
+                text = '刮刮卡'
                 break
             case 2:
-            path='%2Fpages%2Fhome%2Fmarketmanage%2FMarketwheel'
-                text='大转盘'
+                path = '%2Fpages%2Fhome%2Fmarketmanage%2FMarketwheel'
+                text = '大转盘'
                 break
             case 3:
-            path='%2Fpages%2Fhome%2Fmarketmanage%2FMarketegg'
-                text='砸金蛋'
+                path = '%2Fpages%2Fhome%2Fmarketmanage%2FMarketegg'
+                text = '砸金蛋'
                 break
             case 4:
-            path='%2Fpages%2Fhome%2Fmarketmanage%2FMarketzodiac'
-                text='生肖翻翻看'
+                path = '%2Fpages%2Fhome%2Fmarketmanage%2FMarketzodiac'
+                text = '生肖翻翻看'
                 break
         }
-        $('.link-path').html('<span onclick="showBlock(2)">营销页面</span>/<span class="leaf">'+text+'</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_market?type='+id+'&path='+path);
+        $('.link-path').html('<span onclick="showBlock(2)">营销页面</span>/<span class="leaf">' + text + '</span>')
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_market?type=' + id + '&path=' + path);
     }
-    function loadBonus(){
+    function loadBonus() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(2)">营销页面</span>/<span class="leaf">红包</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_bonus');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_bonus');
     }
-    function loadSpecial(id){
+    function loadSpecial(id) {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
-        if(!id){
+        if (!id) {
             $('.link-path').html('<span onclick="showBlock(2)">营销页面</span>/<span class="leaf">商城装修</span>')
-        }else{
+        } else {
             $('.link-path').html('<span onclick="showBlock(5)">店铺页面</span>/<span onclick="loadStore(2)">选择店铺</span>/<span class="leaf">店铺装修</span>')
         }
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_special?store_id='+id);
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_special?store_id=' + id);
     }
-    function loadPointProd(){
+    function loadPointProd() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(3)">积分页面</span>/<span class="leaf">积分商品详情</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_point_prod');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_point_prod');
     }
-    function loadArticleClass(){
+    function loadArticleClass() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(4)">文章页面</span>/<span class="leaf">文章分类</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_article_class');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_article_class');
     }
-    function loadArticle(){
+    function loadArticle() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(4)">文章页面</span>/<span class="leaf">文章详情</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_article');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_article');
     }
-    function loadDocument(){
+    function loadDocument() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(4)">文章页面</span>/<span class="leaf">协议</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_document');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_document');
     }
-    function loadStoreClass(){
+    function loadStoreClass() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(5)">店铺页面</span>/<span class="leaf">店铺分类</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_store_class');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_store_class');
     }
-    function loadStore(id){
+    function loadStore(id) {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
-        var text=''
-        var path=''
-        var callback=''
-        switch(id){
+        var text = ''
+        var path = ''
+        var callback = ''
+        switch (id) {
             case 1:
-                path='%2Fpages%2Fhome%2Fstoredetail%2FStoredetail'
-                text='店铺详情'
+                path = '%2Fpages%2Fhome%2Fstoredetail%2FStoredetail'
+                text = '店铺详情'
                 break
             case 2:
-                callback='loadSpecial'
-                text='选择店铺'
+                callback = 'loadSpecial'
+                text = '选择店铺'
                 break
             case 3:
-            path='%2Fpages%2Fhome%2Fstoredetail%2FStoremap'
-                text='店铺地图'
+                path = '%2Fpages%2Fhome%2Fstoredetail%2FStoremap'
+                text = '店铺地图'
                 break
             case 4:
-            path='%2Fpages%2Fhome%2Fstoreabout%2FStoreabout'
-                text='店铺介绍'
+                path = '%2Fpages%2Fhome%2Fstoreabout%2FStoreabout'
+                text = '店铺介绍'
                 break
             case 5:
-            path='%2Fpages%2Fhome%2Fstoredetail%2FStoreVoucher'
-                text='店铺代金券'
+                path = '%2Fpages%2Fhome%2Fstoredetail%2FStoreVoucher'
+                text = '店铺代金券'
                 break
             case 6:
-            path='%2Fpages%2Fhome%2Fstoregoodsclass%2FGoodsclass'
-                text='店铺商品分类'
+                path = '%2Fpages%2Fhome%2Fstoregoodsclass%2FGoodsclass'
+                text = '店铺商品分类'
                 break
             case 7:
-            path='%2Fpages%2Fhome%2Fstoregoodslist%2FGoodslist'
-                text='店铺商品列表'
+                path = '%2Fpages%2Fhome%2Fstoregoodslist%2FGoodslist'
+                text = '店铺商品列表'
                 break
         }
-        $('.link-path').html('<span onclick="showBlock(5)">店铺页面</span>/<span class="leaf">'+text+'</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_store?path='+path+'&callback='+callback);
+        $('.link-path').html('<span onclick="showBlock(5)">店铺页面</span>/<span class="leaf">' + text + '</span>')
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_store?path=' + path + '&callback=' + callback);
     }
-    function loadGoodsClass(){
+    function loadGoodsClass() {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
         $('.link-path').html('<span onclick="showBlock(6)">商品页面</span>/<span class="leaf">商品分类</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_goods_class');
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_goods_class');
     }
-    function loadGoods(id){
+    function loadGoods(id) {
         $('.link-path').show()
         $('#load_html').show()
         $('.link-list').hide()
-        var text=''
-        var path=''
-        switch(id){
+        var text = ''
+        var path = ''
+        switch (id) {
             case 1:
-            path='%2Fpages%2Fhome%2Fgoodsdetail%2FGoodsdetail'
-                text='商品详情'
+                path = '%2Fpages%2Fhome%2Fgoodsdetail%2FGoodsdetail'
+                text = '商品详情'
                 break
             case 2:
-            path='%2Fpages%2Fhome%2Fgoodsdetail%2FGoodsVideo'
-                text='商品视频'
+                path = '%2Fpages%2Fhome%2Fgoodsdetail%2FGoodsVideo'
+                text = '商品视频'
                 break
             case 3:
-            path='%2Fpages%2Fhome%2Fgoodsdetail%2FGoodsConsult'
-                text='商品咨询'
+                path = '%2Fpages%2Fhome%2Fgoodsdetail%2FGoodsConsult'
+                text = '商品咨询'
                 break
         }
-        $('.link-path').html('<span onclick="showBlock(6)">商品页面</span>/<span class="leaf">'+text+'</span>')
-        $('#load_html').load(ADMINSITEURL+'/Dashboard/h5_goods?path='+path);
+        $('.link-path').html('<span onclick="showBlock(6)">商品页面</span>/<span class="leaf">' + text + '</span>')
+        $('#load_html').load(ADMINSITEURL + '/Dashboard/h5_goods?path=' + path);
     }
-    function setLink(path){
+    function setLink(path) {
         window.parent.setLink(path)
-        var index=parent.layer.getFrameIndex(window.name)
+        var index = parent.layer.getFrameIndex(window.name)
         parent.layer.close(index)
     }
 </script>

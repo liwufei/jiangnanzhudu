@@ -9,4 +9,5 @@ $lang['ensure_close'] = '确定要关闭吗？';
 $lang['goods_apply_pass'] = '已通过';
 $lang['goods_apply_reject'] = '未通过';
 $lang['goods_apply_wait'] = '审核中';
+
 return $lang;

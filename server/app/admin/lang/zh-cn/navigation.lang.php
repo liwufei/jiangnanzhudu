@@ -1,4 +1,5 @@
 <?php
+
 return [
     'nav_sort' => '排序',
     'nav_title' => '标题',

@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -32,7 +28,8 @@
             <tr class="hover">
                 <td class="w24"></td>
                 <td>{$v.mailmt_name|raw}</td>
-                <td class="w60 align-center"><a href="{:url('Message/email_tpl_edit',['code'=>$v.mailmt_code])}" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a></td>
+                <td class="w60 align-center"><a href="{:url('Message/email_tpl_edit',['code'=>$v.mailmt_code])}"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a></td>
             </tr>
             {/foreach}
             {/notempty}

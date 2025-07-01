@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -26,32 +24,37 @@
                     <td colspan="2" class="required">{$Think.lang.bill_pay_date} {$Think.lang.ds_colon}</td>
                 </tr>
                 <tr class="noborder">
-                    <td class="vatop rowform"><input readonly id="pay_date" class="" name="pay_date" value="" type="text" /></td>
+                    <td class="vatop rowform"><input readonly id="pay_date" class="" name="pay_date" value=""
+                            type="text" /></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr>
-                    <td colspan="2" class="required"><label for="pay_content">{$Think.lang.bill_pay_remark}{$Think.lang.ds_colon}</label></td>
+                    <td colspan="2" class="required"><label
+                            for="pay_content">{$Think.lang.bill_pay_remark}{$Think.lang.ds_colon}</label></td>
                 </tr>
                 <tr class="noborder">
-                    <td class="vatop rowform"><textarea name="pay_content" rows="6" class="tarea" id="pay_content"></textarea></td>
-                    <td class="vatop tips"><span class="vatop rowform">{$Think.lang.bill_pay_payment_voucher}</span></td>
+                    <td class="vatop rowform"><textarea name="pay_content" rows="6" class="tarea"
+                            id="pay_content"></textarea></td>
+                    <td class="vatop tips"><span class="vatop rowform">{$Think.lang.bill_pay_payment_voucher}</span>
+                    </td>
                 </tr>
             </tbody>
             <tfoot id="submit-holder">
                 <tr class="tfoot">
-                    <td colspan="2" ><a href="JavaScript:void(0);" id="dssubmit" class="btn"><span>{$Think.lang.ds_submit}</span></a></td>
+                    <td colspan="2"><a href="JavaScript:void(0);" id="dssubmit"
+                            class="btn"><span>{$Think.lang.ds_submit}</span></a></td>
                 </tr>
             </tfoot>
         </table>
     </form>
 </div>
 <script type="text/javascript">
-    $(function() {
-        $('#pay_date').datepicker({dateFormat:'yy-mm-dd', maxDate: '{$Think.TIMESTAMP|date="Y-m-d"}'});
-        $('#dssubmit').click(function() {
+    $(function () {
+        $('#pay_date').datepicker({ dateFormat: 'yy-mm-dd', maxDate: '{$Think.TIMESTAMP|date="Y-m-d"}' });
+        $('#dssubmit').click(function () {
             if ($('#pay_date').val() == '')
                 return false;
-            
+
             layer.confirm("{$Think.lang.bill_submit_notice}", {
                 btn: ['{$Think.lang.ds_ok}', '{$Think.lang.ds_cancel}'],
                 title: false,
@@ -60,4 +63,4 @@
             });
         });
     });
-</script> 
+</script>

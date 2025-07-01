@@ -22,6 +22,7 @@ $lang['member_index_login_deny'] = '禁止登录';
 $lang['member_index_login'] = '登录';
 $lang['member_auth_state3'] = '已认证';
 $lang['member_auth_state0'] = '未认证';
+
 /**
  * 编辑
  */
@@ -45,12 +46,11 @@ $lang['member_edit_allowtalk_tip'] = '如果禁止该项则会员不能发表咨
 $lang['member_edit_allowlogin'] = '允许登录';
 $lang['member_edit_denylogin'] = '禁止登录';
 $lang['member_areainfo'] = '所在地区';
-$lang['member_mobilebind']='手机号码验证';
-$lang['member_emailbind']='邮箱验证';
-$lang['member_exppoints']='经验值';
-$lang['member_grade']='会员级别';
-$lang['change_predeposit']='调节预存款';
-
+$lang['member_mobilebind'] = '手机号码验证';
+$lang['member_emailbind'] = '邮箱验证';
+$lang['member_exppoints'] = '经验值';
+$lang['member_grade'] = '会员级别';
+$lang['change_predeposit'] = '调节预存款';
 
 /**
  * 会员添加
@@ -61,4 +61,3 @@ $lang['password_add_name_null'] = '密码不能为空';
 $lang['member_add_name_length'] = '用户名必须在3-15字符之间';
 
 return $lang;
-?>

@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <table class="ds-default-table">
         <thead>
@@ -17,7 +15,8 @@
             {foreach name="bonusreceive_list" item="bonusreceive"}
             <tr>
                 <td>{$bonusreceive.member_name|default=''}</td>
-                <td>{if $bonusreceive.bonusreceive_time neq 0}{$bonusreceive.bonusreceive_time|date="Y-m-d H:i:s"}{/if}</td>
+                <td>{if $bonusreceive.bonusreceive_time neq 0}{$bonusreceive.bonusreceive_time|date="Y-m-d H:i:s"}{/if}
+                </td>
                 <td>{$bonusreceive.bonusreceive_transformed}</td>
                 <td>{$bonusreceive.bonusreceive_price}</td>
             </tr>

@@ -24,4 +24,3 @@ $lang['keywords'] = '关键字';
 $lang['description'] = '描述';
 
 return $lang;
-?>

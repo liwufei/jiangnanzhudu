@@ -38,8 +38,6 @@ $lang['wx_sslcert_path_desc'] = 'apiclient_cert.pem文件在服务器的路径, 
 $lang['wx_sslkey_path'] = 'apiclient_key.pem路径';
 $lang['wx_sslkey_path_desc'] = 'apiclient_key.pem文件在服务器的路径, 以linux系统 宝塔控制面板环境为例："/www/wwwroot/www.域名.com/plugins/payments/wxpay_native/cert/apiclient_key.pem"';
 
-
-
 $lang['allinpay_appid'] = 'APPID';
 $lang['allinpay_appid_desc'] = '通联支付中的AppId<a href="http://www.allinpay.com/" target="_blank">申请地址</a>';
 $lang['allinpay_mch_id'] = '商户号';
@@ -77,4 +75,3 @@ $lang['please_open_wechat_payment'] = '请先开启并配置微信扫码支付';
 $lang['please_open_alipay_payment'] = '请先开启并配置支付宝PC支付';
 
 return $lang;
-?>

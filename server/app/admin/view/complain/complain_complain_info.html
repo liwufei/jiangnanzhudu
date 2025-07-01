@@ -9,30 +9,42 @@
             <th>{$Think.lang.complain_message}</th>
         </tr>
         <tr class="noborder hover">
-            <td><ul>
+            <td>
+                <ul>
                     <li><strong>{$Think.lang.complain_state}:</strong>
                         <b>{$complain_info.complain_state_text}</b>
                     </li>
                     <li>
                         <strong>{$Think.lang.complain_subject_content}:</strong>
-                        {$complain_info.complain_subject_content}</li>
+                        {$complain_info.complain_subject_content}
+                    </li>
                     <li>
                         <strong>{$Think.lang.complain_accuser}:</strong>
                         {$complain_info.accuser_name}
                     </li>
                     <li>
                         <strong>{$Think.lang.complain_evidence}:</strong>
-                        {if empty($complain_info.complain_pic1) && empty($complain_info.complain_pic2) && empty($complain_info.complain_pic3)}
+                        {if empty($complain_info.complain_pic1) && empty($complain_info.complain_pic2) &&
+                        empty($complain_info.complain_pic3)}
                         {$Think.lang.complain_pic_none}
                         {else/}
                         {notempty name="$complain_info.complain_pic1"}
-                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" target="_blank" data-lightbox="lightbox-image"><img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" width="50"></a>
+                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" target="_blank"
+                            data-lightbox="lightbox-image"><img class="show_image"
+                                src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}"
+                                width="50"></a>
                         {/notempty}
                         {notempty name="$complain_info.complain_pic2"}
-                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" target="_blank" data-lightbox="lightbox-image"><img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" width="50"></a>
+                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" target="_blank"
+                            data-lightbox="lightbox-image"><img class="show_image"
+                                src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}"
+                                width="50"></a>
                         {/notempty}
                         {notempty name="$complain_info.complain_pic3"}
-                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" target="_blank" data-lightbox="lightbox-image"><img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" width="50"></a>
+                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" target="_blank"
+                            data-lightbox="lightbox-image"><img class="show_image"
+                                src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}"
+                                width="50"></a>
                         {/notempty}
                         {/if}
                     </li>
@@ -47,7 +59,8 @@
             <th>{$Think.lang.complain_goods}</th>
         </tr>
         <tr class="noborder">
-            <td><table class="ds-default-table">
+            <td>
+                <table class="ds-default-table">
                     <tr>
                         <th colspan="2">{$Think.lang.ds_goods_name}</th>
                         <th>{$Think.lang.complain_text_num}</th>
@@ -55,24 +68,31 @@
                     </tr>
                     {foreach name="complain_goods_list" item="complain_goods"}
                     <tr>
-                        <td width="65" align="center" valign="middle"><a style="text-decoration:none;" href="{:url('home/Goods/index',['goods_id'=>$complain_goods.goods_id])}" target="_blank">
+                        <td width="65" align="center" valign="middle"><a style="text-decoration:none;"
+                                href="{:url('home/Goods/index',['goods_id'=>$complain_goods.goods_id])}"
+                                target="_blank">
                                 <img width="50" src="{:goods_cthumb($complain_goods.goods_image)}" />
                             </a></td>
                         <td class="intro">
-                            <p><a href="{:url('home/Goods/index',['goods_id'=>$complain_goods.goods_id])}" target="_blank">{$complain_goods.goods_name} </a></p>
+                            <p><a href="{:url('home/Goods/index',['goods_id'=>$complain_goods.goods_id])}"
+                                    target="_blank">{$complain_goods.goods_name} </a></p>
                             <p>{:get_order_goodstype($complain_goods.goods_type)}</p>
                         </td>
                         <td width="10%">{$complain_goods.goods_num}</td>
                         <td width="10%">{$Think.lang.currency}{$complain_goods.goods_price}</td>
                     </tr>
                     {/foreach}
-                </table></td>
+                </table>
+            </td>
         </tr>
         <tr>
             <th>{$Think.lang.complain_content}</th>
         </tr>
         <tr class="noborder">
-            <td><div class="complain-intro" style=" color: #06C; border-color: #A7CAED; ">{$complain_info.complain_content}</div></td>
+            <td>
+                <div class="complain-intro" style=" color: #06C; border-color: #A7CAED; ">
+                    {$complain_info.complain_content}</div>
+            </td>
         </tr>
     </tbody>
 </table>

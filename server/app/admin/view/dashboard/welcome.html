@@ -1,6 +1,5 @@
 {include file="public/header" /}
 
-
 <div class="page welcome">
     <!--
     <div class="fixed-bar">
@@ -375,7 +374,7 @@
                             </div>
                         </a>
                     </li>
-                    
+
                     <!--
                     <li class="none">
                         <a href="{:url('Chain/index',['sign'=>'verify'])}">
@@ -419,10 +418,11 @@
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
-        $(function() {
-            $(".info-chart .week li").each(function(index) {
-                $(this).click(function() {
+        $(function () {
+            $(".info-chart .week li").each(function (index) {
+                $(this).click(function () {
                     $("li.active").removeClass("active"); //注意这里
                     $(this).addClass("active"); //注意这里
                     $(".tab-content>div.show").removeClass("show");
@@ -431,11 +431,7 @@
             })
         });
     </script>
-    
-    
-        
 
-    
     <div class="title">{$Think.lang.dashboard_wel_version_info}</div>
     <div class="info-system">
         <table cellpadding="0" cellspacing="0" class="system_table">
@@ -454,9 +450,11 @@
                 </tr>
                 <tr>
                     <td class="gray_bg">{$Think.lang.dashboard_aboutus_website}:</td>
-                    <td><a href="http://www.csdeshang.com" target="_blank">{$Think.lang.dashboard_aboutus_website}</a></td>
+                    <td><a href="http://www.csdeshang.com" target="_blank">{$Think.lang.dashboard_aboutus_website}</a>
+                    </td>
                     <td class="gray_bg">{$Think.lang.dashboard_aboutus_bbs}:</td>
-                    <td><a href="http://bbs.csdeshang.com" target="_blank">{$Think.lang.dashboard_wel_communication_bbs}</a></td>
+                    <td><a href="http://bbs.csdeshang.com"
+                            target="_blank">{$Think.lang.dashboard_wel_communication_bbs}</a></td>
                 </tr>
             </tbody>
         </table>
@@ -513,7 +511,7 @@
     <script src="{$Think.PLUGINS_SITE_ROOT}/highcharts/highcharts.js"></script>
     <script type="text/javascript">
         var normal = [];
-        var work = ['week_add_member', 'week_add_product','store_joinin', 'store_bind_class_applay', 'store_reopen_applay', 'store_expired', 'store_expire', 'brand_apply', 'cashlist', 'member_auth', 'groupbuy_verify_list', 'points_order', 'complain_new_list', 'complain_handle_list', 'product_verify', 'inform_list', 'refund', 'return', 'vr_refund', 'cms_article_verify', 'cms_picture_verify', 'circle_verify',  'mall_consult', 'chain', 'offline'];
+        var work = ['week_add_member', 'week_add_product', 'store_joinin', 'store_bind_class_applay', 'store_reopen_applay', 'store_expired', 'store_expire', 'brand_apply', 'cashlist', 'member_auth', 'groupbuy_verify_list', 'points_order', 'complain_new_list', 'complain_handle_list', 'product_verify', 'inform_list', 'refund', 'return', 'vr_refund', 'cms_article_verify', 'cms_picture_verify', 'circle_verify', 'mall_consult', 'chain', 'offline'];
         $(document).ready(function () {
             $.getJSON("{:url('Dashboard/statistics')}", function (data) {
                 $.each(data, function (k, v) {
@@ -526,9 +524,9 @@
                 });
             });
         });
-        $('#stat_json_week_member').highcharts({$stat_json_week_member|raw});
-        $('#stat_json_week_goods').highcharts({$stat_json_week_goods|raw});
-        $('#stat_json_week_store').highcharts({$stat_json_week_store|raw});
-        $('#stat_json_week_order').highcharts({$stat_json_week_order|raw});
+        $('#stat_json_week_member').highcharts({ $stat_json_week_member| raw});
+        $('#stat_json_week_goods').highcharts({ $stat_json_week_goods| raw});
+        $('#stat_json_week_store').highcharts({ $stat_json_week_store| raw});
+        $('#stat_json_week_order').highcharts({ $stat_json_week_order| raw});
     </script>
 </div>

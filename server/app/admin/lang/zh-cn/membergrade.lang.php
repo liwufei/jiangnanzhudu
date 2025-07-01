@@ -7,11 +7,8 @@ $lang['exp_login'] = '会员每天第一次登录';
 $lang['exp_comments'] = '订单商品评论';
 $lang['exp_orderrate'] = '消费额与赠送经验值比例';
 $lang['exp_orderrate_tips'] = '该值为大于0的数， 例:设置为10，表明消费10单位货币赠送1经验值';
-
 $lang['exp_ordermax'] = '每订单最多赠送经验值';
 $lang['exp_ordermax_tips'] = '该值为大于等于0的数，填写为0表明不限制最多经验值，例:设置为100，表明每订单赠送经验值最多为100经验值';
-
-
 $lang['explog_membername'] = '会员名称';
 $lang['exp_value'] = '经验值';
 $lang['explog_addtime'] = '添加时间';
@@ -23,10 +20,7 @@ $lang['ds_exppoints_edit'] = '经验值调整';
 $lang['ds_member_grade'] = '会员等级';
 
 $lang['exppoints_index_help1'] = '经验值管理，展示了会员经验值增减情况的详细情况，经验值前无符号表示增加，有符号“-”表示减少';
-
 $lang['exppoints_greater_than'] = '经验值应大于';
-
-
 
 /**
  * 经验值编辑
@@ -51,7 +45,7 @@ $lang['admin_exppoints_member_tip_2'] = ', 当前经验值数为';
 /*经验值规则设置*/
 $lang['membergrade_index_help1'] = '当会员符合某个级别后将自动升至该级别，请谨慎设置会员级别';
 $lang['membergrade_index_help2'] = '建议：一、级别应该是逐层递增，例如“级别2”所需经验值要高于“级别1”；二、设置的第一个级别所需经验值应为0；三、请填写完整的级别信息';
-$lang['membergrade_level_name']= '级别名称';
+$lang['membergrade_level_name'] = '级别名称';
 $lang['membergrade_exppoints'] = '经验值';
 $lang['membergrade_add'] = '新增等级';
 $lang['membergrade_remove'] = '移除';

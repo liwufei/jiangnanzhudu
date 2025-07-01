@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -13,19 +11,23 @@
         </div>
     </div>
 
-        <table class="ds-default-table">
-            <tbody>
+    <table class="ds-default-table">
+        <tbody>
             {notempty name="video_list"}
             <tr>
                 <td colspan="20">
                     <ul class="thumblists">
                         {foreach name="video_list" item="v"}
-                        <li class="picture" id="ds_row_{$v.goodsvideo_id}" style="width:254px !important;height: 274px;">
+                        <li class="picture" id="ds_row_{$v.goodsvideo_id}"
+                            style="width:254px !important;height: 274px;">
                             <div>
-                                <video title='{$v.goodsvideo_add_time|date="Y-m-d"}<br>{$v.store_name}' controls="" height="240" width="240" src="{:goods_video($v.goodsvideo_name)}" class="tip" />
+                                <video title='{$v.goodsvideo_add_time|date="Y-m-d"}<br>{$v.store_name}' controls=""
+                                    height="240" width="240" src="{:goods_video($v.goodsvideo_name)}" class="tip" />
                             </div>
                             <p>
-                                <span><input class="checkitem" type="checkbox" name="delbox[]" value="{$v.goodsvideo_id}"></span><span><a href="javascript:dsLayerConfirm('{:url('Goodsvideo/del_video',['goodsvideo_id'=>$v.goodsvideo_id])}','{$Think.lang.ds_ensure_del}',{$v.goodsvideo_id})">{$Think.lang.ds_del}</a></span>
+                                <span><input class="checkitem" type="checkbox" name="delbox[]"
+                                        value="{$v.goodsvideo_id}"></span><span><a
+                                        href="javascript:dsLayerConfirm('{:url('Goodsvideo/del_video',['goodsvideo_id'=>$v.goodsvideo_id])}','{$Think.lang.ds_ensure_del}',{$v.goodsvideo_id})">{$Think.lang.ds_del}</a></span>
                             </p>
                         </li>
                         {/foreach}
@@ -37,22 +39,23 @@
                 <td colspan="15">{$Think.lang.ds_no_record}</td>
             </tr>
             {/notempty}
-            </tbody>
-            <tfoot>
+        </tbody>
+        <tfoot>
             <tr class="tfoot">
-                <td class="w48"><input id="checkallBottom" class="checkall" type="checkbox"/></td>
+                <td class="w48"><input id="checkallBottom" class="checkall" type="checkbox" /></td>
                 <td colspan="16">
                     <label for="checkallBottom">{$Think.lang.ds_select_all}</label>
-                    <a class="btn btn-small" href="javascript:void(0);" onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
+                    <a class="btn btn-small" href="javascript:void(0);"
+                        onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
                 </td>
             </tr>
-            </tfoot>
-        </table>
-         {$show_page|raw}
+        </tfoot>
+    </table>
+    {$show_page|raw}
 
 </div>
 <script>
-    jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
+    jQuery.browser = {}; (function () { jQuery.browser.msie = false; jQuery.browser.version = 0; if (navigator.userAgent.match(/MSIE ([0-9]+)./)) { jQuery.browser.msie = true; jQuery.browser.version = RegExp.$1; } })();
 </script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.poshytip.min.js"></script>
 <script>
@@ -67,8 +70,8 @@
             allowTipHover: false
         });
     });
-    function submit_delete(ids_str){
-        _uri = ADMINSITEURL+"/Goodsvideo/del_video.html?goodsvideo_id=" + ids_str;
-        dsLayerConfirm(_uri,'{$Think.lang.ds_ensure_del}');
+    function submit_delete(ids_str) {
+        _uri = ADMINSITEURL + "/Goodsvideo/del_video.html?goodsvideo_id=" + ids_str;
+        dsLayerConfirm(_uri, '{$Think.lang.ds_ensure_del}');
     }
 </script>

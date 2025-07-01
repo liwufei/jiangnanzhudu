@@ -14,6 +14,7 @@ $lang['goods_class_index_ensure_del'] = '删除该分类将会同时删除该分
 $lang['goods_class_index_help1'] = '店主添加商品的时候，可以选择商品的分类，用户可以根据商品的分类来查询商品列表';
 $lang['goods_class_index_help2'] = '点击商品分类名前“+”符号，显示当前商品分类的下级分类';
 $lang['goods_class_index_help3'] = '<a>对商品分类作任何更改后，都需要到 设置 -> 清理缓存，新的设置才会生效</a>';
+
 /**
  * 批量编辑
  */
@@ -23,6 +24,7 @@ $lang['goods_class_batch_edit_keep'] = '保持不变';
 $lang['goods_class_batch_edit_ok'] = '编辑分类成功。';
 $lang['goods_class_batch_edit_fail'] = '编辑分类失败。';
 $lang['goods_class_batch_edit_paramerror'] = '参数非法';
+
 /**
  * 添加分类
  */
@@ -46,7 +48,7 @@ $lang['goods_class_pic'] = '分类图片';
 $lang['goods_class_pic_tips'] = '第一级图标显示在首页，建议用16px * 16px。二级分类图标显示在电脑端商品分类页，建议用70px * 70px。三级分类图标显示在手机端商品分类页，建议用100px * 100px';
 $lang['gc_virtual'] = '发布虚拟商品';
 $lang['gc_virtual_tips'] = '勾选允许发布虚拟商品后，在发布该分类的商品时可选择交易类型为“虚拟兑换码”形式。';
-$lang['commis_rate']='分佣比例';
+$lang['commis_rate'] = '分佣比例';
 $lang['commis_rate_tips'] = '必须为0-100的整数';
 
 /**
@@ -60,11 +62,13 @@ $lang['goods_class_import_first_class'] = '一级分类';
 $lang['goods_class_import_second_class'] = '二级分类';
 $lang['goods_class_import_third_class'] = '三级分类';
 $lang['goods_class_import_example_tip'] = '点击下载导入例子文件';
+
 /**
  * 分类导出
  */
 $lang['goods_class_export_if_trans'] = '导出您的商品分类数据';
 $lang['goods_class_export_help1'] = '导出商品分类信息的.csv文件';
+
 /**
  * TAG index
  */
@@ -77,14 +81,17 @@ $lang['goods_class_tag_reset_confirm'] = '您确定要重新导入TAG吗？重�
 $lang['goods_class_tag_prompts_two'] = 'TAG值是分类搜索的关键字，请精确的填写TAG值。TAG值可以填写多个，每个值之间需要用,隔开。';
 $lang['goods_class_tag_prompts_three'] = '导入、重置TAG功能可以根据商品分类重新更新TAG值，TAG值默认为各级商品分类的值。';
 $lang['goods_class_tag_choose_data'] = '请选择要操作的数据项。';
+
 /**
  * 重置TAG
  */
 $lang['goods_class_reset_tag_fail_no_class'] = '重置TAG失败，没查找到任何分类信息。';
+
 /**
  * 更新TAG名称
  */
 $lang['goods_class_update_tag_fail_no_class'] = 'TAG名称更新失败，没查找到任何分类信息。';
+
 /**
  * 删除TAG
  */
@@ -116,4 +123,3 @@ $lang['parent_parent_goods_class_equal_self_error'] = '父分类的父分类不�
 $lang['parent_goods_class_equal_self_error'] = '父分类不能等于自身';
 
 return $lang;
-?>

@@ -6,30 +6,22 @@ $lang['stat_scaleanalyze'] = '会员规模分析';
 $lang['stat_memberlist'] = '会员详细';
 $lang['stat_areaanalyze'] = '区域分析';
 $lang['stat_buying'] = '购买分析';
-
-
 $lang['stat_newstore'] = '新增店铺';
 $lang['stat_storesale'] = '店铺销量';
 $lang['stat_storedegree'] = '店铺等级';
-
 $lang['stat_sale_income'] = '销售收入统计';
 $lang['stat_predeposit'] = '预存款统计';
 $lang['stat_goods_sale'] = '商品销售明细';
-
 $lang['stat_promotion'] = '促销统计';
 $lang['stat_group'] = '抢购统计';
-
 $lang['stat_refund'] = '退款统计';
 $lang['stat_evalstore'] = '店铺动态评分';
-
 $lang['stat_sale'] = '订单统计';
 $lang['stat_storehotrank'] = '热卖排行';
 $lang['stat_storesales'] = '销售统计';
 $lang['stat_storearea'] = '地区分布';
-
 $lang['stat_goods_pricerange'] = '价格销量';
 $lang['stat_hotgoods'] = '热卖商品';
-
 $lang['stat_industryscale'] = '行业规模';
 $lang['stat_industryrank'] = '行业排行';
 $lang['stat_industryprice'] = '价格分析';
@@ -38,23 +30,16 @@ $lang['stat_generalindex'] = '统计概述';
 $lang['stat_setting'] = '统计设置';
 $lang['stat_goodspricerange'] = '商品价格区间';
 $lang['stat_orderpricerange'] = '订单金额区间';
-
 $lang['stat_validorder_explain'] = "有效的订单为店铺和平台结算过的订单。";
-
-
 
 $lang['state_no_tile_limit'] = '无限制';
 $lang['statstore_grade'] = '所属等级';
 $lang['statstore_expire'] = '有效期至';
 $lang['statstore_addtime'] = '开店时间';
-
-
 $lang['statstore_hot_top'] = '店铺热卖TOP榜';
 $lang['statstore_number'] = '序号';
 $lang['statstore_hot_speed'] = '店铺热卖飙升榜';
 $lang['statstore_range'] = '升降幅度';
-
-
 $lang['statstore_orderamount'] = '下单金额';
 $lang['statstore_ordernum'] = '下单量';
 $lang['search_type_day'] = '按照天统计';
@@ -62,7 +47,6 @@ $lang['search_type_week'] = '按照周统计';
 $lang['search_type_month'] = '按照月统计';
 $lang['statstore_store_hotrank_help1'] = '“店铺热卖TOP榜”显示了时间段内店铺有效订单的订单总金额和订单数量高的前15名店铺';
 $lang['statstore_store_hotrank_help2'] = '“店铺热卖飙升榜”显示了时间段内店铺有效订单的订单总金额和订单数量增长率高的前15名店铺';
-
 $lang['statstore_stat_storearea_help1'] = '统计图显示了店铺分类下到某个时间为止，提示：默认为当前时间，开店数量在各省级地区的分布情况';
 $lang['statstore_stat_storearea_help2'] = '统计地图将根据各个区域的开店数量统计数据等级依次显示不同的颜色';
 $lang['statestore_heigh'] = '高';
@@ -70,12 +54,9 @@ $lang['statestore_low'] = '低';
 $lang['statestore_area_tips'] = '备注：按照排名由高到低显示：排名第1、2、3名为第一阶梯；排名第4、5、6名为第二阶梯；排名第7、8、9为第三阶梯；排名第10、11、12为第四阶梯；其余为第五阶梯。';
 $lang['statestore_area'] = '店铺所在地区分布';
 $lang['statestore_stat_storedegree_help1'] = '统计图显示各店铺分类中店铺等级的分布情况';
-
-
 $lang['statestore_province'] = '省份';
 $lang['statstore_stat_store_sales_help1'] = '列表显示了店铺在搜索时间段内的有效订单总金额、订单量和下单会员数，点击列表上方的“导出Excel”按钮将列表数据导出为Excel文件';
 $lang['statstore_stat_store_sales_help2'] = '点击每列旁边的箭头对列表进行排序，默认按照“下单会员数”降序排列';
-
 $lang['statstore_stat_sale_help1'] = '统计图显示了符合搜索条件的有效订单中的下单总金额和下单数量在时间段内的走势情况及与前一个时间段的趋势对比';
 $lang['statstore_stat_sale_help2'] = '统计表显示了符合搜索条件的全部有效订单记录，点击“导出Excel”按钮将订单记录导出为Excel文件';
 $lang['pd_type_recharge'] = '充值';
@@ -106,7 +87,6 @@ $lang['pointsincrease'] = '增积分';
 $lang['pointsreduce'] = '减积分';
 $lang['statstore_stat_memberscale_help1'] = '列表显示了会员在搜索时间段内的有效积分增减、订单总金额和预存款情况，点击列表上方的“导出Excel”按钮将列表数据导出为Excel文件';
 $lang['statstore_stat_memberscale_help2'] = '点击每列旁边的箭头对列表进行排序，默认按照“下单金额”降序排列';
-
 
 $lang['membernum'] = '下单会员数';
 $lang['statstore_stat_memberarea_help1'] = '统计图表显示了时间段内有效订单的订单总金额、下单商品数量、订单数量和在各个区域的分布情况';
@@ -182,7 +162,6 @@ $lang['statgeneral_setting_help2'] = '建议：一、建议设置的第一个价
 $lang['add_line'] = '增加一行';
 $lang['pricerange_start'] = '起始额';
 $lang['pricerange_end'] = '结束额';
-
 $lang['pricerange_required'] = '请将价格区间填写完整';
 
 $lang['statgeneral_orderprange_help1'] = '设置订单金额区间，方便以后对订单金额进行相关统计时按照以下设置的价格区间进行统计和显示';
@@ -248,7 +227,6 @@ $lang['order_state_pay'] = '待发货';
 $lang['order_state_pickup'] = '待自提';
 $lang['order_state_send'] = '待收货';
 $lang['order_state_success'] = '交易完成';
-
 $lang['order_number_statis'] = '订单量统计';
 
 $lang['stattrade_order_amount_statis'] = '订单销售额统计';
@@ -298,8 +276,8 @@ $lang['none'] = '无';
 $lang['refund_log'] = '退款记录';
 $lang['store_dynamic_score_statis'] = '店铺动态评分统计';
 
-
 $lang['is_numeric_error'] = '金额需为数字';
 $lang['is_zero_error'] = '金额不能小于0';
 $lang['amount_set_error'] = '起始金额不能大于结束金额';
+
 return $lang;

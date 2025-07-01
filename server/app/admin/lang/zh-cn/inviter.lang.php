@@ -27,6 +27,7 @@ $lang['inviter_ratio_1_notice'] = '基数为分销金额';
 $lang['inviter_ratio_2_notice'] = '基数为分销金额';
 $lang['inviter_ratio_3_notice'] = '基数为分销金额';
 $lang['inviter_ratio_error'] = '分销比例总额不可超过100%';
+
 /* 分销商品 */
 $lang['inviter_ratio'] = '佣金比例';
 $lang['goods_price'] = '价格';
@@ -59,7 +60,6 @@ $lang['inviter_parent_name'] = '上级';
 $lang['inviter_member_empty'] = '没有该分销员';
 $lang['inviter_class'] = '分销员等级';
 
-
 /* 分销员等级 */
 $lang['inviterclass_amount'] = '佣金门槛';
 $lang['inviterclass_empty'] = '没有该分销员等级';
@@ -76,7 +76,8 @@ $lang['remark'] = '分销详情';
 $lang['valid'] = '是否有效';
 $lang['addtime'] = '添加时间';
 
-$lang['orderinviter_valid_array'][0]='待结算';
-$lang['orderinviter_valid_array'][1]='有效';
-$lang['orderinviter_valid_array'][2]='无效';
+$lang['orderinviter_valid_array'][0] = '待结算';
+$lang['orderinviter_valid_array'][1] = '有效';
+$lang['orderinviter_valid_array'][2] = '无效';
+
 return $lang;

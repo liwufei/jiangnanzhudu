@@ -1,6 +1,5 @@
 {include file="public/header" /}
 
-
 <div class="page">
     <div class="explanation" id="explanation">
         <div class="title" id="checkZoom">
@@ -19,13 +18,16 @@
         <table class="ds-default-table">
             <tbody>
                 <tr class="noborder">
-                    <td class="required w120"><label class="validation" for="store_name">{$Think.lang.ds_store_name}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="{$store_array.store_name}" id="store_name" name="store_name" class="txt" /></td>
+                    <td class="required w120"><label class="validation"
+                            for="store_name">{$Think.lang.ds_store_name}:</label></td>
+                    <td class="vatop rowform"><input type="text" value="{$store_array.store_name}" id="store_name"
+                            name="store_name" class="txt" /></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label for="store_name">{$Think.lang.store_addtime}:</label></td>
-                    <td class="vatop rowform">{notempty name="$store_array.store_addtime"}{$store_array.store_addtime|date='Y-m-d'}{/notempty}</td>
+                    <td class="vatop rowform">{notempty
+                        name="$store_array.store_addtime"}{$store_array.store_addtime|date='Y-m-d'}{/notempty}</td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
@@ -34,7 +36,8 @@
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
-                    <td class="required"><label class="validation" for="seller_name">{$Think.lang.ds_seller_name}:</label></td>
+                    <td class="required"><label class="validation"
+                            for="seller_name">{$Think.lang.ds_seller_name}:</label></td>
                     <td class="vatop rowform">{$store_array.seller_name}</td>
                     <td class="vatop tips">{$Think.lang.seller_name_tips}</td>
                 </tr>
@@ -44,13 +47,14 @@
                     <td class="required"><label><label>{$Think.lang.belongs_class}:</label></label></td>
                     <td class="vatop rowform">
                         <select name="storeclass_id">
-                              <option value="0">{$Think.lang.ds_please_choose}...</option>
-                              {notempty name="class_list"}
-                              {foreach name="class_list" item="v" key="k" }
-                              <option {if $store_array.storeclass_id == $v.storeclass_id}selected="selected" {/if} value="{$v.storeclass_id}">{$v.storeclass_name}</option>
-                              {/foreach}
-                              {/notempty}
-                          </select>
+                            <option value="0">{$Think.lang.ds_please_choose}...</option>
+                            {notempty name="class_list"}
+                            {foreach name="class_list" item="v" key="k" }
+                            <option {if $store_array.storeclass_id==$v.storeclass_id}selected="selected" {/if}
+                                value="{$v.storeclass_id}">{$v.storeclass_name}</option>
+                            {/foreach}
+                            {/notempty}
+                        </select>
                     </td>
                     <td class="vatop tips"></td>
                 </tr>
@@ -59,10 +63,14 @@
                 <tr class="noborder">
                     <td class="required"><label><label for="bind_all_gc">{$Think.lang.bind_all_gc}:</label></label></td>
                     <td class="vatop rowform onoff">
-                        <label for="bind_all_gc1" class="cb-enable {if $store_array.bind_all_gc == '1'}selected{/if}" ><span>{$Think.lang.ds_yes}</span></label>
-                        <label for="bind_all_gc0" class="cb-disable {if $store_array.bind_all_gc == '0'}selected{/if}" ><span>{$Think.lang.ds_no}</span></label>
-                        <input id="bind_all_gc1" name="bind_all_gc" {if $store_array.bind_all_gc == '1'}checked="checked"{/if} value="1" type="radio">
-                        <input id="bind_all_gc0" name="bind_all_gc" {if $store_array.bind_all_gc == '0'}checked="checked"{/if} value="0" type="radio">
+                        <label for="bind_all_gc1"
+                            class="cb-enable {if $store_array.bind_all_gc == '1'}selected{/if}"><span>{$Think.lang.ds_yes}</span></label>
+                        <label for="bind_all_gc0"
+                            class="cb-disable {if $store_array.bind_all_gc == '0'}selected{/if}"><span>{$Think.lang.ds_no}</span></label>
+                        <input id="bind_all_gc1" name="bind_all_gc" {if $store_array.bind_all_gc=='1' }checked="checked"
+                            {/if} value="1" type="radio">
+                        <input id="bind_all_gc0" name="bind_all_gc" {if $store_array.bind_all_gc=='0' }checked="checked"
+                            {/if} value="0" type="radio">
                     </td>
                     <td class="vatop tips"></td>
                 </tr>
@@ -70,27 +78,32 @@
             <tbody>
                 <tr class="noborder">
                     <td class="required"><label><label for="state">{$Think.lang.store_state}:</label></label></td>
-                    <td class="vatop rowform onoff"><label for="store_state1" class="cb-enable {if $store_array.store_state == '1'}selected{/if}" ><span>{$Think.lang.ds_open}</span></label>
-                        <label for="store_state0" class="cb-disable {if $store_array.store_state == '0'}selected{/if}" ><span>{$Think.lang.ds_close}</span></label>
-                        <input id="store_state1" name="store_state" {if $store_array.store_state == '1'}checked="checked"{/if} onclick="$('#tr_store_close_info').hide();" value="1" type="radio">
-                        <input id="store_state0" name="store_state" {if $store_array.store_state == '0'}checked="checked"{/if} onclick="$('#tr_store_close_info').show();" value="0" type="radio">
+                    <td class="vatop rowform onoff"><label for="store_state1"
+                            class="cb-enable {if $store_array.store_state == '1'}selected{/if}"><span>{$Think.lang.ds_open}</span></label>
+                        <label for="store_state0"
+                            class="cb-disable {if $store_array.store_state == '0'}selected{/if}"><span>{$Think.lang.ds_close}</span></label>
+                        <input id="store_state1" name="store_state" {if $store_array.store_state=='1' }checked="checked"
+                            {/if} onclick="$('#tr_store_close_info').hide();" value="1" type="radio">
+                        <input id="store_state0" name="store_state" {if $store_array.store_state=='0' }checked="checked"
+                            {/if} onclick="$('#tr_store_close_info').show();" value="0" type="radio">
                     </td>
                     <td class="vatop tips"></td>
                 </tr>
             </tbody>
             <tbody id="tr_store_close_info">
-                <tr >
-                    
+                <tr>
+
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label for="store_close_info">{$Think.lang.store_close_info}:</label></td>
-                    <td class="vatop rowform"><textarea name="store_close_info" rows="6" class="tarea" id="store_close_info">{$store_array.store_close_info}</textarea></td>
+                    <td class="vatop rowform"><textarea name="store_close_info" rows="6" class="tarea"
+                            id="store_close_info">{$store_array.store_close_info}</textarea></td>
                     <td class="vatop tips"></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}"/></td>
+                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}" /></td>
                 </tr>
             </tfoot>
         </table>
@@ -98,7 +111,6 @@
 </div>
 <script type="text/javascript">
     $(function () {
-
         $('input[name=store_state][value={$store_array.store_state}]').trigger('click');
         $('#store_form').validate({
             errorPlacement: function (error, element) {

@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <form method="post" name="form1" id="form1" action="">
         <table class="ds-default-table">
@@ -25,7 +21,8 @@
                 </tr>
                 <tr>
                     <td class="required"><label for="payment_time">{$Think.lang.ds_payment_time}</label></td>
-                    <td class="vatop rowform"><input readonly id="payment_time" class="" name="payment_time" value="" type="text" /></td>
+                    <td class="vatop rowform"><input readonly id="payment_time" class="" name="payment_time" value=""
+                            type="text" /></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr>
@@ -42,13 +39,15 @@
                 </tr>
                 <tr>
                     <td class="required"><label for="trade_no">{$Think.lang.ds_trade_no}</label></td>
-                    <td class="vatop rowform"><input type="text" class="w300" name="trade_no" id="trade_no" maxlength="40"></td>
+                    <td class="vatop rowform"><input type="text" class="w300" name="trade_no" id="trade_no"
+                            maxlength="40"></td>
                     <td class="vatop tips"><span class="vatop rowform">{$Think.lang.trade_no_tips}</span></td>
                 </tr>
             </tbody>
             <tfoot id="submit-holder">
                 <tr class="tfoot">
-                    <td colspan="3" ><a href="javascript:void(0)" id="dssubmit" class="btn">{$Think.lang.ds_submit}</a></td>
+                    <td colspan="3"><a href="javascript:void(0)" id="dssubmit" class="btn">{$Think.lang.ds_submit}</a>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -56,10 +55,10 @@
 </div>
 
 <script type="text/javascript">
-    $(function(){
-        $('#payment_time').datepicker({dateFormat: "yy-mm-dd",maxDate: "{$Think.TIMESTAMP|date='Y-m-d'}"});
-        $('#dssubmit').click(function(){
-            if($("#form1").valid()){
+    $(function () {
+        $('#payment_time').datepicker({ dateFormat: "yy-mm-dd", maxDate: "{$Think.TIMESTAMP|date='Y-m-d'}" });
+        $('#dssubmit').click(function () {
+            if ($("#form1").valid()) {
                 layer.confirm("{$Think.lang.receive_pay_confirm}", {
                     btn: ['{$Think.lang.ds_ok}', '{$Think.lang.ds_cancel}'],
                     title: false,
@@ -69,29 +68,29 @@
             }
         });
         $("#form1").validate({
-            errorPlacement: function(error, element){
+            errorPlacement: function (error, element) {
                 error.appendTo(element.parent().parent().find('td:last'));
             },
-            rules : {
-                payment_time : {
-                    required : true
+            rules: {
+                payment_time: {
+                    required: true
                 },
-                payment_code : {
-                    required : true
+                payment_code: {
+                    required: true
                 },
-                trade_no    :{
-                    required : true
+                trade_no: {
+                    required: true
                 }
             },
-            messages : {
-                payment_time : {
-                    required : '{$Think.lang.payment_time_required}'
+            messages: {
+                payment_time: {
+                    required: '{$Think.lang.payment_time_required}'
                 },
-                payment_code : {
-                    required : '{$Think.lang.payment_code_required}'
+                payment_code: {
+                    required: '{$Think.lang.payment_code_required}'
                 },
-                trade_no : {
-                    required : '{$Think.lang.trade_no_required}'
+                trade_no: {
+                    required: '{$Think.lang.trade_no_required}'
                 }
             }
         });

@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -12,7 +10,6 @@
             {include file="public/admin_items" /}
         </div>
     </div>
-
 
     <div class="explanation" id="explanation">
         <div class="title" id="checkZoom">
@@ -39,12 +36,15 @@
             {foreach name="type_list" item="value"}
             <tbody>
                 <tr id="ds_row_{$value.mallconsulttype_id}">
-                    <td><input type="checkbox" class="checkitem" value="{$value.mallconsulttype_id}" name="del_id[]" /></td>
+                    <td><input type="checkbox" class="checkitem" value="{$value.mallconsulttype_id}" name="del_id[]" />
+                    </td>
                     <td>{$value.mallconsulttype_sort}</td>
                     <td>{$value.mallconsulttype_name}</td>
                     <td class="align-center">
-                        <a href="javascript:dsLayerOpen('{:url('Mallconsult/type_edit',['mallconsulttype_id'=>$value.mallconsulttype_id])}','{$Think.lang.ds_edit}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                        <a href="javascript:dsLayerConfirm('{:url('Mallconsult/type_del',['mallconsulttype_id'=>$value.mallconsulttype_id])}','{$Think.lang.ds_ensure_del}',{$value.mallconsulttype_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                        <a href="javascript:dsLayerOpen('{:url('Mallconsult/type_edit',['mallconsulttype_id'=>$value.mallconsulttype_id])}','{$Think.lang.ds_edit}')"
+                            class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                        <a href="javascript:dsLayerConfirm('{:url('Mallconsult/type_del',['mallconsulttype_id'=>$value.mallconsulttype_id])}','{$Think.lang.ds_ensure_del}',{$value.mallconsulttype_id})"
+                            class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                     </td>
                 </tr>
             </tbody>
@@ -61,7 +61,8 @@
                 <tr class="tfoot">
                     <td><input type="checkbox" class="checkall" id="checkallBottom"></td>
                     <td colspan="16"><label for="checkallBottom">{$Think.lang.ds_select_all}</label>
-                        &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn btn-small" onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
+                        &nbsp;&nbsp;<a href="JavaScript:void(0);" class="btn btn-small"
+                            onclick="submit_delete_batch()"><span>{$Think.lang.ds_del}</span></a>
                     </td>
                 </tr>
                 {/notempty}

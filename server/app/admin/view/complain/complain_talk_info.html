@@ -1,40 +1,38 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
-
-
     <table class="ds-default-table">
         <thead class="thead">
-        <tr class="space">
-            <th>{$Think.lang.talk_detail}</th>
-        </tr>
+            <tr class="space">
+                <th>{$Think.lang.talk_detail}</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <th>{$Think.lang.talk_list}</th>
-        </tr>
-        <tr class="noborder">
-            <td class="complain-content">
-                <div id="div_talk" class="div_talk"></div>
-            </td>
-        </tr>
-        {neq name="complain_info.complain_state" value="99"}
-        <tr>
-            <th>{$Think.lang.talk_send}</th>
-        </tr>
-        <tr class="noborder">
-            <td>
-                <textarea id="complain_talk" class="tarea"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="JavaScript:void(0);" id="btn_refresh" class="btn"><span>{$Think.lang.talk_refresh}</span></a>
-                <a href="JavaScript:void(0);" id="btn_publish" class="btn"><span>{$Think.lang.talk_send}</span></a></td>
-        </tr>
-        {/neq}
+            <tr>
+                <th>{$Think.lang.talk_list}</th>
+            </tr>
+            <tr class="noborder">
+                <td class="complain-content">
+                    <div id="div_talk" class="div_talk"></div>
+                </td>
+            </tr>
+            {neq name="complain_info.complain_state" value="99"}
+            <tr>
+                <th>{$Think.lang.talk_send}</th>
+            </tr>
+            <tr class="noborder">
+                <td>
+                    <textarea id="complain_talk" class="tarea"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="JavaScript:void(0);" id="btn_refresh"
+                        class="btn"><span>{$Think.lang.talk_refresh}</span></a>
+                    <a href="JavaScript:void(0);" id="btn_publish" class="btn"><span>{$Think.lang.talk_send}</span></a>
+                </td>
+            </tr>
+            {/neq}
         </tbody>
     </table>
 </div>
@@ -59,7 +57,7 @@
             type: 'GET',
             url: "{:url('Complain/get_complain_talk')}",
             cache: false,
-            data: {complain_id:{$complain_info.complain_id}},
+            data: { complain_id: { $complain_info.complain_id } },
             dataType: 'json',
             error: function () {
                 $("#div_talk").append("<p class='admin'>" + "{$Think.lang.talk_none}" + "</p>");
@@ -75,8 +73,7 @@
                     $("#div_talk").append("<p class='admin'>" + "{$Think.lang.talk_none}" + "</p>");
                 }
             }
-        })
-        ;
+        });
     }
     function publish_complain_talk() {
         $.ajax({
@@ -106,7 +103,7 @@
             type: 'POST',
             url: "{:url('Complain/forbit_talk')}",
             cache: false,
-            data: {"talk_id":talk_id},
+            data: { "talk_id": talk_id },
             dataType: 'json',
             error: function () {
                 layer.alert("{$Think.lang.talk_forbit_fail}");
@@ -123,4 +120,3 @@
         });
     }
 </script>
-

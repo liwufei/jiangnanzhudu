@@ -1,6 +1,5 @@
 <?php
 
-
 $lang['area_name'] = '地区名称';
 $lang['area_region'] = '大区名称';
 $lang['add_child'] = '新增下级';
@@ -24,6 +23,6 @@ $lang['area_empty'] = '没有该地区';
 $lang['area_deep_error'] = '最多只能%s级';
 $lang['area_parent_error'] = '地区的上级不能是自己以及自己的下级地区';
 
-$lang['please_drop_child_region']='请先删除该分类下的子地区';
+$lang['please_drop_child_region'] = '请先删除该分类下的子地区';
 
 return $lang;

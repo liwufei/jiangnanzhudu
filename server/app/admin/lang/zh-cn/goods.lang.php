@@ -32,6 +32,7 @@ $lang['goods_verify_0'] = '未通过';
 $lang['goods_verify_1'] = '通过';
 $lang['goods_verify_10'] = '等待审核';
 $lang['mall_goods_commend'] = '平台推荐';
+
 /**
  * 商品审核
  */

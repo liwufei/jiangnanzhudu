@@ -1,4 +1,5 @@
 <?php
+
 $lang['vod_tencent_play_key'] = '防盗链 Key';
 $lang['vod_tencent_play_domain'] = '点播域名';
 $lang['vod_tencent_appid'] = 'Tencent APPID';
@@ -27,4 +28,5 @@ $lang['aliyun_live_push_domain'] = '阿里云推流域名';
 $lang['aliyun_live_push_key'] = '阿里云推流鉴权key';
 $lang['aliyun_live_play_domain'] = '阿里云播流域名';
 $lang['aliyun_live_play_key'] = '阿里云播流鉴权key';
+
 return $lang;

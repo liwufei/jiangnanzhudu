@@ -20,13 +20,13 @@ $lang['admin_snstrace_tracelisttip2'] = '动态删除后其对应的评论也一
 $lang['admin_snstrace_forward'] = '转发';
 $lang['admin_snstrace_comment'] = '评论';
 
-$lang['sns_sharegoods_price']		= '价&nbsp;&nbsp;格';
-$lang['sns_sharegoods_freight']		= '运&nbsp;&nbsp;费';
-$lang['sns_sharegoods_collect']	= '收藏该宝贝';
-$lang['store_sns_store_recommend']	= '店铺推荐';
+$lang['sns_sharegoods_price'] = '价&nbsp;&nbsp;格';
+$lang['sns_sharegoods_freight'] = '运&nbsp;&nbsp;费';
+$lang['sns_sharegoods_collect'] = '收藏该宝贝';
+$lang['store_sns_store_recommend'] = '店铺推荐';
 $lang['store_sns_trace_type'] = '动态类型';
 $lang['store_sns_normal'] = '新鲜事';
-$lang['store_sns_new_selease']		= '新品发布';
+$lang['store_sns_new_selease'] = '新品发布';
 $lang['store_sns_coupon'] = '优惠券';
 $lang['store_sns_xianshi'] = '秒杀';
 $lang['store_sns_mansong'] = '满即送';
@@ -35,9 +35,9 @@ $lang['store_sns_groupbuy'] = '抢购';
 $lang['store_sns_recommend'] = '推荐';
 $lang['store_sns_hotsell'] = '热销';
 $lang['store_sns_hotsell'] = '热销商品';
-$lang['store_sns_free_shipping']	= '免运费';
-$lang['store_sns_groupprice']		= '抢购价格';
-$lang['store_sns_goodsprice']		= '商品原价';
-$lang['store_sns_start-stop_time']	= '	起止时间';
+$lang['store_sns_free_shipping'] = '免运费';
+$lang['store_sns_groupprice'] = '抢购价格';
+$lang['store_sns_goodsprice'] = '商品原价';
+$lang['store_sns_start-stop_time'] = '	起止时间';
 
 return $lang;

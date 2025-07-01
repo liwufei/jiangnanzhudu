@@ -1,6 +1,5 @@
 {include file="public/header" /}
 
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -44,19 +43,24 @@
                 <td><span>{$v.mallvouchertemplate_eachlimit}</span></td>
                 <td class="w120 align-center">
                     {if !$v.mallvouchertemplate_giveout}
-                       <a class="dsui-btn-edit" href="{:url('Mallvouchertemplate/mallvouchertemplateedit',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}">
-                           <i class="iconfont"></i>{$Think.lang.ds_edit}
-                       </a>
-                     {else}
-                       <a class="dsui-btn-view" href="{:url('Mallvouchertemplate/mallvouchertemplateview',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}">
-                       <i class="iconfont"></i>{$Think.lang.ds_detail}
-                       </a>
-                        <a href="javascript:dsLayerOpen('{:url('Mallvouchertemplate/mallvoucheruser_list',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}','{$Think.lang.ds_view}-{$v.mallvouchertemplate_title}')" class="dsui-btn-view"><i class="iconfont"></i>{$Think.lang.ds_view}{$Think.lang.admin_mallvouchertemplate_giveout}</a>
-                     {/if}
-                     
-                    
+                    <a class="dsui-btn-edit"
+                        href="{:url('Mallvouchertemplate/mallvouchertemplateedit',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}">
+                        <i class="iconfont"></i>{$Think.lang.ds_edit}
+                    </a>
+                    {else}
+                    <a class="dsui-btn-view"
+                        href="{:url('Mallvouchertemplate/mallvouchertemplateview',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}">
+                        <i class="iconfont"></i>{$Think.lang.ds_detail}
+                    </a>
+                    <a href="javascript:dsLayerOpen('{:url('Mallvouchertemplate/mallvoucheruser_list',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}','{$Think.lang.ds_view}-{$v.mallvouchertemplate_title}')"
+                        class="dsui-btn-view"><i
+                            class="iconfont"></i>{$Think.lang.ds_view}{$Think.lang.admin_mallvouchertemplate_giveout}</a>
+                    {/if}
+
+
                     {if !$v.mallvouchertemplate_giveout}
-                    <a href="javascript:dsLayerConfirm('{:url('Mallvouchertemplate/drop',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}','{$Think.lang.ds_ensure_del}',{$v.mallvouchertemplate_id})" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Mallvouchertemplate/drop',['mallvouchertemplate_id'=>$v.mallvouchertemplate_id])}','{$Think.lang.ds_ensure_del}',{$v.mallvouchertemplate_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                     {/if}
                 </td>
                 {/foreach}
@@ -67,5 +71,5 @@
             {/notempty}
         </tbody>
     </table>
-     {$show_page|raw}
+    {$show_page|raw}
 </div>

@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -12,7 +10,7 @@
             {include file="public/admin_items" /}
         </div>
     </div>
-    
+
     <form method="get" name="formSearch" id="formSearch">
         <div class="ds-search-form">
             <dl>
@@ -25,7 +23,8 @@
                     <select name="search_ac_id">
                         <option value="">{$Think.lang.ds_please_choose}...</option>
                         {foreach name="parent_list" item="v" key="k"}
-                        <option value="{$v.ac_id}" {if condition="$Request.param.search_ac_id eq $v.ac_id"}selected{/if}>{$v.ac_name|raw}</option>
+                        <option value="{$v.ac_id}" {if condition="$Request.param.search_ac_id eq $v.ac_id"
+                            }selected{/if}>{$v.ac_name|raw}</option>
                         {/foreach}
                     </select>
                 </dd>
@@ -33,12 +32,13 @@
             <div class="btn_group">
                 <input type="submit" class="btn" value="{$Think.lang.ds_search}">
                 {if $filtered}
-                <a href="{:url('Article/index')}" class="btn btn-default" title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
+                <a href="{:url('Article/index')}" class="btn btn-default"
+                    title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
                 {/if}
             </div>
         </div>
     </form>
-    
+
     <table class="ds-default-table">
         <thead>
             <tr>
@@ -62,8 +62,10 @@
                 <td>{if $article.article_show eq '1'}{$Think.lang.ds_yes}{else}{$Think.lang.ds_no}{/if}</td>
                 <td>{$article.article_time}</td>
                 <td>
-                    <a href="{:url('Article/edit',['article_id'=>$article.article_id])}" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Article/drop',['article_id'=>$article.article_id])}','{$Think.lang.ds_ensure_del}',{$article.article_id})"  class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="{:url('Article/edit',['article_id'=>$article.article_id])}" class="dsui-btn-edit"><i
+                            class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Article/drop',['article_id'=>$article.article_id])}','{$Think.lang.ds_ensure_del}',{$article.article_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}

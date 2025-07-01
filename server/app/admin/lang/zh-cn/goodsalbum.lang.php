@@ -11,4 +11,3 @@ $lang['g_album_pic_count'] = '图片数';
 $lang['g_album_pic_one'] = '图片';
 
 return $lang;
-?>

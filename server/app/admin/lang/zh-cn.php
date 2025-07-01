@@ -20,6 +20,7 @@ $lang['ds_chain'] = '门店管理';
 $lang['ds_region'] = '地区管理';
 $lang['ds_db'] = '数据备份';
 $lang['ds_adminlog'] = '操作日志';
+
 //会员
 $lang['ds_member'] = '会员';
 $lang['ds_member_manage'] = '会员管理';
@@ -43,16 +44,18 @@ $lang['ds_spec'] = '规格管理';
 $lang['ds_album'] = '空间管理';
 $lang['ds_video'] = '视频管理';
 $lang['ds_arrivalnotice'] = '到货通知';
+
 //店铺
 $lang['ds_store'] = '店铺';
-$lang['ds_store_money']     = '店铺资金';
-$lang['ds_store_deposit']     = '店铺保证金';
+$lang['ds_store_money'] = '店铺资金';
+$lang['ds_store_deposit'] = '店铺保证金';
 $lang['ds_store_manage'] = '店铺管理';
 $lang['ds_storegrade'] = '店铺等级';
 $lang['ds_storeclass'] = '店铺分类';
 $lang['ds_storesnstrace'] = '店铺动态';
 $lang['ds_storehelp'] = '店铺帮助';
 $lang['ds_storejoin'] = '开店首页';
+
 //交易
 $lang['ds_trade'] = '交易';
 $lang['ds_order'] = '实物订单';
@@ -64,6 +67,7 @@ $lang['ds_consulting'] = '咨询管理';
 $lang['ds_inform'] = '举报管理';
 $lang['ds_evaluate'] = '评价管理';
 $lang['ds_complain'] = '投诉管理';
+
 //网站
 $lang['ds_website'] = '网站';
 $lang['ds_articleclass'] = '文章分类';
@@ -154,13 +158,12 @@ $lang['wechat_keywords'] = '关键字回复';
 $lang['wechat_member'] = '绑定列表';
 $lang['wechat_push'] = '消息推送';
 
-
 //直播
-$lang['ds_live']='直播';
-$lang['live_setting']='直播设置';
-$lang['live_apply']='直播申请';
-$lang['live_goods']='直播商品';
-$lang['instant_message']='用户聊天';
+$lang['ds_live'] = '直播';
+$lang['live_setting'] = '直播设置';
+$lang['live_apply'] = '直播申请';
+$lang['live_goods'] = '直播商品';
+$lang['instant_message'] = '用户聊天';
 
 /**
  * 页面中的常用文字
@@ -245,7 +248,6 @@ $lang['ds_max_error'] = '值不能大于';
 $lang['ds_required_error'] = '此项为必填';
 $lang['ds_digits_error'] = '值为正整数';
 
-
 $lang['ds_quickly_targeted'] = '快捷定位';
 $lang['ds_total'] = '一共';
 $lang['ds_qrcode'] = '二维码';
@@ -306,7 +308,6 @@ $lang['ds_goods_price'] = '商品价格';
 $lang['ds_trade_no'] = '第三方平台交易号';
 $lang['ds_refund_sn'] = '退款编号';
 
-
 //操作提示
 $lang['ds_common_op_succ'] = '操作成功';
 $lang['ds_common_op_fail'] = '操作失败';
@@ -347,7 +348,6 @@ $lang['ds_store_avaliable_money_is_not_enough'] = '店铺可用资金不足';
 $lang['ds_store_freeze_money_is_not_enough'] = '店铺冻结资金不足';
 $lang['ds_store_money_adjust_fail'] = '店铺资金变动失败';
 $lang['ds_store_money_log_insert_fail'] = '店铺资金记录新增失败';
-
 $lang['ds_store_avaliable_deposit_is_not_enough'] = '店铺已缴保证金不足';
 $lang['ds_store_freeze_deposit_is_not_enough'] = '店铺审核保证金不足';
 $lang['ds_store_payable_deposit_is_not_enough'] = '店铺应缴保证金不足';
@@ -358,7 +358,7 @@ $lang['ds_store_deposit_log_insert_fail'] = '店铺保证金记录新增失败';
 $lang['topnav_logout'] = '安全退出';
 $lang['topnav_logout_confirm'] = '您确定退出吗?';
 $lang['topnav_edit_password'] = '修改密码';
-$lang['topnav_cache'] ='清除缓存';
+$lang['topnav_cache'] = '清除缓存';
 $lang['topnav_hello'] = '您好';
 $lang['topnav_clear_confirm'] = '确定清理全部缓存?';
 $lang['topnav_visit_home'] = '访问首页';
@@ -376,7 +376,6 @@ $lang['editable_page_h5'] = 'H5装修';
 
 $lang['order_goods_more_than_one'] = '等%d种商品';
 
-
 //退款
 $lang['refund_state'] = '退款状态';
 $lang['refund_state_yes'] = '同意退款';
@@ -388,4 +387,3 @@ $lang['refund_state_1'] = '部分退款';
 $lang['refund_state_2'] = '全部退款';
 
 return $lang;
-?>

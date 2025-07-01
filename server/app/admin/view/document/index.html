@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -22,29 +20,30 @@
             <li>{$Think.lang.document_index_help1}</li>
         </ul>
     </div>
-    
+
     <table class="ds-default-table">
         <thead>
-        <tr class="thead">
-            <th>{$Think.lang.document_index_title}</th>
-            <th class="align-center">{$Think.lang.document_edit_time}</th>
-            <th>{$Think.lang.ds_handle}</th>
-        </tr>
+            <tr class="thead">
+                <th>{$Think.lang.document_index_title}</th>
+                <th class="align-center">{$Think.lang.document_edit_time}</th>
+                <th>{$Think.lang.ds_handle}</th>
+            </tr>
         </thead>
         <tbody>
-        {notempty name="doc_list"}
-        {foreach name="doc_list" item="v"}
-        <tr class="hover">
-            <td >{$v.document_title}</td>
-            <td class="w25pre align-center">{$v.document_time|date="Y-m-d H:i:s"}</td>
-            <td class="w96"><a href="{:url('Document/edit',['document_id'=>$v.document_id])}" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a></td>
-        </tr>
-       {/foreach}
-        {else}
-        <tr class="no_data">
-            <td colspan="15">{$Think.lang.ds_no_record}</td>
-        </tr>
-        {/notempty}
+            {notempty name="doc_list"}
+            {foreach name="doc_list" item="v"}
+            <tr class="hover">
+                <td>{$v.document_title}</td>
+                <td class="w25pre align-center">{$v.document_time|date="Y-m-d H:i:s"}</td>
+                <td class="w96"><a href="{:url('Document/edit',['document_id'=>$v.document_id])}"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a></td>
+            </tr>
+            {/foreach}
+            {else}
+            <tr class="no_data">
+                <td colspan="15">{$Think.lang.ds_no_record}</td>
+            </tr>
+            {/notempty}
         </tbody>
     </table>
 

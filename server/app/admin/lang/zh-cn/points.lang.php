@@ -44,9 +44,6 @@ $lang['admin_points_stage_gift'] = '直播礼物';
 $lang['admin_points_addtime'] = '添加时间';
 $lang['admin_points_log_help1'] = '积分管理，展示了会员、管理员、操作积分数（积分值，无符号表示增加，“-”表示减少，）、添加时间等信息';
 
-
-
-
 $lang['points_ruletip'] = '积分规则如下';
 $lang['points_item'] = '项目';
 $lang['points_number'] = '赠送积分';
@@ -62,7 +59,7 @@ $lang['points_number_orderrate'] = '消费额与赠送积分比例';
 $lang['points_number_orderrate_tip'] = '例:设置为10，表明消费10单位货币赠送1积分,建议设置0-100之间';
 $lang['points_number_ordermax'] = '每订单最多赠送积分';
 $lang['points_number_ordermax_tip'] = '例:设置为100，表明每订单赠送积分最多为100积分';
-$lang['pointslog']='积分调整';
-$lang['points_setting']='积分规则';
+$lang['pointslog'] = '积分调整';
+$lang['points_setting'] = '积分规则';
 
 return $lang;

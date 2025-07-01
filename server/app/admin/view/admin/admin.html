@@ -1,4 +1,5 @@
 {include file="public/header" /}
+
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -34,8 +35,10 @@
                     {notempty name="$v.admin_is_super"}
                     {$Think.lang.admin_index_sys_admin_no}
                     {else /}
-                    <a href="javascript:dsLayerConfirm('{:url('admin/admin_del',['admin_id'=>$v.admin_id])}','{$Think.lang.ds_ensure_del}')" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.admin_index_del_admin}</a>
-                    <a href="javascript:dsLayerOpen('{:url('admin/admin_edit',['admin_id'=>$v.admin_id])}','{$Think.lang.ds_edit}-{$v.admin_name}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('admin/admin_del',['admin_id'=>$v.admin_id])}','{$Think.lang.ds_ensure_del}')"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.admin_index_del_admin}</a>
+                    <a href="javascript:dsLayerOpen('{:url('admin/admin_edit',['admin_id'=>$v.admin_id])}','{$Think.lang.ds_edit}-{$v.admin_name}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
                     {/notempty}
                 </td>
             </tr>

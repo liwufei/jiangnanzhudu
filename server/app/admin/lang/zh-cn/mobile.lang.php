@@ -9,6 +9,7 @@ $lang['link_index_title'] = '标题';
 $lang['link_index_category'] = '分类';
 $lang['link_index_pic_sign'] = '展示图片';
 $lang['link_help1'] = '设置的广告信息将显示在手机端分类页';
+
 /**
  * 添加
  */
@@ -25,6 +26,7 @@ $lang['link_add_sort_tip'] = '数字越小越靠前';
  * index
  */
 $lang['link_index_category'] = '分类';
+
 /**
  * 添加
  */
@@ -37,5 +39,3 @@ $lang['link_edit_succ'] = '保存成功';
 $lang['link_edit_fail'] = '保存失败';
 
 return $lang;
-
-

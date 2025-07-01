@@ -1,11 +1,9 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-empty"></div>
-    <form id="handle_form" method="post"  action="{:url('Inform/inform_handle')}" name="form1">
-        <input id="inform_id" name="inform_id" type="hidden" value="{$inform_id}"/>
+    <form id="handle_form" method="post" action="{:url('Inform/inform_handle')}" name="form1">
+        <input id="inform_id" name="inform_id" type="hidden" value="{$inform_id}" />
         <table class="ds-default-table">
             <tbody>
                 <tr class="noborder">
@@ -23,19 +21,19 @@
                 <tr class="noborder">
                     <td class="vatop rowform">
                         <label class="radio-label">
-                            <i  class="radio-common selected">
+                            <i class="radio-common selected">
                                 <input type="radio" value="1" name="inform_handle_type" checked="checked">
                             </i>
                             <span>{$Think.lang.inform_handle_type_unuse_message}</span>
                         </label>
                         <label class="radio-label">
-                            <i  class="radio-common">
+                            <i class="radio-common">
                                 <input type="radio" value="2" name="inform_handle_type">
                             </i>
                             <span>{$Think.lang.inform_handle_type_venom_message}</span>
                         </label>
                         <label class="radio-label">
-                            <i  class="radio-common">
+                            <i class="radio-common">
                                 <input type="radio" value="3" name="inform_handle_type">
                             </i>
                             <span>{$Think.lang.inform_handle_type_valid_message}</span>
@@ -47,12 +45,14 @@
                     <td colspan="2" class="required"><label>{$Think.lang.inform_handle_message}:</label></td>
                 </tr>
                 <tr class="noborder">
-                    <td class="vatop rowform"><textarea class="tarea" name="inform_handle_message" rows="6" id="inform_handle_message"></textarea></td>
+                    <td class="vatop rowform"><textarea class="tarea" name="inform_handle_message" rows="6"
+                            id="inform_handle_message"></textarea></td>
                     <td class="vatop tips"></td>
                 </tr>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="2" ><a href="JavaScript:void(0);" class="btn" id="btn_handle_submit"><span>{$Think.lang.ds_submit}</span></a></td>
+                    <td colspan="2"><a href="JavaScript:void(0);" class="btn"
+                            id="btn_handle_submit"><span>{$Think.lang.ds_submit}</span></a></td>
                 </tr>
             </tfoot>
         </table>

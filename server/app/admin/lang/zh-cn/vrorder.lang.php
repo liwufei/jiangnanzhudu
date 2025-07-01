@@ -3,7 +3,6 @@
 /**
  * 虚拟订单和实物订单
  */
-
 $lang['order_state'] = '订单状态';
 $lang['order_state_new'] = '待付款';
 $lang['order_state_deposit'] = '待付定金';
@@ -49,10 +48,7 @@ $lang['product_price'] = '单价';
 $lang['product_num'] = '数量';
 $lang['ds_promotion'] = '促销活动';
 
-
-
 $lang['order_show_at'] = '于';
-
 
 $lang['trade_no_tips'] = '支付宝等第三方支付平台交易号';
 
@@ -61,6 +57,7 @@ $lang['payment_code_required'] = '请选择付款方式';
 $lang['trade_no_required'] = '请填写第三方支付平台交易号';
 
 $lang['receive_pay_confirm'] = '操作提醒：\n该操作不可撤销\n提交前请务必确认是否已收到付款\n继续操作吗?';
+
 /**
  * 虚拟订单
  */
@@ -88,7 +85,6 @@ $lang['exp_od_order'] = '订单';
 $lang['vrorder_index_help1'] = '点击查看操作将显示订单，提示：包括电子兑换码，的详细信息';
 $lang['vrorder_index_help2'] = '如果该订单是未付款的订单，您可以点击取消操作来取消该订单';
 $lang['vrorder_index_help3'] = '如果平台已确认收到买家的付款，但系统支付状态并未变更，您可以点击收到货款操作，并填写相关信息后更改订单支付状态';
-
 $lang['vrorder_pd_amount'] = '使用预存款支付';
 $lang['vrorder_rcb_amount'] = '使用充值卡支付';
 $lang['vrorder_commis_rate'] = '佣金比例';
@@ -99,7 +95,6 @@ $lang['vrorder_expired_no_refund'] = '，过期不退款';
 
 $lang['vr_code'] = '兑换码';
 $lang['vr_code_not_exist'] = '未生成电子兑换码';
-
 
 $lang['order_amount'] = '订单总金额';
 

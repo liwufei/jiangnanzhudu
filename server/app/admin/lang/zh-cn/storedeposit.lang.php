@@ -12,6 +12,7 @@ $lang['admin_storedeposit_pricetype_available'] = '已缴保证金';
 $lang['admin_storedeposit_pricetype_freeze'] = '审核保证金';
 $lang['admin_storedeposit_pricetype_payable'] = '应缴保证金';
 $lang['admin_storedeposit_price'] = '金额';
+
 /**
  * 提现功能公用
  */
@@ -26,10 +27,12 @@ $lang['store_withdraw_min'] = '最低保证金';
 $lang['store_withdraw_min_tips'] = '元';
 $lang['store_withdraw_max'] = '店铺最大保证金';
 $lang['store_withdraw_max_tips'] = '元';
+
 /**
  * 提现信息编辑
  */
 $lang['admin_storedeposit_cash_edit_fail'] = '提现信息修改失败';
+
 /**
  * 手动修改
  */
@@ -41,6 +44,7 @@ $lang['admin_storedeposit_artificial_shortprice_error'] = '金额不足,店铺�
 $lang['admin_storedeposit_artificial_operatetype'] = '增减类型';
 $lang['admin_storedeposit_artificial_operatetype_add'] = '增加';
 $lang['admin_storedeposit_artificial_operatetype_reduce'] = '减少';
+
 /**
  * 出入明细
  */
@@ -54,4 +58,5 @@ $lang['admin_storedeposit_cancel'] = '已取消';
 $lang['admin_storedeposit_paying'] = '欠费中';
 $lang['admin_storedeposit_pay_state'] = '缴费状态';
 $lang['order_admin_operator'] = '系统管理员';
+
 return $lang;

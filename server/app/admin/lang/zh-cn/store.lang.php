@@ -15,7 +15,6 @@ $lang['store_addtime'] = '开店时间';
 $lang['store_endtime'] = '关闭时间';
 $lang['member_name'] = '用户名';
 
-
 $lang['user_name_no_null'] = '用户名不能为空';
 $lang['pwd_no_null'] = '密码不能为空';
 $lang['user_name_exists'] = '会员名已存在';
@@ -43,7 +42,6 @@ $lang['to'] = '改为';
 
 $lang['store_save_defaultalbumclass_name'] = '默认相册';
 
-
 $lang['storereopen_state_0'] = '待付款';
 $lang['storereopen_state_1'] = '待审核';
 $lang['storereopen_state_2'] = '已审核';
@@ -66,7 +64,6 @@ $lang['seller_name_minlength'] = '店主卖家账号最短为3位';
 $lang['seller_name_maxlength'] = '店主卖家账号最长为15位';
 $lang['seller_name_remote'] = '此名称已被其它店铺占用，请重新输入';
 $lang['member_password_minlength'] = '登录密码长度不能小于6';
-
 
 $lang['store_class_commis_rates'] = '比例';
 $lang['store_class_commis_rates_error'] = '请正确填写分佣比例';
@@ -94,7 +91,6 @@ $lang['company_bank_account'] = '公司银行账号';
 $lang['name_branch_bank'] = '开户银行支行名称';
 $lang['location_bank_account'] = '开户银行所在地';
 
-
 $lang['store_and_contact_info'] = '店铺及联系人信息';
 $lang['store_alipay_info'] = '结算（支付宝）账号信息';
 $lang['store_alipay_account_name'] = '支付宝帐户名';
@@ -102,7 +98,6 @@ $lang['store_alipay_account_number'] = '支付宝账号';
 $lang['settlement_account_information'] = '结算账号信息';
 
 $lang['store_joinin_help1'] = '点击查看按钮可以查看开店信息，点击审核按钮可以对开店申请进行审核。';
-
 $lang['store_type_0'] = '企业';
 $lang['store_type_1'] = '个人';
 $lang['store_baozh_0'] = '图标';
@@ -123,7 +118,6 @@ $lang['store_tuihuo_1'] = '退换';
 $lang['store_tuihuo_0'] = '承诺';
 $lang['store_zhping_1'] = '正品';
 $lang['store_zhping_0'] = '保障';
-
 $lang['store_type'] = '店铺类型';
 
 $lang['business_licence_start_required'] = '营业执照有效期必填';
@@ -146,7 +140,7 @@ $lang['commis_rate_tips'] = '分佣比例(必须为0-100的整数)';
 
 $lang['store_remind_renewal'] = '提醒续费';
 $lang['store_bind_class'] = '经营类目';
-$lang['store_bind_class_applay_del_confirm']= '此类目已绑定店铺';
+$lang['store_bind_class_applay_del_confirm'] = '此类目已绑定店铺';
 
 $lang['store_newshop_help1'] = '此处添加外驻店铺，新增的外驻店铺默认为开启状态';
 $lang['store_newshop_help2'] = '新增外驻店铺需手动设置对应佣金和绑定其经营类目';
@@ -190,8 +184,8 @@ $lang['reopen_list'] = '续签申请';
 $lang['store_bind_class_apply'] = '经营类目申请';
 $lang['add_store_bind_class'] = '新增外驻店铺成功，请添加店铺经营类目';
 
-$lang['identification_information']	= '证件信息'; 
-$lang['identification_number']	= '证件号码'; 
-$lang['identification_photo']	= '证件照片'; 
+$lang['identification_information']    = '证件信息';
+$lang['identification_number']    = '证件号码';
+$lang['identification_photo']    = '证件照片';
+
 return $lang;
-?>

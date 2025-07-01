@@ -11,6 +11,7 @@ $lang['admin_storemoney_remark'] = '备注';
 $lang['admin_storemoney_pricetype_available'] = '可用金额';
 $lang['admin_storemoney_pricetype_freeze'] = '冻结金额';
 $lang['admin_storemoney_price'] = '金额';
+
 /**
  * 提现功能公用
  */
@@ -26,10 +27,12 @@ $lang['store_withdraw_min'] = '最低提现金额';
 $lang['store_withdraw_min_tips'] = '元';
 $lang['store_withdraw_max'] = '店铺最大提现金额';
 $lang['store_withdraw_max_tips'] = '元';
+
 /**
  * 提现信息编辑
  */
 $lang['admin_storemoney_cash_edit_fail'] = '提现信息修改失败';
+
 /**
  * 手动修改
  */
@@ -44,6 +47,7 @@ $lang['admin_storemoney_artificial_operatetype_add'] = '增加';
 $lang['admin_storemoney_artificial_operatetype_reduce'] = '减少';
 $lang['admin_storemoney_artificial_operatetype_freeze'] = '冻结';
 $lang['admin_storemoney_artificial_operatetype_unfreeze'] = '解冻';
+
 /**
  * 出入明细
  */
@@ -53,4 +57,5 @@ $lang['admin_storemoney_wait'] = '审核中';
 $lang['admin_storemoney_agree'] = '已通过';
 $lang['admin_storemoney_reject'] = '已拒绝';
 $lang['order_admin_operator'] = '系统管理员';
+
 return $lang;

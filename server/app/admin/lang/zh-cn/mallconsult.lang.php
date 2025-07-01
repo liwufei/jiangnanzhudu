@@ -16,11 +16,8 @@ $lang['mallconsulttype_sort_required'] = '请填写0~255之间的数字';
 $lang['mallconsulttype_sort_range'] = '请填写0~255之间的数字';
 $lang['mallconsult_content_required'] = '请填写咨询内容';
 $lang['mallconsult_content_maxlength'] = '咨询内容不能超过255个字符';
-
-
 $lang['mallconsult_help1'] = '该类型为买家联系平台客服时所需要选择的类型。';
 $lang['mallconsult_help2'] = '提交咨询的时候，咨询类型是必须要选择的，所以请不要全部删除。';
-
 $lang['mallconsult_index'] = '平台客服咨询列表';
 $lang['mallconsult_type_list'] = '平台咨询类型';
 $lang['mallconsult_type_add'] = '新增类型';
@@ -30,4 +27,3 @@ $lang['state_0'] = '未回复';
 $lang['state_1'] = '已回复';
 
 return $lang;
-

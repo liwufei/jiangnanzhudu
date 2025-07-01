@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -19,9 +17,11 @@
                 <dd><input type="text" value="{$Request.param.link_title}" name="link_title" class="txt"></dd>
             </dl>
             <div class="btn_group">
-                <a href="javascript:document.formSearch.submit();" class="btn" title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
+                <a href="javascript:document.formSearch.submit();" class="btn"
+                    title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
                 {if $filtered}
-                <a href="{:url('Link/index')}" class="btn btn-default" title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
+                <a href="{:url('Link/index')}" class="btn btn-default"
+                    title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
                 {/if}
             </div>
         </div>
@@ -48,16 +48,25 @@
             </tr>
         </thead>
         <tbody>
-            {notempty  name="link_list"}
+            {notempty name="link_list"}
             {foreach name="link_list" item="link"}
             <tr id="ds_row_{$link.link_id}">
-                <td class="sort"><span class="editable" ds_type="inline_edit" fieldname="link_sort" ajax_branch='link' fieldid="{$link.link_id}" datatype="pint" maxvalue="255" title="{$Think.lang.ds_editable}">{$link.link_sort}</span></td>
-                <td class="name"><span class="editable" ds_type="inline_edit" fieldname="link_title" ajax_branch='link' fieldid="{$link.link_id}" required="1"  title="{$Think.lang.ds_editable}">{$link.link_title}</span></td>
-                <td>{if $link.link_pic}<a data-lightbox="lightbox-image" data-title="{$link.link_title}" href="{:ds_get_pic('admin/link',$link.link_pic)}"><img src="{:ds_get_pic('admin/link',$link.link_pic)}" onload="javascript:ResizeImage(this,31,31);"></a>{/if}</td>
+                <td class="sort"><span class="editable" ds_type="inline_edit" fieldname="link_sort" ajax_branch='link'
+                        fieldid="{$link.link_id}" datatype="pint" maxvalue="255"
+                        title="{$Think.lang.ds_editable}">{$link.link_sort}</span></td>
+                <td class="name"><span class="editable" ds_type="inline_edit" fieldname="link_title" ajax_branch='link'
+                        fieldid="{$link.link_id}" required="1"
+                        title="{$Think.lang.ds_editable}">{$link.link_title}</span></td>
+                <td>{if $link.link_pic}<a data-lightbox="lightbox-image" data-title="{$link.link_title}"
+                        href="{:ds_get_pic('admin/link',$link.link_pic)}"><img
+                            src="{:ds_get_pic('admin/link',$link.link_pic)}"
+                            onload="javascript:ResizeImage(this,31,31);"></a>{/if}</td>
                 <td>{$link.link_url}</td>
                 <td>
-                    <a href="javascript:dsLayerOpen('{:url('Link/edit',['link_id'=>$link.link_id])}','{$Think.lang.ds_edit}-{$link.link_title}')"  class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('Link/drop',['link_id'=>$link.link_id])}','{$Think.lang.ds_ensure_del}',{$link.link_id})"  class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerOpen('{:url('Link/edit',['link_id'=>$link.link_id])}','{$Think.lang.ds_edit}-{$link.link_title}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Link/drop',['link_id'=>$link.link_id])}','{$Think.lang.ds_ensure_del}',{$link.link_id})"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}

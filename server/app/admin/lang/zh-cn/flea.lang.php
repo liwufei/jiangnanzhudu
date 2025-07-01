@@ -59,6 +59,7 @@ $lang['goods_class_index_class'] = '商品分类';
 $lang['goods_class_index_name'] = '分类名称';
 $lang['goods_class_index_display_in_homepage'] = '首页显示';
 $lang['goods_class_index_ensure_del'] = '删除该分类将会同时删除该分类的所有下级分类，您确定要删除吗';
+
 /**
  * 批量编辑
  */
@@ -68,6 +69,7 @@ $lang['goods_class_batch_edit_keep'] = '保持不变';
 $lang['goods_class_batch_edit_ok'] = '编辑分类成功。';
 $lang['goods_class_batch_edit_fail'] = '编辑分类失败。';
 $lang['goods_class_batch_edit_paramerror'] = '参数非法';
+
 /**
  * 添加分类
  */
@@ -80,6 +82,7 @@ $lang['goods_class_add_sup_class'] = '上级分类';
 $lang['goods_class_add_sup_class_notice'] = '如果选择上级分类，那么新增的分类则为被选择上级分类的子分类';
 $lang['goods_class_add_update_sort'] = '更新排序';
 $lang['goods_class_add_display_tip'] = '新增的分类名称是否显示';
+
 /**
  * 分类导入
  */
@@ -92,11 +95,13 @@ $lang['goods_class_import_first_class'] = '一级分类';
 $lang['goods_class_import_second_class'] = '二级分类';
 $lang['goods_class_import_third_class'] = '三级分类';
 $lang['goods_class_import_example_tip'] = '点击下载导入例子文件';
+
 /**
  * 分类导出
  */
 $lang['goods_class_export_if_trans'] = '导出您的商品分类数据';
 $lang['goods_class_export_help1'] = '导出商品分类信息的.csv文件';
+
 /**
  * SEO
  */
@@ -111,4 +116,3 @@ $lang['flea_site_keywords_error'] = '闲置首页关键字文本个数不能大�
 $lang['import_confirm'] = '导入将清空现有的所有地区数据\n导入前建议先备份数据库地区数据！\n确定要导入吗?';
 
 return $lang;
-

@@ -18,6 +18,7 @@ $lang['admin_pointorder_shipping_code'] = '物流单号';
 $lang['admin_pointorder_express_code'] = '物流公司';
 $lang['admin_pointorder_shipping_time'] = '发货时间';
 $lang['admin_pointorder_gobacklist'] = '返回列表';
+
 /**
  * 兑换信息状态
  */
@@ -29,6 +30,7 @@ $lang['admin_pointorder_state_shipped'] = '已发货';
 $lang['admin_pointorder_state_waitreceiving'] = '待收货';
 $lang['admin_pointorder_state_finished'] = '已完成';
 $lang['admin_pointorder_state_unknown'] = '未知';
+
 /**
  * 兑换信息列表
  */
@@ -38,10 +40,12 @@ $lang['admin_pointorder_cancel_success'] = '取消成功';
 $lang['admin_pointorder_ship_title'] = '发货';
 $lang['admin_pointorder_ship_modtip'] = '修改物流';
 $lang['admin_pointorder_ship_code_nullerror'] = '请添加物流单号';
+
 /**
  * 兑换信息删除
  */
 $lang['admin_pointorder_del_success'] = '删除成功';
+
 /**
  * 兑换信息详细
  */
@@ -61,4 +65,3 @@ $lang['admin_pointorder_info_prodinfo'] = '礼品信息';
 $lang['admin_pointorder_info_prodinfo_exnum'] = '兑换数量';
 
 return $lang;
-

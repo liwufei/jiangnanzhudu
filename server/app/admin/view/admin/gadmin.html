@@ -1,4 +1,5 @@
 {include file="public/header" /}
+
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -25,8 +26,10 @@
             <tr class="hover">
                 <td>{$v.gname}</td>
                 <td class="w150 align-center">
-                    <a href="javascript:dsLayerOpen('{:url('admin/gadmin_set',['gid'=>$v.gid])}','{$Think.lang.ds_edit}-{$v.gname}')" class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
-                    <a href="javascript:dsLayerConfirm('{:url('admin/gadmin_del',['gid'=>$v.gid])}','{$Think.lang.gadmin_del_confirm}')" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.admin_index_del_admin}</a>
+                    <a href="javascript:dsLayerOpen('{:url('admin/gadmin_set',['gid'=>$v.gid])}','{$Think.lang.ds_edit}-{$v.gname}')"
+                        class="dsui-btn-edit"><i class="iconfont"></i>{$Think.lang.ds_edit}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('admin/gadmin_del',['gid'=>$v.gid])}','{$Think.lang.gadmin_del_confirm}')"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.admin_index_del_admin}</a>
                 </td>
             </tr>
             {/foreach}
@@ -37,7 +40,4 @@
             {/notempty}
         </tbody>
     </table>
-
-
-
 </div>

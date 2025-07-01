@@ -1,11 +1,6 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
-
     <table class="ds-default-table">
         <tbody>
             <tr>
@@ -17,7 +12,8 @@
                 <td>{$info.pdr_member_name}</td>
             </tr>
             <tr>
-                <td class="w120"><label>{$Think.lang.admin_predeposit_recharge_price}({$Think.lang.ds_yuan}):</label></td>
+                <td class="w120"><label>{$Think.lang.admin_predeposit_recharge_price}({$Think.lang.ds_yuan}):</label>
+                </td>
                 <td>{$info.pdr_amount}</td>
             </tr>
             <tr>
@@ -53,14 +49,14 @@
             {/if}
         </tbody>
         {if $info.pdr_payment_state eq '0'}
-        <tfoot >
+        <tfoot>
             <tr>
                 <td colspan="2">
-                    <a class="btn dsui-btn-add" href="{:url('Predeposit/recharge_edit',['id'=>$info.pdr_id])}"><span>{$Think.lang.admin_predeposit_payed}</span></a>
+                    <a class="btn dsui-btn-add"
+                        href="{:url('Predeposit/recharge_edit',['id'=>$info.pdr_id])}"><span>{$Think.lang.admin_predeposit_payed}</span></a>
                 </td>
             </tr>
         </tfoot>
         {/if}
     </table>
-
 </div>

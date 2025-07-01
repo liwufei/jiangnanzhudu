@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <div class="explanation" id="explanation">
         <div class="title" id="checkZoom">
@@ -21,24 +17,30 @@
         <table class="ds-default-table">
             <tbody>
                 <tr class="noborder">
-                    <td class="required w120"><label class="validation" for="store_name">{$Think.lang.ds_store_name}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" id="store_name" name="store_name" class="txt" /></td>
+                    <td class="required w120"><label class="validation"
+                            for="store_name">{$Think.lang.ds_store_name}:</label></td>
+                    <td class="vatop rowform"><input type="text" value="" id="store_name" name="store_name"
+                            class="txt" /></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
-                    <td class="required"><label class="validation" for="member_name">{$Think.lang.ds_member_name}:</label></td>
-                    <td class="vatop rowform"><input type="text" value="" id="member_name" name="member_name" class="txt" /></td>
+                    <td class="required"><label class="validation"
+                            for="member_name">{$Think.lang.ds_member_name}:</label></td>
+                    <td class="vatop rowform"><input type="text" value="" id="member_name" name="member_name"
+                            class="txt" /></td>
                     <td class="vatop tips">{$Think.lang.member_name_tips}</td>
                 </tr>
                 <tr class="noborder">
-                    <td class="required"><label class="validation" for="member_password">{$Think.lang.ds_member_password}:</label></td>
-                    <td class="vatop rowform"><input type="password" value="" id="member_password" name="member_password" class="txt" /></td>
+                    <td class="required"><label class="validation"
+                            for="member_password">{$Think.lang.ds_member_password}:</label></td>
+                    <td class="vatop rowform"><input type="password" value="" id="member_password"
+                            name="member_password" class="txt" /></td>
                     <td class="vatop tips"></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}"/></td>
+                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_submit}" /></td>
                 </tr>
             </tfoot>
         </table>
@@ -53,7 +55,7 @@
             rules: {
                 store_name: {
                     required: true,
-                    remote : "{:url('Ownshop/ckeck_store_name')}"
+                    remote: "{:url('Ownshop/ckeck_store_name')}"
                 },
                 member_name: {
                     required: true,

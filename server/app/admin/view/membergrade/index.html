@@ -1,9 +1,5 @@
 {include file="public/header" /}
 
-
-
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -37,9 +33,13 @@
                 {notempty name="membergrade_list"}
                 {foreach name="membergrade_list" item="membergrade" key="k" }
                 <tr>
-                    <td><input type="text" ds_type="verify" name="mg[{$membergrade.level}][level_name]" value="{$membergrade.level_name}" class="w120" /></td>
-                    <td><input type="text" ds_type="verify" name="mg[{$membergrade.level}][exppoints]" value="{$membergrade.exppoints}" class="w60" {if $membergrade.level eq 1}readonly{/if}/></td>
-                    <td>{if $membergrade.level neq 1}<a onclick="remove_tr($(this));" href="JavaScript:void(0);">{$Think.lang.ds_del}</a>{/if}</td>
+                    <td><input type="text" ds_type="verify" name="mg[{$membergrade.level}][level_name]"
+                            value="{$membergrade.level_name}" class="w120" /></td>
+                    <td><input type="text" ds_type="verify" name="mg[{$membergrade.level}][exppoints]"
+                            value="{$membergrade.exppoints}" class="w60" {if $membergrade.level eq 1}readonly{/if} />
+                    </td>
+                    <td>{if $membergrade.level neq 1}<a onclick="remove_tr($(this));"
+                            href="JavaScript:void(0);">{$Think.lang.ds_del}</a>{/if}</td>
                 </tr>
                 {/foreach}
                 {else /}
@@ -47,14 +47,16 @@
             </tbody>
             <tbody>
                 <tr>
-                    <td  colspan="3">
-                        <a id="add_membergrade" class="btn-add-nofloat marginleft" href="JavaScript:void(0);"> <span>{$Think.lang.membergrade_add}</span> </a>
+                    <td colspan="3">
+                        <a id="add_membergrade" class="btn-add-nofloat marginleft" href="JavaScript:void(0);">
+                            <span>{$Think.lang.membergrade_add}</span> </a>
                     </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3"><a href="JavaScript:void(0);" class="btn" id="submitBtn"><span>{$Think.lang.ds_submit}</span></a></td>
+                    <td colspan="3"><a href="JavaScript:void(0);" class="btn"
+                            id="submitBtn"><span>{$Think.lang.ds_submit}</span></a></td>
                 </tr>
             </tfoot>
         </table>
@@ -62,12 +64,12 @@
 
     <script type="text/javascript">
         $(function () {
-            var i = {$maxlevel};
+            var i = { $maxlevel };
             var mg_tbody = '<tr>' +
-                    '<td><input type="text" ds_type="verify" name="mg[key][level_name]" value="" class="w120" /></td>' +
-                    '<td><input type="text" ds_type="verify" name="mg[key][exppoints]"  value="" class="w60" /></td>' +
-                    '<td><a onclick="remove_tr($(this));" href="JavaScript:void(0);">{$Think.lang.membergrade_remove}</a></td>' +
-                    '</tr>';
+                '<td><input type="text" ds_type="verify" name="mg[key][level_name]" value="" class="w120" /></td>' +
+                '<td><input type="text" ds_type="verify" name="mg[key][exppoints]"  value="" class="w60" /></td>' +
+                '<td><a onclick="remove_tr($(this));" href="JavaScript:void(0);">{$Think.lang.membergrade_remove}</a></td>' +
+                '</tr>';
             $("#add_membergrade").click(function () {
                 $('#mg_tbody > tr:last').after(mg_tbody.replace(/key/g, i));
                 i++;

@@ -25,6 +25,7 @@ $lang['admin_pointprod_yes'] = '是';
 $lang['admin_pointprod_no'] = '否';
 $lang['admin_pointprod_delfail'] = '删除失败';
 $lang['admin_pointorder_list_title'] = '兑换列表';
+
 /**
  * 添加
  */
@@ -72,6 +73,7 @@ $lang['admin_pointprod_add_limittime_null_error'] = '请添加开始时间和结
 $lang['admin_pointprod_add_sort_null_error'] = '请添加礼品排序';
 $lang['admin_pointprod_add_sort_number_error'] = '礼品排序为整数且大于等于0';
 $lang['admin_pointprod_add_success'] = '礼品添加成功';
+
 /**
  * 更新
  */
@@ -80,6 +82,7 @@ $lang['admin_pointprod_edit_fail'] = '礼品更新失败';
 $lang['admin_pointprod_edit_addtime'] = '添加时间';
 $lang['admin_pointprod_edit_viewnum'] = '浏览次数';
 $lang['admin_pointprod_edit_salenum'] = '售出数量';
+
 /**
  * 删除
  */

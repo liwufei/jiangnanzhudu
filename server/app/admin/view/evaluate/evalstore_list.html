@@ -1,7 +1,5 @@
 {include file="public/header" /}
 
-
-
 <div class="page">
     <div class="fixed-bar">
         <div class="item-title">
@@ -13,16 +11,17 @@
         </div>
     </div>
 
-
     <form method="get" name="formSearch">
         <div class="ds-search-form">
             <dl>
                 <dt>{$Think.lang.ds_store_name}</dt>
-                <dd><input class="txt" type="text" name="store_name" id="store_name" value="{$Request.get.store_name}" /></dd>
+                <dd><input class="txt" type="text" name="store_name" id="store_name"
+                        value="{$Request.get.store_name}" /></dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.admin_evaluate_frommembername}</dt>
-                <dd><input class="txt" type="text" name="from_name" id="from_name" value="{$Request.get.from_name}" /></dd>
+                <dd><input class="txt" type="text" name="from_name" id="from_name" value="{$Request.get.from_name}" />
+                </dd>
             </dl>
             <dl>
                 <dt>{$Think.lang.admin_evaluate_addtime}</dt>
@@ -31,8 +30,10 @@
                 </dd>
             </dl>
             <div class="btn_group">
-                <a href="javascript:document.formSearch.submit();" class="btn " title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
-                <a href="{:url('Evaluate/evalstore_list')}" class="btn btn-default" title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
+                <a href="javascript:document.formSearch.submit();" class="btn "
+                    title="{$Think.lang.ds_query}">{$Think.lang.ds_query}</a>
+                <a href="{:url('Evaluate/evalstore_list')}" class="btn btn-default"
+                    title="{$Think.lang.ds_cancel}">{$Think.lang.ds_cancel}</a>
             </div>
         </div>
     </form>
@@ -67,13 +68,30 @@
                 <td class="align-center">{$v.seval_orderno}</td>
                 <td class="align-center">{$v.seval_membername}</td>
                 <td class="align-center">
-                    <dl class="clearfix"><dt class="fl">{$Think.lang.admin_evalstore_type_1}</dt><dd class="fl"><div class="raty" style="display:inline-block;" data-score="{$v.seval_desccredit}"></div></dd></dl>
-                    <dl class="clearfix"><dt class="fl">{$Think.lang.admin_evalstore_type_2}</dt><dd class="fl"><div class="raty" style="display:inline-block;" data-score="{$v.seval_servicecredit}"></div></dd></dl>
-                    <dl class="clearfix"><dt class="fl"> {$Think.lang.admin_evalstore_type_3}</dt><dd class="fl"><div class="raty" style="display:inline-block;" data-score="{$v.seval_deliverycredit}"></div></dd></dl>
+                    <dl class="clearfix">
+                        <dt class="fl">{$Think.lang.admin_evalstore_type_1}</dt>
+                        <dd class="fl">
+                            <div class="raty" style="display:inline-block;" data-score="{$v.seval_desccredit}"></div>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix">
+                        <dt class="fl">{$Think.lang.admin_evalstore_type_2}</dt>
+                        <dd class="fl">
+                            <div class="raty" style="display:inline-block;" data-score="{$v.seval_servicecredit}"></div>
+                        </dd>
+                    </dl>
+                    <dl class="clearfix">
+                        <dt class="fl"> {$Think.lang.admin_evalstore_type_3}</dt>
+                        <dd class="fl">
+                            <div class="raty" style="display:inline-block;" data-score="{$v.seval_deliverycredit}">
+                            </div>
+                        </dd>
+                    </dl>
                 </td>
                 <td class="align-center">{:date('Y-m-d',$v.seval_addtime)}</td>
                 <td class="align-center">
-                    <a href="javascript:dsLayerConfirm('{:url('Evaluate/evalstore_del',['seval_id'=>$v.seval_id])}','{$Think.lang.ds_ensure_del}')" class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
+                    <a href="javascript:dsLayerConfirm('{:url('Evaluate/evalstore_del',['seval_id'=>$v.seval_id])}','{$Think.lang.ds_ensure_del}')"
+                        class="dsui-btn-del"><i class="iconfont"></i>{$Think.lang.ds_del}</a>
                 </td>
             </tr>
             {/foreach}
@@ -94,8 +112,8 @@
 <script src="{$Think.PLUGINS_SITE_ROOT}/js/jquery.raty/jquery.raty.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#stime').datepicker({dateFormat: 'yy-mm-dd'});
-        $('#etime').datepicker({dateFormat: 'yy-mm-dd'});
+        $('#stime').datepicker({ dateFormat: 'yy-mm-dd' });
+        $('#etime').datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('.raty').raty({
             path: "{$Think.PLUGINS_SITE_ROOT}/js/jquery.raty/img",
