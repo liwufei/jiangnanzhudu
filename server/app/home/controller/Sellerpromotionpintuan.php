@@ -1,30 +1,16 @@
 <?php
 
-/**
- * 卖家拼团管理
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerpromotionpintuan extends BaseSeller {
+class Sellerpromotionpintuan extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerpromotionpintuan.lang.php');
         if (intval(config('ds_config.promotion_allow')) !== 1) {
@@ -32,12 +18,13 @@ class Sellerpromotionpintuan extends BaseSeller {
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $pintuanquota_model = model('ppintuanquota');
         $ppintuan_model = model('ppintuan');
 
-            $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
-            View::assign('current_pintuan_quota', $current_pintuan_quota);
+        $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
+        View::assign('current_pintuan_quota', $current_pintuan_quota);
 
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -59,19 +46,20 @@ class Sellerpromotionpintuan extends BaseSeller {
 
     /**
      * 添加拼团活动
-     * */
-    public function pintuan_add() {
+     */
+    public function pintuan_add()
+    {
         if (!request()->isPost()) {
-                $pintuanquota_model = model('ppintuanquota');
-                $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
-                if (empty($current_pintuan_quota)) {
-                    if (intval(config('ds_config.promotion_pintuan_price')) != 0) {
-                        $this->error(lang('pintuan_quota_current_error1'));
-                    } else {
-                        $current_pintuan_quota = array('pintuanquota_starttime' => TIMESTAMP, 'pintuanquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
-                    }
+            $pintuanquota_model = model('ppintuanquota');
+            $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
+            if (empty($current_pintuan_quota)) {
+                if (intval(config('ds_config.promotion_pintuan_price')) != 0) {
+                    $this->error(lang('pintuan_quota_current_error1'));
+                } else {
+                    $current_pintuan_quota = array('pintuanquota_starttime' => TIMESTAMP, 'pintuanquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
                 }
-                View::assign('current_pintuan_quota', $current_pintuan_quota);
+            }
+            View::assign('current_pintuan_quota', $current_pintuan_quota);
 
             //输出导航
             $this->setSellerCurMenu('Sellerpromotionpintuan');
@@ -109,25 +97,25 @@ class Sellerpromotionpintuan extends BaseSeller {
                 ds_json_encode(10001, lang('greater_than_start_time'));
             }
 
-                //获取当前套餐
-                $pintuanquota_model = model('ppintuanquota');
-                $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
-                if (empty($current_pintuan_quota)) {
-                    if (intval(config('ds_config.promotion_pintuan_price')) != 0) {
-                        ds_json_encode(10001, lang('please_buy_package_first'));
-                    } else {
-                        $current_pintuan_quota = array('pintuanquota_starttime' => TIMESTAMP, 'pintuanquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
-                    }
+            //获取当前套餐
+            $pintuanquota_model = model('ppintuanquota');
+            $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
+            if (empty($current_pintuan_quota)) {
+                if (intval(config('ds_config.promotion_pintuan_price')) != 0) {
+                    ds_json_encode(10001, lang('please_buy_package_first'));
+                } else {
+                    $current_pintuan_quota = array('pintuanquota_starttime' => TIMESTAMP, 'pintuanquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
                 }
-                $quota_start_time = intval($current_pintuan_quota['pintuanquota_starttime']);
-                $quota_end_time = intval($current_pintuan_quota['pintuanquota_endtime']);
-                if ($start_time < $quota_start_time) {
-                    ds_json_encode(10001, sprintf(lang('pintuan_add_start_time_explain'), date('Y-m-d', $current_pintuan_quota['pintuanquota_starttime'])));
-                }
-                if ($end_time > $quota_end_time) {
-                    ds_json_encode(10001, sprintf(lang('pintuan_add_end_time_explain'), date('Y-m-d', $current_pintuan_quota['pintuanquota_endtime'])));
-                }
-            if($end_time<TIMESTAMP){
+            }
+            $quota_start_time = intval($current_pintuan_quota['pintuanquota_starttime']);
+            $quota_end_time = intval($current_pintuan_quota['pintuanquota_endtime']);
+            if ($start_time < $quota_start_time) {
+                ds_json_encode(10001, sprintf(lang('pintuan_add_start_time_explain'), date('Y-m-d', $current_pintuan_quota['pintuanquota_starttime'])));
+            }
+            if ($end_time > $quota_end_time) {
+                ds_json_encode(10001, sprintf(lang('pintuan_add_end_time_explain'), date('Y-m-d', $current_pintuan_quota['pintuanquota_endtime'])));
+            }
+            if ($end_time < TIMESTAMP) {
                 ds_json_encode(10001, sprintf(lang('pintuan_add_end_time_explain'), date('Y-m-d')));
             }
             //获取提交的数据
@@ -146,7 +134,6 @@ class Sellerpromotionpintuan extends BaseSeller {
             if ($result != TRUE) {
                 ds_json_encode(10001, $result['message']);
             }
-
 
             //生成活动
             $ppintuan_model = model('ppintuan');
@@ -182,8 +169,9 @@ class Sellerpromotionpintuan extends BaseSeller {
 
     /**
      * 编辑拼团活动
-     * */
-    public function pintuan_edit() {
+     */
+    public function pintuan_edit()
+    {
         if (!request()->isPost()) {
             $ppintuan_model = model('ppintuan');
 
@@ -242,7 +230,6 @@ class Sellerpromotionpintuan extends BaseSeller {
             $param['pintuan_limit_hour'] = $pintuan_limit_hour;
             $param['pintuan_limit_quantity'] = $pintuan_limit_quantity;
 
-
             $result = $ppintuan_model->editPintuan($param, array('pintuan_id' => $pintuan_id));
             if ($result) {
                 $this->recordSellerlog(lang('edit_group_activities') . $pintuan_name . lang('activity_number') . $pintuan_id);
@@ -257,7 +244,8 @@ class Sellerpromotionpintuan extends BaseSeller {
     /**
      * 拼团活动 提前结束
      */
-    public function pintuan_end() {
+    public function pintuan_end()
+    {
         $pintuan_id = intval(input('post.pintuan_id'));
         $ppintuan_model = model('ppintuan');
 
@@ -266,9 +254,7 @@ class Sellerpromotionpintuan extends BaseSeller {
             ds_json_encode(10001, lang('param_error'));
         }
 
-        /**
-         * 指定拼团活动结束
-         */
+        // 指定拼团活动结束
         $result = $ppintuan_model->endPintuan(array('pintuan_id' => $pintuan_id));
 
         if ($result) {
@@ -284,8 +270,8 @@ class Sellerpromotionpintuan extends BaseSeller {
      * 查看拼团开团信息
      * @return type
      */
-    public function pintuan_manage() {
-
+    public function pintuan_manage()
+    {
         $ppintuan_model = model('ppintuan');
         $ppintuangroup_model = model('ppintuangroup');
         $ppintuanorder_model = model('ppintuanorder');
@@ -296,15 +282,15 @@ class Sellerpromotionpintuan extends BaseSeller {
             $this->error(lang('param_error'));
         }
         $condition = array();
-        $condition[] = array('pintuan_id','=',$pintuan_id);
+        $condition[] = array('pintuan_id', '=', $pintuan_id);
         if (input('param.pintuangroup_state')) {
-            $condition[] = array('pintuangroup_state','=',intval(input('param.pintuangroup_state')));
+            $condition[] = array('pintuangroup_state', '=', intval(input('param.pintuangroup_state')));
         }
         $ppintuangroup_list = $ppintuangroup_model->getPpintuangroupList($condition, 10); #获取开团信息
         foreach ($ppintuangroup_list as $key => $ppintuangroup) {
             //获取开团订单下的参团订单
             $condition = array();
-            $condition[] = array('pintuangroup_id','=',$ppintuangroup['pintuangroup_id']);
+            $condition[] = array('pintuangroup_id', '=', $ppintuangroup['pintuangroup_id']);
             $ppintuangroup_list[$key]['order_list'] = $ppintuanorder_model->getPpintuanorderList($condition);
         }
         View::assign('show_page', $ppintuangroup_model->page_info->render());
@@ -317,8 +303,9 @@ class Sellerpromotionpintuan extends BaseSeller {
 
     /**
      * 拼团套餐购买
-     * */
-    public function pintuan_quota_add() {
+     */
+    public function pintuan_quota_add()
+    {
         //输出导航
         $this->setSellerCurMenu('Sellerpromotionpintuan');
         $this->setSellerCurItem('pintuan_quota_add');
@@ -327,8 +314,9 @@ class Sellerpromotionpintuan extends BaseSeller {
 
     /**
      * 拼团套餐购买保存
-     * */
-    public function pintuan_quota_add_save() {
+     */
+    public function pintuan_quota_add_save()
+    {
         if (intval(config('ds_config.promotion_pintuan_price')) == 0) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -338,10 +326,10 @@ class Sellerpromotionpintuan extends BaseSeller {
         }
         //获取当前价格
         $current_price = intval(config('ds_config.promotion_pintuan_price'));
-        
+
         //记录店铺费用
-        $this->recordStorecost($current_price * $pintuan_quota_quantity, lang('buy_spell_group').' ['.$pintuan_quota_quantity.'个月 × 单价:'.$current_price.'元]');
-        
+        $this->recordStorecost($current_price * $pintuan_quota_quantity, lang('buy_spell_group') . ' [' . $pintuan_quota_quantity . '个月 × 单价:' . $current_price . '元]');
+
         //获取该用户已有套餐
         $pintuanquota_model = model('ppintuanquota');
         $current_pintuan_quota = $pintuanquota_model->getPintuanquotaCurrent(session('store_id'));
@@ -369,8 +357,9 @@ class Sellerpromotionpintuan extends BaseSeller {
 
     /**
      * 选择活动商品
-     * */
-    public function search_goods() {
+     */
+    public function search_goods()
+    {
         $goods_model = model('goods');
         $condition = array();
         $condition[] = array('goods_lock', '=', 0);
@@ -385,13 +374,12 @@ class Sellerpromotionpintuan extends BaseSeller {
         exit;
     }
 
-    public function pintuan_goods_info() {
+    public function pintuan_goods_info()
+    {
         $goods_commonid = intval(input('param.goods_commonid'));
 
         $data = array();
         $data['result'] = true;
-
-
 
         //判断此商品是否已经参加拼团，
         $result = $this->_check_allow_pintuan($goods_commonid);
@@ -403,7 +391,7 @@ class Sellerpromotionpintuan extends BaseSeller {
         //获取商品具体信息用于显示
         $goods_model = model('goods');
         $condition = array();
-        $condition[]=array('goods_commonid','=',$goods_commonid);
+        $condition[] = array('goods_commonid', '=', $goods_commonid);
         $goods_list = $goods_model->getGoodsOnlineList($condition);
 
         if (empty($goods_list)) {
@@ -412,7 +400,6 @@ class Sellerpromotionpintuan extends BaseSeller {
             echo json_encode($data);
             die;
         }
-
 
         $goods_info = $goods_list[0];
         $data['goods_id'] = $goods_info['goods_id'];
@@ -425,14 +412,14 @@ class Sellerpromotionpintuan extends BaseSeller {
         die;
     }
 
-    /*
+    /**
      * 判断此商品是否已经参加拼团
      */
-
-    private function _check_allow_pintuan($goods_commonid) {
+    private function _check_allow_pintuan($goods_commonid)
+    {
         $condition = array();
-        $condition[] = array('pintuan_goods_commonid','=',$goods_commonid);
-        $condition[] = array('pintuan_state','=',1);
+        $condition[] = array('pintuan_goods_commonid', '=', $goods_commonid);
+        $condition[] = array('pintuan_state', '=', 1);
         $pintuan = model('ppintuan')->getPintuanInfo($condition);
         $result['result'] = TRUE;
         if (!empty($pintuan)) {
@@ -442,39 +429,45 @@ class Sellerpromotionpintuan extends BaseSeller {
         return $result;
     }
 
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'pintuan_list', 'text' => lang('pintuan_active_list'),
+                'name' => 'pintuan_list',
+                'text' => lang('pintuan_active_list'),
                 'url' => (string) url('Sellerpromotionpintuan/index')
             ),
         );
         switch (request()->action()) {
             case 'pintuan_add':
                 $menu_array[] = array(
-                    'name' => 'pintuan_add', 'text' => lang('pintuan_add'),
+                    'name' => 'pintuan_add',
+                    'text' => lang('pintuan_add'),
                     'url' => (string) url('Sellerpromotionpintuan/pintuan_add')
                 );
                 break;
             case 'pintuan_edit':
                 $menu_array[] = array(
-                    'name' => 'pintuan_edit', 'text' => lang('pintuan_edit'), 'url' => 'javascript:;'
+                    'name' => 'pintuan_edit',
+                    'text' => lang('pintuan_edit'),
+                    'url' => 'javascript:;'
                 );
                 break;
             case 'pintuan_quota_add':
                 $menu_array[] = array(
-                    'name' => 'pintuan_quota_add', 'text' => lang('pintuan_quota_add'),
+                    'name' => 'pintuan_quota_add',
+                    'text' => lang('pintuan_quota_add'),
                     'url' => (string) url('Sellerpromotionpintuan/pintuan_quota_add')
                 );
                 break;
             case 'pintuan_manage':
                 $menu_array[] = array(
-                    'name' => 'pintuan_manage', 'text' => lang('pintuan_manage'),
+                    'name' => 'pintuan_manage',
+                    'text' => lang('pintuan_manage'),
                     'url' => (string) url('Sellerpromotionpintuan/pintuan_manage', ['pintuan_id' => input('param.pintuan_id')])
                 );
                 break;
         }
         return $menu_array;
     }
-
 }

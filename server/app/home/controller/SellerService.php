@@ -5,29 +5,21 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
-/**
- * ============================================================================
- * DSO2O多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class SellerService extends BaseSeller {
 
-    public function initialize() {
+class SellerService extends BaseSeller
+{
+
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/seller_service.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $store_service_model = model('store_service');
         $condition = array();
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('store_id', '=', session('store_id'));
         $store_service_list = $store_service_model->getStoreServiceList($condition, '*', 10);
         View::assign('store_service_list', $store_service_list);
         View::assign('show_page', $store_service_model->page_info->render());
@@ -38,7 +30,8 @@ class SellerService extends BaseSeller {
         return View::fetch($this->template_dir . 'index');
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             $this->setSellerCurMenu('seller_service');
             $this->setSellerCurItem('add');
@@ -46,7 +39,7 @@ class SellerService extends BaseSeller {
         } else {
             $store_service_model = model('store_service');
             //不能添加超过20个
-            if(Db::name('store_service')->where(array(array('store_id','=',session('store_id'))))->count()>=20){
+            if (Db::name('store_service')->where(array(array('store_id', '=', session('store_id'))))->count() >= 20) {
                 ds_json_encode(10001, lang('store_service_count_error'));
             }
             $data = $this->post_data();
@@ -61,7 +54,8 @@ class SellerService extends BaseSeller {
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         $id = intval(input('param.id'));
         if (!$id) {
             $this->error(lang('param_error'));
@@ -88,7 +82,8 @@ class SellerService extends BaseSeller {
         }
     }
 
-    public function del() {
+    public function del()
+    {
         $id = intval(input('param.id'));
         if (!$id) {
             ds_json_encode(10001, lang('param_error'));
@@ -107,7 +102,8 @@ class SellerService extends BaseSeller {
         }
     }
 
-    public function post_data() {
+    public function post_data()
+    {
         $data = array(
             'store_service_title' => input('post.store_service_title'),
             'store_service_desc' => input('post.store_service_desc'),
@@ -116,11 +112,11 @@ class SellerService extends BaseSeller {
         return $data;
     }
 
-
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $menu_array[] = array(
             'name' => 'store_service_list',
             'text' => lang('seller_service'),
@@ -129,5 +125,4 @@ class SellerService extends BaseSeller {
 
         return $menu_array;
     }
-
 }

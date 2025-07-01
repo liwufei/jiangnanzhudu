@@ -6,34 +6,26 @@ use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellergoodsonline extends BaseSeller {
+class Sellergoodsonline extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellergoodsadd.lang.php');
         $this->template_dir = 'default/seller/sellergoodsadd/';
     }
 
-    public function index() {
+    public function index()
+    {
         $this->goods_list();
     }
 
     /**
      * 出售中的商品列表
      */
-    public function goods_list() {
+    public function goods_list()
+    {
         $goods_model = model('goods');
 
         $where = array();
@@ -67,40 +59,39 @@ class Sellergoodsonline extends BaseSeller {
                 $where[] = array('goods.goods_storage_alarm', '>', 0);
                 break;
         }
-        $goods_list = $goods_model->getGoodsUnionList($where, 'goods.goods_id,goods.goods_storage_alarm,goods.goods_storage,goodscommon.goods_commonid,goodscommon.mobile_body,goodscommon.goods_name,goodscommon.goods_addtime,goodscommon.goods_lock,goodscommon.goods_sort,goodscommon.goods_commend,goodscommon.goods_serial,goodscommon.is_virtual,goodscommon.virtual_type,goodscommon.is_goodsfcode,goodscommon.is_appoint,goodscommon.goods_advword,goodscommon.goods_image,goodscommon.store_id,goods.goods_promotion_price,goodscommon.goods_price','goodscommon.goods_commonid desc','goodscommon.goods_commonid', 10);
-        foreach($goods_list as $key => $val){
-            if($val['goods_storage_alarm'] != 0 && $val['goods_storage'] <= $val['goods_storage_alarm']){
-                $goods_list[$key]['alarm']=true;
+        $goods_list = $goods_model->getGoodsUnionList($where, 'goods.goods_id,goods.goods_storage_alarm,goods.goods_storage,goodscommon.goods_commonid,goodscommon.mobile_body,goodscommon.goods_name,goodscommon.goods_addtime,goodscommon.goods_lock,goodscommon.goods_sort,goodscommon.goods_commend,goodscommon.goods_serial,goodscommon.is_virtual,goodscommon.virtual_type,goodscommon.is_goodsfcode,goodscommon.is_appoint,goodscommon.goods_advword,goodscommon.goods_image,goodscommon.store_id,goods.goods_promotion_price,goodscommon.goods_price', 'goodscommon.goods_commonid desc', 'goodscommon.goods_commonid', 10);
+        foreach ($goods_list as $key => $val) {
+            if ($val['goods_storage_alarm'] != 0 && $val['goods_storage'] <= $val['goods_storage_alarm']) {
+                $goods_list[$key]['alarm'] = true;
             }
-            $goods_list[$key]['sum']=Db::name('goods')->where(array(array('goods_commonid','=',$val['goods_commonid'])))->sum('goods_storage');
-            $val['goods_type']=1;
-            if($val['goods_lock']){
-                $goods_info=$goods_model->getGoodsInfoAndPromotionById($val['goods_id']);
-           
-                if(isset($goods_info['groupbuy_info']) && $goods_info['groupbuy_info']){
-                    $val['goods_type']=2;
+            $goods_list[$key]['sum'] = Db::name('goods')->where(array(array('goods_commonid', '=', $val['goods_commonid'])))->sum('goods_storage');
+            $val['goods_type'] = 1;
+            if ($val['goods_lock']) {
+                $goods_info = $goods_model->getGoodsInfoAndPromotionById($val['goods_id']);
+
+                if (isset($goods_info['groupbuy_info']) && $goods_info['groupbuy_info']) {
+                    $val['goods_type'] = 2;
                 }
-                if(isset($goods_info['pintuan_info']) && $goods_info['pintuan_info']){
-                    $val['goods_type']=6;
+                if (isset($goods_info['pintuan_info']) && $goods_info['pintuan_info']) {
+                    $val['goods_type'] = 6;
                 }
-                if(isset($goods_info['bargain_info']) && $goods_info['bargain_info']){
-                    $val['goods_type']=8;
+                if (isset($goods_info['bargain_info']) && $goods_info['bargain_info']) {
+                    $val['goods_type'] = 8;
                 }
-                if(isset($goods_info['presell_info']) && $goods_info['presell_info']){
-                    $val['goods_type']=10;
+                if (isset($goods_info['presell_info']) && $goods_info['presell_info']) {
+                    $val['goods_type'] = 10;
                 }
-                if(isset($goods_info['xianshi_info']) && $goods_info['xianshi_info']){
-                    $val['goods_type']=3;
+                if (isset($goods_info['xianshi_info']) && $goods_info['xianshi_info']) {
+                    $val['goods_type'] = 3;
                 }
-                if(isset($goods_info['wholesale_info']) && $goods_info['wholesale_info']){
-                    $val['goods_type']=9;
+                if (isset($goods_info['wholesale_info']) && $goods_info['wholesale_info']) {
+                    $val['goods_type'] = 9;
                 }
             }
             $goods_list[$key]['goods_type_cn'] = get_order_goodstype($val['goods_type']);
         }
         View::assign('show_page', $goods_model->page_info->render());
         View::assign('goods_list', $goods_list);
- 
 
         // 商品分类
         $store_goods_class = model('storegoodsclass')->getClassTree(array('store_id' => session('store_id'), 'storegc_state' => '1'));
@@ -116,7 +107,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 编辑商品页面
      */
-    public function edit_goods() {
+    public function edit_goods()
+    {
         $common_id = intval(input('param.commonid'));
         if ($common_id <= 0) {
             $this->error(lang('param_error'));
@@ -142,7 +134,6 @@ class Sellergoodsonline extends BaseSeller {
             $goodscommon_info['mobile_body'] = $mobile_body;
         }
 
-
         $class_id = intval(input('param.class_id'));
         if ($class_id > 0) {
             $goodscommon_info['gc_id'] = $class_id;
@@ -166,7 +157,7 @@ class Sellergoodsonline extends BaseSeller {
         $sp_value = array();
         if (is_array($goods_array) && !empty($goods_array)) {
             $goodscommon_info['goods_weight'] = $goods_array[0]['goods_weight'];
-            switch($goodscommon_info['virtual_type']){
+            switch ($goodscommon_info['virtual_type']) {
                 case 1:
                     $goodscommon_info['vc_card'] = $goods_array[0]['virtual_content'];
                     break;
@@ -180,11 +171,11 @@ class Sellergoodsonline extends BaseSeller {
             // 取得已选择了哪些商品的属性
             $attr_checked_l = $type_model->typeRelatedList('goodsattrindex', array(
                 'goods_id' => intval($goods_array[0]['goods_id'])
-                    ), 'attrvalue_id');
+            ), 'attrvalue_id');
             $attr_checked = array();
             if (is_array($attr_checked_l) && !empty($attr_checked_l)) {
                 foreach ($attr_checked_l as $val) {
-                    $attr_checked [] = $val ['attrvalue_id'];
+                    $attr_checked[] = $val['attrvalue_id'];
                 }
             }
             View::assign('attr_checked', $attr_checked);
@@ -200,29 +191,29 @@ class Sellergoodsonline extends BaseSeller {
                     $matchs = array_keys($a);
                     sort($matchs);
                     $id = str_replace(',', '', implode(',', $matchs));
-                    $sp_value ['i_' . $id . '|marketprice'] = $v['goods_marketprice'];
-                    $sp_value ['i_' . $id . '|price'] = $v['goods_price'];
-                    $sp_value ['i_' . $id . '|id'] = $v['goods_id'];
-                    $sp_value ['i_' . $id . '|stock'] = $v['goods_storage'];
-                    $sp_value ['i_' . $id . '|alarm'] = $v['goods_storage_alarm'];
-                    $sp_value ['i_' . $id . '|sku'] = $v['goods_serial'];
-                    $sp_value ['i_' . $id . '|goods_weight'] = $v['goods_weight'];
-                    switch($goodscommon_info['virtual_type']){
+                    $sp_value['i_' . $id . '|marketprice'] = $v['goods_marketprice'];
+                    $sp_value['i_' . $id . '|price'] = $v['goods_price'];
+                    $sp_value['i_' . $id . '|id'] = $v['goods_id'];
+                    $sp_value['i_' . $id . '|stock'] = $v['goods_storage'];
+                    $sp_value['i_' . $id . '|alarm'] = $v['goods_storage_alarm'];
+                    $sp_value['i_' . $id . '|sku'] = $v['goods_serial'];
+                    $sp_value['i_' . $id . '|goods_weight'] = $v['goods_weight'];
+                    switch ($goodscommon_info['virtual_type']) {
                         case 1:
-                            $sp_value ['i_' . $id . '|vc_card'] = $v['virtual_content'];
+                            $sp_value['i_' . $id . '|vc_card'] = $v['virtual_content'];
                             break;
                         case 2:
-                            $sp_value ['i_' . $id . '|vc_pan'] = $v['virtual_content'];
+                            $sp_value['i_' . $id . '|vc_pan'] = $v['virtual_content'];
                             break;
                         case 3:
-                            $sp_value ['i_' . $id . '|vc_file'] = $v['virtual_content'];
+                            $sp_value['i_' . $id . '|vc_file'] = $v['virtual_content'];
                             break;
                     }
                 }
             }
             View::assign('spec_checked', $spec_checked);
         }
-        $goodscommon_info['store_service_ids']=explode(',',$goodscommon_info['store_service_ids']);
+        $goodscommon_info['store_service_ids'] = explode(',', $goodscommon_info['store_service_ids']);
         View::assign('goods', $goodscommon_info);
         View::assign('sp_value', $sp_value);
 
@@ -252,9 +243,9 @@ class Sellergoodsonline extends BaseSeller {
                     $storegc_parent_id = 0;
                 }
                 //分类进行分组，构造为array('1'=>array(5,6,8));
-                if ($storegc_parent_id > 0) {//如果为二级分类，则分组到父级分类下
+                if ($storegc_parent_id > 0) { //如果为二级分类，则分组到父级分类下
                     $goods_stcids_tmp[$storegc_parent_id][] = $v;
-                } elseif (empty($goods_stcids_tmp[$v])) {//如果为一级分类而且分组不存在，则建立一个空分组数组
+                } elseif (empty($goods_stcids_tmp[$v])) { //如果为一级分类而且分组不存在，则建立一个空分组数组
                     $goods_stcids_tmp[$v] = array();
                 }
             }
@@ -286,10 +277,9 @@ class Sellergoodsonline extends BaseSeller {
         }
 
         View::assign('edit_goods_sign', true);
-        
-        
-        $store_service_model=model('store_service');
-        $store_service_list=$store_service_model->getStoreServiceList(array(array('store_id','=',session('store_id'))),'*',0);
+
+        $store_service_model = model('store_service');
+        $store_service_list = $store_service_model->getStoreServiceList(array(array('store_id', '=', session('store_id'))), '*', 0);
         View::assign('store_service_list', $store_service_list);
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('sellergoodsonline');
@@ -300,8 +290,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 编辑商品保存
      */
-    public function edit_save_goods() {
-
+    public function edit_save_goods()
+    {
         $common_id = intval(input('param.commonid'));
         if (!request()->isPost() || $common_id <= 0) {
             ds_json_encode(10001, lang('store_goods_index_goods_edit_fail'));
@@ -316,35 +306,35 @@ class Sellergoodsonline extends BaseSeller {
         }
 
         // 三方店铺验证是否绑定了该分类
-            //商品分类 提供批量显示所有分类插件
-            $storebindclass_model = model('storebindclass');
-            $goods_class = model('goodsclass')->getGoodsclassForCacheModel();
-            $condition = array();
-            $condition[] = array('store_id', '=', session('store_id'));
-            $class_2 = isset($goods_class[$gc_id]['gc_parent_id'])?$goods_class[$gc_id]['gc_parent_id']:0;
-            $class_1 = isset($goods_class[$class_2]['gc_parent_id'])?$goods_class[$class_2]['gc_parent_id']:0;
-            $condition_class_1 = array(array('class_1', '=', ($class_1 > 0) ? $class_1 : (($class_2 > 0) ? $class_2 : $gc_id)));
-            $condition_class_2 = array(array('class_2', '=', ($class_1 > 0) ? $class_2 : (($class_2 > 0) ? $gc_id : 0)));
-            $condition_class_3 = array(array('class_3', '=', ($class_1 > 0 && $class_2 > 0) ? $gc_id : 0));
-            $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
+        //商品分类 提供批量显示所有分类插件
+        $storebindclass_model = model('storebindclass');
+        $goods_class = model('goodsclass')->getGoodsclassForCacheModel();
+        $condition = array();
+        $condition[] = array('store_id', '=', session('store_id'));
+        $class_2 = isset($goods_class[$gc_id]['gc_parent_id']) ? $goods_class[$gc_id]['gc_parent_id'] : 0;
+        $class_1 = isset($goods_class[$class_2]['gc_parent_id']) ? $goods_class[$class_2]['gc_parent_id'] : 0;
+        $condition_class_1 = array(array('class_1', '=', ($class_1 > 0) ? $class_1 : (($class_2 > 0) ? $class_2 : $gc_id)));
+        $condition_class_2 = array(array('class_2', '=', ($class_1 > 0) ? $class_2 : (($class_2 > 0) ? $gc_id : 0)));
+        $condition_class_3 = array(array('class_3', '=', ($class_1 > 0 && $class_2 > 0) ? $gc_id : 0));
+        $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
+        if (empty($bind_info)) {
+            $condition_class_3 = array(array('class_3', '=', 0));
+            $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
             if (empty($bind_info)) {
-                $condition_class_3 = array(array('class_3', '=',0));
-                $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
+                $condition_class_2 = array(array('class_2', '=', 0));
+                $condition_class_3 = array(array('class_3', '=', 0));
+                $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
                 if (empty($bind_info)) {
+                    $condition_class_1 = array(array('class_1', '=', 0));
                     $condition_class_2 = array(array('class_2', '=', 0));
                     $condition_class_3 = array(array('class_3', '=', 0));
-                    $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
+                    $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
                     if (empty($bind_info)) {
-                        $condition_class_1 = array(array('class_1', '=', 0));
-                        $condition_class_2 = array(array('class_2', '=', 0));
-                        $condition_class_3 = array(array('class_3', '=', 0));
-                        $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
-                        if (empty($bind_info)) {
-                            ds_json_encode(10001, lang('store_goods_index_again_choose_category2'));
-                        }
+                        ds_json_encode(10001, lang('store_goods_index_again_choose_category2'));
                     }
                 }
             }
+        }
         // 分类信息
         $goods_class = model('goodsclass')->getGoodsclassLineForTag(intval(input('post.cate_id')));
         $goods_model = model('goods');
@@ -369,7 +359,7 @@ class Sellergoodsonline extends BaseSeller {
         $update_common['goods_serial'] = input('post.g_serial');
         $update_common['goods_storage_alarm'] = intval(input('post.g_alarm'));
         $update_common['goods_attr'] = !empty(input('post.attr/a')) ? serialize(input('post.attr/a')) : '';
-        $update_common['store_service_ids'] = !empty(input('post.store_service_ids/a')) ? implode(',',input('post.store_service_ids/a')) : '';
+        $update_common['store_service_ids'] = !empty(input('post.store_service_ids/a')) ? implode(',', input('post.store_service_ids/a')) : '';
         $goods_body = preg_replace_callback("/<\s*img\s+[^>]*?src\s*=\s*(\'|\")(.*?)\\1[^>]*?\/?\s*>/i", function ($matches) {
             return str_replace($matches[2], strip_tags($matches[2]), $matches[0]);
         }, htmlspecialchars_decode(input('post.goods_body')));
@@ -432,7 +422,7 @@ class Sellergoodsonline extends BaseSeller {
         $update_common['plateid_top'] = intval(input('post.plate_top')) > 0 ? intval(input('post.plate_top')) : '';
         $update_common['plateid_bottom'] = intval(input('post.plate_bottom')) > 0 ? intval(input('post.plate_bottom')) : '';
         $update_common['is_virtual'] = intval(input('post.is_gv'));
-        $update_common['virtual_type'] = $update_common['is_virtual']?intval(input('post.virtual_type')):0;
+        $update_common['virtual_type'] = $update_common['is_virtual'] ? intval(input('post.virtual_type')) : 0;
         $update_common['virtual_indate'] = input('post.g_vindate') != '' ? (strtotime(input('post.g_vindate')) + 24 * 60 * 60 - 1) : 0;  // 当天的最后一秒结束
         $update_common['virtual_limit'] = intval(input('post.g_vlimit')) > 10 || intval(input('post.g_vlimit')) < 0 ? 10 : intval(input('post.g_vlimit'));
         $update_common['virtual_invalid_refund'] = intval(input('post.g_vinvalidrefund'));
@@ -443,7 +433,7 @@ class Sellergoodsonline extends BaseSeller {
         // 开始事务
         Db::startTrans();
         try {
-            $goods_model->lock=true;
+            $goods_model->lock = true;
             $goodsgift_model = model('goodsgift');
             // 清除原有规格数据
             $type_model = model('type');
@@ -493,27 +483,27 @@ class Sellergoodsonline extends BaseSeller {
                         $update['virtual_invalid_refund'] = $update_common['virtual_invalid_refund'];
                         $update['is_goodsfcode'] = $update_common['is_goodsfcode'];
                         $update['is_appoint'] = $update_common['is_appoint'];
-                        switch($update_common['virtual_type']){
-                                case 1:
-                                    $update['virtual_content'] = $value['vc_card'];
-                                    $res=$goods_model->getAvailableGoodsCard(array_merge($update,array('goods_id'=>$goods_info['goods_id'])));
-                                    if($res['code']){
-                                        $update['goods_storage'] = $res['data']['card_num'];
-                                    }else{
-                                        $update['goods_storage'] = 0;
-                                    }
-                                    break;
-                                case 2:
-                                    $update['virtual_content'] = $value['vc_pan'];
-                                    $update['goods_storage'] = 1;
-                                    break;
-                                case 3:
-                                    $update['virtual_content'] = $value['vc_file'];
-                                    $update['goods_storage'] = 1;
-                                    break;
-                                default:
-                                    $update['virtual_content'] = '';
-                            }
+                        switch ($update_common['virtual_type']) {
+                            case 1:
+                                $update['virtual_content'] = $value['vc_card'];
+                                $res = $goods_model->getAvailableGoodsCard(array_merge($update, array('goods_id' => $goods_info['goods_id'])));
+                                if ($res['code']) {
+                                    $update['goods_storage'] = $res['data']['card_num'];
+                                } else {
+                                    $update['goods_storage'] = 0;
+                                }
+                                break;
+                            case 2:
+                                $update['virtual_content'] = $value['vc_pan'];
+                                $update['goods_storage'] = 1;
+                                break;
+                            case 3:
+                                $update['virtual_content'] = $value['vc_file'];
+                                $update['goods_storage'] = 1;
+                                break;
+                            default:
+                                $update['virtual_content'] = '';
+                        }
                         // 虚拟商品不能有赠品
                         if ($update_common['is_virtual'] == 1) {
                             $update['is_have_gift'] = 0;
@@ -559,23 +549,23 @@ class Sellergoodsonline extends BaseSeller {
                         $insert['virtual_invalid_refund'] = $update_common['virtual_invalid_refund'];
                         $insert['is_goodsfcode'] = $update_common['is_goodsfcode'];
                         $insert['is_appoint'] = $update_common['is_appoint'];
-                        switch($update_common['virtual_type']){
-                                case 1:
-                                    $insert['virtual_content'] = $value['vc_card'];
-                                    $card_list=explode("\r\n",$insert['virtual_content']);
-                                    $insert['goods_storage'] = count($card_list);
-                                    break;
-                                case 2:
-                                    $insert['virtual_content'] = $value['vc_pan'];
-                                    $insert['goods_storage'] = 1;
-                                    break;
-                                case 3:
-                                    $insert['virtual_content'] = $value['vc_file'];
-                                    $insert['goods_storage'] = 1;
-                                    break;
-                                default:
-                                    $insert['virtual_content'] = '';
-                            }
+                        switch ($update_common['virtual_type']) {
+                            case 1:
+                                $insert['virtual_content'] = $value['vc_card'];
+                                $card_list = explode("\r\n", $insert['virtual_content']);
+                                $insert['goods_storage'] = count($card_list);
+                                break;
+                            case 2:
+                                $insert['virtual_content'] = $value['vc_pan'];
+                                $insert['goods_storage'] = 1;
+                                break;
+                            case 3:
+                                $insert['virtual_content'] = $value['vc_file'];
+                                $insert['goods_storage'] = 1;
+                                break;
+                            default:
+                                $insert['virtual_content'] = '';
+                        }
                         $goods_id = $goods_model->addGoods($insert);
                     }
                     $goodsid_array[] = intval($goods_id);
@@ -621,27 +611,27 @@ class Sellergoodsonline extends BaseSeller {
                     $update['virtual_invalid_refund'] = $update_common['virtual_invalid_refund'];
                     $update['is_goodsfcode'] = $update_common['is_goodsfcode'];
                     $update['is_appoint'] = $update_common['is_appoint'];
-                    switch($update_common['virtual_type']){
-                                case 1:
-                                    $update['virtual_content'] = input('post.vc_card');
-                                    $res=$goods_model->getAvailableGoodsCard(array_merge($update,array('goods_id'=>$goods_info['goods_id'])));
-                                    if($res['code']){
-                                        $update['goods_storage'] = $res['data']['card_num'];
-                                    }else{
-                                        $update['goods_storage'] = 0;
-                                    }
-                                    break;
-                                case 2:
-                                    $update['virtual_content'] = input('post.vc_pan');
-                                    $update['goods_storage'] = 1;
-                                    break;
-                                case 3:
-                                    $update['virtual_content'] = input('post.vc_file');
-                                    $update['goods_storage'] = 1;
-                                    break;
-                                default:
-                                    $update['virtual_content'] = '';
+                    switch ($update_common['virtual_type']) {
+                        case 1:
+                            $update['virtual_content'] = input('post.vc_card');
+                            $res = $goods_model->getAvailableGoodsCard(array_merge($update, array('goods_id' => $goods_info['goods_id'])));
+                            if ($res['code']) {
+                                $update['goods_storage'] = $res['data']['card_num'];
+                            } else {
+                                $update['goods_storage'] = 0;
                             }
+                            break;
+                        case 2:
+                            $update['virtual_content'] = input('post.vc_pan');
+                            $update['goods_storage'] = 1;
+                            break;
+                        case 3:
+                            $update['virtual_content'] = input('post.vc_file');
+                            $update['goods_storage'] = 1;
+                            break;
+                        default:
+                            $update['virtual_content'] = '';
+                    }
                     if ($update_common['is_virtual'] == 1) {
                         $update['is_have_gift'] = 0;
                         $goodsgift_model->delGoodsgift(array('goods_id' => $goods_id));
@@ -686,23 +676,23 @@ class Sellergoodsonline extends BaseSeller {
                     $insert['virtual_invalid_refund'] = $update_common['virtual_invalid_refund'];
                     $insert['is_goodsfcode'] = $update_common['is_goodsfcode'];
                     $insert['is_appoint'] = $update_common['is_appoint'];
-                    switch($update_common['virtual_type']){
-                                case 1:
-                                    $insert['virtual_content'] = input('post.vc_card');
-                                    $card_list=explode("\r\n",$insert['virtual_content']);
-                                    $insert['goods_storage'] = count($card_list);
-                                    break;
-                                case 2:
-                                    $insert['virtual_content'] = input('post.vc_pan');
-                                    $insert['goods_storage'] = 1;
-                                    break;
-                                case 3:
-                                    $insert['virtual_content'] = input('post.vc_file');
-                                    $insert['goods_storage'] = 1;
-                                    break;
-                                default:
-                                    $insert['virtual_content'] = '';
-                            }
+                    switch ($update_common['virtual_type']) {
+                        case 1:
+                            $insert['virtual_content'] = input('post.vc_card');
+                            $card_list = explode("\r\n", $insert['virtual_content']);
+                            $insert['goods_storage'] = count($card_list);
+                            break;
+                        case 2:
+                            $insert['virtual_content'] = input('post.vc_pan');
+                            $insert['goods_storage'] = 1;
+                            break;
+                        case 3:
+                            $insert['virtual_content'] = input('post.vc_file');
+                            $insert['goods_storage'] = 1;
+                            break;
+                        default:
+                            $insert['virtual_content'] = '';
+                    }
                     $goods_id = $goods_model->addGoods($insert);
                 }
                 $goodsid_array[] = intval($goods_id);
@@ -710,19 +700,18 @@ class Sellergoodsonline extends BaseSeller {
                 $type_model->addGoodsType($goods_id, $common_id, array('cate_id' => input('post.cate_id'), 'type_id' => input('post.type_id'), 'attr' => input('post.attr/a')));
             }
 
-
             // 清理商品数据
             $condition_goods = array();
-            $condition_goods[] = array('goods_id','not in', $goodsid_array);
-            $condition_goods[] = array('goods_commonid','=',$common_id);
-            $condition_goods[] = array('store_id','=',session('store_id'));
+            $condition_goods[] = array('goods_id', 'not in', $goodsid_array);
+            $condition_goods[] = array('goods_commonid', '=', $common_id);
+            $condition_goods[] = array('store_id', '=', session('store_id'));
             $goods_model->delGoods($condition_goods);
 
             // 清理商品图片表
             $colorid_array = array_unique($colorid_array);
             $condition_goodsimages = array();
-            $condition_goodsimages[] = array('goods_commonid','=',$common_id);
-            $condition_goodsimages[] = array('color_id','not in', $colorid_array);
+            $condition_goodsimages[] = array('goods_commonid', '=', $common_id);
+            $condition_goodsimages[] = array('color_id', 'not in', $colorid_array);
             $goods_model->delGoodsImages($condition_goodsimages);
             // 更新商品默认主图
             $default_image_list = $goods_model->getGoodsImageList(array('goods_commonid' => $common_id, 'goodsimage_isdefault' => 1), 'color_id,goodsimage_url');
@@ -744,10 +733,10 @@ class Sellergoodsonline extends BaseSeller {
 
             if ($update_common['is_virtual'] == 1 || $update_common['is_goodsfcode'] == 1) {
                 // 如果是特殊商品清理促销活动，抢购、秒杀、组合销售
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'clearSpecialGoodsPromotion','cron_value'=>serialize(array('goods_commonid' => $common_id, 'goodsid_array' => $goodsid_array))));
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'clearSpecialGoodsPromotion', 'cron_value' => serialize(array('goods_commonid' => $common_id, 'goodsid_array' => $goodsid_array))));
             } else {
                 // 更新商品促销价格
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'updateGoodsPromotionPriceByGoodsCommonId','cron_value'=>serialize($common_id)));
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'updateGoodsPromotionPriceByGoodsCommonId', 'cron_value' => serialize($common_id)));
             }
 
             // 生成F码
@@ -761,14 +750,15 @@ class Sellergoodsonline extends BaseSeller {
             Db::rollback();
             ds_json_encode(10001, $e->getMessage());
         }
-        
+
         ds_json_encode(10000, lang('ds_common_op_succ'));
     }
 
     /**
      * 编辑图片
      */
-    public function edit_image() {
+    public function edit_image()
+    {
         $common_id = intval(input('param.commonid'));
         if ($common_id <= 0) {
             $this->error(lang('param_error'), (string) url('Seller/index'));
@@ -805,7 +795,6 @@ class Sellergoodsonline extends BaseSeller {
         }
         View::assign('img', $image_array);
 
-
         $spec_model = model('spec');
         $value_array = $spec_model->getSpecvalueList(array(array('spvalue_id', 'in', $colorid_array), array('store_id', '=', session('store_id'))), 'spvalue_id,spvalue_name');
         if (empty($value_array)) {
@@ -825,7 +814,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 保存商品图片
      */
-    public function edit_save_image() {
+    public function edit_save_image()
+    {
         if (request()->isPost()) {
             $common_id = intval(input('param.commonid'));
             $img_array = input('post.img/a'); #获取数组
@@ -869,7 +859,7 @@ class Sellergoodsonline extends BaseSeller {
                     $insert_array[] = $tmp_insert;
                 }
             }
-            if(!empty($insert_array)){
+            if (!empty($insert_array)) {
                 $rs = $goods_model->addGoodsImagesAll($insert_array);
                 if ($rs) {
                     // 添加操作日志
@@ -878,17 +868,17 @@ class Sellergoodsonline extends BaseSeller {
                 } else {
                     ds_json_encode(10001, lang('ds_common_save_fail'));
                 }
-            }else{
+            } else {
                 ds_json_encode(10000, lang('ds_common_op_succ'));
             }
-
         }
     }
 
     /**
      * 编辑分类
      */
-    public function edit_class() {
+    public function edit_class()
+    {
         // 实例化商品分类模型
         $goodsclass_model = model('goodsclass');
         // 商品分类
@@ -914,7 +904,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 删除商品
      */
-    public function drop_goods() {
+    public function drop_goods()
+    {
         $commonid = input('param.commonid');
         $common_id = $this->checkRequestCommonId($commonid);
         $commonid_array = explode(',', $common_id);
@@ -937,7 +928,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 商品下架
      */
-    public function goods_unshow() {
+    public function goods_unshow()
+    {
         $common_id = $this->checkRequestCommonId(input('param.commonid'));
         $commonid_array = explode(',', $common_id);
         $goods_model = model('goods');
@@ -966,7 +958,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 设置排序
      */
-    public function edit_sort() {
+    public function edit_sort()
+    {
         $common_id = $this->checkRequestCommonId(input('param.commonid'));
         if (request()->isPost()) {
             $goods_sort = input('param.g_sort');
@@ -987,7 +980,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 设置广告词
      */
-    public function edit_jingle() {
+    public function edit_jingle()
+    {
         if (request()->isPost()) {
             $common_id = $this->checkRequestCommonId(input('param.commonid'));
             $commonid_array = explode(',', $common_id);
@@ -1010,7 +1004,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 编辑库存
      */
-    public function edit_storage() {
+    public function edit_storage()
+    {
         $common_id = intval(input('param.commonid'));
         if (!$common_id) {
             ds_json_encode(10001, lang('param_error'));
@@ -1024,7 +1019,7 @@ class Sellergoodsonline extends BaseSeller {
             Db::startTrans();
             try {
                 $spec = input('param.spec/a');
-                $min_item=array();
+                $min_item = array();
                 foreach ($spec as $goods_id => $val) {
                     $data = array(
                         'goods_weight' => abs(intval($val['goods_weight'])),
@@ -1040,25 +1035,25 @@ class Sellergoodsonline extends BaseSeller {
                         if ($data['goods_price'] == 0) {
                             throw new \think\Exception(lang('prompt_information4'), 10006);
                         }
-                        if ($data['goods_marketprice']>0 && $data['goods_price'] > $data['goods_marketprice']) {
+                        if ($data['goods_marketprice'] > 0 && $data['goods_price'] > $data['goods_marketprice']) {
                             throw new \think\Exception(lang('not_higher_than'), 10006);
                         }
-                        if(empty($min_item) || $min_item['goods_price']>$data['goods_price']){
-                            $min_item=$data;
+                        if (empty($min_item) || $min_item['goods_price'] > $data['goods_price']) {
+                            $min_item = $data;
                         }
                     }
                     $goods_model->editGoods($data, array('goods_commonid' => $common_id, 'goods_id' => $goods_id, 'store_id' => session('store_id')));
                 }
                 //最低价格
-                if(!empty($min_item)){
-                    $goods_model->editGoodsCommon(array('goods_discount' => $min_item['goods_marketprice']>0?intval($min_item['goods_price'] / $min_item['goods_marketprice'] * 100):0, 'goods_marketprice' => $min_item['goods_marketprice'], 'goods_price' => $min_item['goods_price']), array('goods_commonid' => $common_id, 'store_id' => session('store_id')));
+                if (!empty($min_item)) {
+                    $goods_model->editGoodsCommon(array('goods_discount' => $min_item['goods_marketprice'] > 0 ? intval($min_item['goods_price'] / $min_item['goods_marketprice'] * 100) : 0, 'goods_marketprice' => $min_item['goods_marketprice'], 'goods_price' => $min_item['goods_price']), array('goods_commonid' => $common_id, 'store_id' => session('store_id')));
                 }
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
                 ds_json_encode(10001, $e->getMessage());
             }
-            
+
             ds_json_encode(10000, lang('ds_common_op_succ'));
         } else {
             View::assign('goodscommon_info', $goodscommon_info);
@@ -1071,7 +1066,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 设置关联版式
      */
-    public function edit_plate() {
+    public function edit_plate()
+    {
         if (request()->isPost()) {
             $common_id = $this->checkRequestCommonId(input('post.commonid'));
             $commonid_array = explode(',', $common_id);
@@ -1104,7 +1100,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 添加赠品
      */
-    public function add_gift() {
+    public function add_gift()
+    {
         $common_id = intval(input('param.commonid'));
         if ($common_id <= 0) {
             $this->error(lang('param_error'), (string) url('Seller/index'));
@@ -1116,7 +1113,7 @@ class Sellergoodsonline extends BaseSeller {
         }
 
         // 商品列表
-        $goods_array = $goods_model->getGoodsListForPromotion(array(array('goods_commonid' ,'=', $common_id)), '*', 0, 'gift');
+        $goods_array = $goods_model->getGoodsListForPromotion(array(array('goods_commonid', '=', $common_id)), '*', 0, 'gift');
         View::assign('goods_array', $goods_array);
 
         // 赠品列表
@@ -1138,11 +1135,12 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 保存赠品
      */
-    public function save_gift() {
+    public function save_gift()
+    {
         if (!request()->isPost()) {
             ds_json_encode(10001, lang('param_error'));
         }
-        $gift_array = input('post.gift/a',array());
+        $gift_array = input('post.gift/a', array());
         $commonid = intval(input('param.commonid'));
         if ($commonid <= 0) {
             ds_json_encode(10001, lang('param_error'));
@@ -1152,7 +1150,7 @@ class Sellergoodsonline extends BaseSeller {
         $goodsgift_model = model('goodsgift');
 
         // 验证商品是否存在
-        $goods_list = $goods_model->getGoodsListForPromotion(array(array('goods_commonid' ,'=', $commonid), array('store_id' ,'=', session('store_id'))), 'goods_id', 0, 'gift');
+        $goods_list = $goods_model->getGoodsListForPromotion(array(array('goods_commonid', '=', $commonid), array('store_id', '=', session('store_id'))), 'goods_id', 0, 'gift');
         if (empty($goods_list)) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -1208,7 +1206,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 推荐搭配
      */
-    public function add_combo() {
+    public function add_combo()
+    {
         $common_id = intval(input('param.commonid'));
         if ($common_id <= 0) {
             $this->error(lang('param_error'), (string) url('Seller/index'));
@@ -1219,7 +1218,7 @@ class Sellergoodsonline extends BaseSeller {
             $this->error(lang('param_error'), (string) url('Seller/index'));
         }
 
-        $goods_array = $goods_model->getGoodsListForPromotion(array(array('goods_commonid' ,'=', $common_id)), '*', 0, 'combo');
+        $goods_array = $goods_model->getGoodsListForPromotion(array(array('goods_commonid', '=', $common_id)), '*', 0, 'combo');
         View::assign('goods_array', $goods_array);
 
         // 推荐组合商品列表
@@ -1255,7 +1254,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 保存赠品
      */
-    public function save_combo() {
+    public function save_combo()
+    {
         if (!request()->isPost()) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -1271,7 +1271,7 @@ class Sellergoodsonline extends BaseSeller {
         $goodscombo_model = model('goodscombo');
 
         // 验证商品是否存在
-        $goods_list = $goods_model->getGoodsListForPromotion(array(array('goods_commonid' ,'=', $commonid), array('store_id' ,'=', session('store_id'))), 'goods_id', 0, 'combo');
+        $goods_list = $goods_model->getGoodsListForPromotion(array(array('goods_commonid', '=', $commonid), array('store_id', '=', session('store_id'))), 'goods_id', 0, 'combo');
         if (empty($goods_list)) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -1318,9 +1318,10 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 搜索商品（添加赠品/推荐搭配)
      */
-    public function search_goods() {
+    public function search_goods()
+    {
         $where = array();
-        $where[]=array('store_id','=',session('store_id'));
+        $where[] = array('store_id', '=', session('store_id'));
         $name = input('param.name');
         if ($name) {
             $where[] = array('goods_name', 'like', '%' . $name . '%');
@@ -1336,7 +1337,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 下载F码
      */
-    public function download_f_code_excel() {
+    public function download_f_code_excel()
+    {
         $common_id = input('param.commonid');
         if ($common_id <= 0) {
             $this->error(lang('param_error'));
@@ -1368,7 +1370,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * 验证commonid
      */
-    private function checkRequestCommonId($common_ids) {
+    private function checkRequestCommonId($common_ids)
+    {
         if (!preg_match('/^[\d,]+$/i', $common_ids)) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -1378,7 +1381,8 @@ class Sellergoodsonline extends BaseSeller {
     /**
      * ajax获取商品列表
      */
-    public function get_goods_list_ajax() {
+    public function get_goods_list_ajax()
+    {
         $common_id = input('param.commonid');
         if ($common_id <= 0) {
             echo 'false';
@@ -1413,9 +1417,10 @@ class Sellergoodsonline extends BaseSeller {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'goods_list',
@@ -1452,7 +1457,4 @@ class Sellergoodsonline extends BaseSeller {
         }
         return $item_list;
     }
-
 }
-
-?>

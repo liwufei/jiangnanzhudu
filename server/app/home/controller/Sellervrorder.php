@@ -1,38 +1,24 @@
 <?php
 
-/*
- * 虚拟订单
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellervrorder extends BaseSeller {
+class Sellervrorder extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellervrorder.lang.php');
     }
 
     /**
      * 虚拟订单列表
-     *
      */
-    public function index() {
+    public function index()
+    {
         $vrorder_model = model('vrorder');
 
         $condition = array();
@@ -58,7 +44,7 @@ class Sellervrorder extends BaseSeller {
         $if_start_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', $query_end_date);
         $if_end_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', $query_start_date);
         $start_unixtime = $if_start_date ? strtotime($query_end_date) : null;
-        $end_unixtime = $if_end_date ? (strtotime($query_start_date)+86399) : null;
+        $end_unixtime = $if_end_date ? (strtotime($query_start_date) + 86399) : null;
         if ($start_unixtime) {
             $condition[] = array('add_time', '>=', $start_unixtime);
         }
@@ -84,8 +70,6 @@ class Sellervrorder extends BaseSeller {
 
         View::assign('order_list', $order_list);
 
-
-
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('sellervrorder');
         /* 设置卖家当前栏目 */
@@ -95,17 +79,17 @@ class Sellervrorder extends BaseSeller {
 
     /**
      * 卖家订单详情
-     *
      */
-    public function show_order() {
+    public function show_order()
+    {
         $order_id = intval(input('param.order_id'));
         if ($order_id <= 0) {
             $this->error(lang('param_error'));
         }
         $vrorder_model = model('vrorder');
         $condition = array();
-        $condition[] = array('order_id','=',$order_id);
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('order_id', '=', $order_id);
+        $condition[] = array('store_id', '=', session('store_id'));
         $order_info = $vrorder_model->getVrorderInfo($condition);
         if (empty($order_info)) {
             $this->error(lang('store_order_none_exist'));
@@ -125,8 +109,8 @@ class Sellervrorder extends BaseSeller {
         if ($order_info['order_state'] == ORDER_STATE_NEW) {
             $order_info['order_cancel_day'] = $order_info['add_time'] + config('ds_config.order_auto_cancel_day') * 24 * 3600;
         }
-        if($order_info['virtual_type']==1){
-            $order_info['virtual_content']=explode('\r\n',$order_info['virtual_content']);
+        if ($order_info['virtual_type'] == 1) {
+            $order_info['virtual_content'] = explode('\r\n', $order_info['virtual_content']);
         }
         View::assign('order_info', $order_info);
         $this->setSellerCurMenu('sellervrorder');
@@ -137,13 +121,13 @@ class Sellervrorder extends BaseSeller {
 
     /**
      * 卖家订单状态操作
-     *
      */
-    public function change_state() {
+    public function change_state()
+    {
         $vrorder_model = model('vrorder');
         $condition = array();
-        $condition[] = array('order_id','=',intval(input('param.order_id')));
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('order_id', '=', intval(input('param.order_id')));
+        $condition[] = array('store_id', '=', session('store_id'));
         $order_info = $vrorder_model->getVrorderInfo($condition);
         $state_type = input('param.state_type');
         if ($state_type == 'order_cancel') {
@@ -162,7 +146,8 @@ class Sellervrorder extends BaseSeller {
      * @param arrty $post
      * @throws Exception
      */
-    private function _order_cancel($order_info, $post) {
+    private function _order_cancel($order_info, $post)
+    {
         if (!request()->isPost()) {
             View::assign('order_id', $order_info['order_id']);
             View::assign('order_info', $order_info);
@@ -180,7 +165,8 @@ class Sellervrorder extends BaseSeller {
         }
     }
 
-    public function exchange() {
+    public function exchange()
+    {
         $data = $this->_exchange();
         exit(json_encode($data));
     }
@@ -188,7 +174,8 @@ class Sellervrorder extends BaseSeller {
     /**
      * 兑换码消费
      */
-    private function _exchange() {
+    private function _exchange()
+    {
         if (input('param.submit_exchange') == 'ok') {
             if (!preg_match('/^[a-zA-Z0-9]{15,18}$/', input('get.vr_code'))) {
                 return array('error' => lang('exchange_code_format_error'));
@@ -204,7 +191,7 @@ class Sellervrorder extends BaseSeller {
             if ($vr_code_info['vr_indate'] < TIMESTAMP) {
                 return array('error' => lang('exchange_code_expired') . date('Y-m-d H:i:s', $vr_code_info['vr_indate']));
             }
-            if ($vr_code_info['refund_lock'] > 0) {//退款锁定状态:0为正常,1为锁定(待审核),2为同意
+            if ($vr_code_info['refund_lock'] > 0) { //退款锁定状态:0为正常,1为锁定(待审核),2为同意
                 return array('error' => lang('exchange_code_been_applied_refund'));
             }
 
@@ -229,8 +216,7 @@ class Sellervrorder extends BaseSeller {
                 return array('error' => '', 'data' => $order_info);
             }
         } else {
-            $state_type = input('state_type');
-            ;
+            $state_type = input('state_type');;
             /* 设置卖家当前菜单 */
             $this->setSellerCurMenu('sellervrorder');
             /* 设置卖家当前栏目 */
@@ -241,9 +227,10 @@ class Sellervrorder extends BaseSeller {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'store_order',
@@ -280,5 +267,4 @@ class Sellervrorder extends BaseSeller {
         }
         return $menu_array;
     }
-
 }

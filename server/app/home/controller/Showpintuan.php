@@ -5,21 +5,11 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Showpintuan extends BaseMall {
+class Showpintuan extends BaseMall
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/pintuan.lang.php');
     }
@@ -27,7 +17,8 @@ class Showpintuan extends BaseMall {
     /**
      * 拼团列表页
      */
-    public function index() {
+    public function index()
+    {
         $ppintuan_model = model('ppintuan');
         $condition = array(
             array('pintuan_state', '=', 1),
@@ -47,7 +38,7 @@ class Showpintuan extends BaseMall {
             $result['show_page'] = $ppintuan_model->page_info->render();
             wcache($cache_key, $result);
         }
-//        halt($result['pintuan_list']);
+        // halt($result['pintuan_list']);
         View::assign('pintuan_list', $result['pintuan_list']);
         View::assign('show_page', $result['show_page']);
         // 当前位置导航
@@ -62,5 +53,4 @@ class Showpintuan extends BaseMall {
 
         return View::fetch($this->template_dir . 'index');
     }
-
 }

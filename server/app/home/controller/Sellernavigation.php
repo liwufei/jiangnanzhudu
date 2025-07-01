@@ -1,25 +1,9 @@
 <?php
-/**
- * 导航栏
- * Date: 2017/6/27
- * Time: 17:01
- */
 
 namespace app\home\controller;
+
 use think\facade\View;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
 class Sellernavigation extends BaseSeller
 {
     public function initialize()
@@ -39,7 +23,7 @@ class Sellernavigation extends BaseSeller
         $this->setSellerCurMenu('seller_navigation');
         /* 设置卖家当前栏目 */
         $this->setSellerCurItem('store_navigation');
-        return View::fetch($this->template_dir.'index');
+        return View::fetch($this->template_dir . 'index');
     }
 
     public function navigation_add()
@@ -59,7 +43,7 @@ class Sellernavigation extends BaseSeller
             'storenav_url' => '',
         );
         View::assign('sn_info', $sn_info);
-        return View::fetch($this->template_dir.'navigation_form');
+        return View::fetch($this->template_dir . 'navigation_form');
     }
 
     public function navigation_edit()
@@ -82,7 +66,7 @@ class Sellernavigation extends BaseSeller
         $this->setSellerCurMenu('seller_navigation');
         /* 设置卖家当前栏目 */
         $this->setSellerCurItem('navigation_edit');
-        return View::fetch($this->template_dir.'navigation_form');
+        return View::fetch($this->template_dir . 'navigation_form');
     }
 
     public function navigation_save()
@@ -103,9 +87,9 @@ class Sellernavigation extends BaseSeller
             $result = $storenavigation_model->addStorenavigation($sn_info);
         }
         if ($result) {
-            ds_json_encode(10000,lang('ds_common_op_succ'));
+            ds_json_encode(10000, lang('ds_common_op_succ'));
         } else {
-            ds_json_encode(10001,lang('ds_common_op_fail'));
+            ds_json_encode(10001, lang('ds_common_op_fail'));
         }
     }
 
@@ -119,9 +103,9 @@ class Sellernavigation extends BaseSeller
             );
             $storenavigation_model = model('storenavigation');
             $storenavigation_model->delStorenavigation($condition);
-            ds_json_encode(10000,lang('ds_common_op_succ'));
+            ds_json_encode(10000, lang('ds_common_op_succ'));
         } else {
-            ds_json_encode(10001,lang('ds_common_op_fail'));
+            ds_json_encode(10001, lang('ds_common_op_fail'));
         }
     }
 

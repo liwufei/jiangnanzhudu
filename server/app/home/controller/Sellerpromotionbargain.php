@@ -1,30 +1,16 @@
 <?php
 
-/**
- * 卖家砍价管理
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerpromotionbargain extends BaseSeller {
+class Sellerpromotionbargain extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerpromotionbargain.lang.php');
         if (intval(config('ds_config.promotion_allow')) !== 1) {
@@ -32,12 +18,13 @@ class Sellerpromotionbargain extends BaseSeller {
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $bargainquota_model = model('pbargainquota');
         $pbargain_model = model('pbargain');
 
-            $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
-            View::assign('current_bargain_quota', $current_bargain_quota);
+        $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
+        View::assign('current_bargain_quota', $current_bargain_quota);
 
         $condition = array();
         $condition[] = array('store_id', '=', $this->store_info['store_id']);
@@ -64,19 +51,20 @@ class Sellerpromotionbargain extends BaseSeller {
 
     /**
      * 添加砍价活动
-     * */
-    public function bargain_add() {
+     */
+    public function bargain_add()
+    {
         if (!request()->isPost()) {
-                $bargainquota_model = model('pbargainquota');
-                $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
-                if (empty($current_bargain_quota)) {
-                    if (intval(config('ds_config.promotion_bargain_price')) != 0) {
-                        $this->error(lang('bargain_quota_current_error1'));
-                    } else {
-                        $current_bargain_quota = array('bargainquota_starttime' => TIMESTAMP, 'bargainquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
-                    }
+            $bargainquota_model = model('pbargainquota');
+            $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
+            if (empty($current_bargain_quota)) {
+                if (intval(config('ds_config.promotion_bargain_price')) != 0) {
+                    $this->error(lang('bargain_quota_current_error1'));
+                } else {
+                    $current_bargain_quota = array('bargainquota_starttime' => TIMESTAMP, 'bargainquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
                 }
-                View::assign('current_bargain_quota', $current_bargain_quota);
+            }
+            View::assign('current_bargain_quota', $current_bargain_quota);
 
             //输出导航
             $this->setSellerCurMenu('Sellerpromotionbargain');
@@ -92,24 +80,24 @@ class Sellerpromotionbargain extends BaseSeller {
             $data['member_name'] = $this->store_info['member_name'];
             $data['store_id'] = $this->store_info['store_id'];
             $data['store_name'] = $this->store_info['store_name'];
-                //获取当前套餐
-                $bargainquota_model = model('pbargainquota');
-                $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
-                if (empty($current_bargain_quota)) {
-                    if (intval(config('ds_config.promotion_bargain_price')) != 0) {
-                        ds_json_encode(10001, lang('please_buy_package_first'));
-                    } else {
-                        $current_bargain_quota = array('bargainquota_starttime' => TIMESTAMP, 'bargainquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
-                    }
+            //获取当前套餐
+            $bargainquota_model = model('pbargainquota');
+            $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
+            if (empty($current_bargain_quota)) {
+                if (intval(config('ds_config.promotion_bargain_price')) != 0) {
+                    ds_json_encode(10001, lang('please_buy_package_first'));
+                } else {
+                    $current_bargain_quota = array('bargainquota_starttime' => TIMESTAMP, 'bargainquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
                 }
-                $quota_start_time = intval($current_bargain_quota['bargainquota_starttime']);
-                $quota_end_time = intval($current_bargain_quota['bargainquota_endtime']);
-                if ($data['bargain_begintime'] < $quota_start_time) {
-                    ds_json_encode(10001, sprintf(lang('bargain_add_start_time_explain'), date('Y-m-d', $current_bargain_quota['bargainquota_starttime'])));
-                }
-                if ($data['bargain_endtime'] > $quota_end_time) {
-                    ds_json_encode(10001, sprintf(lang('bargain_add_end_time_explain'), date('Y-m-d', $current_bargain_quota['bargainquota_endtime'])));
-                }
+            }
+            $quota_start_time = intval($current_bargain_quota['bargainquota_starttime']);
+            $quota_end_time = intval($current_bargain_quota['bargainquota_endtime']);
+            if ($data['bargain_begintime'] < $quota_start_time) {
+                ds_json_encode(10001, sprintf(lang('bargain_add_start_time_explain'), date('Y-m-d', $current_bargain_quota['bargainquota_starttime'])));
+            }
+            if ($data['bargain_endtime'] > $quota_end_time) {
+                ds_json_encode(10001, sprintf(lang('bargain_add_end_time_explain'), date('Y-m-d', $current_bargain_quota['bargainquota_endtime'])));
+            }
 
             //生成活动
             $pbargain_model = model('pbargain');
@@ -124,7 +112,8 @@ class Sellerpromotionbargain extends BaseSeller {
         }
     }
 
-    public function post_data() {
+    public function post_data()
+    {
         $data = array(
             'bargain_name' => input('post.bargain_name'),
             'bargain_limit' => input('post.bargain_limit'),
@@ -137,7 +126,7 @@ class Sellerpromotionbargain extends BaseSeller {
             'bargain_endtime' => input('post.end_time'),
         );
         $this->validate($data, 'app\common\validate\Pbargain.pbargin_save');
-        
+
         //获取提交的数据
         $goods_id = intval(input('post.bargain_goods_id'));
         if (empty($goods_id)) {
@@ -180,8 +169,9 @@ class Sellerpromotionbargain extends BaseSeller {
 
     /**
      * 编辑砍价活动
-     * */
-    public function bargain_edit() {
+     */
+    public function bargain_edit()
+    {
         $bargain_id = input('param.bargain_id');
         $pbargain_model = model('pbargain');
         $bargain_info = $pbargain_model->getBargainInfoByID($bargain_id, $this->store_info['store_id']);
@@ -224,7 +214,8 @@ class Sellerpromotionbargain extends BaseSeller {
     /**
      * 砍价活动 取消
      */
-    public function bargain_end() {
+    public function bargain_end()
+    {
         $bargain_id = intval(input('post.bargain_id'));
         $pbargain_model = model('pbargain');
 
@@ -236,12 +227,11 @@ class Sellerpromotionbargain extends BaseSeller {
         if (!$btn['editable']) {
             ds_json_encode(10001, lang('param_error'));
         }
-        /**
-         * 指定砍价活动结束
-         */
+
+        // 指定砍价活动结束
         $condition = array();
-        $condition[] = array('bargain_id','=',$bargain_id);
-        $condition[] = array('bargain_state','=',1);
+        $condition[] = array('bargain_id', '=', $bargain_id);
+        $condition[] = array('bargain_state', '=', 1);
         $result = $pbargain_model->cancelBargain($condition);
 
         if ($result) {
@@ -256,7 +246,8 @@ class Sellerpromotionbargain extends BaseSeller {
     /**
      * 商品砍价订单列表
      */
-    public function bargain_order() {
+    public function bargain_order()
+    {
         $pbargain_model = model('pbargain');
         $pbargainorder_model = model('pbargainorder');
         $bargain_id = intval(input('param.bargain_id'));
@@ -266,9 +257,9 @@ class Sellerpromotionbargain extends BaseSeller {
             $this->error(lang('param_error'));
         }
         $condition = array();
-        $condition[] = array('bargain_id','=',$bargain_id);
+        $condition[] = array('bargain_id', '=', $bargain_id);
         if (input('param.bargainorder_state') != '') {
-            $condition[] = array('bargainorder_state','=',intval(input('param.bargainorder_state')));
+            $condition[] = array('bargainorder_state', '=', intval(input('param.bargainorder_state')));
         }
         $pbargainorder_list = $pbargainorder_model->getPbargainorderList($condition, 10);
 
@@ -283,11 +274,12 @@ class Sellerpromotionbargain extends BaseSeller {
     /**
      * 商品砍价记录列表
      */
-    public function bargain_log() {
+    public function bargain_log()
+    {
         $pbargainlog_model = model('pbargainlog');
         $bargainorder_id = intval(input('param.bargainorder_id'));
         $condition = array();
-        $condition[] = array('bargainorder_id','=',$bargainorder_id);
+        $condition[] = array('bargainorder_id', '=', $bargainorder_id);
         $pbargainlog_list = $pbargainlog_model->getPbargainlogList($condition, 10); #获取砍价记录信息
         View::assign('show_page', $pbargainlog_model->page_info->render());
         View::assign('pbargainlog_list', $pbargainlog_list);
@@ -298,8 +290,9 @@ class Sellerpromotionbargain extends BaseSeller {
 
     /**
      * 砍价套餐购买
-     * */
-    public function bargain_quota_add() {
+     */
+    public function bargain_quota_add()
+    {
         //输出导航
         $this->setSellerCurMenu('Sellerpromotionbargain');
         $this->setSellerCurItem('bargain_quota_add');
@@ -308,8 +301,9 @@ class Sellerpromotionbargain extends BaseSeller {
 
     /**
      * 砍价套餐购买保存
-     * */
-    public function bargain_quota_add_save() {
+     */
+    public function bargain_quota_add_save()
+    {
         if (intval(config('ds_config.promotion_bargain_price')) == 0) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -319,10 +313,10 @@ class Sellerpromotionbargain extends BaseSeller {
         }
         //获取当前价格
         $current_price = intval(config('ds_config.promotion_bargain_price'));
-        
+
         //先记录店铺记录店铺费用以免扣费不成功
-        $this->recordStorecost($current_price * $bargain_quota_quantity, lang('buy_spell_group').' ['.$bargain_quota_quantity.'个月 × 单价:'.$current_price.'元]');
-        
+        $this->recordStorecost($current_price * $bargain_quota_quantity, lang('buy_spell_group') . ' [' . $bargain_quota_quantity . '个月 × 单价:' . $current_price . '元]');
+
         //获取该用户已有套餐
         $bargainquota_model = model('pbargainquota');
         $current_bargain_quota = $bargainquota_model->getBargainquotaCurrent($this->store_info['store_id']);
@@ -350,8 +344,9 @@ class Sellerpromotionbargain extends BaseSeller {
 
     /**
      * 选择活动商品
-     * */
-    public function search_goods() {
+     */
+    public function search_goods()
+    {
         $goods_model = model('goods');
         $condition = array();
         $condition[] = array('goods.store_id', '=', $this->store_info['store_id']);
@@ -363,13 +358,12 @@ class Sellerpromotionbargain extends BaseSeller {
         exit;
     }
 
-    public function bargain_goods_info() {
+    public function bargain_goods_info()
+    {
         $goods_id = intval(input('param.goods_id'));
 
         $data = array();
         $data['result'] = true;
-
-
 
         //获取商品具体信息用于显示
         $goods_model = model('goods');
@@ -382,7 +376,6 @@ class Sellerpromotionbargain extends BaseSeller {
             die;
         }
 
-
         $data['goods_id'] = $goods_info['goods_id'];
         $data['goods_name'] = $goods_info['goods_name'];
         $data['goods_price'] = $goods_info['goods_price'];
@@ -393,14 +386,14 @@ class Sellerpromotionbargain extends BaseSeller {
         die;
     }
 
-    /*
+    /**
      * 判断此商品是否已经参加砍价
      */
-
-    private function _check_allow_bargain($goods_id, $bargain_id = 0) {
+    private function _check_allow_bargain($goods_id, $bargain_id = 0)
+    {
         $condition = array();
-        $condition[] = array('bargain_goods_id','=',$goods_id);
-        $condition[] = array('bargain_state','=',1);
+        $condition[] = array('bargain_goods_id', '=', $goods_id);
+        $condition[] = array('bargain_state', '=', 1);
         if ($bargain_id) {
             $condition[] = array('bargain_id', '<>', $bargain_id);
         }
@@ -412,45 +405,52 @@ class Sellerpromotionbargain extends BaseSeller {
         }
     }
 
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'bargain_list', 'text' => lang('bargain_active_list'),
+                'name' => 'bargain_list',
+                'text' => lang('bargain_active_list'),
                 'url' => (string) url('Sellerpromotionbargain/index')
             ),
         );
         switch (request()->action()) {
             case 'bargain_add':
                 $menu_array[] = array(
-                    'name' => 'bargain_add', 'text' => lang('bargain_add'),
+                    'name' => 'bargain_add',
+                    'text' => lang('bargain_add'),
                     'url' => (string) url('Sellerpromotionbargain/bargain_add')
                 );
                 break;
             case 'bargain_edit':
                 $menu_array[] = array(
-                    'name' => 'bargain_edit', 'text' => lang('bargain_edit'), 'url' => 'javascript:;'
+                    'name' => 'bargain_edit',
+                    'text' => lang('bargain_edit'),
+                    'url' => 'javascript:;'
                 );
                 break;
             case 'bargain_quota_add':
                 $menu_array[] = array(
-                    'name' => 'bargain_quota_add', 'text' => lang('bargain_quota_add'),
+                    'name' => 'bargain_quota_add',
+                    'text' => lang('bargain_quota_add'),
                     'url' => (string) url('Sellerpromotionbargain/bargain_quota_add')
                 );
                 break;
             case 'bargain_order':
                 $menu_array[] = array(
-                    'name' => 'bargain_order', 'text' => lang('bargainorder'),
+                    'name' => 'bargain_order',
+                    'text' => lang('bargainorder'),
                     'url' => (string) url('Sellerpromotionbargain/bargain_order', ['bargain_id' => input('param.bargain_id')])
                 );
                 break;
             case 'bargain_log':
                 $menu_array[] = array(
-                    'name' => 'bargain_log', 'text' => lang('pbargainlog'),
+                    'name' => 'bargain_log',
+                    'text' => lang('pbargainlog'),
                     'url' => (string) url('Sellerpromotionbargain/bargain_log', ['bargainorder_id' => input('param.bargainorder_id')])
                 );
                 break;
         }
         return $menu_array;
     }
-
 }

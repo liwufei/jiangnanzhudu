@@ -6,30 +6,20 @@ use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Shopnearby extends BaseMall {
+class Shopnearby extends BaseMall
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/shopnearby.lang.php');
     }
 
-    /*
+    /**
      * 首页显示
      */
-
-    public function index() {
+    public function index()
+    {
         $storeclass_list = model('storeclass')->getStoreclassList();
         View::assign('storeclass_list', $storeclass_list);
         $area_mod = model('area');
@@ -49,7 +39,8 @@ class Shopnearby extends BaseMall {
         return View::fetch($this->template_dir . 'index');
     }
 
-    public function get_Own_Store_List() {
+    public function get_Own_Store_List()
+    {
         $store_list = array();
         //查询条件
         $condition = array(array('store_state', '=', 1));
@@ -69,12 +60,11 @@ class Shopnearby extends BaseMall {
             $page = intval(input('get.page'));
             $store_list = Db::name('store')->where($condition)->where('(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*(' . $lat . '-store_latitude)/360),2)+COS(PI()*' . $lat . '/180)* COS(store_latitude * PI()/180)*POW(SIN(PI()*(' . $lng . '-store_longitude)/360),2)))) < 100000')->field('store_phone,store_latitude,store_longitude,store_id,store_name,area_info,store_address,store_logo,store_avatar,store_banner,(2 * 6378.137* ASIN(SQRT(POW(SIN(PI()*(' . $lat . '-store_latitude)/360),2)+COS(PI()*' . $lat . '/180)* COS(store_latitude * PI()/180)*POW(SIN(PI()*(' . $lng . '-store_longitude)/360),2)))) as distance')->order('distance asc')->page($page, 30)->select()->toArray();
 
-            
             foreach ($store_list as $key => $value) {
                 $goods_conditions = array();
                 $goods_conditions[] = array('goods_verify', '=', 1);
                 $goods_conditions[] = array('goods_state', '=', 1);
-                $store_list[$key]['store_banner'] && $store_list[$key]['store_banner'] = ds_get_pic( ATTACH_STORE . '/' . $value['store_id'] , $value['store_banner']);
+                $store_list[$key]['store_banner'] && $store_list[$key]['store_banner'] = ds_get_pic(ATTACH_STORE . '/' . $value['store_id'], $value['store_banner']);
                 $store_list[$key]['distance'] = round($value['distance'], 2);
                 $store_list[$key]['store_logo'] = get_store_logo($value['store_logo'], 'store_logo');
                 $store_list[$key]['store_avatar'] = get_store_logo($value['store_avatar'], 'store_avatar');
@@ -100,5 +90,4 @@ class Shopnearby extends BaseMall {
             exit;
         }
     }
-
 }

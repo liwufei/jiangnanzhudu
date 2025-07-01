@@ -1,41 +1,29 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class SellerTaobaoImport extends BaseSeller {
 
-    public function initialize() {
+class SellerTaobaoImport extends BaseSeller
+{
+
+    public function initialize()
+    {
         parent::initialize();
         error_reporting(E_ERROR | E_WARNING);
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellergoodsadd.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         if (!request()->isPost()) {
-            /**
-             * 获取商品分类
-             */
+
             $gc = model('goodsclass');
             $gc_list = $gc->getGoodsClass(session('store_id'));
             View::assign('gc_list', $gc_list);
 
-            /**
-             * 获取店铺商品分类
-             */
             $model_store_class = model('storegoodsclass');
             $store_goods_class = $model_store_class->getClassTree(array('store_id' => session('store_id'), 'storegc_state' => '1'));
             View::assign('store_goods_class', $store_goods_class);
@@ -47,34 +35,24 @@ class SellerTaobaoImport extends BaseSeller {
             }
         } else {
             $file = $_FILES['csv'];
-            /**
-             * 上传文件存在判断
-             */
+
             if (empty($file['name'])) {
                 $this->error(lang('store_goods_import_choose_file'));
             }
-            /**
-             * 文件来源判定
-             */
+
             if (!is_uploaded_file($file['tmp_name'])) {
                 $this->error(lang('store_goods_import_unknown_file'));
             }
-            /**
-             * 文件类型判定
-             */
+
             $file_name_array = explode('.', $file['name']);
             if ($file_name_array[count($file_name_array) - 1] != 'csv') {
                 $this->error(lang('store_goods_import_wrong_type') . $file_name_array[count($file_name_array) - 1]);
             }
-            /**
-             * 文件大小判定
-             */
+
             if ($file['size'] > intval(ini_get('upload_max_filesize')) * 1024 * 1024) {
                 $this->error(lang('store_goods_import_size_limit'));
             }
-            /**
-             * 商品分类判定
-             */
+
             if (empty(input('post.gc_id'))) {
                 $this->error(lang('store_goods_import_wrong_class'));
             }
@@ -89,10 +67,6 @@ class SellerTaobaoImport extends BaseSeller {
                 $this->error(lang('store_goods_import_wrong_class2'));
             }
 
-
-            /**
-             * 店铺商品分类判定
-             */
             $sgcate_ids = array();
             $stc = model('storegoodsclass');
             if (is_array(input('post.sgcate_id/a')) and count(input('post.sgcate_id/a')) > 0) {
@@ -106,9 +80,6 @@ class SellerTaobaoImport extends BaseSeller {
                 }
             }
 
-            /**
-             * 上传文件的字符编码转换
-             */
             $csv_string = $this->unicodeToUtf8(file_get_contents($file['tmp_name']));
 
             /* 兼容淘宝助理5 start */
@@ -118,30 +89,20 @@ class SellerTaobaoImport extends BaseSeller {
             }
             /* 兼容淘宝助理5 end */
 
-            /**
-             * 将文件转换为二维数组形式的商品数据
-             */
             $records = $this->parse_taobao_csv($csv_string);
             if ($records === false) {
                 $this->error(lang('store_goods_import_wrong_column'));
             }
 
-            /**
-             * 转码
-             */
             if (strtoupper(CHARSET) == 'GBK') {
                 $records = $this->getGBK($records);
             }
-
 
             $model_goodsclass = model('goodsclass');
             $model_store_goods = model('goods');
             // 商品数量
             $goods_num = $model_store_goods->getGoodsCommonCount(array('store_id' => session('store_id')));
 
-            /**
-             * 商品数,空间使用，使用期限判断
-             */
             $model_store = model('store');
             $store_info = $model_store->getStoreInfo(array('store_id' => session('store_id')));
             $model_store_grade = model('storegrade');
@@ -160,9 +121,7 @@ class SellerTaobaoImport extends BaseSeller {
                     $this->error(lang('store_goods_index_time_limit'));
                 }
             }
-            /**
-             * 循环添加数据
-             */
+
             $str = '';
             if (is_array($records) and count($records) > 0) {
                 foreach ($records as $k => $record) {
@@ -201,7 +160,7 @@ class SellerTaobaoImport extends BaseSeller {
                     //$param['goods_show']			= '1';
                     $param['goods_commend'] = $record['goods_commend'];
                     $param['goods_addtime'] = TIMESTAMP;
-                    $param['goods_shelftime'] = TIMESTAMP;//上架时间
+                    $param['goods_shelftime'] = TIMESTAMP; //上架时间
                     $param['goods_attr'] = '';
                     $param['goods_body'] = $record['goods_body'];
                     $param['goods_state'] = '0';
@@ -247,12 +206,7 @@ class SellerTaobaoImport extends BaseSeller {
 
                     $goods_id_str .= "," . $goods_id;
                     if ($goods_id) {
-                        /**
-                         * 添加商品的店铺分类表
-                         */
-                        /**
-                         * 商品多图的添加
-                         */
+
                         if (!empty($pic_array['goods_image']) && is_array($pic_array['goods_image'])) {
                             $insert_array = array();
                             foreach ($pic_array['goods_image'] as $pic) {
@@ -289,33 +243,34 @@ class SellerTaobaoImport extends BaseSeller {
         $aclass_info = $model_album->getAlbumclassList($param);
         View::assign('aclass_info', $aclass_info);
 
-
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('seller_taobao_import');
         $this->setSellerCurItem();
         return View::fetch($this->template_dir . 'index');
     }
 
-    public function import_image() {
+    public function import_image()
+    {
         View::assign('session_id', $this->app->session->getId());
         return View::fetch($this->template_dir . 'import_image');
     }
 
-    public function upload() {
-        $time=TIMESTAMP;
+    public function upload()
+    {
+        $time = TIMESTAMP;
         if (isset($_FILES["Filedata"]) || !is_uploaded_file($_FILES["Filedata"]["tmp_name"]) || $_FILES["Filedata"]["error"] != 0) {
             $store_id = session('store_id');
-            $path = BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_GOODS . DIRECTORY_SEPARATOR . $store_id . DIRECTORY_SEPARATOR . date('Ymd',$time); //取得上传图片的绝对路径
+            $path = BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_GOODS . DIRECTORY_SEPARATOR . $store_id . DIRECTORY_SEPARATOR . date('Ymd', $time); //取得上传图片的绝对路径
             $SID = $store_id . "_";
             if (!is_dir($path)) {
-                mkdir($path, 0777,true);
-            }//如果目录不存在，则创建
+                mkdir($path, 0777, true);
+            } //如果目录不存在，则创建
             $path = realpath($path) . '/';
             $filetype = '.jpg'; //后缀
             $upload_file = $_FILES['Filedata']; //上传的数据
             $file_info = pathinfo($upload_file['name']); //图片数组
             $sourimgname = $file_info['filename']; //不带后缀文件名，入库
-            $save_name = date('YmdHis',$time) . rand(10000, 99999);
+            $save_name = date('YmdHis', $time) . rand(10000, 99999);
             $rukuimgname = $SID . $save_name . $filetype; //带后缀入库的名字
             $save = $path . $rukuimgname; //将要保存到服务器的路径
             $name = $_FILES['Filedata']['tmp_name']; //上传到服务器的临时文件
@@ -350,22 +305,22 @@ class SellerTaobaoImport extends BaseSeller {
                 //更新goods表
                 $result = model('goods')->editGoods(array('goods_image' => $rukuimgname), array('goods_image' => $sourimgname));
                 if (!$result) {
-//                    throw new \think\Exception('更新goods表失败', 10006);
+                    //                    throw new \think\Exception('更新goods表失败', 10006);
                 }
                 //更新goodscommon表
-                $temp=Db::name('goodscommon')->where(array(array('store_id','=',$this->store_info['store_id']),array('goods_body','like','%'.$sourimgname.'%')))->order('goods_commonid desc')->find();
-                if($temp){
-                  $temp['goods_body']=preg_replace('/"([^"]+)'.$sourimgname.'([^"]+)"/i','"'.UPLOAD_SITE_URL."/home/store/goods/".session('store_id')."/".date('Ymd',$time)."/".$rukuimgname.'"',$temp['goods_body']);
-                  model('goods')->editGoodsCommon(array('goods_body' => $temp['goods_body']), array('goods_commonid' => $temp['goods_commonid']));
+                $temp = Db::name('goodscommon')->where(array(array('store_id', '=', $this->store_info['store_id']), array('goods_body', 'like', '%' . $sourimgname . '%')))->order('goods_commonid desc')->find();
+                if ($temp) {
+                    $temp['goods_body'] = preg_replace('/"([^"]+)' . $sourimgname . '([^"]+)"/i', '"' . UPLOAD_SITE_URL . "/home/store/goods/" . session('store_id') . "/" . date('Ymd', $time) . "/" . $rukuimgname . '"', $temp['goods_body']);
+                    model('goods')->editGoodsCommon(array('goods_body' => $temp['goods_body']), array('goods_commonid' => $temp['goods_commonid']));
                 }
                 $result = model('goods')->editGoodsCommon(array('goods_image' => $rukuimgname), array('goods_image' => $sourimgname));
                 if (!$result) {
-//                    throw new \think\Exception('更新goodscommon表失败', 10006);
+                    //                    throw new \think\Exception('更新goodscommon表失败', 10006);
                 }
                 //更新goodsimages表
                 $result = model('goods')->editGoodsImages(array('goodsimage_url' => $rukuimgname), array('goodsimage_url' => $sourimgname));
                 if (!$result) {
-//                    throw new \think\Exception('更新goodsimages表失败', 10006);
+                    // throw new \think\Exception('更新goodsimages表失败', 10006);
                 }
                 //插入albumpic表
                 $insert_array = array();
@@ -379,22 +334,21 @@ class SellerTaobaoImport extends BaseSeller {
                 $insert_array['store_id'] = $store_id;
                 $result = model('album')->addAlbumpic($insert_array);
                 if (!$result) {
-//                    throw new \think\Exception('插入albumpic表失败', 10006);
+                    // throw new \think\Exception('插入albumpic表失败', 10006);
                 }
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
                 throw new \think\Exception($e->getMessage(), 10006);
             }
-            
         }
     }
 
-    /*
+    /**
      * 图片缩略图 
      */
-
-    private function resizeimage($srcfile, $ratew = '', $rateh = '', $filename = "") {
+    private function resizeimage($srcfile, $ratew = '', $rateh = '', $filename = "")
+    {
         $size = getimagesize($srcfile);
         switch ($size[2]) {
             case 1:
@@ -439,10 +393,8 @@ class SellerTaobaoImport extends BaseSeller {
      * @param array $key 数组
      * @return array 数组类型的返回结果
      */
-    private function getGBK($key) {
-        /**
-         * 转码
-         */
+    private function getGBK($key)
+    {
         if (strtoupper(CHARSET) == 'GBK' && !empty($key)) {
             if (is_array($key)) {
                 $result = var_export($key, true); //变为字符串
@@ -460,16 +412,17 @@ class SellerTaobaoImport extends BaseSeller {
      * @param string $str 待转的字符串
      * @return string
      */
-    function unicodeToUtf8($str, $order = "little") {
+    function unicodeToUtf8($str, $order = "little")
+    {
         $utf8string = "";
         $n = strlen($str);
         for ($i = 0; $i < $n; $i++) {
             if ($order == "little") {
                 $val = str_pad(dechex(ord($str[$i + 1])), 2, 0, STR_PAD_LEFT) .
-                        str_pad(dechex(ord($str[$i])), 2, 0, STR_PAD_LEFT);
+                    str_pad(dechex(ord($str[$i])), 2, 0, STR_PAD_LEFT);
             } else {
                 $val = str_pad(dechex(ord($str[$i])), 2, 0, STR_PAD_LEFT) .
-                        str_pad(dechex(ord($str[$i + 1])), 2, 0, STR_PAD_LEFT);
+                    str_pad(dechex(ord($str[$i + 1])), 2, 0, STR_PAD_LEFT);
             }
             $val = intval($val, 16); // 由于上次的.连接，导致$val变为字符串，这里得转回来。
             $i++; // 两个字节表示一个unicode字符。
@@ -493,7 +446,8 @@ class SellerTaobaoImport extends BaseSeller {
         return $utf8string;
     }
 
-    private function get_goods_image($pic_string) {
+    private function get_goods_image($pic_string)
+    {
         if ($pic_string == '') {
             return false;
         }
@@ -523,7 +477,8 @@ class SellerTaobaoImport extends BaseSeller {
      *
      * @return array
      */
-    private function taobao_fields() {
+    private function taobao_fields()
+    {
         return array(
             'goods_name' => '宝贝名称',
             'cid' => '宝贝类目',
@@ -535,7 +490,7 @@ class SellerTaobaoImport extends BaseSeller {
             'py_price' => '平邮',
             'es_price' => 'EMS',
             'kd_price' => '快递',
-            //'goods_show'		=> '放入仓库',
+            //'goods_show' => '放入仓库',
             'spec' => '销售属性别名',
             'goods_commend' => '橱窗推荐',
             'goods_body' => '宝贝描述',
@@ -551,7 +506,8 @@ class SellerTaobaoImport extends BaseSeller {
      * @param array $import_fields
      * @return array
      */
-    private function taobao_fields_cols($title_arr, $import_fields) {
+    private function taobao_fields_cols($title_arr, $import_fields)
+    {
         $fields_cols = array();
         foreach ($import_fields as $k => $field) {
             $pos = array_search($field, $title_arr);
@@ -568,9 +524,8 @@ class SellerTaobaoImport extends BaseSeller {
      * @param string $csv_string
      * @return string
      */
-    private function parse_taobao_csv($csv_string) {
-
-
+    private function parse_taobao_csv($csv_string)
+    {
         //防止乱码
         $scount = strpos($csv_string, "宝贝名称");
         $csv_string = substr($csv_string, $scount);
@@ -715,41 +670,54 @@ class SellerTaobaoImport extends BaseSeller {
                 $col = trim($col); // 去掉数据两端的空格
                 /* 对字段数据进行分别处理 */
                 switch ($k) {
-                    case $fields_cols['goods_body'] : $return[$key]['goods_body'] = str_replace('\"\"', '"', $col);
+                    case $fields_cols['goods_body']:
+                        $return[$key]['goods_body'] = str_replace('\"\"', '"', $col);
                         break;
-                    case $fields_cols['goods_image'] : $return[$key]['goods_image'] = trim($col, '"');
+                    case $fields_cols['goods_image']:
+                        $return[$key]['goods_image'] = trim($col, '"');
                         break;
                     //case $fields_cols['goods_show']		: $return[$key]['goods_show'] = $col == 1 ? 0 : 1; break;
-                    case $fields_cols['goods_name'] : $return[$key]['goods_name'] = $col;
+                    case $fields_cols['goods_name']:
+                        $return[$key]['goods_name'] = $col;
                         break;
-                    case $fields_cols['spec_goods_storage'] : $return[$key]['spec_goods_storage'] = $col;
+                    case $fields_cols['spec_goods_storage']:
+                        $return[$key]['spec_goods_storage'] = $col;
                         break;
-                    case $fields_cols['goods_store_price']: $return[$key]['goods_store_price'] = $col;
+                    case $fields_cols['goods_store_price']:
+                        $return[$key]['goods_store_price'] = $col;
                         break;
-                    case $fields_cols['goods_commend'] : $return[$key]['goods_commend'] = $col;
+                    case $fields_cols['goods_commend']:
+                        $return[$key]['goods_commend'] = $col;
                         break;
-                    case $fields_cols['spec'] : $return[$key]['spec'] = $col;
+                    case $fields_cols['spec']:
+                        $return[$key]['spec'] = $col;
                         break;
-                    case $fields_cols['sale_attr'] : $return[$key]['sale_attr'] = $col;
+                    case $fields_cols['sale_attr']:
+                        $return[$key]['sale_attr'] = $col;
                         break;
-                    case $fields_cols['goods_form'] : $return[$key]['goods_form'] = $col;
+                    case $fields_cols['goods_form']:
+                        $return[$key]['goods_form'] = $col;
                         break;
-                    case $fields_cols['goods_transfee_charge'] : $return[$key]['goods_transfee_charge'] = $col;
+                    case $fields_cols['goods_transfee_charge']:
+                        $return[$key]['goods_transfee_charge'] = $col;
                         break;
-                    case $fields_cols['py_price'] : $return[$key]['py_price'] = $col;
+                    case $fields_cols['py_price']:
+                        $return[$key]['py_price'] = $col;
                         break;
-                    case $fields_cols['es_price'] : $return[$key]['es_price'] = $col;
+                    case $fields_cols['es_price']:
+                        $return[$key]['es_price'] = $col;
                         break;
-                    case $fields_cols['kd_price'] : $return[$key]['kd_price'] = $col;
+                    case $fields_cols['kd_price']:
+                        $return[$key]['kd_price'] = $col;
                         break;
-                    case $fields_cols['goods_serial'] : $return[$key]['goods_serial'] = $col;
+                    case $fields_cols['goods_serial']:
+                        $return[$key]['goods_serial'] = $col;
                         break;
 
-//					case $fields_cols['goods_indate']	: $return[$key]['goods_indate'] = $col; break;
+                        // case $fields_cols['goods_indate']	: $return[$key]['goods_indate'] = $col; break;
                 }
             }
         }
         return $return;
     }
-
 }

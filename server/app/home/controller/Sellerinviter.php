@@ -1,30 +1,16 @@
 <?php
 
-/**
- * 卖家分销管理
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerinviter extends BaseSeller {
+class Sellerinviter extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerinviter.lang.php');
         if (intval(config('ds_config.inviter_open')) !== 1) {
@@ -32,7 +18,8 @@ class Sellerinviter extends BaseSeller {
         }
     }
 
-    public function order_list() {
+    public function order_list()
+    {
         /* 设置买家当前菜单 */
         $this->setSellerCurMenu('sellerinviter_order');
         /* 设置买家当前栏目 */
@@ -43,9 +30,9 @@ class Sellerinviter extends BaseSeller {
             $condition[] = array('orderinviter_order_sn', 'like', '%' . input('param.orderinviter_order_sn') . '%');
         }
         $orderinviter_list = Db::name('orderinviter')->where($condition)->order('orderinviter_id desc')->paginate(10);
-        $order_list=$orderinviter_list->items();
-        foreach($order_list as $key => $val){
-            $order_list[$key]['orderinviter_valid_text']=lang('orderinviter_valid_array')[$val['orderinviter_valid']];
+        $order_list = $orderinviter_list->items();
+        foreach ($order_list as $key => $val) {
+            $order_list[$key]['orderinviter_valid_text'] = lang('orderinviter_valid_array')[$val['orderinviter_valid']];
         }
         $page = $orderinviter_list->render();
         View::assign('show_page', $page);
@@ -53,9 +40,9 @@ class Sellerinviter extends BaseSeller {
         return View::fetch($this->template_dir . 'order_list');
     }
 
-    public function goods_list() {
+    public function goods_list()
+    {
         $goods_model = model('goods');
-
 
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -78,8 +65,9 @@ class Sellerinviter extends BaseSeller {
 
     /**
      * 添加分销活动
-     * */
-    public function goods_add() {
+     */
+    public function goods_add()
+    {
         $goods_model = model('goods');
         if (!request()->isPost()) {
             //输出导航
@@ -107,7 +95,7 @@ class Sellerinviter extends BaseSeller {
             $result = $goods_model->editGoodsCommonById(array(
                 'inviter_open' => 1,
                 'inviter_ratio' => $inviter_ratio,
-                    ), array($inviter_goods_commonid));
+            ), array($inviter_goods_commonid));
             if ($result) {
                 $this->recordSellerlog('添加分销商品，商品编号：' . $inviter_goods_commonid);
                 ds_json_encode(10001, lang('goods_add_success'));
@@ -119,8 +107,9 @@ class Sellerinviter extends BaseSeller {
 
     /**
      * 编辑分销活动
-     * */
-    public function goods_edit() {
+     */
+    public function goods_edit()
+    {
         $goods_model = model('goods');
         if (!request()->isPost()) {
             $goods_commonid = intval(input('param.goods_commonid'));
@@ -153,7 +142,7 @@ class Sellerinviter extends BaseSeller {
             }
             $result = $goods_model->editGoodsCommonById(array(
                 'inviter_ratio' => $inviter_ratio,
-                    ), array($inviter_goods_commonid));
+            ), array($inviter_goods_commonid));
             if ($result) {
                 $this->recordSellerlog('编辑分销商品，商品编号：' . $inviter_goods_commonid);
                 ds_json_encode(10000, lang('goods_edit_success'));
@@ -163,7 +152,8 @@ class Sellerinviter extends BaseSeller {
         }
     }
 
-    public function goods_del() {
+    public function goods_del()
+    {
         $goods_model = model('goods');
         $goods_commonid = intval(input('param.goods_commonid'));
         $goods_info = $goods_model->getGoodsCommonInfo('goods_commonid=' . $goods_commonid . ' AND inviter_open=1 AND store_id=' . session('store_id'));
@@ -172,7 +162,7 @@ class Sellerinviter extends BaseSeller {
         }
         $result = $goods_model->editGoodsCommonById(array(
             'inviter_open' => 0,
-                ), array($goods_commonid));
+        ), array($goods_commonid));
         if ($result) {
             $this->recordSellerlog('删除分销商品，商品编号：' . $goods_commonid);
             ds_json_encode(10000, lang('goods_del_success'));
@@ -183,8 +173,9 @@ class Sellerinviter extends BaseSeller {
 
     /**
      * 选择活动商品
-     * */
-    public function search_goods() {
+     */
+    public function search_goods()
+    {
         $goods_model = model('goods');
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -196,19 +187,17 @@ class Sellerinviter extends BaseSeller {
         exit;
     }
 
-    public function inviter_goods_info() {
+    public function inviter_goods_info()
+    {
         $goods_commonid = intval(input('param.goods_commonid'));
 
         $data = array();
         $data['result'] = true;
 
-
-
-
         //获取商品具体信息用于显示
         $goods_model = model('goods');
         $condition = array();
-        $condition[]=array('goods_commonid','=',$goods_commonid);
+        $condition[] = array('goods_commonid', '=', $goods_commonid);
         $goods_list = $goods_model->getGoodsOnlineList($condition);
 
         if (empty($goods_list)) {
@@ -217,7 +206,6 @@ class Sellerinviter extends BaseSeller {
             echo json_encode($data);
             die;
         }
-
 
         $goods_info = $goods_list[0];
         $data['goods_id'] = $goods_info['goods_id'];
@@ -231,22 +219,25 @@ class Sellerinviter extends BaseSeller {
         die;
     }
 
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array();
         switch (request()->action()) {
             case 'goods_list':
                 $menu_array[] = array(
-                    'name' => 'goods_list', 'text' => lang('goods_list'),
+                    'name' => 'goods_list',
+                    'text' => lang('goods_list'),
                     'url' => (string) url('Sellerinviter/goods_list')
                 );
                 break;
             case 'order_list':
                 $menu_array[] = array(
-                    'name' => 'order_list', 'text' => lang('order_list'), 'url' => (string) url('Sellerinviter/order_list')
+                    'name' => 'order_list',
+                    'text' => lang('order_list'),
+                    'url' => (string) url('Sellerinviter/order_list')
                 );
                 break;
         }
         return $menu_array;
     }
-
 }

@@ -6,21 +6,11 @@ use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerpromotionmgdiscount extends BaseSeller {
+class Sellerpromotionmgdiscount extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerpromotionmgdiscount.lang.php');
         if (intval(config('ds_config.mgdiscount_allow')) !== 1) {
@@ -31,14 +21,13 @@ class Sellerpromotionmgdiscount extends BaseSeller {
     /**
      * 店铺的基本设置
      */
-    public function mgdiscount_store() {
-
-
+    public function mgdiscount_store()
+    {
         $mgdiscountquota_model = model('pmgdiscountquota');
         //当前的和系统设置的会员等级进行比对
         if (!request()->isPost()) {
-                $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
-                View::assign('current_mgdiscount_quota', $current_mgdiscount_quota);
+            $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
+            View::assign('current_mgdiscount_quota', $current_mgdiscount_quota);
             //当前店铺设置的会员等级对应的折扣
             $store = Db::name('store')->where('store_id', session('store_id'))->find();
             View::assign('mgdiscount_store_arr', $this->_get_mgdiscount_arr($store['store_mgdiscount']));
@@ -52,7 +41,6 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             $member_model = model('member');
             //系统等级设置
             $membergrade_arr = $member_model->getMemberGradeArr();
-
 
             $result_1 = array();
             $pre_level_discount = 0;
@@ -90,8 +78,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
     }
 
     //显示不同商品享受的会员等级折扣
-    public function mgdiscount_goods() {
-
+    public function mgdiscount_goods()
+    {
         $goods_model = model('goods');
         $condition[] = array('goods_mgdiscount', '<>', '');
         $condition[] = array('store_id', '=', session('store_id'));
@@ -100,7 +88,6 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         foreach ($goods_list as $key => $goods) {
             $goods_list[$key]['goods_mgdiscount_arr'] = $this->_get_mgdiscount_arr($goods['goods_mgdiscount']);
         }
-
 
         View::assign('show_page', $goods_model->page_info->render());
         View::assign('goods_list', $goods_list);
@@ -116,7 +103,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
      * @param type $mgdiscount_arr_temp
      * @return type
      */
-    private function _get_mgdiscount_arr($mgdiscount_arr_temp) {
+    private function _get_mgdiscount_arr($mgdiscount_arr_temp)
+    {
         $mgdiscount_arr_temp = @unserialize($mgdiscount_arr_temp);
 
         $member_model = model('member');
@@ -132,7 +120,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
     }
 
     //新增现有商品的折扣
-    public function mgdiscount_goods_add() {
+    public function mgdiscount_goods_add()
+    {
         $member_model = model('member');
         //系统等级设置
         $membergrade_arr = $member_model->getMemberGradeArr();
@@ -144,25 +133,24 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             return View::fetch($this->template_dir . 'mgdiscount_goods_add');
         } else {
 
-
-                //获取当前套餐
-                $mgdiscountquota_model = model('pmgdiscountquota');
-                $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
-                if (empty($current_mgdiscount_quota)) {
-                    if (intval(config('ds_config.mgdiscount_price')) != 0) {
-                        ds_json_encode(10001, lang('please_buy_package_first'));
-                    } else {
-                        $current_mgdiscount_quota = array('mgdiscountquota_starttime' => TIMESTAMP, 'mgdiscountquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
-                    }
+            //获取当前套餐
+            $mgdiscountquota_model = model('pmgdiscountquota');
+            $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
+            if (empty($current_mgdiscount_quota)) {
+                if (intval(config('ds_config.mgdiscount_price')) != 0) {
+                    ds_json_encode(10001, lang('please_buy_package_first'));
+                } else {
+                    $current_mgdiscount_quota = array('mgdiscountquota_starttime' => TIMESTAMP, 'mgdiscountquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
                 }
-                $quota_start_time = intval($current_mgdiscount_quota['mgdiscountquota_starttime']);
-                $quota_end_time = intval($current_mgdiscount_quota['mgdiscountquota_endtime']);
-                if (TIMESTAMP < $quota_start_time) {
-                    ds_json_encode(10001, sprintf(lang('mgdiscount_add_start_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_starttime'])));
-                }
-                if (TIMESTAMP > $quota_end_time) {
-                    ds_json_encode(10001, sprintf(lang('mgdiscount_add_end_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_endtime'])));
-                }
+            }
+            $quota_start_time = intval($current_mgdiscount_quota['mgdiscountquota_starttime']);
+            $quota_end_time = intval($current_mgdiscount_quota['mgdiscountquota_endtime']);
+            if (TIMESTAMP < $quota_start_time) {
+                ds_json_encode(10001, sprintf(lang('mgdiscount_add_start_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_starttime'])));
+            }
+            if (TIMESTAMP > $quota_end_time) {
+                ds_json_encode(10001, sprintf(lang('mgdiscount_add_end_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_endtime'])));
+            }
 
             //获取提交的数据
             $goods_id = intval(input('post.mgdiscount_goods_id'));
@@ -174,7 +162,6 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             if (empty($goods_info) || $goods_info['store_id'] != session('store_id')) {
                 ds_json_encode(10001, lang('param_error'));
             }
-
 
             $data = array();
             $pre_level_discount = 0;
@@ -198,10 +185,9 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             }
 
             $condition = array();
-            $condition[] = array('goods_commonid','=',$goods_info['goods_commonid']);
+            $condition[] = array('goods_commonid', '=', $goods_info['goods_commonid']);
             $result = $goods_model->editGoodscommon(array('goods_mgdiscount' => serialize($data)), $condition);
             $result1 = $goods_model->editGoods(array('goods_mgdiscount' => serialize($data)), $condition);
-
 
             if ($result && $result1) {
                 $this->recordSellerlog('添加会员等级折扣，公共商品ID：' . $goods_info['goods_commonid']);
@@ -212,7 +198,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         }
     }
 
-    function mgdiscount_goods_edit() {
+    function mgdiscount_goods_edit()
+    {
         //获取提交的数据
         $goods_commonid = intval(input('param.goods_commonid'));
         if (empty($goods_commonid)) {
@@ -234,24 +221,24 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             return View::fetch($this->template_dir . 'mgdiscount_goods_add');
         } else {
 
-                //获取当前套餐
-                $mgdiscountquota_model = model('pmgdiscountquota');
-                $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
-                if (empty($current_mgdiscount_quota)) {
-                    if (intval(config('ds_config.mgdiscount_price')) != 0) {
-                        ds_json_encode(10001, lang('please_buy_package_first'));
-                    } else {
-                        $current_mgdiscount_quota = array('mgdiscountquota_starttime' => TIMESTAMP, 'mgdiscountquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
-                    }
+            //获取当前套餐
+            $mgdiscountquota_model = model('pmgdiscountquota');
+            $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
+            if (empty($current_mgdiscount_quota)) {
+                if (intval(config('ds_config.mgdiscount_price')) != 0) {
+                    ds_json_encode(10001, lang('please_buy_package_first'));
+                } else {
+                    $current_mgdiscount_quota = array('mgdiscountquota_starttime' => TIMESTAMP, 'mgdiscountquota_endtime' => TIMESTAMP + 86400 * 30); //没有套餐时，最多一个月
                 }
-                $quota_start_time = intval($current_mgdiscount_quota['mgdiscountquota_starttime']);
-                $quota_end_time = intval($current_mgdiscount_quota['mgdiscountquota_endtime']);
-                if ($quota_start_time < $quota_start_time) {
-                    ds_json_encode(10001, sprintf(lang('mgdiscount_add_start_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_starttime'])));
-                }
-                if ($quota_start_time > $quota_end_time) {
-                    ds_json_encode(10001, sprintf(lang('mgdiscount_add_end_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_endtime'])));
-                }
+            }
+            $quota_start_time = intval($current_mgdiscount_quota['mgdiscountquota_starttime']);
+            $quota_end_time = intval($current_mgdiscount_quota['mgdiscountquota_endtime']);
+            if ($quota_start_time < $quota_start_time) {
+                ds_json_encode(10001, sprintf(lang('mgdiscount_add_start_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_starttime'])));
+            }
+            if ($quota_start_time > $quota_end_time) {
+                ds_json_encode(10001, sprintf(lang('mgdiscount_add_end_time_explain'), date('Y-m-d', $current_mgdiscount_quota['mgdiscountquota_endtime'])));
+            }
 
             $member_model = model('member');
             //系统等级设置
@@ -280,7 +267,7 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             }
 
             $condition = array();
-            $condition[] = array('goods_commonid','=',$goods_commonid);
+            $condition[] = array('goods_commonid', '=', $goods_commonid);
             $result = $goods_model->editGoodscommon(array('goods_mgdiscount' => serialize($data)), $condition);
             $result1 = $goods_model->editGoods(array('goods_mgdiscount' => serialize($data)), $condition);
 
@@ -296,7 +283,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
     /**
      * 删除
      */
-    public function mgdiscount_del() {
+    public function mgdiscount_del()
+    {
         $goods_commonid = intval(input('param.goods_commonid'));
 
         if (empty($goods_commonid)) {
@@ -304,7 +292,7 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         }
 
         $condition = array();
-        $condition[] = array('goods_commonid','=',$goods_commonid);
+        $condition[] = array('goods_commonid', '=', $goods_commonid);
 
         $goods_model = model('goods');
         $result = $goods_model->editGoodscommon(array('goods_mgdiscount' => ''), $condition);
@@ -319,8 +307,9 @@ class Sellerpromotionmgdiscount extends BaseSeller {
 
     /**
      * 会员等级折扣套餐购买
-     * */
-    public function mgdiscount_quota_add() {
+     */
+    public function mgdiscount_quota_add()
+    {
         //输出导航
         $this->setSellerCurMenu('Sellermgdiscount');
         $this->setSellerCurItem('mgdiscount_quota_add');
@@ -329,8 +318,9 @@ class Sellerpromotionmgdiscount extends BaseSeller {
 
     /**
      * 会员等级折扣套餐购买保存
-     * */
-    public function mgdiscount_quota_add_save() {
+     */
+    public function mgdiscount_quota_add_save()
+    {
         if (intval(config('ds_config.mgdiscount_price')) == 0) {
             ds_json_encode(10001, lang('param_error'));
         }
@@ -340,10 +330,10 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         }
         //获取当前价格
         $current_price = intval(config('ds_config.mgdiscount_price'));
-        
+
         //记录店铺费用
-        $this->recordStorecost($current_price * $mgdiscount_quota_quantity, '购买会员等级折扣'.' ['.$mgdiscount_quota_quantity.'个月 × 单价:'.$current_price.'元]');
-        
+        $this->recordStorecost($current_price * $mgdiscount_quota_quantity, '购买会员等级折扣' . ' [' . $mgdiscount_quota_quantity . '个月 × 单价:' . $current_price . '元]');
+
         //获取该用户已有套餐
         $mgdiscountquota_model = model('pmgdiscountquota');
         $current_mgdiscount_quota = $mgdiscountquota_model->getMgdiscountquotaCurrent(session('store_id'));
@@ -370,8 +360,9 @@ class Sellerpromotionmgdiscount extends BaseSeller {
 
     /**
      * 选择活动商品
-     * */
-    public function search_goods() {
+     */
+    public function search_goods()
+    {
         $goods_model = model('goods');
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -383,7 +374,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         exit;
     }
 
-    public function mgdiscount_goods_info() {
+    public function mgdiscount_goods_info()
+    {
         $goods_commonid = intval(input('param.goods_commonid'));
 
         $data = array();
@@ -399,7 +391,7 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         //获取商品具体信息用于显示
         $goods_model = model('goods');
         $condition = array();
-        $condition[]=array('goods_commonid','=',$goods_commonid);
+        $condition[] = array('goods_commonid', '=', $goods_commonid);
         $goods_list = $goods_model->getGoodsOnlineList($condition);
 
         if (empty($goods_list)) {
@@ -408,7 +400,6 @@ class Sellerpromotionmgdiscount extends BaseSeller {
             echo json_encode($data);
             die;
         }
-
 
         $goods_info = $goods_list[0];
         $data['goods_id'] = $goods_info['goods_id'];
@@ -421,11 +412,11 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         die;
     }
 
-    /*
+    /**
      * 判断此商品是否已经参加拼团
      */
-
-    private function _check_allow_mgdiscount($goods_commonid) {
+    private function _check_allow_mgdiscount($goods_commonid)
+    {
         $condition = array();
         $goodscommon_info = model('goods')->getGoodsCommonInfoByID($goods_commonid);
         $result['result'] = TRUE;
@@ -444,7 +435,8 @@ class Sellerpromotionmgdiscount extends BaseSeller {
      * @param array $array 附加菜单
      * @return
      */
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'mgdiscount_store',
@@ -459,5 +451,4 @@ class Sellerpromotionmgdiscount extends BaseSeller {
         );
         return $menu_array;
     }
-
 }

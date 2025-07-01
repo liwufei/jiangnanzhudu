@@ -1,30 +1,16 @@
 <?php
 
-/*
- * 店铺列表控制器
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Storelist extends BaseMall {
+class Storelist extends BaseMall
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/storelist.lang.php');
     }
@@ -32,14 +18,12 @@ class Storelist extends BaseMall {
     /**
      * 店铺列表
      */
-    public function index() {
-
+    public function index()
+    {
         //店铺类目快速搜索
-
         $class_list = rkcache('storeclass', true, 'file');
 
         $cate_id = intval(input('param.cate_id'));
-
 
         if (!key_exists($cate_id, $class_list))
             $cate_id = 0;
@@ -50,13 +34,13 @@ class Storelist extends BaseMall {
         $condition = array();
         $keyword = trim(input('param.keyword'));
 
-            if ($keyword != '') {
-                $condition[] = array('store_name|store_mainbusiness', 'like', '%' . $keyword . '%');
-            }
-            $user_name = trim(input('param.user_name'));
-            if ($user_name != '') {
-                $condition[] = array('member_name', '=', $user_name);
-            }
+        if ($keyword != '') {
+            $condition[] = array('store_name|store_mainbusiness', 'like', '%' . $keyword . '%');
+        }
+        $user_name = trim(input('param.user_name'));
+        if ($user_name != '') {
+            $condition[] = array('member_name', '=', $user_name);
+        }
 
         $area_info = trim(input('param.area_info'));
         if (!empty($area_info)) {
@@ -80,9 +64,7 @@ class Storelist extends BaseMall {
             unset($order);
         }
 
-
         $order_sort = 'store_sort asc';
-
 
         $store_model = model('store');
         $store_list = $store_model->getStoreList($condition, 10, $order_sort);
@@ -96,7 +78,7 @@ class Storelist extends BaseMall {
             } else {
                 $store_list = sortClass::sortArrayAsc($store_list, 'store_credit_average');
             }
-        } else if ($key == 'store_sales') {//销量排行
+        } else if ($key == 'store_sales') { //销量排行
             if ($order == 'desc') {
                 $store_list = sortClass::sortArrayDesc($store_list, 'num_sales_jq');
             } else {
@@ -124,7 +106,6 @@ class Storelist extends BaseMall {
         }
         View::assign('nav_link_list', $nav_link);
 
-
         $purl = input('param.');
         unset($purl['page']);
         View::assign('purl', url('home/' . request()->controller() . '/' . request()->action(), $purl));
@@ -132,13 +113,14 @@ class Storelist extends BaseMall {
         //SEO
         $seo = model('seo')->type('index')->show();
         $this->_assign_seo($seo);
-        View::assign('html_title', (input('param.keyword') ? input('param.keyword') . ' - ' : '' ) . config('ds_config.site_name') . lang('ds_common_search'));
+        View::assign('html_title', (input('param.keyword') ? input('param.keyword') . ' - ' : '') . config('ds_config.site_name') . lang('ds_common_search'));
 
         return View::fetch($this->template_dir . 'store_list');
     }
 
     //获取店铺列表要显示的信息
-    public function storelistinfo_bak($storeinfo) {
+    public function storelistinfo_bak($storeinfo)
+    {
         foreach ($storeinfo as $value) {
             $map['store_id'] = $value['store_id'];
             $goods_count['count'] = Db::name('goods')->where($map)->count();
@@ -150,13 +132,13 @@ class Storelist extends BaseMall {
         }
         return $store_info;
     }
-
 }
 
-class sortClass {
-
+class sortClass
+{
     //升序
-    public static function sortArrayAsc($preData, $sortType = 'store_sort') {
+    public static function sortArrayAsc($preData, $sortType = 'store_sort')
+    {
         $sortData = array();
         foreach ($preData as $key_i => $value_i) {
             $price_i = isset($value_i[$sortType]) ? $value_i[$sortType] : 0;
@@ -187,7 +169,8 @@ class sortClass {
     }
 
     //降序
-    public static function sortArrayDesc($preData, $sortType = 'store_sort') {
+    public static function sortArrayDesc($preData, $sortType = 'store_sort')
+    {
         $sortData = array();
         foreach ($preData as $key_i => $value_i) {
             $price_i = isset($value_i[$sortType]) ? $value_i[$sortType] : 0;
@@ -216,5 +199,4 @@ class sortClass {
         }
         return $sortData;
     }
-
 }

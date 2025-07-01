@@ -5,24 +5,13 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerjoinin extends BaseMember {
+class Sellerjoinin extends BaseMember
+{
 
     private $joinin_detail = NULL;
 
-    public function initialize() {
-
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerjoinin.lang.php');
 
@@ -40,7 +29,7 @@ class Sellerjoinin extends BaseMember {
 
         $store_joinin_open = config('ds_config.store_joinin_open');
 
-        if (!$this->joinin_detail || !$this->joinin_detail['joinin_state']) {//已经填写过入驻资料的则不跳转
+        if (!$this->joinin_detail || !$this->joinin_detail['joinin_state']) { //已经填写过入驻资料的则不跳转
             if ($store_joinin_open == 0) {
                 $this->error(lang('store_joinin_close'));
             } elseif ($store_joinin_open == 3) {
@@ -60,7 +49,8 @@ class Sellerjoinin extends BaseMember {
         View::assign('article_list', ''); //底部不显示文章分类
     }
 
-    private function check_joinin_state() {
+    private function check_joinin_state()
+    {
         $storejoinin_model = model('storejoinin');
         $joinin_detail = $storejoinin_model->getOneStorejoinin(array('member_id' => session('member_id')));
         if (!empty($joinin_detail)) {
@@ -95,12 +85,14 @@ class Sellerjoinin extends BaseMember {
         }
     }
 
-    public function index() {
+    public function index()
+    {
         echo $this->step0();
         exit;
     }
 
-    public function step0() {
+    public function step0()
+    {
         $document_model = model('document');
         $document_info = $document_model->getOneDocumentByCode('open_store');
         View::assign('agreement', htmlspecialchars_decode($document_info['document_content']));
@@ -110,7 +102,8 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    public function step1() {
+    public function step1()
+    {
         View::assign('step', '1');
         View::assign('sub_step', 'step1');
         View::assign('baidu_ak', config('ds_config.baidu_ak'));
@@ -118,7 +111,8 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    public function step2() {
+    public function step2()
+    {
         if (request()->isPost()) {
             $param = array();
             $param['member_name'] = session('member_name');
@@ -139,7 +133,6 @@ class Sellerjoinin extends BaseMember {
             $param['business_sphere'] = input('post.business_sphere');
             $param['business_licence_number_electronic'] = $this->upload_image('business_licence_number_electronic');
 
-
             $this->step2_save_valid($param);
 
             $storejoinin_model = model('storejoinin');
@@ -157,14 +150,16 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    private function step2_save_valid($param) {
+    private function step2_save_valid($param)
+    {
         $sellerjoinin_validate = ds_validate('sellerjoinin');
         if (!$sellerjoinin_validate->scene('step2_save_valid')->check($param)) {
             $this->error($sellerjoinin_validate->getError());
         }
     }
 
-    public function step3() {
+    public function step3()
+    {
         if (request()->isPost()) {
             $param = array();
             $param['bank_account_name'] = input('post.bank_account_name');
@@ -202,7 +197,6 @@ class Sellerjoinin extends BaseMember {
         View::assign('grade_list', $grade_list);
 
         //店铺分类
-
         $storeclass_model = model('storeclass');
         $store_class = $storeclass_model->getStoreclassList(array(), '', false);
         View::assign('store_class', $store_class);
@@ -213,16 +207,16 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    private function step3_save_valid($param) {
+    private function step3_save_valid($param)
+    {
         $sellerjoinin_validate = ds_validate('sellerjoinin');
         if (!$sellerjoinin_validate->scene('step3_save_valid')->check($param)) {
             $this->error($sellerjoinin_validate->getError());
         }
     }
 
-
-
-    public function step4() {
+    public function step4()
+    {
         $store_class_ids = array();
         $store_class_names = array();
         $store_class_ids_array = input('post.store_class_ids/a'); #获取数组
@@ -297,14 +291,16 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    private function step4_save_valid($param) {
+    private function step4_save_valid($param)
+    {
         $sellerjoinin_validate = ds_validate('sellerjoinin');
         if (!$sellerjoinin_validate->scene('step4_save_valid')->check($param)) {
             $this->error($sellerjoinin_validate->getError());
         }
     }
 
-    public function pay() {
+    public function pay()
+    {
         if (!empty($this->joinin_detail['sg_info'])) {
             $store_grade_info = model('storegrade')->getOneStoregrade($this->joinin_detail['storegrade_id']);
             $this->joinin_detail['storegrade_price'] = $store_grade_info['storegrade_price'];
@@ -321,7 +317,8 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    public function pay_save() {
+    public function pay_save()
+    {
         $param = array();
         $param['paying_money_certificate'] = $this->upload_image('paying_money_certificate');
         $param['paying_money_certificate_explain'] = input('post.paying_money_certificate_explain');
@@ -335,7 +332,8 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    private function dostep4() {
+    private function dostep4()
+    {
         if (!empty($this->joinin_detail['sg_info'])) {
             $store_grade_info = model('storegrade')->getOneStoregrade($this->joinin_detail['storegrade_id']);
             $this->joinin_detail['storegrade_price'] = $store_grade_info['storegrade_price'];
@@ -348,7 +346,8 @@ class Sellerjoinin extends BaseMember {
         View::assign('joinin_detail', $this->joinin_detail);
     }
 
-    private function show_join_message($message, $btn_next = FALSE, $step = '2') {
+    private function show_join_message($message, $btn_next = FALSE, $step = '2')
+    {
         View::assign('joinin_detail', $this->joinin_detail);
         View::assign('joinin_message', $message);
         View::assign('btn_next', $btn_next);
@@ -358,13 +357,14 @@ class Sellerjoinin extends BaseMember {
         exit;
     }
 
-    private function upload_image($file) {
+    private function upload_image($file)
+    {
         //上传文件保存路径
         $pic_name = '';
         if (!empty($_FILES[$file]['name'])) {
             //设置特殊图片名称
             $file_name = session('member_id') . '_' . date('YmdHis') . rand(10000, 99999) . '.png';
-            
+
             $res = ds_upload_pic('home' . DIRECTORY_SEPARATOR . 'store_joinin', $file, $file_name);
             if ($res['code']) {
                 $pic_name = $res['data']['file_name'];
@@ -381,10 +381,8 @@ class Sellerjoinin extends BaseMember {
      * @param
      * @return
      */
-    public function checkname() {
-        /**
-         * 实例化卖家模型
-         */
+    public function checkname()
+    {
         $store_model = model('store');
         $store_name = input('get.store_name');
         $store_info = $store_model->getStoreInfo(array('store_name' => $store_name));
@@ -394,7 +392,4 @@ class Sellerjoinin extends BaseMember {
             echo 'true';
         }
     }
-
 }
-
-?>

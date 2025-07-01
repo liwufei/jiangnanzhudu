@@ -6,30 +6,20 @@ use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerorder extends BaseSeller {
+class Sellerorder extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerorder.lang.php');
     }
 
     /**
      * 订单列表
-     *
      */
-    public function index() {
+    public function index()
+    {
         $order_model = model('order');
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -52,7 +42,7 @@ class Sellerorder extends BaseSeller {
         $if_start_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('get.query_start_date'));
         $if_end_date = preg_match('/^20\d{2}-\d{2}-\d{2}$/', input('get.query_end_date'));
         $start_unixtime = $if_start_date ? strtotime(input('get.query_start_date')) : null;
-        $end_unixtime = $if_end_date ? (strtotime(input('get.query_end_date'))+86399) : null;
+        $end_unixtime = $if_end_date ? (strtotime(input('get.query_end_date')) + 86399) : null;
         if ($start_unixtime) {
             $condition[] = array('add_time', '>=', $start_unixtime);
         }
@@ -66,10 +56,10 @@ class Sellerorder extends BaseSeller {
         }
 
         $order_list = $order_model->getOrderList($condition, 10, '*', 'order_id desc', 0, array('order_goods', 'order_common', 'ppintuanorder', 'member'));
-        
+
         $refundreturn_model = model('refundreturn');
         $order_list = $refundreturn_model->getGoodsRefundList($order_list);
-        
+
         View::assign('show_page', $order_model->page_info->render());
         View::assign('expresscf_kdn_if_open', $this->store_info['expresscf_kdn_if_open']);
 
@@ -109,7 +99,6 @@ class Sellerorder extends BaseSeller {
 
         View::assign('order_list', $order_list);
 
-
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('sellerorder');
         /* 设置卖家当前栏目 */
@@ -119,17 +108,17 @@ class Sellerorder extends BaseSeller {
 
     /**
      * 卖家订单详情
-     *
      */
-    public function show_order() {
+    public function show_order()
+    {
         $order_id = intval(input('param.order_id'));
         if ($order_id <= 0) {
             $this->error(lang('param_error'));
         }
         $order_model = model('order');
         $condition = array();
-        $condition[] = array('order_id','=',$order_id);
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('order_id', '=', $order_id);
+        $condition[] = array('store_id', '=', session('store_id'));
         $order_info = $order_model->getOrderInfo($condition, array('order_common', 'order_goods', 'member', 'orderlog', 'ppintuanorder'));
         if (empty($order_info)) {
             $this->error(lang('store_order_none_exist'));
@@ -222,16 +211,16 @@ class Sellerorder extends BaseSeller {
 
     /**
      * 卖家订单状态操作
-     *
      */
-    public function change_state() {
+    public function change_state()
+    {
         $state_type = input('param.state_type');
         $order_id = intval(input('param.order_id'));
 
         $order_model = model('order');
         $condition = array();
-        $condition[] = array('order_id','=',$order_id);
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('order_id', '=', $order_id);
+        $condition[] = array('store_id', '=', session('store_id'));
         $order_info = $order_model->getOrderInfo($condition);
         if ($state_type == 'order_cancel') {
             $result = $this->_order_cancel($order_info, input('post.'));
@@ -246,39 +235,38 @@ class Sellerorder extends BaseSeller {
             ds_json_encode(10000, $result['msg']);
         }
     }
-    
+
     /**
      * 打印订单
-     * 
      */
-    public function print_order() {
+    public function print_order()
+    {
         $order_id = ds_delete_param(input('param.order_id'));
         if (empty($order_id)) {
             $this->error(lang('param_error'));
         }
         $order_model = model('order');
         $condition = array();
-        $condition[] = array('order_id','in',$order_id);
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('order_id', 'in', $order_id);
+        $condition[] = array('store_id', '=', session('store_id'));
         $order_list = $order_model->getOrderList($condition, '', '*', 'order_id desc', 0, array('order_common', 'order_goods'));
         if (empty($order_list)) {
             $this->error(lang('member_printorder_ordererror'));
         }
-        
 
         //卖家信息
         $store_model = model('store');
         $store_info = $store_model->getStoreInfoByID(session('store_id'));
         if (!empty($store_info['store_avatar'])) {
-            $store_info['store_avatar'] = ds_get_pic( ATTACH_STORE . DIRECTORY_SEPARATOR .$store_info['store_id'],$store_info['store_avatar']);
+            $store_info['store_avatar'] = ds_get_pic(ATTACH_STORE . DIRECTORY_SEPARATOR . $store_info['store_id'], $store_info['store_avatar']);
         }
         if (!empty($store_info['store_seal'])) {
-            $store_info['store_seal'] = ds_get_pic( ATTACH_STORE , $store_info['store_seal']);
+            $store_info['store_seal'] = ds_get_pic(ATTACH_STORE, $store_info['store_seal']);
         }
         View::assign('store_info', $store_info);
 
         //订单商品
-        foreach($order_list as $key =>$order_info){
+        foreach ($order_list as $key => $order_info) {
             $goods_all_num = 0;
             $goods_total_price = 0;
             if (isset($order_info['extend_order_goods']) && !empty($order_info['extend_order_goods'])) {
@@ -287,7 +275,7 @@ class Sellerorder extends BaseSeller {
                     $goods_all_num += $v['goods_num'];
                     $v['goods_all_price'] = ds_price_format($v['goods_num'] * $v['goods_price']);
                     $goods_total_price += $v['goods_all_price'];
-                    $order_list[$key]['extend_order_goods'][$k]=$v;
+                    $order_list[$key]['extend_order_goods'][$k] = $v;
                 }
                 //优惠金额
                 $order_list[$key]['promotion_amount'] = $goods_total_price - $order_info['goods_amount'];
@@ -295,34 +283,34 @@ class Sellerorder extends BaseSeller {
                 $order_list[$key]['goods_total_price'] = ds_price_format($goods_total_price);
                 $order_list[$key]['total_page'] = ceil(count($order_info['extend_order_goods']) / 15);
             }
-            
         }
         View::assign('order_list', $order_list);
-        return View::fetch($this->template_dir.'print_order');
+        return View::fetch($this->template_dir . 'print_order');
     }
+
     /**
      * 打印订单
-     * 
      */
-    public function print_eorder() {
+    public function print_eorder()
+    {
         $order_id = ds_delete_param(input('param.order_id'));
         if (empty($order_id)) {
             $this->error(lang('param_error'));
         }
         $order_model = model('order');
         $condition = array();
-        $condition[] = array('order_id','in',$order_id);
-        $condition[] = array('store_id','=',session('store_id'));
+        $condition[] = array('order_id', 'in', $order_id);
+        $condition[] = array('store_id', '=', session('store_id'));
         $order_list = $order_model->getOrderList($condition);
         if (empty($order_list)) {
             $this->error(lang('member_printorder_ordererror'));
         }
-        
-        $requestData=array();
-        foreach($order_list as $key =>$order_info){
-            $requestData[]=array(
-                'OrderCode'=>$order_info['order_sn'],
-                'PortName'=>$this->store_info['expresscf_kdn_printer'],
+
+        $requestData = array();
+        foreach ($order_list as $key => $order_info) {
+            $requestData[] = array(
+                'OrderCode' => $order_info['order_sn'],
+                'PortName' => $this->store_info['expresscf_kdn_printer'],
             );
         }
         $expresscf_kdn_config_model = model('expresscf_kdn_config');
@@ -333,7 +321,8 @@ class Sellerorder extends BaseSeller {
      * 取消订单
      * @param unknown $order_info
      */
-    private function _order_cancel($order_info, $post) {
+    private function _order_cancel($order_info, $post)
+    {
         $order_model = model('order');
         $logic_order = model('order', 'logic');
 
@@ -348,16 +337,16 @@ class Sellerorder extends BaseSeller {
                 return ds_callback(false, lang('have_no_legalpower'));
             }
             $msg = $post['state_info1'] != '' ? $post['state_info1'] : $post['state_info'];
-            
+
             Db::startTrans();
-            try{
+            try {
                 $logic_order->changeOrderStateCancel($order_info, 'seller', session('member_name'), $msg);
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
                 return ds_callback(false, $e->getMessage());
             }
-            
+
             return ds_callback(true, lang('ds_common_op_succ'));
         }
     }
@@ -366,7 +355,8 @@ class Sellerorder extends BaseSeller {
      * 修改运费
      * @param unknown $order_info
      */
-    private function _order_ship_price($order_info, $post) {
+    private function _order_ship_price($order_info, $post)
+    {
         $order_model = model('order');
         $logic_order = model('order', 'logic');
         if (!request()->isPost()) {
@@ -387,7 +377,8 @@ class Sellerorder extends BaseSeller {
      * 修改商品价格
      * @param unknown $order_info
      */
-    private function _order_spay_price($order_info, $post) {
+    private function _order_spay_price($order_info, $post)
+    {
         $order_model = model('order');
         $logic_order = model('order', 'logic');
         if (!request()->isPost()) {
@@ -411,7 +402,8 @@ class Sellerorder extends BaseSeller {
      * @param string $menu_key 当前导航的menu_key
      * @return
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'store_order',
@@ -446,7 +438,4 @@ class Sellerorder extends BaseSeller {
         );
         return $menu_array;
     }
-
 }
-
-?>

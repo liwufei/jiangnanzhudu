@@ -5,33 +5,25 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerplate extends BaseSeller {
+class Sellerplate extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerplate.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $this->plate_list();
     }
 
     /**
      * 关联版式列表
      */
-    public function plate_list() {
+    public function plate_list()
+    {
         // 版式列表
         $where = array();
         $where[] = array('store_id', '=', session('store_id'));
@@ -60,7 +52,8 @@ class Sellerplate extends BaseSeller {
     /**
      * 关联版式添加
      */
-    public function plate_add() {
+    public function plate_add()
+    {
         if (!request()->isPost()) {
             $plate_info = array(
                 'storeplate_name' => '',
@@ -80,7 +73,7 @@ class Sellerplate extends BaseSeller {
             $insert['storeplate_position'] = input('post.p_position');
             $insert['storeplate_content'] = input('post.p_content');
             $insert['store_id'] = session('store_id');
-            
+
             $this->validate($insert, 'app\common\validate\Storeplate.add');
 
             $result = model('storeplate')->addStoreplate($insert);
@@ -95,8 +88,8 @@ class Sellerplate extends BaseSeller {
     /**
      * 关联版式编辑
      */
-    public function plate_edit() {
-
+    public function plate_edit()
+    {
         $storeplate_id = intval(input('param.p_id'));
         if ($storeplate_id <= 0) {
             $this->error(lang('param_error'));
@@ -118,12 +111,12 @@ class Sellerplate extends BaseSeller {
             $update['storeplate_name'] = input('post.p_name');
             $update['storeplate_position'] = input('post.p_position');
             $update['storeplate_content'] = input('post.p_content');
-            
+
             $this->validate($update, 'app\common\validate\Storeplate.edit');
 
             $condition = array();
-            $condition[] = array('storeplate_id','=',$storeplate_id);
-            $condition[] = array('store_id','=',session('store_id'));
+            $condition[] = array('storeplate_id', '=', $storeplate_id);
+            $condition[] = array('store_id', '=', session('store_id'));
             $result = model('storeplate')->editStoreplate($update, $condition);
             if ($result) {
                 ds_json_encode(10000, lang('ds_common_op_succ'));
@@ -136,13 +129,14 @@ class Sellerplate extends BaseSeller {
     /**
      * 删除关联版式
      */
-    public function drop_plate() {
+    public function drop_plate()
+    {
         $storeplate_id = input('param.p_id');
         if (!preg_match('/^[\d,]+$/i', $storeplate_id)) {
             ds_json_encode(10001, lang('param_error'));
         }
         $plateid_array = explode(',', $storeplate_id);
-        $return = model('storeplate')->delStoreplate(array(array('storeplate_id', 'in', $plateid_array), array('store_id' ,'=', session('store_id'))));
+        $return = model('storeplate')->delStoreplate(array(array('storeplate_id', 'in', $plateid_array), array('store_id', '=', session('store_id'))));
         if ($return) {
             ds_json_encode(10000, lang('ds_common_del_succ'));
         } else {
@@ -157,7 +151,8 @@ class Sellerplate extends BaseSeller {
      * @param string $menu_key 当前导航的menu_key
      * @return
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'plate_list',
@@ -187,7 +182,4 @@ class Sellerplate extends BaseSeller {
         }
         return $item_list;
     }
-
 }
-
-?>

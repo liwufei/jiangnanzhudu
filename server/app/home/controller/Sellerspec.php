@@ -1,26 +1,10 @@
 <?php
 
-/*
- * 店铺规格值
- * 每个店铺都有对应分类下保存的规格值
- */
-
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
 class Sellerspec extends BaseSeller
 {
 
@@ -29,7 +13,7 @@ class Sellerspec extends BaseSeller
     public function initialize()
     {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/sellerspec.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerspec.lang.php');
         $this->_store_id = session('store_id');
     }
 
@@ -44,7 +28,7 @@ class Sellerspec extends BaseSeller
         View::assign('gc_list', $gc_list);
         $this->setSellerCurItem('spec');
         $this->setSellerCurMenu('sellerspec');
-        return View::fetch($this->template_dir.'index');
+        return View::fetch($this->template_dir . 'index');
     }
 
     /**
@@ -68,12 +52,13 @@ class Sellerspec extends BaseSeller
         View::assign('sp_info', $sp_info);
         // 规格值信息
         $sp_value_list = $spec_model->getSpecvalueList(array(
-                                                           'store_id' => $this->_store_id, 'sp_id' => $sp_id,
-                                                           'gc_id' => $gc_id
-                                                       ));
+            'store_id' => $this->_store_id,
+            'sp_id' => $sp_id,
+            'gc_id' => $gc_id
+        ));
         View::assign('sp_value_list', $sp_value_list);
 
-        return View::fetch($this->template_dir.'spec_add');
+        return View::fetch($this->template_dir . 'spec_add');
     }
 
     /**
@@ -83,8 +68,8 @@ class Sellerspec extends BaseSeller
     {
         $sp_id = intval(input('post.sp_id'));
         $gc_id = intval(input('post.gc_id'));
-        if ($sp_id <= 0 || $gc_id <= 0 ) {
-            ds_json_encode(10001,lang('param_error'));
+        if ($sp_id <= 0 || $gc_id <= 0) {
+            ds_json_encode(10001, lang('param_error'));
         }
 
         $spec_model = model('spec');
@@ -97,9 +82,11 @@ class Sellerspec extends BaseSeller
                 }
                 $where = array('spvalue_id' => $key);
                 $update = array(
-                    'spvalue_name' => $value['name'], 'sp_id' => $sp_id, 'gc_id' => $gc_id,
-                    'store_id' => $this->_store_id, 
-                    'spvalue_color' => isset($value['color'])?$value['color']:'',
+                    'spvalue_name' => $value['name'],
+                    'sp_id' => $sp_id,
+                    'gc_id' => $gc_id,
+                    'store_id' => $this->_store_id,
+                    'spvalue_color' => isset($value['color']) ? $value['color'] : '',
                     'spvalue_sort' => intval($value['sort'])
                 );
                 $spec_model->editSpecvalue($update, $where);
@@ -114,9 +101,11 @@ class Sellerspec extends BaseSeller
                     continue;
                 }
                 $tmp_insert = array(
-                    'spvalue_name' => $value['name'], 'sp_id' => $sp_id, 'gc_id' => $gc_id,
-                    'store_id' => $this->_store_id, 
-                    'spvalue_color' => isset($value['color'])?$value['color']:'',
+                    'spvalue_name' => $value['name'],
+                    'sp_id' => $sp_id,
+                    'gc_id' => $gc_id,
+                    'store_id' => $this->_store_id,
+                    'spvalue_color' => isset($value['color']) ? $value['color'] : '',
                     'spvalue_sort' => intval($value['sort'])
                 );
                 $insert_array[] = $tmp_insert;
@@ -124,7 +113,7 @@ class Sellerspec extends BaseSeller
             $spec_model->addSpecvalueALL($insert_array);
         }
 
-        ds_json_encode(10000,lang('ds_common_op_succ'));
+        ds_json_encode(10000, lang('ds_common_op_succ'));
     }
 
     /**
@@ -141,8 +130,7 @@ class Sellerspec extends BaseSeller
         if ($rs) {
             echo 'true';
             exit();
-        }
-        else {
+        } else {
             echo 'false';
             exit();
         }
@@ -176,8 +164,7 @@ class Sellerspec extends BaseSeller
         // 分类不为空输出分类信息
         if (!empty($gc_list)) {
             $data = array('type' => 'class', 'data' => $gc_list, 'deep' => $deep);
-        }
-        else {
+        } else {
             // 查询类型
             $type_model = model('type');
             $spec_list = $type_model->getSpecByType(array('type_id' => $gc_info['type_id']), 't.type_id, s.*');
@@ -203,5 +190,3 @@ class Sellerspec extends BaseSeller
         return $menu_array;
     }
 }
-
-?>

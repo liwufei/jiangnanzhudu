@@ -5,37 +5,30 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellersns extends BaseSeller {
+class Sellersns extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellersns.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $this->add();
     }
 
     /**
      * 发布动态
      */
-    public function add() {
+    public function add()
+    {
         $goods_model = model('goods');
+
         // 热销商品
         // where条件
-        $where = array(array('store_id' ,'=', session('store_id')));
+        $where = array(array('store_id', '=', session('store_id')));
         $field = 'goods_id,goods_name,goods_image,goods_price,goods_salenum,store_id';
         $order = 'goods_salenum desc';
         $hotsell_list = $goods_model->getGoodsOnlineList($where, $field, 0, $order, 8);
@@ -43,7 +36,7 @@ class Sellersns extends BaseSeller {
 
         // 新品
         // where条件
-        $where = array(array('store_id' ,'=', session('store_id')));
+        $where = array(array('store_id', '=', session('store_id')));
         $field = 'goods_id,goods_name,goods_image,goods_price,goods_salenum,store_id';
         $order = 'goods_id desc';
         $new_list = $goods_model->getGoodsOnlineList($where, $field, 0, $order, 8);
@@ -57,7 +50,8 @@ class Sellersns extends BaseSeller {
     /**
      * 上传图片
      */
-    public function image_upload() {
+    public function image_upload()
+    {
         // 判断图片数量是否超限
         $album_model = model('album');
         $album_limit = $this->store_grade['storegrade_album_limit'];
@@ -70,10 +64,10 @@ class Sellersns extends BaseSeller {
         }
 
         $class_info = $album_model->getOne(array('store_id' => session('store_id'), 'aclass_isdefault' => 1), 'albumclass');
-        $time=TIMESTAMP;
+        $time = TIMESTAMP;
         //上传文件保存路径
-        $upload_path = ATTACH_GOODS . DIRECTORY_SEPARATOR . session('store_id') . '/' . date('Ymd',$time);
-        $save_name = session('store_id') . '_' . date('YmdHis',$time) . rand(10000, 99999);
+        $upload_path = ATTACH_GOODS . DIRECTORY_SEPARATOR . session('store_id') . '/' . date('Ymd', $time);
+        $save_name = session('store_id') . '_' . date('YmdHis', $time) . rand(10000, 99999);
         $file = input('param.id');
         $result = upload_albumpic($upload_path, $file, $save_name);
         if ($result['code']) {
@@ -83,7 +77,6 @@ class Sellersns extends BaseSeller {
         } else {
             exit($result['msg']);
         }
-
 
         // 存入相册
         $insert_array = array();
@@ -98,7 +91,7 @@ class Sellersns extends BaseSeller {
         $album_model->addAlbumpic($insert_array);
 
         $data = array();
-        $data ['image'] = goods_cthumb($img_path, 240, session('store_id'));
+        $data['image'] = goods_cthumb($img_path, 240, session('store_id'));
 
         // 整理为json格式
         $output = json_encode($data);
@@ -109,10 +102,8 @@ class Sellersns extends BaseSeller {
     /**
      * 保存动态
      */
-    public function store_sns_save() {
-        /**
-         * 验证表单
-         */
+    public function store_sns_save()
+    {
         $data = [
             'content' => input('param.content'),
             'goods_url' => input('goods_url')
@@ -200,7 +191,8 @@ class Sellersns extends BaseSeller {
     /**
      * 动态设置
      */
-    public function setting() {
+    public function setting()
+    {
         // 实例化模型
         $storesnssetting_model = model('storesnssetting');
         $storesnsset_info = $storesnssetting_model->getStoresnssettingInfo(array('storesnsset_storeid' => session('store_id')));
@@ -220,9 +212,9 @@ class Sellersns extends BaseSeller {
             $update['storesnsset_groupbuy'] = input('post.groupbuy', 0);
             $update['storesnsset_groupbuytitle'] = trim(input('post.groupbuy_title'));
             $info = !empty($storesnsset_info) ? true : false;
-            if($info){
-                $result = $storesnssetting_model->editStoresnssetting($update,array(array('storesnsset_storeid','=',$storesnsset_info['storesnsset_storeid'])));
-            }else{
+            if ($info) {
+                $result = $storesnssetting_model->editStoresnssetting($update, array(array('storesnsset_storeid', '=', $storesnsset_info['storesnsset_storeid'])));
+            } else {
                 $result = $storesnssetting_model->addStoresnssetting($update);
             }
             if ($result >= 0) {
@@ -245,7 +237,8 @@ class Sellersns extends BaseSeller {
      * @param string 	$menu_key	当前导航的menu_key
      * @return
      */
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array(
             array('name' => 'store_sns_add', 'text' => lang('store_sns_add'), 'url' => (string) url('Sellersns/add')),
             array('name' => 'store_sns_setting', 'text' => lang('store_sns_setting'), 'url' => (string) url('Sellersns/setting')),
@@ -257,7 +250,8 @@ class Sellersns extends BaseSeller {
     /**
      * 根据url取得商品信息
      */
-    private function getGoodsByUrl($url) {
+    private function getGoodsByUrl($url)
+    {
         $array = parse_url($url);
         if (isset($array['query'])) {
             // 未开启伪静态
@@ -281,7 +275,4 @@ class Sellersns extends BaseSeller {
             ds_json_encode(10001, lang('store_sns_goods_url_error'));
         }
     }
-
 }
-
-?>

@@ -1,29 +1,15 @@
 <?php
 
-/**
- * 买家相册
- */
-
 namespace app\home\controller;
 
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Snsalbum extends BaseMember {
+class Snsalbum extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/snsalbum.lang.php');
     }
@@ -31,7 +17,8 @@ class Snsalbum extends BaseMember {
     /**
      * 图片删除
      */
-    public function album_pic_del() {
+    public function album_pic_del()
+    {
         $ids = input('param.id');
         if (empty($ids)) {
             ds_json_encode(10001, lang('album_parameter_error'));
@@ -49,7 +36,7 @@ class Snsalbum extends BaseMember {
             $ap_info = Db::name('snsalbumpic')->where(array('ap_id' => $v, 'member_id' => session('member_id')))->find();
             if (empty($ap_info))
                 continue;
-            ds_del_pic(ATTACH_MALBUM . '/' . session('member_id'),$ap_info['ap_cover']);
+            ds_del_pic(ATTACH_MALBUM . '/' . session('member_id'), $ap_info['ap_cover']);
             $res = Db::name('snsalbumpic')->delete($ap_info['ap_id']);
         }
         if ($res) {
@@ -63,7 +50,8 @@ class Snsalbum extends BaseMember {
      * @param
      * @return
      */
-    public function swfupload() {
+    public function swfupload()
+    {
         $member_id = session('member_id');
         $class_id = intval(input('param.category_id'));
         if ($member_id <= 0 && $class_id <= 0) {
@@ -71,13 +59,10 @@ class Snsalbum extends BaseMember {
             exit;
         }
 
-        /**
-         * 上传图片
-         */
         //上传文件保存路径
         if (!empty($_FILES['file']['name'])) {
             //设置特殊图片名称
-            $file_name = $member_id . '_' . date('YmdHis') . rand(10000, 99999).'.png';
+            $file_name = $member_id . '_' . date('YmdHis') . rand(10000, 99999) . '.png';
             $res = ds_upload_pic(ATTACH_MALBUM . DIRECTORY_SEPARATOR . $member_id, 'file', $file_name);
             if ($res['code']) {
                 $img_path = $res['data']['file_name'];
@@ -112,13 +97,8 @@ class Snsalbum extends BaseMember {
         $data['file_path'] = $img_path;
         $data['file_url'] = sns_thumb($img_path, 240);
         $data['state'] = 'true';
-        /**
-         * 整理为json格式
-         */
+
         $output = json_encode($data);
         echo $output;
     }
-
 }
-
-?>

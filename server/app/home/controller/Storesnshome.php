@@ -6,21 +6,11 @@ use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Storesnshome extends BaseStoreSns {
+class Storesnshome extends BaseStoreSns
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellersns.lang.php');
     }
@@ -28,7 +18,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 查看店铺动态
      */
-    public function index() {
+    public function index()
+    {
         //获得店铺ID
         $sid = intval(input('param.sid'));
         $this->getStoreInfo($sid);
@@ -98,7 +89,7 @@ class Storesnshome extends BaseStoreSns {
         View::assign('show_page', $storesnstracelog_model->page_info->render());
 
         // 最多收藏的会员
-        $favorites = model('favorites')->getStoreFavoritesList(array(array('fav_id' ,'=', $sid)), '*', 0, 'fav_time desc', 8);
+        $favorites = model('favorites')->getStoreFavoritesList(array(array('fav_id', '=', $sid)), '*', 0, 'fav_time desc', 8);
         if (!empty($favorites)) {
             $memberid_array = array();
             foreach ($favorites as $val) {
@@ -113,12 +104,12 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 评论前10条记录
      */
-    public function commenttop() {
+    public function commenttop()
+    {
         $stid = intval(input('param.id'));
         if ($stid > 0) {
             $storesnscomment_model = model('storesnscomment');
             //查询评论总数
-
             $where = array(
                 'stracelog_id' => $stid,
                 'storesnscomm_state' => 1
@@ -148,7 +139,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 评论列表
      */
-    public function commentlist() {
+    public function commentlist()
+    {
         $stid = intval(input('param.id'));
         if ($stid > 0) {
             $storesnscomment_model = model('storesnscomment');
@@ -180,7 +172,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 添加评论(访客登录后操作)
      */
-    public function addcomment() {
+    public function addcomment()
+    {
         // 验证用户是否登录
         $this->checkLoginStatus();
 
@@ -193,7 +186,7 @@ class Storesnshome extends BaseStoreSns {
             'commentcontent' => input('post.commentcontent'),
         );
         $this->validate($validate_arr, 'app\common\validate\Storesnshome.addcomment');
-        
+
         //发帖数超过最大次数出现验证码
         if (intval(cookie('commentnum')) >= self::MAX_RECORDNUM) {
             if (!captcha_check(input('post.captcha'))) {
@@ -232,7 +225,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 添加转发
      */
-    public function addforward() {
+    public function addforward()
+    {
         // 验证用户是否登录
         $this->checkLoginStatus();
         $stid = intval(input('param.stid'));
@@ -304,7 +298,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 删除动态
      */
-    public function deltrace() {
+    public function deltrace()
+    {
         // 验证用户是否登录
         $this->checkLoginStatus();
 
@@ -326,7 +321,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 删除评论(访客登录后操作)
      */
-    public function delcomment() {
+    public function delcomment()
+    {
         // 验证用户是否登录
         $this->checkLoginStatus();
 
@@ -351,7 +347,7 @@ class Storesnshome extends BaseStoreSns {
             $update = array('stracelog_comment' => Db::raw('stracelog_comment-1'));
             model('storesnstracelog')->editStoresnstracelog($update, $where);
 
-//            $js ="$('.comment-list [ds_type=\"commentrow_" . $scid . "\"]').remove();";
+            //            $js ="$('.comment-list [ds_type=\"commentrow_" . $scid . "\"]').remove();";
             ds_json_encode(10000, lang('ds_common_del_succ'));
         } else {
             ds_json_encode(10001, lang('ds_common_del_fail'));
@@ -361,7 +357,8 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 一条SNS动态及其评论
      */
-    public function straceinfo() {
+    public function straceinfo()
+    {
         $stid = intval(input('get.st_id'));
         if ($stid <= 0) {
             $this->error(lang('param_error'));
@@ -381,12 +378,10 @@ class Storesnshome extends BaseStoreSns {
     /**
      * 验证用户是否登录
      */
-    private function checkLoginStatus() {
+    private function checkLoginStatus()
+    {
         if (session('is_login') != 1) {
             @header("location: " . HOME_SITE_URL . "/Login/logon.html");
         }
     }
-
 }
-
-?>

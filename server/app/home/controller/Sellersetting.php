@@ -7,58 +7,40 @@ use think\Image;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellersetting extends BaseSeller {
+class Sellersetting extends BaseSeller
+{
 
     const MAX_MB_SLIDERS = 5;
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellersetting.lang.php');
     }
 
-    /*
+    /**
      * 店铺设置
      */
+    public function setting()
+    {
 
-    public function setting() {
-        /**
-         * 实例化模型
-         */
         $store_model = model('store');
 
         $store_id = session('store_id'); //当前店铺ID
-        /**
-         * 获取店铺信息
-         */
+
         $store_info = $store_model->getStoreInfoByID($store_id);
 
         $if_miniprocode = $this->getMiniProCode(1);
         View::assign('miniprogram_code', $if_miniprocode ? (UPLOAD_SITE_URL . DIRECTORY_SEPARATOR . ATTACH_STORE . DIRECTORY_SEPARATOR . session('store_id') . '/miniprogram_code.png') : '');
-        /**
-         * 保存店铺设置
-         */
+
         if (request()->isPost()) {
-            /**
-             * 更新入库
-             */
+
             $store_name = input('post.store_name');
             //验证器在model层,验证器未有必填项,在此验证
-            if(empty($store_name)){
+            if (empty($store_name)) {
                 ds_json_encode(10001, '请填写店铺名称');
             }
-            
+
             $param = array(
                 'store_id' => $store_id,
                 'store_name' => $store_name,
@@ -73,36 +55,29 @@ class Sellersetting extends BaseSeller {
 
             $this->getMiniProCode(1);
             $result = $store_model->editStore($param, array('store_id' => $store_id));
-            
+
             //当修改了店铺修改 store_name , 则同时修改数据中其他相关的store_name
             if ($result && $store_name != $store_info['store_name']) {
                 $store_model->updateAllStorename($store_id, $store_name);
             }
-            
+
             ds_json_encode(10000, lang('ds_common_save_succ'));
         }
-        /**
-         * 实例化店铺等级模型
-         */
-        // 从基类中读取店铺等级信息
+
         $store_grade = $this->store_grade;
 
-        /**
-         * 输出店铺信息
-         */
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('seller_setting');
         /* 设置卖家当前栏目 */
         $this->setSellerCurItem('store_setting');
         View::assign('store_info', $store_info);
         View::assign('store_grade', $store_grade);
-        /**
-         * 页面输出
-         */
+
         return View::fetch($this->template_dir . 'setting');
     }
 
-    public function getMiniProCode($force = 0) {
+    public function getMiniProCode($force = 0)
+    {
         if ($force || !file_exists(BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_STORE . DIRECTORY_SEPARATOR . session('store_id') . '/miniprogram_code.png')) {
             $wechat_model = model('wechat');
             $wechat_model->getOneWxconfig();
@@ -124,7 +99,8 @@ class Sellersetting extends BaseSeller {
         return false;
     }
 
-    public function store_image_upload() {
+    public function store_image_upload()
+    {
         $store_id = session('store_id');
         $upload_file = BASE_UPLOAD_PATH . DIRECTORY_SEPARATOR . ATTACH_STORE . DIRECTORY_SEPARATOR . $store_id;
         $file_name = session('store_id') . '_' . date('YmdHis') . rand(10000, 99999) . '.png';
@@ -138,7 +114,7 @@ class Sellersetting extends BaseSeller {
             $res = ds_upload_pic(ATTACH_STORE . DIRECTORY_SEPARATOR . $store_id, $store_image_name, $file_name);
             if ($res['code']) {
                 $file_name = $res['data']['file_name'];
-                if(file_exists($upload_file . DIRECTORY_SEPARATOR . $file_name)){
+                if (file_exists($upload_file . DIRECTORY_SEPARATOR . $file_name)) {
                     /* 处理图片 */
                     $image = Image::open($upload_file . DIRECTORY_SEPARATOR . $file_name);
                     switch ($store_image_name) {
@@ -163,15 +139,13 @@ class Sellersetting extends BaseSeller {
         $store_model = model('store');
         //删除原图
         $store_info = $store_model->getStoreInfoByID($store_id);
-        ds_del_pic(ATTACH_STORE . '/' . $store_id,$store_info[$store_image_name]);
+        ds_del_pic(ATTACH_STORE . '/' . $store_id, $store_info[$store_image_name]);
         $result = $store_model->editStore(array($store_image_name => $file_name), array('store_id' => $store_id));
         if ($result) {
             $data = array();
             $data['file_name'] = $file_name;
-            $data['file_path'] = ds_get_pic( ATTACH_STORE . '/' . $store_id , $file_name);
-            /**
-             * 整理为json格式
-             */
+            $data['file_path'] = ds_get_pic(ATTACH_STORE . '/' . $store_id, $file_name);
+
             $output = json_encode($data);
             echo $output;
             exit;
@@ -181,15 +155,11 @@ class Sellersetting extends BaseSeller {
     /**
      * 店铺幻灯片
      */
-    public function store_slide() {
-        /**
-         * 模型实例化
-         */
+    public function store_slide()
+    {
         $store_model = model('store');
         $upload_model = model('upload');
-        /**
-         * 保存店铺信息
-         */
+
         if (request()->isPost()) {
             // 更新店铺信息
             $update = array();
@@ -205,7 +175,7 @@ class Sellersetting extends BaseSeller {
             $upload_info = $upload_model->getUploadList(array('upload_type' => 3, 'item_id' => session('store_id')), 'file_name');
             if (is_array($upload_info) && !empty($upload_info)) {
                 foreach ($upload_info as $val) {
-                    ds_del_pic(ATTACH_SLIDE,$val['file_name']);
+                    ds_del_pic(ATTACH_SLIDE, $val['file_name']);
                 }
             }
             $upload_model->delUpload(array('upload_type' => 3, 'item_id' => session('store_id')));
@@ -225,7 +195,8 @@ class Sellersetting extends BaseSeller {
     /**
      * 店铺幻灯片ajax上传
      */
-    public function silde_image_upload() {
+    public function silde_image_upload()
+    {
         $file_id = intval(input('param.file_id'));
         $id = input('param.id');
         if ($file_id < 0 || empty($id)) {
@@ -252,7 +223,8 @@ class Sellersetting extends BaseSeller {
     /**
      * ajax删除幻灯片图片
      */
-    public function dorp_img() {
+    public function dorp_img()
+    {
         $file_id = intval(input('param.file_id'));
         $img_src = input('param.img_src');
         if ($file_id < 0 || empty($img_src)) {
@@ -260,7 +232,7 @@ class Sellersetting extends BaseSeller {
         }
         $ext = strrchr($img_src, '.');
         $file_name = session('store_id') . '_' . $file_id . $ext;
-        ds_del_pic(ATTACH_SLIDE,$file_name);
+        ds_del_pic(ATTACH_SLIDE, $file_name);
         echo json_encode(array('succeed' => lang('ds_common_save_succ')));
         die;
     }
@@ -272,28 +244,21 @@ class Sellersetting extends BaseSeller {
      * @param string
      * @return
      */
-    public function theme() {
-        /**
-         * 店铺信息
-         */
+    public function theme()
+    {
+
         $store_class = model('store');
         $store_info = $store_class->getStoreInfoByID(session('store_id'));
-        /**
-         * 主题配置信息
-         */
+
         $style_data = array();
         $style_configurl = PUBLIC_PATH . '/static/home/default/store/styles/' . "styleconfig.php";
 
         if (file_exists($style_configurl)) {
             include_once($style_configurl);
         }
-        /**
-         * 当前店铺主题
-         */
+
         $curr_store_theme = !empty($store_info['store_theme']) ? $store_info['store_theme'] : 'default';
-        /**
-         * 当前店铺预览图片
-         */
+
         $curr_image = BASE_SITE_ROOT . '/static/home/default/store/styles/' . $curr_store_theme . '/images/preview.jpg';
 
         $curr_theme = array(
@@ -302,32 +267,23 @@ class Sellersetting extends BaseSeller {
             'curr_image' => $curr_image
         );
 
-            /**
-             * 店铺等级
-             */
-            $grade_class = model('storegrade');
-            $grade = $grade_class->getOneStoregrade($store_info['grade_id']);
+        $grade_class = model('storegrade');
+        $grade = $grade_class->getOneStoregrade($store_info['grade_id']);
 
-            /**
-             * 可用主题
-             */
-            $themes = explode('|', $grade['storegrade_template']);
-            
+        $themes = explode('|', $grade['storegrade_template']);
+
         $theme_list = array();
-        /**
-         * 可用主题预览图片
-         */
+
         foreach ($style_data as $key => $val) {
             if (in_array($key, $themes)) {
                 $theme_list[$key] = array(
-                    'name' => $key, 'truename' => $val['truename'],
+                    'name' => $key,
+                    'truename' => $val['truename'],
                     'image' => BASE_SITE_ROOT . '/static/home/default/store/styles/' . $key . '/images/preview.jpg'
                 );
             }
         }
-        /**
-         * 页面输出
-         */
+
         $this->setSellerCurMenu('seller_setting');
         $this->setSellerCurItem('store_theme');
 
@@ -344,7 +300,8 @@ class Sellersetting extends BaseSeller {
      * @param string
      * @return
      */
-    public function set_theme() {
+    public function set_theme()
+    {
         //读取语言包
         $style = input('param.style_name');
         $style = isset($style) ? trim($style) : null;
@@ -357,28 +314,33 @@ class Sellersetting extends BaseSeller {
         }
     }
 
-    protected function getStoreMbSliders() {
+    protected function getStoreMbSliders()
+    {
         $store_info = model('store')->getStoreInfoByID(session('store_id'));
 
         $mbSliders = @unserialize($store_info['mb_sliders']);
         if (!$mbSliders) {
             $mbSliders = array_fill(1, self::MAX_MB_SLIDERS, array(
-                'img' => '', 'type' => 1, 'link' => '',
+                'img' => '',
+                'type' => 1,
+                'link' => '',
             ));
         }
 
         return $mbSliders;
     }
 
-    protected function setStoreMbSliders(array $mbSliders) {
+    protected function setStoreMbSliders(array $mbSliders)
+    {
         return model('store')->editStore(array(
-                    'mb_sliders' => serialize($mbSliders),
-                        ), array(
-                    'store_id' => session('store_id'),
+            'mb_sliders' => serialize($mbSliders),
+        ), array(
+            'store_id' => session('store_id'),
         ));
     }
 
-    public function store_mb_sliders() {
+    public function store_mb_sliders()
+    {
         //上传文件名称
         $fileName = input('param.id');
         //文件ID
@@ -410,7 +372,7 @@ class Sellersetting extends BaseSeller {
                 unlink($oldImg);
             }
             echo json_encode(array(
-                'uploadedUrl' => ds_get_pic( ATTACH_STORE . DIRECTORY_SEPARATOR . 'mobileslide' , $newImg),
+                'uploadedUrl' => ds_get_pic(ATTACH_STORE . DIRECTORY_SEPARATOR . 'mobileslide', $newImg),
             ));
             exit;
         } else {
@@ -419,7 +381,8 @@ class Sellersetting extends BaseSeller {
         }
     }
 
-    public function store_mb_sliders_drop() {
+    public function store_mb_sliders_drop()
+    {
         try {
             $id = (int) $_REQUEST['id'];
             if ($id < 1 || $id > self::MAX_MB_SLIDERS) {
@@ -435,18 +398,20 @@ class Sellersetting extends BaseSeller {
             ));
         } catch (\Exception $e) {
             echo json_encode(array(
-                'success' => false, 'error' => $e->getMessage(),
+                'success' => false,
+                'error' => $e->getMessage(),
             ));
         }
     }
 
-    public function store_mobile() {
+    public function store_mobile()
+    {
         View::assign('max_mb_sliders', self::MAX_MB_SLIDERS);
 
         $store_info = model('store')->getStoreInfoByID(session('store_id'));
 
         // 页头背景图
-        $mb_title_img = $store_info['mb_title_img'] ? ds_get_pic( ATTACH_STORE , $store_info['mb_title_img']) : '';
+        $mb_title_img = $store_info['mb_title_img'] ? ds_get_pic(ATTACH_STORE, $store_info['mb_title_img']) : '';
 
         // 轮播
         $mbSliders = $this->getStoreMbSliders();
@@ -459,12 +424,12 @@ class Sellersetting extends BaseSeller {
             }
             if (!empty($_FILES['mb_title_img']['name'])) {
                 $file_name = session('store_id') . '_' . date('YmdHis') . rand(10000, 99999) . '.png';
-                $res=ds_upload_pic(ATTACH_STORE,'mb_title_img');
-                if($res['code']){
-                    $file_name=$res['data']['file_name'];
+                $res = ds_upload_pic(ATTACH_STORE, 'mb_title_img');
+                if ($res['code']) {
+                    $file_name = $res['data']['file_name'];
                     $mb_title_img_del = true;
                     $update_array['mb_title_img'] = $file_name;
-                }else{
+                } else {
                     $this->error($res['msg']);
                 }
             }
@@ -544,7 +509,7 @@ class Sellersetting extends BaseSeller {
         $mbSliderUrls = array();
         foreach ($mbSliders as $v) {
             if ($v['img']) {
-                $mbSliderUrls[] = ds_get_pic( ATTACH_STORE . DIRECTORY_SEPARATOR . 'mobileslide' , $v['img']);
+                $mbSliderUrls[] = ds_get_pic(ATTACH_STORE . DIRECTORY_SEPARATOR . 'mobileslide', $v['img']);
             }
         }
 
@@ -556,23 +521,17 @@ class Sellersetting extends BaseSeller {
         return View::fetch($this->template_dir . 'store_mobile');
     }
 
-    public function map() {
+    public function map()
+    {
         $this->setSellerCurMenu('seller_setting');
         $this->setSellerCurItem('store_map');
-        /**
-         * 实例化模型
-         */
+
         $store_model = model('store');
 
         $store_id = session('store_id'); //当前店铺ID
-        /**
-         * 获取店铺信息
-         */
+
         $store_info = $store_model->getStoreInfoByID($store_id);
 
-        /**
-         * 保存店铺设置
-         */
         if (request()->isPost()) {
             model('store')->editStore(array(
                 'store_address' => input('post.company_address_detail'),
@@ -580,7 +539,7 @@ class Sellersetting extends BaseSeller {
                 'area_info' => input('post.company_address'),
                 'store_longitude' => input('post.longitude'),
                 'store_latitude' => input('post.latitude')
-                    ), array(
+            ), array(
                 'store_id' => session('store_id'),
             ));
             ds_json_encode(10000, lang('save_success'));
@@ -597,30 +556,35 @@ class Sellersetting extends BaseSeller {
      * @param string $name 当前导航的name
      * @return
      */
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'store_setting', 'text' => lang('ds_member_path_store_config'),
+                'name' => 'store_setting',
+                'text' => lang('ds_member_path_store_config'),
                 'url' => (string) url('Sellersetting/setting')
             ),
             array(
-                'name' => 'store_map', 'text' => lang('ds_member_path_store_map'),
+                'name' => 'store_map',
+                'text' => lang('ds_member_path_store_map'),
                 'url' => (string) url('Sellersetting/map')
             ),
             array(
-                'name' => 'store_slide', 'text' => lang('ds_member_path_store_slide'),
+                'name' => 'store_slide',
+                'text' => lang('ds_member_path_store_slide'),
                 'url' => (string) url('Sellersetting/store_slide')
             ),
             array(
-                'name' => 'store_theme', 'text' => lang('store_theme'), 'url' => (string) url('Sellersetting/theme')
+                'name' => 'store_theme',
+                'text' => lang('store_theme'),
+                'url' => (string) url('Sellersetting/theme')
             ),
             array(
-                'name' => 'store_mobile', 'text' => lang('mobile_phone_store_settings'), 'url' => (string) url('Sellersetting/store_mobile'),
+                'name' => 'store_mobile',
+                'text' => lang('mobile_phone_store_settings'),
+                'url' => (string) url('Sellersetting/store_mobile'),
             ),
         );
         return $menu_array;
     }
-
 }
-
-?>

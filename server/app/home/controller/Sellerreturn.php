@@ -5,30 +5,20 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerreturn extends BaseSeller {
+class Sellerreturn extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerreturn.lang.php');
     }
 
     /**
      * 退货记录列表页
-     *
      */
-    public function index() {
+    public function index()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -43,13 +33,13 @@ class Sellerreturn extends BaseSeller {
         $add_time_from = input('get.add_time_from');
         $add_time_to = input('get.add_time_to');
         if (trim($add_time_from) != '') {
-            $add_time_from=strtotime($add_time_from);
+            $add_time_from = strtotime($add_time_from);
             if ($add_time_from !== false) {
                 $condition[] = array('refundreturn_add_time', '>=', $add_time_from);
             }
         }
         if (trim($add_time_to) != '') {
-            $add_time_to=strtotime($add_time_to)+86399;
+            $add_time_to = strtotime($add_time_to) + 86399;
             if ($add_time_to !== false) {
                 $condition[] = array('refundreturn_add_time', '<=', $add_time_to);
             }
@@ -76,11 +66,12 @@ class Sellerreturn extends BaseSeller {
     /**
      * 退货审核页
      */
-    public function edit() {
+    public function edit()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[] = array('store_id','=',session('store_id'));
-        $condition[] = array('refund_id','=',intval(input('param.return_id')));
+        $condition[] = array('store_id', '=', session('store_id'));
+        $condition[] = array('refund_id', '=', intval(input('param.return_id')));
         $return = $refundreturn_model->getRefundreturnInfo($condition);
         if (empty($return)) {
             $this->error(lang('param_error'));
@@ -92,12 +83,12 @@ class Sellerreturn extends BaseSeller {
                 $info = unserialize($return['pic_info']);
             }
             View::assign('pic_list', $info['buyer']);
-//            View::assign('pic_list', '');
+            //            View::assign('pic_list', '');
             $member_model = model('member');
             $member = $member_model->getMemberInfoByID($return['buyer_id']);
             View::assign('member', $member);
             $condition = array();
-            $condition[] = array('order_id','=',$return['order_id']);
+            $condition[] = array('order_id', '=', $return['order_id']);
             $order = $refundreturn_model->getRightOrderList($condition, $return['order_goods_id']);
             View::assign('order', $order);
             View::assign('store', $order['extend_store']);
@@ -146,7 +137,7 @@ class Sellerreturn extends BaseSeller {
                     $return['refund_sn']
                 );
                 $param['param'] = array_merge($param['ali_param'], array(
-                    'refund_url' => HOME_SITE_URL .'/Memberreturn/view?return_id='.$return['refund_id'],
+                    'refund_url' => HOME_SITE_URL . '/Memberreturn/view?return_id=' . $return['refund_id'],
                 ));
                 //微信模板消息
                 $param['weixin_param'] = array(
@@ -162,7 +153,7 @@ class Sellerreturn extends BaseSeller {
                         )
                     ),
                 );
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendMemberMsg','cron_value'=>serialize($param)));
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendMemberMsg', 'cron_value' => serialize($param)));
 
                 ds_json_encode(10000, lang('ds_common_save_succ'));
             } else {
@@ -173,14 +164,14 @@ class Sellerreturn extends BaseSeller {
 
     /**
      * 收货
-     *
      */
-    public function receive() {
+    public function receive()
+    {
         $refundreturn_model = model('refundreturn');
         $trade_model = model('trade');
         $condition = array();
-        $condition[] = array('store_id','=',session('store_id'));
-        $condition[] = array('refund_id','=',intval(input('param.return_id')));
+        $condition[] = array('store_id', '=', session('store_id'));
+        $condition[] = array('refund_id', '=', intval(input('param.return_id')));
         $return = $refundreturn_model->getRefundreturnInfo($condition);
         if (empty($return)) {
             $this->error(lang('param_error'));
@@ -194,13 +185,13 @@ class Sellerreturn extends BaseSeller {
         if (!request()->isPost()) {
             $express_list = rkcache('express', true);
             if ($return['express_id'] > 0 && !empty($return['invoice_no'])) {
-                View::assign('express_name', isset($express_list[$return['express_id']])?$express_list[$return['express_id']]['express_name']:'');
-                View::assign('express_code', isset($express_list[$return['express_id']])?$express_list[$return['express_id']]['express_code']:'');
+                View::assign('express_name', isset($express_list[$return['express_id']]) ? $express_list[$return['express_id']]['express_name'] : '');
+                View::assign('express_code', isset($express_list[$return['express_id']]) ? $express_list[$return['express_id']]['express_code'] : '');
             }
             return View::fetch($this->template_dir . 'receive');
         } else {
 
-            if ($return['refundreturn_seller_state'] != '2' || $return['refundreturn_goods_state'] != '2') {//检查状态,防止页面刷新不及时造成数据错误
+            if ($return['refundreturn_seller_state'] != '2' || $return['refundreturn_goods_state'] != '2') { //检查状态,防止页面刷新不及时造成数据错误
                 ds_json_encode(10001, lang('param_error'));
             }
             $refund_array = array();
@@ -227,7 +218,7 @@ class Sellerreturn extends BaseSeller {
                     $return['refund_sn']
                 );
                 $param['param'] = array_merge($param['ali_param'], array(
-                    'refund_url' => HOME_SITE_URL .'/Memberreturn/view?return_id='.$return['refund_id'],
+                    'refund_url' => HOME_SITE_URL . '/Memberreturn/view?return_id=' . $return['refund_id'],
                 ));
                 //微信模板消息
                 $param['weixin_param'] = array(
@@ -243,7 +234,7 @@ class Sellerreturn extends BaseSeller {
                         )
                     ),
                 );
-                model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendMemberMsg','cron_value'=>serialize($param)));
+                model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendMemberMsg', 'cron_value' => serialize($param)));
                 ds_json_encode(10000, lang('ds_common_save_succ'));
             } else {
                 ds_json_encode(10001, lang('ds_common_save_fail'));
@@ -253,13 +244,13 @@ class Sellerreturn extends BaseSeller {
 
     /**
      * 退货记录查看页
-     *
      */
-    public function view() {
+    public function view()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[] = array('store_id','=',session('store_id'));
-        $condition[] = array('refund_id','=',intval(input('param.return_id')));
+        $condition[] = array('store_id', '=', session('store_id'));
+        $condition[] = array('refund_id', '=', intval(input('param.return_id')));
         $return = $refundreturn_model->getRefundreturnInfo($condition);
         if (empty($return)) {
             $this->error(lang('param_error'));
@@ -267,20 +258,20 @@ class Sellerreturn extends BaseSeller {
         View::assign('return', $return);
         $express_list = rkcache('express', true);
         if ($return['express_id'] > 0 && !empty($return['invoice_no'])) {
-            View::assign('express_name', isset($express_list[$return['express_id']])?$express_list[$return['express_id']]['express_name']:'');
-            View::assign('express_code', isset($express_list[$return['express_id']])?$express_list[$return['express_id']]['express_code']:'');
+            View::assign('express_name', isset($express_list[$return['express_id']]) ? $express_list[$return['express_id']]['express_name'] : '');
+            View::assign('express_code', isset($express_list[$return['express_id']]) ? $express_list[$return['express_id']]['express_code'] : '');
         }
         $info['buyer'] = array();
         if (!empty($return['pic_info'])) {
             $info = unserialize($return['pic_info']);
         }
         View::assign('pic_list', $info['buyer']);
-//        View::assign('pic_list', '');
+        // View::assign('pic_list', '');
         $member_model = model('member');
         $member = $member_model->getMemberInfoByID($return['buyer_id']);
         View::assign('member', $member);
         $condition = array();
-        $condition[] =array('order_id','=',$return['order_id']);
+        $condition[] = array('order_id', '=', $return['order_id']);
         $order = $refundreturn_model->getRightOrderList($condition, $return['order_goods_id']);
         View::assign('order', $order);
         View::assign('store', $order['extend_store']);
@@ -293,7 +284,6 @@ class Sellerreturn extends BaseSeller {
         return View::fetch($this->template_dir . 'view');
     }
 
-
     /**
      * 用户中心右边，小导航
      *
@@ -301,7 +291,8 @@ class Sellerreturn extends BaseSeller {
      * @param string $menu_key 当前导航的menu_key
      * @return
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'seller_refund',
@@ -316,5 +307,4 @@ class Sellerreturn extends BaseSeller {
         );
         return $menu_array;
     }
-
 }
