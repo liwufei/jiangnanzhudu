@@ -1,25 +1,17 @@
 <?php
+
 namespace app\home\controller;
+
 use think\facade\Lang;
 use think\facade\Db;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Membercard extends BaseMall {
 
+class Membercard extends BaseMall
+{
     /**
      * AJAX for membership information
      */
-    public function index() {
+    public function index()
+    {
         $ownid = session('member_id');
         $uid = intval(input('get.uid'));
 
@@ -43,7 +35,7 @@ class Membercard extends BaseMall {
         } else {
             // Whether to pay attention to yourself(own)
             $followed = 0; // 0 stranger, 1 friend, 2 own
-            $friend_info = Db::name('snsfriend')->where('friend_frommid',$uid)->where('friend_tomid',$ownid)->find();
+            $friend_info = Db::name('snsfriend')->where('friend_frommid', $uid)->where('friend_tomid', $ownid)->find();
             if (!empty($friend_info)) {
                 $followed = 1;
             }
@@ -73,7 +65,7 @@ class Membercard extends BaseMall {
             $data['follow'] = 2; // 0 stranger, 1 friend, 2 own
         } else {
             // Whether to pay attention to me
-            $friend_info = Db::name('snsfriend')->where('friend_frommid',$ownid)->where('friend_tomid',$uid)->find();
+            $friend_info = Db::name('snsfriend')->where('friend_frommid', $ownid)->where('friend_tomid', $uid)->find();
             $data['follow'] = (!empty($friend_info)) ? 1 : 0;
         }
         // Pay attention to the number of
@@ -84,9 +76,9 @@ class Membercard extends BaseMall {
         echo $_GET['callback'] . '(' . json_encode($data) . ')';
     }
 
-    public function mcard_info() {
+    public function mcard_info()
+    {
         echo 'false';
         exit;
     }
-
 }

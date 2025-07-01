@@ -1,57 +1,44 @@
 <?php
 
-/*
- * 前台促销列表
- */
-
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Promotion extends BaseMall {
+class Promotion extends BaseMall
+{
 
     const PAGESIZE = 16;
-    
-    public function initialize() {
+
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/promotion.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/promotion.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $xianshigoods_model = model('pxianshigoods');
         $goods_model = model('goods');
 
         $condition = array();
-        $condition[]=array('xianshigoods_state','=',1);
-        $condition[]=array('xianshigoods_starttime','<=', TIMESTAMP);
-        $condition[]=array('xianshigoods_end_time','>', TIMESTAMP);
+        $condition[] = array('xianshigoods_state', '=', 1);
+        $condition[] = array('xianshigoods_starttime', '<=', TIMESTAMP);
+        $condition[] = array('xianshigoods_end_time', '>', TIMESTAMP);
         $gc_id = intval(input('param.gc_id'));
         if ($gc_id) {
-            $condition[]=array('gc_id_1','=',intval($gc_id));
+            $condition[] = array('gc_id_1', '=', intval($gc_id));
         }
-        
+
         $goods_list = $xianshigoods_model->getXianshigoodsExtendList($condition, self::PAGESIZE, 'xianshigoods_id desc');
-        
-        
+
         $xs_goods_list = array();
         foreach ($goods_list as $k => $goods_info) {
             $xs_goods_list[$goods_info['goods_id']] = $goods_info;
             $xs_goods_list[$goods_info['goods_id']]['image_url_240'] = goods_cthumb($goods_info['goods_image'], 240, $goods_info['store_id']);
             $xs_goods_list[$goods_info['goods_id']]['down_price'] = $goods_info['goods_price'] - $goods_info['xianshigoods_price'];
         }
-        $condition = array(array('goods_id','in', array_keys($xs_goods_list)));
+        $condition = array(array('goods_id', 'in', array_keys($xs_goods_list)));
         $goods_list = $goods_model->getGoodsOnlineList($condition, 'goods_id,gc_id_1,evaluation_good_star,store_id,store_name', 0, '', self::PAGESIZE, null, false);
         $last_goods_list = array();
         foreach ($goods_list as $k => $goods_info) {
@@ -65,7 +52,7 @@ class Promotion extends BaseMall {
         }
 
         //查询商品评分信息
-        $goodsevallist = model('evaluategoods')->getEvaluategoodsList(array(array('geval_goodsid','in', array_keys($last_goods_list))));
+        $goodsevallist = model('evaluategoods')->getEvaluategoodsList(array(array('geval_goodsid', 'in', array_keys($last_goods_list))));
         $eval_list = array();
         if (!empty($goodsevallist)) {
             foreach ($goodsevallist as $v) {
@@ -101,7 +88,4 @@ class Promotion extends BaseMall {
             return View::fetch($this->template_dir . 'index');
         }
     }
-
 }
-
-?>

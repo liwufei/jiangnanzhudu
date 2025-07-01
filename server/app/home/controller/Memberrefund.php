@@ -1,29 +1,15 @@
 <?php
 
-/*
- * 订单退款
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Memberrefund extends BaseMember {
+class Memberrefund extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/memberrefund.lang.php');
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/memberorder.lang.php');
@@ -31,16 +17,16 @@ class Memberrefund extends BaseMember {
 
     /**
      * 添加订单商品部分退款
-     *
      */
-    public function add_refund() {
+    public function add_refund()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
         $reason_list = $refundreturn_model->getReasonList($condition); //退款退货原因
         View::assign('reason_list', $reason_list);
         $order_id = intval(input('param.order_id'));
         $goods_id = intval(input('param.goods_id')); //订单商品表编号
-        if ($order_id < 1 || $goods_id < 1) {//参数验证
+        if ($order_id < 1 || $goods_id < 1) { //参数验证
             $this->error(lang('param_error'), (string) url('Memberorder/index'));
         }
         $condition = array();
@@ -66,16 +52,15 @@ class Memberrefund extends BaseMember {
         View::assign('order_common', $order['extend_order_common']);
         View::assign('goods_list', $order['goods_list']);
 
-
         $goods_id = $goods['rec_id'];
         $condition = array();
         $condition[] = array('order_id', '=', $order['order_id']);
         $condition[] = array('order_goods_id', '=', $goods_id);
         $refund = $refundreturn_model->getRefundreturnInfo($condition);
-        
+
         $if_allow_refund = $refundreturn_model->getOrderAllowRefundState($order); //根据订单状态判断是否可以退款退货
 
-        if (!empty($refund) || $if_allow_refund != 1 || $goods_id<=0) {//检查订单状态,防止页面刷新不及时造成数据错误
+        if (!empty($refund) || $if_allow_refund != 1 || $goods_id <= 0) { //检查订单状态,防止页面刷新不及时造成数据错误
             $this->error(lang('param_error'), (string) url('Memberorder/index'));
         }
         if (request()->isPost() && $goods_id > 0) {
@@ -104,7 +89,6 @@ class Memberrefund extends BaseMember {
             $info = serialize($pic_array);
             $refund_array['pic_info'] = $info;
 
-
             $refund_array['refund_type'] = input('post.refund_type'); //类型:1为退款,2为退货
             $show_url = (string) url('Memberreturn/index');
             $refund_array['return_type'] = '2'; //退货类型:1为不用退货,2为需要退货
@@ -126,12 +110,11 @@ class Memberrefund extends BaseMember {
             $data['log_user'] = '';
             $data['log_msg'] = '用户申请单个商品退款';
             model('orderlog')->addOrderlog($data);
-            
-            if ($state) {
 
-                    $refundreturn_model->editOrderLock($order_id);
+            if ($state) {
+                $refundreturn_model->editOrderLock($order_id);
                 //自提点订单锁定
-                $chain_order_model=model('chain_order');
+                $chain_order_model = model('chain_order');
                 $chain_order_model->editChainOrderLock($order_id);
                 $this->success(lang('ds_common_save_succ'), $show_url);
             } else {
@@ -148,9 +131,9 @@ class Memberrefund extends BaseMember {
 
     /**
      * 添加全部退款即取消订单
-     *
      */
-    public function add_refund_all() {
+    public function add_refund_all()
+    {
         $refundreturn_model = model('refundreturn');
         $order_id = intval(input('param.order_id'));
         $condition = array();
@@ -162,16 +145,15 @@ class Memberrefund extends BaseMember {
         View::assign('order_common', $order['extend_order_common']);
         View::assign('goods_list', $order['goods_list']);
 
-
         $order_amount = $order['order_amount']; //订单金额
         $order_amount -= $order['presell_deposit_amount'];
         $condition = array();
         $condition[] = array('order_id', '=', $order['order_id']);
         $condition[] = array('goods_id', '=', '0');
         $refund = $refundreturn_model->getRefundreturnInfo($condition);
-        
+
         $payment_code = $order['payment_code']; //支付方式
-        if (!empty($refund) || !in_array($order['order_state'],[ORDER_STATE_PAY,ORDER_STATE_PICKUP])) {
+        if (!empty($refund) || !in_array($order['order_state'], [ORDER_STATE_PAY, ORDER_STATE_PICKUP])) {
             $this->error(lang('param_error'), 'home/memberrefund/index');
         }
         if (!request()->isPost()) {
@@ -197,20 +179,20 @@ class Memberrefund extends BaseMember {
             $info = serialize($pic_array);
             $refund_array['pic_info'] = $info;
             $state = $refundreturn_model->addRefundreturn($refund_array, $order);
-            
+
             $data = array();
             $data['order_id'] = $order_id;
             $data['log_role'] = 'buyer';
             $data['log_user'] = '';
             $data['log_msg'] = '用户申请全额退款';
             model('orderlog')->addOrderlog($data);
-            
+
             if ($state) {
 
                 $refundreturn_model->editOrderLock($order_id);
-                
+
                 //自提点订单锁定
-                $chain_order_model=model('chain_order');
+                $chain_order_model = model('chain_order');
                 $chain_order_model->editChainOrderLock($order_id);
                 $this->success(lang('ds_common_save_succ'), 'Memberrefund/index');
             } else {
@@ -221,9 +203,9 @@ class Memberrefund extends BaseMember {
 
     /**
      * 退款记录列表页
-     *
      */
-    public function index() {
+    public function index()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
         $condition[] = array('buyer_id', '=', session('member_id'));
@@ -254,7 +236,6 @@ class Memberrefund extends BaseMember {
         View::assign('refund_list', $refund_list);
         View::assign('show_page', $refundreturn_model->page_info->render());
 
-
         $store_list = $refundreturn_model->getRefundStoreList($refund_list);
         View::assign('store_list', $store_list);
         /* 设置买家当前菜单 */
@@ -266,9 +247,9 @@ class Memberrefund extends BaseMember {
 
     /**
      * 退款记录查看
-     *
      */
-    public function view() {
+    public function view()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
         $condition[] = array('buyer_id', '=', session('member_id'));
@@ -299,9 +280,9 @@ class Memberrefund extends BaseMember {
 
     /**
      * 上传凭证
-     *
      */
-    private function upload_pic() {
+    private function upload_pic()
+    {
         $refund_pic = array();
         $refund_pic[1] = 'refund_pic1';
         $refund_pic[2] = 'refund_pic2';
@@ -318,16 +299,15 @@ class Memberrefund extends BaseMember {
                 }
                 $count++;
             }
-
         }
         return $pic_array;
     }
 
-
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getMemberItemList() {
+    function getMemberItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'buyer_refund',
@@ -347,5 +327,4 @@ class Memberrefund extends BaseMember {
         );
         return $item_list;
     }
-
 }

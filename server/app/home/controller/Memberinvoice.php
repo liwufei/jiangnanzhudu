@@ -1,33 +1,24 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Memberinvoice extends BaseMember {
+class Memberinvoice extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/memberinvoice.lang.php');
     }
 
-    /*
+    /**
      * 收货地址列表
      */
-
-    public function index() {
+    public function index()
+    {
         $invoice_model = model('invoice');
         $invoice_list = $invoice_model->getInvoiceList(array('member_id' => session('member_id')));
         View::assign('invoice_list', $invoice_list);
@@ -39,7 +30,8 @@ class Memberinvoice extends BaseMember {
         return View::fetch($this->template_dir . 'index');
     }
 
-    private function get_data() {
+    private function get_data()
+    {
         $data = array();
         $data['invoice_state'] = input('post.invoice_state');
         $data['invoice_title'] = input('post.invoice_title');
@@ -51,18 +43,19 @@ class Memberinvoice extends BaseMember {
         $data['invoice_reg_phone'] = input('post.invoice_reg_phone');
         $data['invoice_reg_bname'] = input('post.invoice_reg_bname');
         $data['invoice_reg_baccount'] = input('post.invoice_reg_baccount');
-//                $data['invoice_rec_name'] = input('post.invoice_rec_name');
-//                $data['invoice_rec_mobphone'] = input('post.invoice_rec_mobphone');
-//                $data['invoice_rec_province'] = input('post.area_info');
-//                $data['invoice_goto_addr'] = input('post.invoice_goto_addr');
+        // $data['invoice_rec_name'] = input('post.invoice_rec_name');
+        // $data['invoice_rec_mobphone'] = input('post.invoice_rec_mobphone');
+        // $data['invoice_rec_province'] = input('post.area_info');
+        // $data['invoice_goto_addr'] = input('post.invoice_goto_addr');
         return $data;
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
 
             $invoice = $this->get_data();
-            $invoice['invoice_state']=1;
+            $invoice['invoice_state'] = 1;
             View::assign('invoice', $invoice);
             /* 设置买家当前菜单 */
             $this->setMemberCurMenu('member_invoice');
@@ -72,10 +65,10 @@ class Memberinvoice extends BaseMember {
         } else {
             $data = $this->get_data();
             $data['member_id'] = session('member_id');
-            
-            if($data['invoice_state']==1){
+
+            if ($data['invoice_state'] == 1) {
                 $this->validate($data, 'app\common\validate\Invoice.invoice_1_update');
-            }else{
+            } else {
                 $this->validate($data, 'app\common\validate\Invoice.invoice_2_update');
             }
 
@@ -89,8 +82,8 @@ class Memberinvoice extends BaseMember {
         }
     }
 
-    public function edit() {
-
+    public function edit()
+    {
         $invoice_id = intval(input('param.invoice_id'));
         if (0 >= $invoice_id) {
             ds_json_encode(10001, lang('param_error'));
@@ -110,9 +103,9 @@ class Memberinvoice extends BaseMember {
             return View::fetch($this->template_dir . 'form');
         } else {
             $data = $this->get_data();
-            if($data['invoice_state']==1){
+            if ($data['invoice_state'] == 1) {
                 $this->validate($data, 'app\common\validate\Invoice.invoice_1_update');
-            }else{
+            } else {
                 $this->validate($data, 'app\common\validate\Invoice.invoice_2_update');
             }
 
@@ -125,13 +118,14 @@ class Memberinvoice extends BaseMember {
         }
     }
 
-    public function drop() {
+    public function drop()
+    {
         $invoice_id = intval(input('param.invoice_id'));
         if (0 >= $invoice_id) {
             ds_json_encode(10001, lang('empty_error'));
         }
         $invoice_model = model('invoice');
-        $result = $invoice_model->delInvoice(array('invoice_id' => $invoice_id,'member_id'=>session('member_id')));
+        $result = $invoice_model->delInvoice(array('invoice_id' => $invoice_id, 'member_id' => session('member_id')));
         if ($result) {
             ds_json_encode(10000, lang('ds_common_del_succ'));
         } else {
@@ -140,9 +134,10 @@ class Memberinvoice extends BaseMember {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getMemberItemList() {
+    function getMemberItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'my_invoice',
@@ -165,7 +160,4 @@ class Memberinvoice extends BaseMember {
 
         return $item_list;
     }
-
 }
-
-?>

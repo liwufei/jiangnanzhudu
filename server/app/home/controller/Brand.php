@@ -1,32 +1,24 @@
 <?php
 
-/**
- * 品牌管理
- */
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Brand extends BaseMall {
 
-    public function initialize() {
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/brand.lang.php');
+/**
+ * 品牌
+ */
+class Brand extends BaseMall
+{
+
+    public function initialize()
+    {
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/brand.lang.php');
         parent::initialize();
     }
 
-    public function index() {
-
+    public function index()
+    {
         //分类导航
         $nav_link = array(
             0 => array(
@@ -39,7 +31,7 @@ class Brand extends BaseMall {
         );
         View::assign('nav_link_list', $nav_link);
 
-        $brand_mod=model('brand');
+        $brand_mod = model('brand');
         $brand_c_list = $brand_mod->getBrandList(array('brand_apply' => '1'));
         $brands = $this->_tidyBrand($brand_c_list);
         extract($brands);
@@ -60,10 +52,11 @@ class Brand extends BaseMall {
      * @param type $brand_c_list
      * @return type
      */
-    private function _tidyBrand($brand_c_list) {
-        $brand_listnew = array();#品怕分类下对应的品牌
-        $brand_class = array();#品牌分类
-        $brand_r_list = array();#推荐品牌
+    private function _tidyBrand($brand_c_list)
+    {
+        $brand_listnew = array(); #品怕分类下对应的品牌
+        $brand_class = array(); #品牌分类
+        $brand_r_list = array(); #推荐品牌
         if (!empty($brand_c_list) && is_array($brand_c_list)) {
             $goods_class = model('goodsclass')->getGoodsclassForCacheModel();
             foreach ($brand_c_list as $key => $brand_c) {
@@ -100,14 +93,15 @@ class Brand extends BaseMall {
      * @param type $gc_id
      * @return type
      */
-    private function _getTopClass($goods_class, $gc_id) {
+    private function _getTopClass($goods_class, $gc_id)
+    {
         if (!isset($goods_class[$gc_id])) {
             return null;
         }
-        if($goods_class[$gc_id]['gc_parent_id']==$gc_id){//自身ID等于父ID
+        if ($goods_class[$gc_id]['gc_parent_id'] == $gc_id) { //自身ID等于父ID
             return null;
         }
-        if(isset($goods_class[$goods_class[$gc_id]['gc_parent_id']]['gc_parent_id']) && $goods_class[$goods_class[$gc_id]['gc_parent_id']]['gc_parent_id']==$gc_id){//父分类的父ID等于自身ID
+        if (isset($goods_class[$goods_class[$gc_id]['gc_parent_id']]['gc_parent_id']) && $goods_class[$goods_class[$gc_id]['gc_parent_id']]['gc_parent_id'] == $gc_id) { //父分类的父ID等于自身ID
             return null;
         }
         return $goods_class[$gc_id]['gc_parent_id'] == 0 ? $goods_class[$gc_id] : $this->_getTopClass($goods_class, $goods_class[$gc_id]['gc_parent_id']);
@@ -117,10 +111,9 @@ class Brand extends BaseMall {
      * 品牌商品列表
      */
     //原方法 function list
-    public function brand_goods() {
-        /**
-         * 验证品牌
-         */
+    public function brand_goods()
+    {
+        // 验证品牌
         $brand_model = model('brand');
         $brand_id = intval(input('param.brand_id'));
         $brand_info = $brand_model->getBrandInfo(array('brand_id' => $brand_id));
@@ -128,28 +121,26 @@ class Brand extends BaseMall {
             $this->error(lang('param_error'));
         }
 
-        /**
-         * 获得推荐品牌
-         */
-        $brand_r_list = model('brand')->getBrandPassedList(array(array('brand_recommend' ,'=', 1)), 'brand_id,brand_name,brand_pic',10, 'brand_sort asc, brand_id desc');
+        // 获得推荐品牌
+        $brand_r_list = model('brand')->getBrandPassedList(array(array('brand_recommend', '=', 1)), 'brand_id,brand_name,brand_pic', 10, 'brand_sort asc, brand_id desc');
         View::assign('brand_r', $brand_r_list);
 
         // 得到排序方式
         $order = 'goods_id desc';
-        
+
         $key = input('param.key');
-        
+
         if (!empty($key)) {
             $order_tmp = trim($key);
             $sequence = input('param.order') == 1 ? 'asc' : 'desc';
             switch ($order_tmp) {
-                case '1' : // 销量
+                case '1': // 销量
                     $order = 'goods_salenum' . ' ' . $sequence;
                     break;
-                case '2' : // 浏览量
+                case '2': // 浏览量
                     $order = 'goods_click' . ' ' . $sequence;
                     break;
-                case '3' : // 价格
+                case '3': // 价格
                     $order = 'goods_promotion_price' . ' ' . $sequence;
                     break;
             }
@@ -159,19 +150,19 @@ class Brand extends BaseMall {
         $fieldstr = "goods_id,goods_commonid,goods_name,goods_advword,store_id,store_name,goods_price,goods_promotion_price,goods_promotion_type,goods_marketprice,goods_storage,goods_image,goods_freight,goods_salenum,color_id,evaluation_good_star,evaluation_count,is_virtual,is_goodsfcode,is_appoint,is_have_gift";
         // 条件
         $where = array();
-        $where[]=array('brand_id','=',$brand_info['brand_id']);
+        $where[] = array('brand_id', '=', $brand_info['brand_id']);
         $area_id = intval(input('param.area_id'));
         if ($area_id > 0) {
-            $where[]=array('areaid_1','=',$area_id);
+            $where[] = array('areaid_1', '=', $area_id);
         }
         if (input('param.gift') == 1) {
-            $where[]=array('is_have_gift','=',1);
+            $where[] = array('is_have_gift', '=', 1);
         }
         $goods_model = model('goods');
-        
+
         $goods_list = $goods_model->getGoodsListByColorDistinct($where, $fieldstr, $order, 24);
-        
-        View::assign('show_page', !empty($goods_list)?$goods_model->page_info->render():'');
+
+        View::assign('show_page', !empty($goods_list) ? $goods_model->page_info->render() : '');
         // 商品多图
         if (!empty($goods_list)) {
             $commonid_array = array(); // 商品公共id数组
@@ -183,14 +174,14 @@ class Brand extends BaseMall {
             $commonid_array = array_unique($commonid_array);
             $storeid_array = array_unique($storeid_array);
             // 商品多图
-            $goodsimage_more = $goods_model->getGoodsImageList(array(array('goods_commonid','in', $commonid_array)));
+            $goodsimage_more = $goods_model->getGoodsImageList(array(array('goods_commonid', 'in', $commonid_array)));
             // 店铺
             $store_list = model('store')->getStoreMemberIDList($storeid_array);
 
             foreach ($goods_list as $key => $value) {
                 //预售
                 $goods_list[$key]['presell_info'] = model('presell')->getPresellInfoByGoodsID($value['goods_id']);
-                
+
                 // 商品多图
                 foreach ($goodsimage_more as $v) {
                     if ($value['goods_commonid'] == $v['goods_commonid'] && $value['store_id'] == $v['store_id'] && $value['color_id'] == $v['color_id']) {
@@ -207,39 +198,34 @@ class Brand extends BaseMall {
         View::assign('goods_list', $goods_list);
 
         // 地区
-		
-		$area_condition = array();
-		$area_condition[] = array('area_parent_id','=',0);
-        $area_array = model('area')->getAreaList($area_condition,'area_name,area_initial,area_id');
-		$province_array = array();
-		foreach($area_array as $k => $v){
-			$province_array[$v['area_initial']][$k]['area_name'] = $v['area_name'];
-			$province_array[$v['area_initial']][$k]['area_id'] = $v['area_id'];
-		}
-		foreach ($province_array as $k => $v) {
-		$edition[] = $k;
-		}
-		array_multisort($edition, SORT_ASC, $province_array);
+        $area_condition = array();
+        $area_condition[] = array('area_parent_id', '=', 0);
+        $area_array = model('area')->getAreaList($area_condition, 'area_name,area_initial,area_id');
+        $province_array = array();
+        foreach ($area_array as $k => $v) {
+            $province_array[$v['area_initial']][$k]['area_name'] = $v['area_name'];
+            $province_array[$v['area_initial']][$k]['area_id'] = $v['area_id'];
+        }
+        foreach ($province_array as $k => $v) {
+            $edition[] = $k;
+        }
+        array_multisort($edition, SORT_ASC, $province_array);
         View::assign('province_array', $province_array);
-		
-		//当前选中地区
-		if ($area_id > 0) {
-			$area_name = model('area')->getAreaInfoById($area_id);
-		    View::assign('area_name', $area_name);
-		}
+
+        //当前选中地区
+        if ($area_id > 0) {
+            $area_name = model('area')->getAreaInfoById($area_id);
+            View::assign('area_name', $area_name);
+        }
 
         /* 引用搜索相关函数 */
         require_once(base_path() . '/home/common_search.php');
-        
-        /**
-         * 取浏览过产品的cookie(最大四组)
-         */
+
+        // 取浏览过产品的cookie(最大四组)
         $viewed_goods = model('goodsbrowse')->getViewedGoodsList(session('member_id'), 20);
         View::assign('viewed_goods', $viewed_goods);
 
-        /**
-         * 分类导航
-         */
+        // 分类导航
         $nav_link = array(
             0 => array(
                 'title' => lang('homepage'),
@@ -254,16 +240,14 @@ class Brand extends BaseMall {
             )
         );
         View::assign('nav_link_list', $nav_link);
-        /**
-         * 页面输出
-         */
+
+        // 页面输出
         View::assign('index_sign', 'brand');
-        
+
         //SEO 设置
         $seo = model('seo')->type('brand_list')->param(array('name' => $brand_info['brand_name']))->show();
         $this->_assign_seo($seo);
-        
-        return View::fetch($this->template_dir.'brand_goods');
-    }
 
+        return View::fetch($this->template_dir . 'brand_goods');
+    }
 }

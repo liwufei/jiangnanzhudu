@@ -1,39 +1,25 @@
 <?php
 
-/**
- * 发货
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerdeliver extends BaseSeller {
+class Sellerdeliver extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerdeliver.lang.php');
     }
 
     /**
      * 发货列表
-     *
      */
-    public function index() {
+    public function index()
+    {
         $order_model = model('order');
         $state = input('state');
         if (!in_array($state, array('deliverno', 'delivering', 'delivered'))) {
@@ -44,7 +30,6 @@ class Sellerdeliver extends BaseSeller {
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
         $condition[] = array('order_state', '=', $order_state);
-
 
         $buyer_name = input('buyer_name');
         if ($buyer_name != '') {
@@ -101,7 +86,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 批量发货
      */
-    public function batch_send() {
+    public function batch_send()
+    {
         $order_id = ds_delete_param(input('param.order_id'));
         $order_model = model('order');
         $daddress_model = model('daddress');
@@ -180,17 +166,17 @@ class Sellerdeliver extends BaseSeller {
                     if (count($area_array2) < 3) {
                         ds_json_encode(10001, '发货地区必须选到3级');
                     }
-                    if(in_array($area_array1[0],['北京市','天津市','上海市','重庆市'])){
-                        $area_array1[1]=$area_array1[0];
-                        $area_array1[0]=str_replace('市','',$area_array1[0]);
+                    if (in_array($area_array1[0], ['北京市', '天津市', '上海市', '重庆市'])) {
+                        $area_array1[1] = $area_array1[0];
+                        $area_array1[0] = str_replace('市', '', $area_array1[0]);
                     }
-                    if(in_array($area_array2[0],['北京市','天津市','上海市','重庆市'])){
-                        $area_array2[1]=$area_array2[0];
-                        $area_array2[0]=str_replace('市','',$area_array2[0]);
+                    if (in_array($area_array2[0], ['北京市', '天津市', '上海市', '重庆市'])) {
+                        $area_array2[1] = $area_array2[0];
+                        $area_array2[0] = str_replace('市', '', $area_array2[0]);
                     }
                     $goods_count = Db::name('ordergoods')->where(array(array('order_id', '=', $order_info['order_id'])))->count();
                     $requestData = array(
-                        'MemberID' => (String)$this->store_info['store_id'],
+                        'MemberID' => (string)$this->store_info['store_id'],
                         'CustomerName' => $expresscf_kdn_config_info['expresscf_kdn_config_customer_name'],
                         'CustomerPwd' => $expresscf_kdn_config_info['expresscf_kdn_config_customer_pwd'],
                         'SendSite' => $expresscf_kdn_config_info['expresscf_kdn_config_send_site'],
@@ -271,7 +257,7 @@ class Sellerdeliver extends BaseSeller {
                         if (!in_array($v['express_id'], $my_express_list))
                             unset($express_list[$k]);
                     }
-                }else {
+                } else {
                     $express_list = array();
                 }
                 View::assign('my_express_list', array_values($express_list));
@@ -285,7 +271,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 发货
      */
-    public function send() {
+    public function send()
+    {
         $order_id = input('param.order_id');
         if ($order_id <= 0) {
             ds_json_encode(10001, lang('param_error'));
@@ -304,16 +291,16 @@ class Sellerdeliver extends BaseSeller {
         $daddress_model = model('daddress');
         $daddress_info = array();
         if ($order_info['extend_order_common']['daddress_id'] > 0) {
-            $condition=array();
-            $condition[]=array('store_id', '=', session('store_id'));
-            $condition[]=array('daddress_id', '=', $order_info['extend_order_common']['daddress_id']);
+            $condition = array();
+            $condition[] = array('store_id', '=', session('store_id'));
+            $condition[] = array('daddress_id', '=', $order_info['extend_order_common']['daddress_id']);
             $daddress_info = $daddress_model->getAddressInfo($condition);
         }
         if (empty($daddress_info)) {
             //取默认地址
-            $condition=array();
-            $condition[]=array('store_id', '=', session('store_id'));
-            $condition[]=array('daddress_isdefault', '=', 1);
+            $condition = array();
+            $condition[] = array('store_id', '=', session('store_id'));
+            $condition[] = array('daddress_isdefault', '=', 1);
             $daddress_info = $daddress_model->getAddressInfo($condition);
         }
         if (!request()->isPost()) {
@@ -377,17 +364,17 @@ class Sellerdeliver extends BaseSeller {
                 if (count($area_array2) < 3) {
                     ds_json_encode(10001, '发货地区必须选到3级');
                 }
-                if(in_array($area_array1[0],['北京市','天津市','上海市','重庆市'])){
-                    $area_array1[1]=$area_array1[0];
-                    $area_array1[0]=str_replace('市','',$area_array1[0]);
+                if (in_array($area_array1[0], ['北京市', '天津市', '上海市', '重庆市'])) {
+                    $area_array1[1] = $area_array1[0];
+                    $area_array1[0] = str_replace('市', '', $area_array1[0]);
                 }
-                if(in_array($area_array2[0],['北京市','天津市','上海市','重庆市'])){
-                    $area_array2[1]=$area_array2[0];
-                    $area_array2[0]=str_replace('市','',$area_array2[0]);
+                if (in_array($area_array2[0], ['北京市', '天津市', '上海市', '重庆市'])) {
+                    $area_array2[1] = $area_array2[0];
+                    $area_array2[0] = str_replace('市', '', $area_array2[0]);
                 }
                 $goods_count = Db::name('ordergoods')->where(array(array('order_id', '=', $order_info['order_id'])))->count();
                 $requestData = array(
-                    'MemberID' => (String)$this->store_info['store_id'],
+                    'MemberID' => (string)$this->store_info['store_id'],
                     'CustomerName' => $expresscf_kdn_config_info['expresscf_kdn_config_customer_name'],
                     'CustomerPwd' => $expresscf_kdn_config_info['expresscf_kdn_config_customer_pwd'],
                     'SendSite' => $expresscf_kdn_config_info['expresscf_kdn_config_send_site'],
@@ -451,7 +438,8 @@ class Sellerdeliver extends BaseSeller {
      * 编辑收货地址
      * @return boolean
      */
-    public function buyer_address_edit() {
+    public function buyer_address_edit()
+    {
         $order_id = input('param.order_id');
         if ($order_id <= 0) {
             return false;
@@ -472,7 +460,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 收货地址保存
      */
-    public function buyer_address_save() {
+    public function buyer_address_save()
+    {
         $order_model = model('order');
         $data = array();
         $data['reciver_name'] = input('post.reciver_name');
@@ -491,7 +480,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 组合reciver_info
      */
-    private function _get_reciver_info() {
+    private function _get_reciver_info()
+    {
         $reciver_info = array(
             'address' => input('post.reciver_area') . ' ' . input('post.reciver_street'),
             'phone' => trim(input('post.reciver_mob_phone') . ',' . input('post.reciver_tel_phone'), ','),
@@ -508,7 +498,8 @@ class Sellerdeliver extends BaseSeller {
      * 选择发货地址
      * @return boolean
      */
-    public function send_address_select() {
+    public function send_address_select()
+    {
         $address_list = model('daddress')->getAddressList(array('store_id' => session('store_id')));
         View::assign('address_list', $address_list);
         View::assign('order_id', input('param.order_id'));
@@ -518,7 +509,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 保存发货地址修改
      */
-    public function send_address_save() {
+    public function send_address_save()
+    {
         $result = $this->_edit_order_daddress(input('post.daddress_id'), input('post.order_id'));
         if ($result >= 0) {
             echo 'true';
@@ -530,7 +522,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 修改发货地址
      */
-    private function _edit_order_daddress($daddress_id, $order_id) {
+    private function _edit_order_daddress($daddress_id, $order_id)
+    {
         $order_model = model('order');
         $data = array();
         $data['daddress_id'] = intval($daddress_id);
@@ -543,7 +536,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 物流跟踪
      */
-    public function search_deliver() {
+    public function search_deliver()
+    {
         $order_sn = input('param.order_sn');
         if (!is_numeric($order_sn)) {
             $this->error(lang('param_error'));
@@ -580,7 +574,8 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 延迟收货
      */
-    public function delay_receive() {
+    public function delay_receive()
+    {
         $order_id = input('param.order_id');
         $order_model = model('order');
         $condition = array();
@@ -614,10 +609,11 @@ class Sellerdeliver extends BaseSeller {
     /**
      * 从第三方取快递信息
      */
-    public function get_express() {
+    public function get_express()
+    {
         $result = model('express')->queryExpress(input('param.express_code'), input('param.shipping_code'), input('param.phone'));
         $output = array();
-        foreach($result as $k => $v){
+        foreach ($result as $k => $v) {
             $output[] = '<li>' . $v['trace_time'] . '&nbsp;&nbsp;' . $v['trace_desc'] . '</li>';
         }
         echo json_encode($output);
@@ -630,7 +626,8 @@ class Sellerdeliver extends BaseSeller {
      * @param string 	$name	当前导航的name
      * @return
      */
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         $menu_array = array();
         $menu_type = request()->action();
         switch ($menu_type) {
@@ -652,5 +649,4 @@ class Sellerdeliver extends BaseSeller {
         }
         return $menu_array;
     }
-
 }

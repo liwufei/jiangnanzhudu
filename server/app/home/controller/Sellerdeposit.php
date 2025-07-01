@@ -1,9 +1,5 @@
 <?php
 
-/**
- * 预存款管理
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
@@ -12,21 +8,11 @@ use app\common\model\Storedepositlog;
 use app\common\model\Storemoneylog;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerdeposit extends BaseSeller {
+class Sellerdeposit extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerdeposit.lang.php');
     }
@@ -34,9 +20,9 @@ class Sellerdeposit extends BaseSeller {
     /**
      * 预存款变更日志
      */
-    public function index() {
+    public function index()
+    {
         $condition = array(array('store_id', '=', session('store_id')));
-
 
         $query_start_date = input('param.query_start_date');
         $query_end_date = input('param.query_end_date');
@@ -68,14 +54,14 @@ class Sellerdeposit extends BaseSeller {
         return View::fetch($this->template_dir . 'index');
     }
 
-    public function recharge_add() {
+    public function recharge_add()
+    {
         $storedepositlog_model = model('storedepositlog');
         if (request()->isPost()) {
             $pdc_amount = abs(floatval(input('post.pdc_amount')));
-            
-            $this->validate(array('pdc_amount'=>$pdc_amount), 'app\common\validate\Singlefield.pdc_amount');
-            
-            
+
+            $this->validate(array('pdc_amount' => $pdc_amount), 'app\common\validate\Singlefield.pdc_amount');
+
             Db::startTrans();
             try {
                 $data = array(
@@ -118,7 +104,8 @@ class Sellerdeposit extends BaseSeller {
     /**
      * 申请提现
      */
-    public function withdraw_add() {
+    public function withdraw_add()
+    {
         $store_info = Db::name('store')->where(array('store_id' => session('store_id')))->field('store_avaliable_deposit,store_freeze_deposit,store_payable_deposit')->find();
         if (request()->isPost()) {
             $data = [
@@ -139,9 +126,8 @@ class Sellerdeposit extends BaseSeller {
             $data['storedepositlog_avaliable_deposit'] = -$pdc_amount;
             $data['storedepositlog_freeze_deposit'] = $pdc_amount;
 
-
             $data['storedepositlog_desc'] = lang('sellerdeposit_apply_withdraw') . lang('sellerdeposit_avaliable_money');
-            
+
             Db::startTrans();
             try {
                 $storedepositlog_model->changeStoredeposit($data);
@@ -164,16 +150,16 @@ class Sellerdeposit extends BaseSeller {
     /**
      * 提现列表
      */
-    public function withdraw_list() {
+    public function withdraw_list()
+    {
         $condition = array(
             array('store_id', '=', session('store_id')),
             array('storedepositlog_type', 'in', [Storedepositlog::TYPE_WITHDRAW, Storedepositlog::TYPE_RECHARGE]),
         );
 
-
         $paystate_search = input('param.paystate_search');
         if (isset($paystate_search) && $paystate_search !== '') {
-            $condition[] = array('storedepositlog_state','=',intval($paystate_search));
+            $condition[] = array('storedepositlog_state', '=', intval($paystate_search));
         }
 
         $storedepositlog_model = model('storedepositlog');
@@ -182,8 +168,7 @@ class Sellerdeposit extends BaseSeller {
         View::assign('withdraw_list', $withdraw_list);
 
         /* 设置买家当前菜单 */
-        $this->setSellerCurMenu('seller_deposit');
-        ;
+        $this->setSellerCurMenu('seller_deposit');;
         /* 设置买家当前栏目 */
         $this->setSellerCurItem('withdraw_list');
         $store_info = Db::name('store')->where(array('store_id' => session('store_id')))->field('store_avaliable_deposit,store_freeze_deposit,store_payable_deposit')->find();
@@ -192,9 +177,10 @@ class Sellerdeposit extends BaseSeller {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'index',
@@ -210,5 +196,4 @@ class Sellerdeposit extends BaseSeller {
 
         return $item_list;
     }
-
 }

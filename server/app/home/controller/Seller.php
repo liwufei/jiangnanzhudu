@@ -1,33 +1,24 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Seller extends BaseSeller {
+class Seller extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/seller.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/seller.lang.php');
     }
 
     /**
      * 商户中心首页
-     *
      */
-    public function index() {
+    public function index()
+    {
         // 店铺信息
         $store_info = $this->store_info;
         $store_info['reopen_tip'] = FALSE;
@@ -50,24 +41,24 @@ class Seller extends BaseSeller {
         // 商家帮助
         $help_model = model('help');
         $condition = array();
-        $condition[]=array('helptype_show','=','1'); //是否显示,0为否,1为是
+        $condition[] = array('helptype_show', '=', '1'); //是否显示,0为否,1为是
         $help_list = $help_model->getStoreHelptypeList($condition, '', 6);
         View::assign('help_list', $help_list);
 
         // 销售情况统计
         $field = ' COUNT(*) as ordernum,SUM(order_amount) as orderamount ';
         $where = array();
-        $where[]=array('store_id','=',session('store_id'));
-        $where[]=array('order_isvalid','=',1); //计入统计的有效订单
+        $where[] = array('store_id', '=', session('store_id'));
+        $where[] = array('order_isvalid', '=', 1); //计入统计的有效订单
         // 昨日销量
-        $where[] = array('order_add_time','between', array(strtotime(date('Y-m-d', (TIMESTAMP - 3600 * 24))), strtotime(date('Y-m-d', TIMESTAMP)) - 1));
+        $where[] = array('order_add_time', 'between', array(strtotime(date('Y-m-d', (TIMESTAMP - 3600 * 24))), strtotime(date('Y-m-d', TIMESTAMP)) - 1));
         $daily_sales = model('stat')->getoneByStatorder($where, $field);
         View::assign('daily_sales', $daily_sales);
         $where = array();
-        $where[]=array('store_id','=',session('store_id'));
-        $where[]=array('order_isvalid','=',1); //计入统计的有效订单
+        $where[] = array('store_id', '=', session('store_id'));
+        $where[] = array('order_isvalid', '=', 1); //计入统计的有效订单
         // 月销量
-        $where[] = array('order_add_time','>', strtotime(date('Y-m', TIMESTAMP)));
+        $where[] = array('order_add_time', '>', strtotime(date('Y-m', TIMESTAMP)));
         $monthly_sales = model('stat')->getoneByStatorder($where, $field);
         View::assign('monthly_sales', $monthly_sales);
         unset($field, $where);
@@ -77,59 +68,57 @@ class Seller extends BaseSeller {
         $stime = strtotime(date('Y-m-d', (TIMESTAMP - 3600 * 24))) - (86400 * 29); //30天前
         $etime = strtotime(date('Y-m-d', TIMESTAMP)) - 1; //昨天23:59
         $where = array();
-        $where[]=array('store_id','=',session('store_id'));
-        $where[]=array('order_isvalid','=',1); //计入统计的有效订单
-        $where[] = array('order_add_time','between', array($stime, $etime));
+        $where[] = array('store_id', '=', session('store_id'));
+        $where[] = array('order_isvalid', '=', 1); //计入统计的有效订单
+        $where[] = array('order_add_time', 'between', array($stime, $etime));
         $field = ' goods_id,goods_name,SUM(goods_num) as goodsnum,goods_image ';
         $orderby = 'goodsnum desc,goods_id';
         $goods_list = model('stat')->statByStatordergoods($where, $field, 0, 8, $orderby, 'goods_id');
         unset($stime, $etime, $where, $field, $orderby);
         View::assign('goods_list', $goods_list);
-        
-            
-            if (config('ds_config.groupbuy_allow') == 1) {
-                // 抢购套餐
-                $groupquota_info = model('groupbuyquota')->getGroupbuyquotaCurrent(session('store_id'));
-                View::assign('groupquota_info', $groupquota_info);
-            }
-            if (intval(config('ds_config.promotion_allow')) == 1) {
-                // 秒杀套餐
-                $xianshiquota_info = model('pxianshiquota')->getXianshiquotaCurrent(session('store_id'));
-                View::assign('xianshiquota_info', $xianshiquota_info);
-                // 满即送套餐
-                $mansongquota_info = model('pmansongquota')->getMansongquotaCurrent(session('store_id'));
-                View::assign('mansongquota_info', $mansongquota_info);
-                // 优惠套装套餐
-                $binglingquota_info = model('pbundling')->getBundlingQuotaInfoCurrent(session('store_id'));
-                View::assign('binglingquota_info', $binglingquota_info);
-                // 推荐展位套餐
-                $boothquota_info = model('pbooth')->getBoothquotaInfoCurrent(session('store_id'));
-                View::assign('boothquota_info', $boothquota_info);
-            }
-            if (config('ds_config.voucher_allow') == 1) {
-                $voucherquota_info = model('voucher')->getVoucherquotaCurrent(session('store_id'));
-                View::assign('voucherquota_info', $voucherquota_info);
-            }
+
+        if (config('ds_config.groupbuy_allow') == 1) {
+            // 抢购套餐
+            $groupquota_info = model('groupbuyquota')->getGroupbuyquotaCurrent(session('store_id'));
+            View::assign('groupquota_info', $groupquota_info);
+        }
+        if (intval(config('ds_config.promotion_allow')) == 1) {
+            // 秒杀套餐
+            $xianshiquota_info = model('pxianshiquota')->getXianshiquotaCurrent(session('store_id'));
+            View::assign('xianshiquota_info', $xianshiquota_info);
+            // 满即送套餐
+            $mansongquota_info = model('pmansongquota')->getMansongquotaCurrent(session('store_id'));
+            View::assign('mansongquota_info', $mansongquota_info);
+            // 优惠套装套餐
+            $binglingquota_info = model('pbundling')->getBundlingQuotaInfoCurrent(session('store_id'));
+            View::assign('binglingquota_info', $binglingquota_info);
+            // 推荐展位套餐
+            $boothquota_info = model('pbooth')->getBoothquotaInfoCurrent(session('store_id'));
+            View::assign('boothquota_info', $boothquota_info);
+        }
+        if (config('ds_config.voucher_allow') == 1) {
+            $voucherquota_info = model('voucher')->getVoucherquotaCurrent(session('store_id'));
+            View::assign('voucherquota_info', $voucherquota_info);
+        }
         $phone_array = explode(',', config('ds_config.site_phone'));
         View::assign('phone_array', $phone_array);
 
         View::assign('menu_sign', 'index');
 
-
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('seller_index');
         /* 设置卖家当前栏目 */
         $this->setSellerCurItem();
-        return View::fetch($this->template_dir.'index');
+        return View::fetch($this->template_dir . 'index');
     }
 
     /**
      * 异步取得卖家统计类信息
-     *
      */
-    public function statistics() {
-//        $add_time_to = strtotime(date("Y-m-d") + 60 * 60 * 24);   //当前日期 ,从零点来时
-//        $add_time_from = strtotime(date("Y-m-d", (strtotime(date("Y-m-d")) - 60 * 60 * 24 * 30)));   //30天前
+    public function statistics()
+    {
+        // $add_time_to = strtotime(date("Y-m-d") + 60 * 60 * 24);   //当前日期 ,从零点来时
+        // $add_time_from = strtotime(date("Y-m-d", (strtotime(date("Y-m-d")) - 60 * 60 * 24 * 30)));   //30天前
         $goods_online = 0;      // 出售中商品
         $goods_waitverify = 0;  // 等待审核
         $goods_verifyfail = 0;  // 审核失败
@@ -147,17 +136,17 @@ class Seller extends BaseSeller {
         // 全部商品数
         $goodscount = $goods_model->getGoodsCommonCount(array('store_id' => session('store_id')));
         // 出售中的商品
-        $goods_online = $goods_model->getGoodsCommonOnlineCount(array(array('store_id' ,'=', session('store_id'))));
+        $goods_online = $goods_model->getGoodsCommonOnlineCount(array(array('store_id', '=', session('store_id'))));
         if (config('ds_config.goods_verify')) {
             // 等待审核的商品
-            $goods_waitverify = $goods_model->getGoodsCommonWaitVerifyCount(array(array('store_id' ,'=', session('store_id'))));
+            $goods_waitverify = $goods_model->getGoodsCommonWaitVerifyCount(array(array('store_id', '=', session('store_id'))));
             // 审核失败的商品
-            $goods_verifyfail = $goods_model->getGoodsCommonVerifyFailCount(array(array('store_id' ,'=', session('store_id'))));
+            $goods_verifyfail = $goods_model->getGoodsCommonVerifyFailCount(array(array('store_id', '=', session('store_id'))));
         }
         // 仓库待上架的商品
-        $goods_offline = $goods_model->getGoodsCommonOfflineCount(array(array('store_id' ,'=', session('store_id'))));
+        $goods_offline = $goods_model->getGoodsCommonOfflineCount(array(array('store_id', '=', session('store_id'))));
         // 违规下架的商品
-        $goods_lockup = $goods_model->getGoodsCommonLockUpCount(array(array('store_id' ,'=', session('store_id'))));
+        $goods_lockup = $goods_model->getGoodsCommonLockUpCount(array(array('store_id', '=', session('store_id'))));
         // 等待回复商品咨询
         $consult = model('consult')->getConsultCount(array('store_id' => session('store_id'), 'consult_reply' => ''));
 
@@ -175,23 +164,22 @@ class Seller extends BaseSeller {
         $refundreturn_model = model('refundreturn');
         // 售后退款
         $condition = array();
-        $condition[]=array('store_id','=',session('store_id'));
-        $condition[]=array('refund_type','=',1);
-        $condition[]=array('refundreturn_admin_state','<', 3);
+        $condition[] = array('store_id', '=', session('store_id'));
+        $condition[] = array('refund_type', '=', 1);
+        $condition[] = array('refundreturn_admin_state', '<', 3);
         $refund = $refundreturn_model->getRefundreturnCount($condition);
         // 售后退货
         $condition = array();
-        $condition[]=array('store_id','=',session('store_id'));
-        $condition[]=array('refund_type','=',2);
-        $condition[]=array('refundreturn_admin_state','<', 3);
+        $condition[] = array('store_id', '=', session('store_id'));
+        $condition[] = array('refund_type', '=', 2);
+        $condition[] = array('refundreturn_admin_state', '<', 3);
         $return = $refundreturn_model->getRefundreturnCount($condition);
 
         $condition = array();
-        $condition[]=array('accused_id','=',session('store_id'));
-        $condition[] = array('complain_state','between', array(10, 90));
-        $complain_mod=model('complain');
+        $condition[] = array('accused_id', '=', session('store_id'));
+        $condition[] = array('complain_state', 'between', array(10, 90));
+        $complain_mod = model('complain');
         $complain = $complain_mod->getComplainCount($condition);
-
 
         //统计数组
         $statistics = array(
@@ -213,5 +201,3 @@ class Seller extends BaseSeller {
         exit(json_encode($statistics));
     }
 }
-
-?>

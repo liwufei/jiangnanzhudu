@@ -1,33 +1,23 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Cart extends BaseMember {
+class Cart extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/cart.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/cart.lang.php');
     }
-    
-    
+
     function index()
     {
         $cart_model = model('cart');
-        $logic_buy_1 = model('buy_1','logic');
+        $logic_buy_1 = model('buy_1', 'logic');
 
         //购物车列表
         $cart_list = $cart_model->getCartList('db', array('buyer_id' => session('member_id')));
@@ -57,27 +47,26 @@ class Cart extends BaseMember {
 
         //标识 购买流程执行第几步
         View::assign('buy_step', 'step1');
-        return View::fetch(empty($cart_list) ? $this->template_dir .'cart_empty' : $this->template_dir .'cart');
+        return View::fetch(empty($cart_list) ? $this->template_dir . 'cart_empty' : $this->template_dir . 'cart');
     }
-
 
     /**
      * 异步查询购物车
      */
-    public function ajax_load() {
-
-            $cart_map = array(
-                'buyer_id' => session('member_id'),
-            );
-            $cart_mod=model('cart');
-            $cart_list = $cart_mod->getCartList('db',$cart_map);
+    public function ajax_load()
+    {
+        $cart_map = array(
+            'buyer_id' => session('member_id'),
+        );
+        $cart_mod = model('cart');
+        $cart_list = $cart_mod->getCartList('db', $cart_map);
 
         $cart_array = array();
         $cart_all_price = 0;
         $cart_goods_num = 0;
         if (!empty($cart_list)) {
             foreach ($cart_list as $k => $cart) {
-                $cart_array['list'][$k]['cart_id'] = isset($cart['cart_id'])?$cart['cart_id']:$cart['goods_id'];
+                $cart_array['list'][$k]['cart_id'] = isset($cart['cart_id']) ? $cart['cart_id'] : $cart['goods_id'];
                 $cart_array['list'][$k]['goods_id'] = $cart['goods_id'];
                 $cart_array['list'][$k]['goods_name'] = $cart['goods_name'];
                 $cart_array['list'][$k]['goods_price'] = $cart['goods_price'];
@@ -85,17 +74,17 @@ class Cart extends BaseMember {
                 $cart_array['list'][$k]['goods_num'] = $cart['goods_num'];
                 $cart_array['list'][$k]['goods_url'] = (string)url('Goods/index', ['goods_id' => $cart['goods_id']]);
                 $cart_all_price += $cart['goods_price'] * $cart['goods_num'];
-                $cart_goods_num ++;
+                $cart_goods_num++;
             }
         }
-        $cart_array['cart_all_price'] = number_format($cart_all_price,'2');
+        $cart_array['cart_all_price'] = number_format($cart_all_price, '2');
         $cart_array['cart_goods_num'] = $cart_goods_num;
         if (input('param.type') == 'html') {
-            View::assign('cart_list',$cart_array);
-            echo View::fetch($this->template_dir.'cart_mini');
-        }else{
-        $json_data = json_encode($cart_array);
-        exit($json_data);
+            View::assign('cart_list', $cart_array);
+            echo View::fetch($this->template_dir . 'cart_mini');
+        } else {
+            $json_data = json_encode($cart_array);
+            exit($json_data);
         }
     }
 
@@ -103,15 +92,15 @@ class Cart extends BaseMember {
      * 加入购物车，登录后存入购物车表
      * 存入COOKIE，由于COOKIE长度限制，最多保存5个商品
      * 未登录不能将优惠套装商品加入购物车，登录前保存的信息以goods_id为下标
-     *
      */
-    function add() {
+    function add()
+    {
         $goods_model = model('goods');
-        $logic_buy_1 =  model('buy_1','logic');
+        $logic_buy_1 =  model('buy_1', 'logic');
         $goods_id = intval(input('param.goods_id'));
         $quantity = intval(input('param.quantity'));
         $bl_id = intval(input('param.bl_id'));
-        if (is_numeric($goods_id) && $goods_id>0) {
+        if (is_numeric($goods_id) && $goods_id > 0) {
             //商品加入购物车(默认)
             if ($goods_id <= 0)
                 return;
@@ -122,15 +111,15 @@ class Cart extends BaseMember {
 
             //批发
             $logic_buy_1->getWholesaleInfo($goods_info, $quantity);
-            
+
             //秒杀
             $logic_buy_1->getXianshiInfo($goods_info, $quantity);
-            
+
             //会员等级折扣
             $logic_buy_1->getMgdiscountInfo($goods_info);
 
             $this->_check_goods($goods_info, $quantity);
-        } elseif (is_numeric($bl_id)&& $bl_id>0 ) {
+        } elseif (is_numeric($bl_id) && $bl_id > 0) {
             //优惠套装加入购物车(单套)
             if (!session('member_id')) {
                 exit(json_encode(array('msg' => lang('please_login_first'))));
@@ -171,16 +160,15 @@ class Cart extends BaseMember {
             $quantity = 1;
         }
 
-   
-            $save_type = 'db';
-            $goods_info['buyer_id'] = session('member_id');
-       
+        $save_type = 'db';
+        $goods_info['buyer_id'] = session('member_id');
+
         $cart_model = model('cart');
         $insert = $cart_model->addCart($goods_info, $save_type, $quantity);
         if ($insert) {
             $data = array('state' => 'true', 'num' => $cart_model->cart_goods_num, 'amount' => ds_price_format($cart_model->cart_all_price));
         } else {
-            $data = array('state' => 'false','message'=>$cart_model->error_message);
+            $data = array('state' => 'false', 'message' => $cart_model->error_message);
         }
         exit(json_encode($data));
     }
@@ -188,12 +176,13 @@ class Cart extends BaseMember {
     /**
      * 推荐组合加入购物车
      */
-    public function add_comb() {
+    public function add_comb()
+    {
         if (!preg_match('/^[\d|]+$/', input('get.goods_ids'))) {
             exit(json_encode(array('state' => 'false')));
         }
 
-        $logic_buy_1 =  model('buy_1','logic');
+        $logic_buy_1 =  model('buy_1', 'logic');
 
         if (!session('member_id')) {
             exit(json_encode(array('msg' => lang('please_login_first'))));
@@ -204,10 +193,10 @@ class Cart extends BaseMember {
         $goods_model = model('goods');
         $goods_list = $goods_model->getGoodsOnlineListAndPromotionByIdArray($goods_id_array);
 
-        if(empty($goods_list)){
+        if (empty($goods_list)) {
             exit(json_encode(array('state' => 'false')));
         }
-        
+
         foreach ($goods_list as $goods) {
             $this->_check_goods($goods, 1);
         }
@@ -224,10 +213,10 @@ class Cart extends BaseMember {
             $cart_info['goods_image'] = $goods_info['goods_image'];
             $cart_info['store_name'] = $goods_info['store_name'];
             $quantity = 1;
-      
-                $save_type = 'db';
-                $cart_info['buyer_id'] = session('member_id');
-         
+
+            $save_type = 'db';
+            $cart_info['buyer_id'] = session('member_id');
+
             $insert = $cart_model->addCart($cart_info, $save_type, $quantity);
             if ($insert) {
                 //购物车商品种数记入cookie
@@ -246,7 +235,8 @@ class Cart extends BaseMember {
      * @param unknown $goods
      * @param number $quantity
      */
-    private function _check_goods($goods_info, $quantity) {
+    private function _check_goods($goods_info, $quantity)
+    {
         if (empty($quantity)) {
             exit(json_encode(array('msg' => lang('param_error'))));
         }
@@ -267,13 +257,13 @@ class Cart extends BaseMember {
         if ($goods_info['is_virtual'] || $goods_info['is_goodsfcode']) {
             exit(json_encode(array('msg' => lang('please_purchase_directly'))));
         }
-
     }
 
     /**
      * 购物车更新商品数量
      */
-    public function update() {
+    public function update()
+    {
         $cart_id = intval(abs(input('get.cart_id')));
         $quantity = intval(abs(input('get.quantity')));
 
@@ -283,7 +273,7 @@ class Cart extends BaseMember {
 
         $cart_model = model('cart');
         $goods_model = model('goods');
-        $logic_buy_1 =  model('buy_1','logic');
+        $logic_buy_1 =  model('buy_1', 'logic');
 
         //存放返回信息
         $return = array();
@@ -299,17 +289,17 @@ class Cart extends BaseMember {
                 $return['msg'] = lang('merchandise_off_shelves');
                 $return['subtotal'] = 0;
                 $condition = array();
-                $condition[] = array('buyer_id','=',session('member_id'));
-                $condition[] = array('cart_id','in',array($cart_id));
-                model('cart')->delCart('db', $condition,session('member_id'));
+                $condition[] = array('buyer_id', '=', session('member_id'));
+                $condition[] = array('cart_id', 'in', array($cart_id));
+                model('cart')->delCart('db', $condition, session('member_id'));
                 exit(json_encode($return));
             }
-            
-//            //抢购
-//            $logic_buy_1->getGroupbuyInfo($goods_info, $quantity);
-//            //秒杀
-//            $logic_buy_1->getXianshiInfo($goods_info, $quantity);
-            
+
+            //抢购
+            // $logic_buy_1->getGroupbuyInfo($goods_info, $quantity);
+            //秒杀
+            // $logic_buy_1->getXianshiInfo($goods_info, $quantity);
+
             $quantity = $goods_info['goods_num'];
 
             if (intval($goods_info['goods_storage']) < $quantity) {
@@ -318,7 +308,7 @@ class Cart extends BaseMember {
                 $return['goods_num'] = $goods_info['goods_num'];
                 $return['goods_price'] = $goods_info['goods_price'];
                 $return['subtotal'] = $goods_info['goods_price'] * $quantity;
-                $cart_model->editCart(array('goods_num' => $goods_info['goods_storage']), array('cart_id' => $cart_id, 'buyer_id' => session('member_id')),session('member_id'));
+                $cart_model->editCart(array('goods_num' => $goods_info['goods_storage']), array('cart_id' => $cart_id, 'buyer_id' => session('member_id')), session('member_id'));
                 exit(json_encode($return));
             }
         } else {
@@ -338,9 +328,9 @@ class Cart extends BaseMember {
                 $return['msg'] = lang('wheatsuit_no_longer_valid');
                 $return['subtotal'] = 0;
                 $condition = array();
-                $condition[] = array('buyer_id','=',session('member_id'));
-                $condition[] = array('cart_id','in',array($cart_id));
-                model('cart')->delCart('db', $condition,session('member_id'));
+                $condition[] = array('buyer_id', '=', session('member_id'));
+                $condition[] = array('cart_id', 'in', array($cart_id));
+                model('cart')->delCart('db', $condition, session('member_id'));
                 exit(json_encode($return));
             }
 
@@ -352,7 +342,7 @@ class Cart extends BaseMember {
                     $return['goods_num'] = $goods_info['goods_storage'];
                     $return['goods_price'] = $cart_info['goods_price'];
                     $return['subtotal'] = $cart_info['goods_price'] * $quantity;
-                    $cart_model->editCart(array('goods_num' => $goods_info['goods_storage']), array('cart_id' => $cart_id, 'buyer_id' => session('member_id')),session('member_id'));
+                    $cart_model->editCart(array('goods_num' => $goods_info['goods_storage']), array('cart_id' => $cart_id, 'buyer_id' => session('member_id')), session('member_id'));
                     exit(json_encode($return));
                     break;
                 }
@@ -363,7 +353,7 @@ class Cart extends BaseMember {
         $data = array();
         $data['goods_num'] = $quantity;
         $data['goods_price'] = $goods_info['goods_price'];
-        $update = $cart_model->editCart($data, array('cart_id' => $cart_id, 'buyer_id' => session('member_id')),session('member_id'));
+        $update = $cart_model->editCart($data, array('cart_id' => $cart_id, 'buyer_id' => session('member_id')), session('member_id'));
         if ($update) {
             $return = array();
             $return['state'] = 'true';
@@ -376,33 +366,32 @@ class Cart extends BaseMember {
         exit(json_encode($return));
     }
 
-
     /**
      * 购物车删除单个商品，未登录前使用cart_id即为goods_id
      */
-    public function del() {
+    public function del()
+    {
         $cart_id = intval(input('get.cart_id'));
         if ($cart_id < 0)
             return;
         $cart_model = model('cart');
         $data = array();
 
-            //登录状态下删除数据库内容
-            $delete = $cart_model->delCart('db', array('cart_id' => $cart_id, 'buyer_id' => session('member_id')),session('member_id'));
-            if ($delete) {
-                $data['state'] = 'true';
-                $data['quantity'] = $cart_model->cart_goods_num;
-                $data['amount'] = $cart_model->cart_all_price;
-            } else {
-                $data['msg'] = lang('cart_drop_del_fail');
-            }
+        //登录状态下删除数据库内容
+        $delete = $cart_model->delCart('db', array('cart_id' => $cart_id, 'buyer_id' => session('member_id')), session('member_id'));
+        if ($delete) {
+            $data['state'] = 'true';
+            $data['quantity'] = $cart_model->cart_goods_num;
+            $data['amount'] = $cart_model->cart_all_price;
+        } else {
+            $data['msg'] = lang('cart_drop_del_fail');
+        }
 
         cookie('cart_goods_num', $cart_model->cart_goods_num, 2 * 3600);
         $json_data = json_encode($data);
-//        if (isset($_GET['callback'])) {
-//            $json_data = $_GET['callback'] == '?' ? '(' . $json_data . ')' : $_GET['callback'] . "($json_data);";
-//        }
+        // if (isset($_GET['callback'])) {
+        //      $json_data = $_GET['callback'] == '?' ? '(' . $json_data . ')' : $_GET['callback'] . "($json_data);";
+        // }
         exit($json_data);
     }
-
 }

@@ -1,53 +1,39 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use app\BaseController;
 
-/*
- * 基类
- */
-
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
 class BaseHome extends BaseController
 {
-
     public function initialize()
     {
         parent::initialize();
         //自动加入配置
         $config_list = rkcache('config', true);
-        config($config_list,'ds_config');
-        $controller=request()->controller();
-        $action=request()->action();
-        if(!config('ds_config.site_state') && 
-                (!($controller=='Index' && $action=='josn_class') && 
-                !($controller=='Index' && $action=='json_area') && 
-                !($controller=='Index' && $action=='json_area_show') && 
-                !($controller=='Index' && $action=='getweekofmonth') && 
-                !($controller=='Payment' && $action=='allinpay_notify') && 
-                !($controller=='Payment' && $action=='unionpay_notify') && 
-                !($controller=='Payment' && $action=='wxpay_minipro_notify') && 
-                !($controller=='Payment' && $action=='wxpay_jsapi_notify') && 
-                !($controller=='Payment' && $action=='wxpay_h5_notify') && 
-                !($controller=='Payment' && $action=='wxpay_app_notify') && 
-                !($controller=='Payment' && $action=='alipay_notify') && 
-                !($controller=='Payment' && $action=='alipay_app_notify') && 
-                !($controller=='Payment' && $action=='alipay_h5_notify'))) {
+        config($config_list, 'ds_config');
+        $controller = request()->controller();
+        $action = request()->action();
+        if (
+            !config('ds_config.site_state') &&
+            (!($controller == 'Index' && $action == 'josn_class') &&
+                !($controller == 'Index' && $action == 'json_area') &&
+                !($controller == 'Index' && $action == 'json_area_show') &&
+                !($controller == 'Index' && $action == 'getweekofmonth') &&
+                !($controller == 'Payment' && $action == 'allinpay_notify') &&
+                !($controller == 'Payment' && $action == 'unionpay_notify') &&
+                !($controller == 'Payment' && $action == 'wxpay_minipro_notify') &&
+                !($controller == 'Payment' && $action == 'wxpay_jsapi_notify') &&
+                !($controller == 'Payment' && $action == 'wxpay_h5_notify') &&
+                !($controller == 'Payment' && $action == 'wxpay_app_notify') &&
+                !($controller == 'Payment' && $action == 'alipay_notify') &&
+                !($controller == 'Payment' && $action == 'alipay_app_notify') &&
+                !($controller == 'Payment' && $action == 'alipay_h5_notify'))
+        ) {
             echo '<div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">';
-            echo '<img src="'.ds_get_pic(ATTACH_COMMON,config('ds_config.site_logo')).'"/>';
-            echo '<div style="font-size:30px;font-weight:bold;padding-top:40px;color:#999;max-width:1200px;text-align:center;">'.(config('ds_config.closed_reason')?config('ds_config.closed_reason'):'站点已关闭').'</div>';
+            echo '<img src="' . ds_get_pic(ATTACH_COMMON, config('ds_config.site_logo')) . '"/>';
+            echo '<div style="font-size:30px;font-weight:bold;padding-top:40px;color:#999;max-width:1200px;text-align:center;">' . (config('ds_config.closed_reason') ? config('ds_config.closed_reason') : '站点已关闭') . '</div>';
             echo '</div>';
             exit;
         }
@@ -58,28 +44,27 @@ class BaseHome extends BaseController
         $prefix = 'home-adv';
         $result = rcache(21, $prefix);
         if (empty($result)) {
-            $condition=array();
-            $condition[]=['ap_id','=',21];
-            $condition[]=['adv_enabled','=',1];
-            $condition[]=['adv_startdate','<',strtotime(date('Y-m-d H:00:00'))];
-            $condition[]=['adv_enddate','>',strtotime(date('Y-m-d H:00:00'))];
-            $adv_list=model('adv')->getAdvList($condition,'',1,'adv_sort asc,adv_id asc');
-            if(!empty($adv_list)){
-                $result=$adv_list[0];
+            $condition = array();
+            $condition[] = ['ap_id', '=', 21];
+            $condition[] = ['adv_enabled', '=', 1];
+            $condition[] = ['adv_startdate', '<', strtotime(date('Y-m-d H:00:00'))];
+            $condition[] = ['adv_enddate', '>', strtotime(date('Y-m-d H:00:00'))];
+            $adv_list = model('adv')->getAdvList($condition, '', 1, 'adv_sort asc,adv_id asc');
+            if (!empty($adv_list)) {
+                $result = $adv_list[0];
             }
             wcache(21, $result, $prefix, 3600);
         }
         View::assign('adv_top', $result);
-        
+
         View::assign('hot_search', @explode(',', config('ds_config.hot_search'))); //热门搜索
-        
+
         // 自定义导航
         View::assign('navs', $this->_get_navs());
         //获取所有分类
         View::assign('header_categories', $this->_get_header_categories());
     }
-    
-    
+
     //SEO 赋值
     function _assign_seo($seo)
     {
@@ -90,7 +75,6 @@ class BaseHome extends BaseController
 
     /**
      * 检查短消息数量
-     *
      */
     protected function checkMessage()
     {
@@ -100,8 +84,7 @@ class BaseHome extends BaseController
         $cookie_name = 'msgnewnum' . session('member_id');
         if (cookie($cookie_name) != null) {
             $countnum = intval(cookie($cookie_name));
-        }
-        else {
+        } else {
             $message_model = model('message');
             $countnum = $message_model->getNewMessageCount(session('member_id'));
             cookie($cookie_name, $countnum, 2 * 3600); //保存2小时
@@ -112,7 +95,9 @@ class BaseHome extends BaseController
     public function _get_navs()
     {
         $data = array(
-            'header' => array(), 'middle' => array(), 'footer' => array(),
+            'header' => array(),
+            'middle' => array(),
+            'footer' => array(),
         );
         $rows = rkcache('nav', true);
         foreach ($rows as $row) {
@@ -135,13 +120,11 @@ class BaseHome extends BaseController
     {
         if (cookie('cart_goods_num') != null) {
             $cart_num = intval(cookie('cart_goods_num'));
-        }
-        else {
+        } else {
             //已登录状态，存入数据库,未登录时，优先存入缓存，否则存入COOKIE
             if (session('member_id')) {
                 $save_type = 'db';
-            }
-            else {
+            } else {
                 $save_type = 'cookie';
             }
             $cart_num = model('cart')->getCartNum($save_type, array('buyer_id' => session('member_id'))); //查询购物车商品种类
@@ -165,17 +148,15 @@ class BaseHome extends BaseController
                 $member_info = array_merge($member_info, $member_gradeinfo);
             }
         }
-        if ($is_return == true) {//返回会员信息
+        if ($is_return == true) { //返回会员信息
             return $member_info;
-        }
-        else {//输出会员信息
+        } else { //输出会员信息
             View::assign('member_info', $member_info);
         }
     }
 
     /**
      * 验证会员是否登录
-     *
      */
     protected function checkLogin()
     {
@@ -185,11 +166,10 @@ class BaseHome extends BaseController
                 die;
             }
             $ref_url = request_uri();
-            session('ref_url',$ref_url);
+            session('ref_url', $ref_url);
             if (input('get.inajax')) {
                 ds_show_dialog('', '', 'js', "login_dialog();", 200);
-            }
-            else {
+            } else {
                 @header("location: " . HOME_SITE_URL . "/Login/logon.html");
             }
             exit;
@@ -198,7 +178,6 @@ class BaseHome extends BaseController
 
     /**
      * 添加到任务队列
-     *
      * @param array $goods_array
      * @param boolean $ifdel 是否删除以原记录
      */
@@ -218,8 +197,7 @@ class BaseHome extends BaseController
                 $cron_model->delCron(implode(',', $where));
             }
             $cron_model->addCronAll($data);
-        }
-        else { // 单条插入
+        } else { // 单条插入
             // 删除原纪录
             if ($ifdel) {
                 $cron_model->delCron(array('cron_type' => $data['cron_type'], 'cron_value' => $data['cron_value']));
@@ -235,8 +213,7 @@ class BaseHome extends BaseController
         if (!empty($article)) {
             View::assign('show_article', $article['show_article']);
             View::assign('article_list', $article['article_list']);
-        }
-        else {
+        } else {
             $articleclass_model = model('articleclass');
             $article_model = model('article');
             $show_article = array(); //商城公告
@@ -247,9 +224,9 @@ class BaseHome extends BaseController
             $faq_limit = 5;
 
             $class_condition = array();
-            $class_condition[]=array('ac_id','<=',7);
+            $class_condition[] = array('ac_id', '<=', 7);
             $class_order = 'ac_sort asc';
-            $article_class = $articleclass_model->getArticleclassList($class_condition,$class_order);
+            $article_class = $articleclass_model->getArticleclassList($class_condition, $class_order);
 
             $class_list = array();
             if (!empty($article_class) && is_array($article_class)) {
@@ -265,15 +242,14 @@ class BaseHome extends BaseController
             $article_where = "article.article_show = '1' and (article_class.ac_id <= 7 or (article_class.ac_parent_id > 0 and article_class.ac_parent_id <= 7))";
             $article_field = 'article.article_id,article.ac_id,article.article_url,article.article_title,article.article_time,article_class.ac_name,article_class.ac_parent_id';
             $article_order = 'article_sort asc,article_time desc';
-            $article_array = $article_model->getJoinArticleList($article_where,300,$article_field,$article_order);
+            $article_array = $article_model->getJoinArticleList($article_where, 300, $article_field, $article_order);
             if (!empty($article_array) && is_array($article_array)) {
                 foreach ($article_array as $key => $val) {
                     $ac_id = $val['ac_id'];
                     $ac_parent_id = $val['ac_parent_id'];
-                    if ($ac_parent_id == 0) {//顶级分类
+                    if ($ac_parent_id == 0) { //顶级分类
                         $class_list[$ac_id]['list'][] = $val;
-                    }
-                    else {
+                    } else {
                         $class_list[$ac_parent_id]['list'][] = $val;
                     }
                 }
@@ -325,9 +301,6 @@ class BaseHome extends BaseController
         if (!$member_info['member_state']) {
             return false;
         }
-        $member_model->createSession($member_info,'login');
+        $member_model->createSession($member_info, 'login');
     }
-
 }
-
-?>

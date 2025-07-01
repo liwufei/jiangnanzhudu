@@ -1,63 +1,51 @@
 <?php
 
-/**
- * 买家
- */
-
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class BaseMember extends BaseHome {
+class BaseMember extends BaseHome
+{
 
     protected $member_info = array();   // 会员信息
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/basemember.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/basemember.lang.php');
         /*非登录状态*/
         if (!session('is_login')) {
-                $ref_url = request_uri();
-                if(!strpos($ref_url, '://')){
-                    $ref_url=str_replace('/index.php', '', BASE_SITE_URL).$ref_url;
-                }
-                session('ref_url',$ref_url);
-                $this->redirect(url('Login/login'));
-          
+            $ref_url = request_uri();
+            if (!strpos($ref_url, '://')) {
+                $ref_url = str_replace('/index.php', '', BASE_SITE_URL) . $ref_url;
+            }
+            session('ref_url', $ref_url);
+            $this->redirect(url('Login/login'));
         }
         //会员中心模板路径
         $this->template_dir = 'default/member/' . strtolower(request()->controller()) . '/';
         $this->member_info = $this->getMemberAndGradeInfo(true);
-        if($this->member_info['member_nickname'] != session('member_nickname')){
-            session('member_nickname',$this->member_info['member_nickname']);
+        if ($this->member_info['member_nickname'] != session('member_nickname')) {
+            session('member_nickname', $this->member_info['member_nickname']);
         }
         View::assign('member_info', $this->member_info);
     }
 
     /**
-     *    当前选中的栏目
+     * 前选中的栏目
      */
-    protected function setMemberCurItem($curitem = '') {
+    protected function setMemberCurItem($curitem = '')
+    {
         View::assign('member_item', $this->getMemberItemList());
         View::assign('curitem', $curitem);
     }
 
     /**
-     *    当前选中的子菜单
+     * 当前选中的子菜单
      */
-    protected function setMemberCurMenu($cursubmenu = '') {
+    protected function setMemberCurMenu($cursubmenu = '')
+    {
         $member_menu = $this->getMemberMenuList();
         View::assign('member_menu', $member_menu);
         $curmenu = '';
@@ -69,7 +57,7 @@ class BaseMember extends BaseHome {
                 }
             }
         }
-        
+
         // 面包屑
         $nav_link = array();
         $nav_link[] = array('title' => lang('homepage'), 'link' => HOME_SITE_URL);
@@ -80,9 +68,7 @@ class BaseMember extends BaseHome {
             $nav_link[] = array('title' => $nav);
         }
 
-
         View::assign('nav_link_list', $nav_link);
-
 
         //当前一级菜单
         View::assign('curmenu', $curmenu);
@@ -90,19 +76,19 @@ class BaseMember extends BaseHome {
         View::assign('cursubmenu', $cursubmenu);
     }
 
-    /*
+    /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-
-    protected function getMemberItemList() {
+    protected function getMemberItemList()
+    {
         return array();
     }
 
-    /*
+    /**
      * 获取卖家菜单列表
      */
-
-    private function getMemberMenuList() {
+    private function getMemberMenuList()
+    {
         $menu_list = array(
             'trade' =>
             array(
@@ -112,7 +98,7 @@ class BaseMember extends BaseHome {
                 'url' => (string)url('Memberorder/index'),
                 'submenu' => array(
                     array('name' => 'member_order', 'text' => lang('ds_real_order'), 'url' => (string)url('Memberorder/index'),),
-                    array('name' => 'member_vr_order', 'text' =>lang('ds_virtual_orders'), 'url' => (string)url('Membervrorder/index'),),
+                    array('name' => 'member_vr_order', 'text' => lang('ds_virtual_orders'), 'url' => (string)url('Membervrorder/index'),),
                     array('name' => 'member_arrivalnotice', 'text' => lang('ds_arrivalnotice'), 'url' => (string)url('MemberArrivalnotice/index'),),
                     array('name' => 'member_evaluate', 'text' => lang('ds_trading_evaluation'), 'url' => (string)url('Memberevaluate/index'),),
                     array('name' => 'member_pointorder', 'text' => lang('ds_member_pointorder'), 'url' => (string)url('Memberpointorder/index'),),
@@ -126,8 +112,8 @@ class BaseMember extends BaseHome {
                 'url' => (string)url('Memberinformation/index'),
                 'submenu' => array(
                     array('name' => 'member_information', 'text' => lang('ds_account_information'), 'url' => (string)url('Memberinformation/index'),),
-                    array('name' => 'member_security', 'text' =>lang('ds_account_security'), 'url' => (string)url('Membersecurity/index'),),
-                    array('name' => 'member_auth', 'text' =>lang('member_auth'), 'url' => (string)url('MemberAuth/index'),),
+                    array('name' => 'member_security', 'text' => lang('ds_account_security'), 'url' => (string)url('Membersecurity/index'),),
+                    array('name' => 'member_auth', 'text' => lang('member_auth'), 'url' => (string)url('MemberAuth/index'),),
                     array('name' => 'member_address', 'text' => lang('ds_member_path_address'), 'url' => (string)url('Memberaddress/index'),),
                     array('name' => 'member_bank', 'text' => lang('ds_member_path_bank'), 'url' => (string)url('Memberbank/index'),),
                     array('name' => 'member_invoice', 'text' => lang('ds_member_invoice'), 'url' => (string)url('Memberinvoice/index'),),
@@ -197,5 +183,3 @@ class BaseMember extends BaseHome {
         return $menu_list;
     }
 }
-
-?>

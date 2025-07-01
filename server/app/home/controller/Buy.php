@@ -1,47 +1,39 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Buy extends BaseMember {
+class Buy extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/buy.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/buy.lang.php');
         //验证该会员是否禁止购买
-        if(!session('is_buy')){
+        if (!session('is_buy')) {
             $this->error(lang('cart_buy_noallow'));
         }
-        if(config('ds_config.member_auth') && $this->member_info['member_auth_state']!=3){
-            $this->error(lang('cart_buy_noauth'),(string)url('MemberAuth/index'));
+        if (config('ds_config.member_auth') && $this->member_info['member_auth_state'] != 3) {
+            $this->error(lang('cart_buy_noauth'), (string)url('MemberAuth/index'));
         }
     }
 
-    public function buy_step1() {
-        if(empty(input('post.'))){
+    public function buy_step1()
+    {
+        if (empty(input('post.'))) {
             $this->error(lang('param_error'));
         }
         //虚拟商品购买分流
         $this->_buy_branch(input('post.'));
         $ifcart = input('post.ifcart');
 
-        $buy_logic = model('buy','logic');
+        $buy_logic = model('buy', 'logic');
         $result = $buy_logic->buyStep1(input('post.cart_id/a'), $ifcart, session('member_id'), session('store_id'));
-        
+
         if ($result['code'] != 'SUCCESS') {
             $this->error($result['msg']);
         } else {
@@ -58,13 +50,13 @@ class Buy extends BaseMember {
         //取得店铺优惠 - 满即送(赠品列表，店铺满送规则列表)
         View::assign('store_premiums_list', $result['store_premiums_list']);
         View::assign('store_mansong_rule_list', $result['store_mansong_rule_list']);
-        
+
         //返回门店数据
         View::assign('chaingoods_list', $result['chaingoods_list']);
 
         //返回店铺可用的代金券
         View::assign('store_voucher_list', $result['store_voucher_list']);
-        
+
         //返回平台可用的代金券
         View::assign('mall_voucher_list', $result['mall_voucher_list']);
 
@@ -80,7 +72,7 @@ class Buy extends BaseMember {
 
         //不提供增值税发票时抛出true(模板使用)
         View::assign('vat_deny', $result['vat_deny']);
-        
+
         //增值税发票哈希值(php验证使用)
         View::assign('vat_hash', $result['vat_hash']);
 
@@ -88,31 +80,32 @@ class Buy extends BaseMember {
         View::assign('inv_info', $result['inv_info']);
 
         //显示预存款、支付密码、充值卡
-        View::assign('available_pd_amount', isset($result['available_predeposit'])?$result['available_predeposit']:'');
+        View::assign('available_pd_amount', isset($result['available_predeposit']) ? $result['available_predeposit'] : '');
         View::assign('member_paypwd', $result['member_paypwd']);
-        View::assign('available_rcb_amount', isset($result['available_rc_balance'])?$result['available_rc_balance']:'');
+        View::assign('available_rcb_amount', isset($result['available_rc_balance']) ? $result['available_rc_balance'] : '');
 
         //标识购买流程执行步骤
         View::assign('buy_step', 'step2');
         View::assign('ifcart', $ifcart);
+
         //店铺信息
         $store_list = model('store')->getStoreMemberIDList(array_keys($result['store_cart_list']));
         View::assign('store_list', $store_list);
         View::assign('baidu_ak', config('ds_config.baidu_ak'));
-        return View::fetch($this->template_dir.'buy_step1');
+        return View::fetch($this->template_dir . 'buy_step1');
     }
 
     /**
      * 生成订单
-     *
      */
-    public function buy_step2() {
-        $buy_logic = model('buy','logic');
+    public function buy_step2()
+    {
+        $buy_logic = model('buy', 'logic');
         $post = input('post.');
-        
+
         //处理自提门店
-        foreach($post['chain_goods'] as $key => $val){
-            if($val == 0){
+        foreach ($post['chain_goods'] as $key => $val) {
+            if ($val == 0) {
                 unset($post['chain_goods'][$key]);
             }
         }
@@ -127,7 +120,8 @@ class Buy extends BaseMember {
     /**
      * 下单时支付页面
      */
-    public function pay() {
+    public function pay()
+    {
         $pay_sn = input('param.pay_sn');
         if (!preg_match('/^\d{20}$/', $pay_sn)) {
             $this->error(lang('cart_order_pay_not_exists'), 'home/Memberorder/index');
@@ -143,8 +137,8 @@ class Buy extends BaseMember {
 
         //取子订单列表
         $condition = array();
-        $condition[]=array('pay_sn','=',$pay_sn);
-        $condition[] = array('order_state','in', array_values(array(ORDER_STATE_NEW, ORDER_STATE_DEPOSIT, ORDER_STATE_REST, ORDER_STATE_PAY, ORDER_STATE_PICKUP)));
+        $condition[] = array('pay_sn', '=', $pay_sn);
+        $condition[] = array('order_state', 'in', array_values(array(ORDER_STATE_NEW, ORDER_STATE_DEPOSIT, ORDER_STATE_REST, ORDER_STATE_PAY, ORDER_STATE_PICKUP)));
         $order_list = $order_model->getOrderList($condition);
         if (empty($order_list)) {
             $this->error(lang('no_order_paid_was_found'), 'home/Memberorder/index');
@@ -159,25 +153,25 @@ class Buy extends BaseMember {
 
             $payed_amount = floatval($order_info['rcb_amount']) + floatval($order_info['pd_amount']);
             //计算相关支付金额
-                if ($order_info['order_state'] == ORDER_STATE_NEW || $order_info['order_state'] == ORDER_STATE_REST) {
-                    $pay_amount_online += ds_price_format(floatval($order_info['order_amount']) - floatval($order_info['presell_deposit_amount']) + floatval($order_info['presell_rcb_amount']) + floatval($order_info['presell_pd_amount']) - $payed_amount);
-                }else if($order_info['order_state'] == ORDER_STATE_DEPOSIT){
-                    $pay_amount_online += ds_price_format(floatval($order_info['presell_deposit_amount']) - $payed_amount);
-                }
-                $pay_amount += floatval($order_info['order_amount']);
+            if ($order_info['order_state'] == ORDER_STATE_NEW || $order_info['order_state'] == ORDER_STATE_REST) {
+                $pay_amount_online += ds_price_format(floatval($order_info['order_amount']) - floatval($order_info['presell_deposit_amount']) + floatval($order_info['presell_rcb_amount']) + floatval($order_info['presell_pd_amount']) - $payed_amount);
+            } else if ($order_info['order_state'] == ORDER_STATE_DEPOSIT) {
+                $pay_amount_online += ds_price_format(floatval($order_info['presell_deposit_amount']) - $payed_amount);
+            }
+            $pay_amount += floatval($order_info['order_amount']);
 
             //显示支付方式与支付结果
-                $order_list[$key]['payment_state'] = lang('cart_step2_online_pay');
-                if ($payed_amount > 0) {
-                    $payed_tips = '';
-                    if (floatval($order_info['rcb_amount']) > 0) {
-                        $payed_tips = lang('card_has_been_paid').'：￥' . $order_info['rcb_amount'];
-                    }
-                    if (floatval($order_info['pd_amount']) > 0) {
-                        $payed_tips .= lang('prepaid_deposits_beenpaid').'：￥' . $order_info['pd_amount'];
-                    }
-                    $order_list[$key]['order_amount'] .= " ( {$payed_tips} )";
+            $order_list[$key]['payment_state'] = lang('cart_step2_online_pay');
+            if ($payed_amount > 0) {
+                $payed_tips = '';
+                if (floatval($order_info['rcb_amount']) > 0) {
+                    $payed_tips = lang('card_has_been_paid') . '：￥' . $order_info['rcb_amount'];
                 }
+                if (floatval($order_info['pd_amount']) > 0) {
+                    $payed_tips .= lang('prepaid_deposits_beenpaid') . '：￥' . $order_info['pd_amount'];
+                }
+                $order_list[$key]['order_amount'] .= " ( {$payed_tips} )";
+            }
         }
         View::assign('order_list', $order_list);
 
@@ -194,18 +188,18 @@ class Buy extends BaseMember {
         }
         View::assign('order_remind', $order_remind);
         View::assign('pay_amount_online', ds_price_format($pay_amount_online));
-//        View::assign('pd_amount', ds_price_format($pd_amount));
+        // View::assign('pd_amount', ds_price_format($pd_amount));
         //显示支付接口列表
         if ($pay_amount_online > 0) {
             $payment_model = model('payment');
             $condition = array();
-            $condition[] = array('payment_platform','=','pc');
+            $condition[] = array('payment_platform', '=', 'pc');
             $payment_list = $payment_model->getPaymentOpenList($condition);
-            if(empty($payment_list)){
-                $this->error(lang('appropriate_payment_method'),'home/Memberorder/index');
+            if (empty($payment_list)) {
+                $this->error(lang('appropriate_payment_method'), 'home/Memberorder/index');
             }
             foreach ($payment_list as $key => $payment) {
-                if(in_array($payment['payment_code'], array('predeposit'))){
+                if (in_array($payment['payment_code'], array('predeposit'))) {
                     unset($payment_list[$key]);
                 }
             }
@@ -213,62 +207,63 @@ class Buy extends BaseMember {
         }
 
         //显示预存款、支付密码、充值卡
-        $member_model=model('member');
-        $buyer_info=$member_model->getMemberInfoByID($this->member_info['member_id']);
-        View::assign('available_pd_amount', ($buyer_info['available_predeposit']>0)?$buyer_info['available_predeposit']:'');
+        $member_model = model('member');
+        $buyer_info = $member_model->getMemberInfoByID($this->member_info['member_id']);
+        View::assign('available_pd_amount', ($buyer_info['available_predeposit'] > 0) ? $buyer_info['available_predeposit'] : '');
         View::assign('member_paypwd', $buyer_info['member_paypwd']);
-        View::assign('available_rcb_amount', ($buyer_info['available_rc_balance']>0)?$buyer_info['available_rc_balance']:'');
+        View::assign('available_rcb_amount', ($buyer_info['available_rc_balance'] > 0) ? $buyer_info['available_rc_balance'] : '');
         //标识 购买流程执行第几步
         View::assign('buy_step', 'step3');
-        return View::fetch($this->template_dir.'buy_step2');
+        return View::fetch($this->template_dir . 'buy_step2');
     }
-    
+
     /**
      * 店铺入驻支付页面
      */
-    public function sj_pay(){
+    public function sj_pay()
+    {
         $storejoinin_model = model('storejoinin');
         $joinin_detail = $storejoinin_model->getOneStorejoinin(array('member_id' => session('member_id')));
-        if(!$joinin_detail){
+        if (!$joinin_detail) {
             $this->error('店铺入驻不存在');
         }
-        if($joinin_detail['joinin_state']!=STORE_JOIN_STATE_VERIFY_SUCCESS){
+        if ($joinin_detail['joinin_state'] != STORE_JOIN_STATE_VERIFY_SUCCESS) {
             $this->error('店铺入驻状态不是待支付状态');
         }
-        
-        $pay_amount_online=round($joinin_detail['paying_amount']-$joinin_detail['rcb_amount']-$joinin_detail['pd_amount'],2);
+
+        $pay_amount_online = round($joinin_detail['paying_amount'] - $joinin_detail['rcb_amount'] - $joinin_detail['pd_amount'], 2);
         View::assign('pay_amount_online', $pay_amount_online);
         View::assign('store_name', $joinin_detail['store_name']);
         //显示支付接口列表
         if ($pay_amount_online > 0) {
-        //显示支付接口列表
-        $payment_model = model('payment');
-        $condition = array();
-        $condition[] = array('payment_code','not in',array('predeposit'));
-        $condition[] = array('payment_state','=',1);
-        $condition[] = array('payment_platform','=','pc');
-        $payment_list = $payment_model->getPaymentList($condition);
-        if (empty($payment_list)) {
-            $this->error(lang('appropriate_payment_method'));
-        }
-        View::assign('payment_list', $payment_list);
+            //显示支付接口列表
+            $payment_model = model('payment');
+            $condition = array();
+            $condition[] = array('payment_code', 'not in', array('predeposit'));
+            $condition[] = array('payment_state', '=', 1);
+            $condition[] = array('payment_platform', '=', 'pc');
+            $payment_list = $payment_model->getPaymentList($condition);
+            if (empty($payment_list)) {
+                $this->error(lang('appropriate_payment_method'));
+            }
+            View::assign('payment_list', $payment_list);
         }
         //显示预存款、支付密码、充值卡
-        $member_model=model('member');
-        $buyer_info=$member_model->getMemberInfoByID($this->member_info['member_id']);
-        View::assign('available_pd_amount', ($buyer_info['available_predeposit']>0)?$buyer_info['available_predeposit']:'');
+        $member_model = model('member');
+        $buyer_info = $member_model->getMemberInfoByID($this->member_info['member_id']);
+        View::assign('available_pd_amount', ($buyer_info['available_predeposit'] > 0) ? $buyer_info['available_predeposit'] : '');
         View::assign('member_paypwd', $buyer_info['member_paypwd']);
-        View::assign('available_rcb_amount', ($buyer_info['available_rc_balance']>0)?$buyer_info['available_rc_balance']:'');
+        View::assign('available_rcb_amount', ($buyer_info['available_rc_balance'] > 0) ? $buyer_info['available_rc_balance'] : '');
         //标识 购买流程执行第几步
         View::assign('buy_step', 'step3');
-        return View::fetch($this->template_dir.'storejoinin_pay');
-        
+        return View::fetch($this->template_dir . 'storejoinin_pay');
     }
 
     /**
      * 预存款充值下单时支付页面
      */
-    public function pd_pay() {
+    public function pd_pay()
+    {
         $pay_sn = input('param.pay_sn');
         if (!preg_match('/^\d{20}$/', $pay_sn)) {
             $this->error(lang('param_error'), (string)url('Predeposit/index'));
@@ -288,9 +283,9 @@ class Buy extends BaseMember {
         //显示支付接口列表
         $payment_model = model('payment');
         $condition = array();
-        $condition[] = array('payment_code','not in',array('predeposit'));
-        $condition[] = array('payment_state','=',1);
-        $condition[] = array('payment_platform','=','pc');
+        $condition[] = array('payment_code', 'not in', array('predeposit'));
+        $condition[] = array('payment_state', '=', 1);
+        $condition[] = array('payment_platform', '=', 'pc');
         $payment_list = $payment_model->getPaymentList($condition);
         if (empty($payment_list)) {
             $this->error(lang('appropriate_payment_method'), (string)url('Predeposit/index'));
@@ -299,13 +294,14 @@ class Buy extends BaseMember {
 
         //标识 购买流程执行第几步
         View::assign('buy_step', 'step3');
-        return View::fetch($this->template_dir.'predeposit_pay');
+        return View::fetch($this->template_dir . 'predeposit_pay');
     }
 
     /**
      * 支付成功页面
      */
-    public function pay_ok() {
+    public function pay_ok()
+    {
         $pay_sn = input('param.pay_sn');
         if (!preg_match('/^\d{20}$/', $pay_sn)) {
             $this->error(lang('cart_order_pay_not_exists'), 'memberorder/index');
@@ -320,52 +316,53 @@ class Buy extends BaseMember {
         View::assign('pay_info', $pay_info);
 
         View::assign('buy_step', 'step4');
-        return View::fetch($this->template_dir.'buy_step3');
+        return View::fetch($this->template_dir . 'buy_step3');
     }
 
-    function load_addr() {
+    function load_addr()
+    {
         $id = intval(input('param.id'));
-        $address_model=model('address');
+        $address_model = model('address');
         $chain_model = model('chain');
         //如果传入ID 则删除再查询
         if ($id > 0) {
-            $address_model->delAddress(array('address_id'=>$id,'member_id'=> session('member_id')));
+            $address_model->delAddress(array('address_id' => $id, 'member_id' => session('member_id')));
         }
-        $address_list = $address_model->getAddressList(array('member_id'=>session('member_id')));
-        foreach($address_list as $key => $val){
+        $address_list = $address_model->getAddressList(array('member_id' => session('member_id')));
+        foreach ($address_list as $key => $val) {
             $address_list[$key]['cityerror'] = '';
-            if($val['chain_id'] > 0){
+            if ($val['chain_id'] > 0) {
                 $condition = array();
-                $condition[] = array('chain_id','=',$val['chain_id']);
-                $chain_info = $chain_model->getChainInfo($condition,'chain_area_2,chain_area_3');
-                if($val['city_id'] !== $chain_info['chain_area_2'] || $val['area_id'] !== $chain_info['chain_area_3']){
+                $condition[] = array('chain_id', '=', $val['chain_id']);
+                $chain_info = $chain_model->getChainInfo($condition, 'chain_area_2,chain_area_3');
+                if ($val['city_id'] !== $chain_info['chain_area_2'] || $val['area_id'] !== $chain_info['chain_area_3']) {
                     $address_list[$key]['cityerror'] = lang('cart_step1_city_fail');
                 }
             }
         }
         View::assign('address_list', $address_list);
-        echo View::fetch($this->template_dir.'buy_address_load');
+        echo View::fetch($this->template_dir . 'buy_address_load');
     }
 
-    /*
+    /**
      * 新增收货地址
      */
-
-    function add_addr() {
+    function add_addr()
+    {
         if (!request()->isPost()) {
             //设置类型关联的分类
-            $area_mod=model('area');
-            $region_list = $area_mod->getAreaList(array('area_parent_id'=>'0'));
+            $area_mod = model('area');
+            $region_list = $area_mod->getAreaList(array('area_parent_id' => '0'));
             View::assign('region_list', $region_list);
 
-            echo View::fetch($this->template_dir.'buy_address_add');
+            echo View::fetch($this->template_dir . 'buy_address_add');
         } else {
             $data = array(
                 'member_id' => session('member_id'),
                 'address_realname' => input('post.true_name'),
                 'area_id' => intval(input('post.area_id')),
                 'city_id' => intval(input('post.city_id')),
-                'area_info'=>input('post.area_info'),
+                'area_info' => input('post.area_info'),
                 'address_detail' => input('post.address'),
                 'address_tel_phone' => input('post.tel_phone'),
                 'address_mob_phone' => input('post.mob_phone'),
@@ -390,10 +387,11 @@ class Buy extends BaseMember {
      * 如果未找到售卖区域，按免运费处理
      * 如果没有使用售卖区域，商品运费按快递价格计算，运费不随购买数量增加
      */
-    public function change_addr() {
-        $buy_logic = model('buy','logic');
+    public function change_addr()
+    {
+        $buy_logic = model('buy', 'logic');
 
-        $data = $buy_logic->changeAddr(input('post.freight_hash'), input('post.city_id'), input('post.area_id'), session('member_id'),input('post.goods'));
+        $data = $buy_logic->changeAddr(input('post.freight_hash'), input('post.city_id'), input('post.area_id'), session('member_id'), input('post.goods'));
         if (!empty($data)) {
             exit(json_encode($data));
         } else {
@@ -401,33 +399,35 @@ class Buy extends BaseMember {
         }
     }
 
-    function load_inv() {
+    function load_inv()
+    {
         $id = intval(input('param.id'));
         $invoice_model = model('invoice');
         //如果传入ID 则删除再查询
         if ($id > 0) {
             $condition = array();
-            $condition[] = array('invoice_id','=',$id);
-            $condition[] = array('member_id','=',session('member_id'));
+            $condition[] = array('invoice_id', '=', $id);
+            $condition[] = array('member_id', '=', session('member_id'));
             $invoice_model->delInvoice($condition);
         }
-        $inv_list = $invoice_model->getInvoiceList(array('member_id'=> session('member_id')));
+        $inv_list = $invoice_model->getInvoiceList(array('member_id' => session('member_id')));
         if (!empty($inv_list)) {
             foreach ($inv_list as $key => $value) {
                 if ($value['invoice_state'] == 1) {
-                    $inv_list[$key]['content'] = lang('commercial_invoice') . ' ' . $value['invoice_title'] . ' ' . $value['invoice_code']. ' ' . $value['invoice_content'];
+                    $inv_list[$key]['content'] = lang('commercial_invoice') . ' ' . $value['invoice_title'] . ' ' . $value['invoice_code'] . ' ' . $value['invoice_content'];
                 } else {
                     $inv_list[$key]['content'] = lang('vat_invoice') . ' ' . $value['invoice_company'] . ' ' . $value['invoice_company_code'] . ' ' . $value['invoice_reg_addr'];
                 }
             }
         }
         View::assign('inv_list', $inv_list);
-        echo View::fetch($this->template_dir.'buy_invoice_load');
+        echo View::fetch($this->template_dir . 'buy_invoice_load');
     }
 
-    function add_inv() {
+    function add_inv()
+    {
         if (!request()->isPost()) {
-            echo View::fetch($this->template_dir.'buy_address_add');
+            echo View::fetch($this->template_dir . 'buy_address_add');
         } else {
             $invoice_type = input('post.invoice_type');
             //如果是增值税发票验证表单信息
@@ -468,26 +468,30 @@ class Buy extends BaseMember {
     /**
      * AJAX验证支付密码
      */
-    public function check_pd_pwd() {
+    public function check_pd_pwd()
+    {
         $password = input('param.password');
         if (empty($password))
             exit('0');
         $buyer_info = model('member')->getMemberInfoByID(session('member_id'));
         echo ($buyer_info['member_paypwd'] != '' && $buyer_info['member_paypwd'] === md5($password)) ? '1' : '0';
     }
+
     /**
      * F码验证
      */
-    public function check_fcode() {
-        $result = model('buy','logic')->checkFcode(input('goods_commonid'), input('fcode'));
+    public function check_fcode()
+    {
+        $result = model('buy', 'logic')->checkFcode(input('goods_commonid'), input('fcode'));
         echo $result['code'] ? '1' : '0';
         exit;
     }
+
     /**
      * 得到所购买的id和数量
-     *
      */
-    private function _parseItems($cart_id) {
+    private function _parseItems($cart_id)
+    {
         //存放所购商品ID和数量组成的键值对
         $buy_items = array();
         if (is_array($cart_id)) {
@@ -503,7 +507,8 @@ class Buy extends BaseMember {
     /**
      * 购买分流
      */
-    private function _buy_branch($post) {
+    private function _buy_branch($post)
+    {
         if (!isset($post['ifcart'])) {
             //取得购买商品信息
             $buy_items = $this->_parseItems($post['cart_id']);
@@ -512,17 +517,18 @@ class Buy extends BaseMember {
 
             $goods_info = model('goods')->getGoodsOnlineInfoAndPromotionById($goods_id);
             if ($goods_info['is_virtual']) {
-                $this->redirect('Buyvirtual/buy_step1',['goods_id'=>$goods_id,'quantity'=>$quantity]);
+                $this->redirect('Buyvirtual/buy_step1', ['goods_id' => $goods_id, 'quantity' => $quantity]);
             }
         }
     }
-    
-    public function change_chain() {
-        $buy_logic = model('buy','logic');  
-    
-        $chain_list = $buy_logic->changechain(input('post.goods'),input('post.area_id'), session('member_id'));
+
+    public function change_chain()
+    {
+        $buy_logic = model('buy', 'logic');
+
+        $chain_list = $buy_logic->changechain(input('post.goods'), input('post.area_id'), session('member_id'));
         if (!empty($chain_list)) {
-            return ds_json_encode(10000, '',array('chain_list'=>$chain_list));
+            return ds_json_encode(10000, '', array('chain_list' => $chain_list));
         } else {
             exit();
         }

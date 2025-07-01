@@ -5,26 +5,18 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
-/**
- * ============================================================================
- * DSO2O多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class SellerChain extends BaseSeller {
 
-    public function initialize() {
+class SellerChain extends BaseSeller
+{
+
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/seller_chain.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $chain_model = model('chain');
         $condition = array();
         $search_field_value = input('search_field_value');
@@ -32,26 +24,26 @@ class SellerChain extends BaseSeller {
         if ($search_field_value != '') {
             switch ($search_field_name) {
                 case 'chain_name':
-                    $condition[] = array('chain_name','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('chain_name', 'like', '%' . trim($search_field_value) . '%');
                     break;
                 case 'chain_truename':
-                    $condition[] = array('chain_truename','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('chain_truename', 'like', '%' . trim($search_field_value) . '%');
                     break;
                 case 'chain_mobile':
-                    $condition[] = array('chain_mobile','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('chain_mobile', 'like', '%' . trim($search_field_value) . '%');
                     break;
                 case 'chain_addressname':
-                    $condition[] = array('chain_addressname','like', '%' . trim($search_field_value) . '%');
+                    $condition[] = array('chain_addressname', 'like', '%' . trim($search_field_value) . '%');
                     break;
             }
         }
         $search_state = input('search_state');
         switch ($search_state) {
             case '1':
-                $condition[] = array('chain_state','=','1');
+                $condition[] = array('chain_state', '=', '1');
                 break;
             case '0':
-                $condition[] = array('chain_state','=','0');
+                $condition[] = array('chain_state', '=', '0');
                 break;
         }
         $filtered = 0;
@@ -59,8 +51,8 @@ class SellerChain extends BaseSeller {
             $filtered = 1;
         }
 
-        $condition[] = array('store_id','=',session('store_id'));
-        $order='chain_addtime desc';
+        $condition[] = array('store_id', '=', session('store_id'));
+        $order = 'chain_addtime desc';
 
         $chain_list = $chain_model->getChainList($condition, 10, $order);
         View::assign('chain_list', $chain_list);
@@ -74,7 +66,8 @@ class SellerChain extends BaseSeller {
         return View::fetch($this->template_dir . 'index');
     }
 
-    public function add() {
+    public function add()
+    {
         if (!request()->isPost()) {
             View::assign('baidu_ak', config('ds_config.baidu_ak'));
             $this->setSellerCurMenu('seller_chain');
@@ -83,7 +76,7 @@ class SellerChain extends BaseSeller {
         } else {
             $chain_model = model('chain');
             //不能添加超过20个
-            if(Db::name('chain')->where(array(array('store_id','=',session('store_id'))))->count()>=20){
+            if (Db::name('chain')->where(array(array('store_id', '=', session('store_id'))))->count() >= 20) {
                 ds_json_encode(10001, lang('chain_count_error'));
             }
             $data = $this->post_data();
@@ -91,7 +84,7 @@ class SellerChain extends BaseSeller {
             $data['chain_name'] = input('post.chain_name');
             $data['chain_addtime'] = TIMESTAMP;
             $data['chain_passwd'] = md5($data['chain_passwd']);
-            
+
             $result = $chain_model->addChain($data);
             if ($result) {
                 $this->recordSellerlog(lang('ds_new') . lang('seller_chain') . '[' . $data['chain_name'] . ']', 1);
@@ -102,7 +95,8 @@ class SellerChain extends BaseSeller {
         }
     }
 
-    public function edit() {
+    public function edit()
+    {
         $id = intval(input('param.id'));
         if (!$id) {
             $this->error(lang('param_error'));
@@ -135,7 +129,8 @@ class SellerChain extends BaseSeller {
         }
     }
 
-    public function del() {
+    public function del()
+    {
         $id = intval(input('param.id'));
         if (!$id) {
             ds_json_encode(10001, lang('param_error'));
@@ -146,8 +141,8 @@ class SellerChain extends BaseSeller {
             ds_json_encode(10001, lang('chain_empty'));
         }
         //如果有正在配送的订单则不能删除
-        $chain_order_model=model('chain_order');
-        if($chain_order_model->getChainOrderInfo(array(array('chain_id','=',$id),array('chain_order_state','not in',[ORDER_STATE_CANCEL,ORDER_STATE_SUCCESS])))){
+        $chain_order_model = model('chain_order');
+        if ($chain_order_model->getChainOrderInfo(array(array('chain_id', '=', $id), array('chain_order_state', 'not in', [ORDER_STATE_CANCEL, ORDER_STATE_SUCCESS])))) {
             ds_json_encode(10001, lang('chain_drop_error'));
         }
         $result = $chain_model->delChain(array('chain_id' => $id, 'store_id' => session('store_id')), array($chain_array));
@@ -159,7 +154,8 @@ class SellerChain extends BaseSeller {
         }
     }
 
-    public function post_data() {
+    public function post_data()
+    {
         $data = array(
             'chain_truename' => input('post.chain_truename'),
             'chain_mobile' => input('post.chain_mobile'),
@@ -175,7 +171,7 @@ class SellerChain extends BaseSeller {
             'chain_if_pickup' => input('post.chain_if_pickup'),
             'chain_if_collect' => input('post.chain_if_collect'),
         );
-        
+
         if (input('post.chain_passwd')) {
             $data['chain_passwd'] = input('post.chain_passwd');
         }
@@ -183,19 +179,14 @@ class SellerChain extends BaseSeller {
         return $data;
     }
 
-    public function ajax() {
+    public function ajax()
+    {
         $chain_model = model('chain');
         switch (input('param.branch')) {
-            /**
-             * 品牌名称
-             */
             case 'chain_name':
-                /**
-                 * 判断是否有重复
-                 */
                 $condition = array();
-                $condition[] = array('chain_name','=',trim(input('param.value')));
-                $condition[] = array('chain_id','<>',intval(input('param.id')));
+                $condition[] = array('chain_name', '=', trim(input('param.value')));
+                $condition[] = array('chain_id', '<>', intval(input('param.id')));
                 $result = $chain_model->getChainInfo($condition);
                 if (empty($result)) {
                     echo 'true';
@@ -209,9 +200,10 @@ class SellerChain extends BaseSeller {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $menu_array[] = array(
             'name' => 'chain_list',
             'text' => lang('seller_chain_list'),
@@ -220,5 +212,4 @@ class SellerChain extends BaseSeller {
 
         return $menu_array;
     }
-
 }

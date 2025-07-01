@@ -1,32 +1,25 @@
 <?php
 
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Memberfavorites extends BaseMember {
 
-    public function initialize() {
+class Memberfavorites extends BaseMember
+{
+
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/memberfavorites.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/memberfavorites.lang.php');
     }
 
     /**
      * 增加商品收藏
      */
-    public function favoritesgoods() {
+    public function favoritesgoods()
+    {
         $fav_id = intval(input('param.fid'));
         if ($fav_id <= 0) {
             echo json_encode(array('done' => false, 'msg' => lang('favorite_collect_fail')));
@@ -35,12 +28,14 @@ class Memberfavorites extends BaseMember {
         $favorites_model = model('favorites');
         //判断是否已经收藏
         $favorites_info = $favorites_model->getOneFavorites(array(
-            'fav_id' => "$fav_id", 'fav_type' => 'goods',
+            'fav_id' => "$fav_id",
+            'fav_type' => 'goods',
             'member_id' => session('member_id')
         ));
         if (!empty($favorites_info)) {
             echo json_encode(array(
-                'done' => false, 'msg' => lang('favorite_already_favorite_goods')
+                'done' => false,
+                'msg' => lang('favorite_already_favorite_goods')
             ));
             die;
         }
@@ -73,7 +68,8 @@ class Memberfavorites extends BaseMember {
     /**
      * 增加店铺收藏
      */
-    public function favoritesstore() {
+    public function favoritesstore()
+    {
         $fav_id = intval(input('param.fid'));
         if ($fav_id <= 0) {
             echo json_encode(array('done' => false, 'msg' => lang('favorite_collect_fail')));
@@ -82,12 +78,14 @@ class Memberfavorites extends BaseMember {
         $favorites_model = model('favorites');
         //判断是否已经收藏
         $favorites_info = $favorites_model->getOneFavorites(array(
-            'fav_id' => "$fav_id", 'fav_type' => 'store',
+            'fav_id' => "$fav_id",
+            'fav_type' => 'store',
             'member_id' => session('member_id')
         ));
         if (!empty($favorites_info)) {
             echo json_encode(array(
-                'done' => false, 'msg' => lang('favorite_already_favorite_store')
+                'done' => false,
+                'msg' => lang('favorite_already_favorite_store')
             ));
             die;
         }
@@ -122,18 +120,20 @@ class Memberfavorites extends BaseMember {
      * @param
      * @return
      */
-    public function fglist() {
+    public function fglist()
+    {
         $favorites_model = model('favorites');
         $show_type = 'favorites_goods_picshowlist'; //默认为图片横向显示
         $show = input('param.show');
         $store_array = array(
-            'list' => 'favorites_goods_index', 'pic' => 'favorites_goods_picshowlist',
+            'list' => 'favorites_goods_index',
+            'pic' => 'favorites_goods_picshowlist',
             'store' => 'favorites_goods_shoplist'
         );
         if (array_key_exists($show, $store_array))
             $show_type = $store_array[$show];
 
-        $favorites_list = $favorites_model->getGoodsFavoritesList(array(array('member_id' ,'=', session('member_id'))), '*', 20);
+        $favorites_list = $favorites_model->getGoodsFavoritesList(array(array('member_id', '=', session('member_id'))), '*', 20);
         View::assign('show_page', $favorites_model->page_info->render());
         $store_favorites = array(); //店铺收藏信息
         $store_goods_list = array(); //店铺为分组的商品
@@ -146,7 +146,7 @@ class Memberfavorites extends BaseMember {
             }
             $goods_model = model('goods');
             $field = 'goods.goods_id,goods.goods_name,goods.store_id,goods.goods_image,goods.goods_price,goods.evaluation_count,goods.goods_salenum,goods.goods_collect,store.store_name,store.member_id,store.member_name,store.store_qq,store.store_ww';
-            $goods_list = $goods_model->getGoodsStoreList(array(array('goods_id','in', $favorites_id)), $field);
+            $goods_list = $goods_model->getGoodsStoreList(array(array('goods_id', 'in', $favorites_id)), $field);
             $store_array = array(); //店铺编号
             if (!empty($goods_list) && is_array($goods_list)) {
                 foreach ($goods_list as $key => $fav) {
@@ -163,8 +163,8 @@ class Memberfavorites extends BaseMember {
 
             if (!empty($store_array) && is_array($store_array)) {
                 $store_list = $favorites_model->getStoreFavoritesList(array(
-                    array('member_id' ,'=', session('member_id')),
-                    array('fav_id','in', $store_array)
+                    array('member_id', '=', session('member_id')),
+                    array('fav_id', 'in', $store_array)
                 ));
                 if (!empty($store_list) && is_array($store_list)) {
                     foreach ($store_list as $key => $val) {
@@ -189,9 +189,10 @@ class Memberfavorites extends BaseMember {
      * @param
      * @return
      */
-    public function fslist() {
+    public function fslist()
+    {
         $favorites_model = model('favorites');
-        $favorites_list = $favorites_model->getStoreFavoritesList(array(array('member_id' ,'=', session('member_id'))), '*', 10);
+        $favorites_list = $favorites_model->getStoreFavoritesList(array(array('member_id', '=', session('member_id'))), '*', 10);
         if (!empty($favorites_list) && is_array($favorites_list)) {
             $favorites_id = array(); //收藏的店铺编号
             foreach ($favorites_list as $key => $favorites) {
@@ -200,7 +201,7 @@ class Memberfavorites extends BaseMember {
                 $favorites_key[$fav_id] = $key;
             }
             $store_model = model('store');
-            $store_list = $store_model->getStoreList(array(array('store_id','in', $favorites_id)));
+            $store_list = $store_model->getStoreList(array(array('store_id', 'in', $favorites_id)));
             if (!empty($store_list) && is_array($store_list)) {
                 foreach ($store_list as $key => $fav) {
                     $fav_id = $fav['store_id'];
@@ -223,47 +224,49 @@ class Memberfavorites extends BaseMember {
      * @param
      * @return
      */
-    public function delfavorites() {
+    public function delfavorites()
+    {
         if (!input('param.fav_id') || !input('param.type')) {
-            ds_json_encode(10001,lang('favorite_del_fail'));
+            ds_json_encode(10001, lang('favorite_del_fail'));
         }
         if (!preg_match_all('/^[0-9,]+$/', input('param.fav_id'), $matches)) {
-            ds_json_encode(10001,lang('param_error'));
+            ds_json_encode(10001, lang('param_error'));
         }
         $fav_id = trim(input('param.fav_id'), ',');
         if (!in_array(input('param.type'), array('goods', 'store'))) {
-            ds_json_encode(10001,lang('param_error'));
+            ds_json_encode(10001, lang('param_error'));
         }
         $type = input('param.type');
         $favorites_model = model('favorites');
         $fav_arr = explode(',', $fav_id);
         if (!empty($fav_arr) && is_array($fav_arr)) {
-            $favorites_list = $favorites_model->getFavoritesList(array(array('fav_id','in', $fav_arr),array('fav_type' ,'=', "$type"),array('member_id' ,'=', session('member_id'))));
+            $favorites_list = $favorites_model->getFavoritesList(array(array('fav_id', 'in', $fav_arr), array('fav_type', '=', "$type"), array('member_id', '=', session('member_id'))));
             if (!empty($favorites_list) && is_array($favorites_list)) {
                 $fav_arr = array();
                 foreach ($favorites_list as $k => $v) {
                     $fav_arr[] = $v['fav_id'];
                 }
                 $result = $favorites_model->delFavorites(array(
-                    array('fav_id','in', $fav_arr), array('fav_type' ,'=', "$type"),
-                    array('member_id' ,'=', session('member_id'))
+                    array('fav_id', 'in', $fav_arr),
+                    array('fav_type', '=', "$type"),
+                    array('member_id', '=', session('member_id'))
                 ));
                 if (!empty($fav_arr) && $result) {
                     //更新商品收藏数量
-                    if ($type == 'store'){
+                    if ($type == 'store') {
                         $store_model = model('store');
-                        $store_model->editStore(array('store_collect' => Db::raw('store_collect-1'),), array(array('store_id' ,'=', $fav_id), array('store_collect','>', 0),));
-                    }else{
+                        $store_model->editStore(array('store_collect' => Db::raw('store_collect-1'),), array(array('store_id', '=', $fav_id), array('store_collect', '>', 0),));
+                    } else {
                         $goods_model = model('goods');
                         $goods_model->editGoodsById(array('goods_collect' => Db::raw('goods_collect-1')), $fav_arr);
                     }
-                    ds_json_encode(10000,lang('favorite_del_success'));
+                    ds_json_encode(10000, lang('favorite_del_success'));
                 }
             } else {
-                ds_json_encode(10001,lang('favorite_del_fail'));
+                ds_json_encode(10001, lang('favorite_del_fail'));
             }
         } else {
-            ds_json_encode(10001,lang('favorite_del_fail'));
+            ds_json_encode(10001, lang('favorite_del_fail'));
         }
     }
 
@@ -273,20 +276,20 @@ class Memberfavorites extends BaseMember {
      * @param
      * @return
      */
-    public function store_goods() {
+    public function store_goods()
+    {
         $store_id = intval(input('param.store_id'));
         if ($store_id > 0) {
             $condition = array();
             $add_time_from = TIMESTAMP - 60 * 60 * 24 * 30; //30天
-            $condition[] = array('store_id','=',$store_id);
-            $condition[] = array('goods_addtime','between',$add_time_from . ',' . TIMESTAMP);
+            $condition[] = array('store_id', '=', $store_id);
+            $condition[] = array('goods_addtime', 'between', $add_time_from . ',' . TIMESTAMP);
             $goods_model = model('goods');
             $goods_list = $goods_model->getGoodsOnlineList($condition, 'goods_id,goods_name,store_id,goods_image,goods_price', 0, 'goods_id desc', 50);
             View::assign('goods_list', $goods_list);
             echo View::fetch($this->template_dir . 'favorites_store_goods');
         }
     }
-
 
     /**
      * 用户中心右边，小导航
@@ -295,17 +298,20 @@ class Memberfavorites extends BaseMember {
      * @param string $menu_key 当前导航的menu_key
      * @return
      */
-    protected function getMemberItemList() {
+    protected function getMemberItemList()
+    {
         $menu_array = array(
             array(
-                'name' => 'fav_goods', 'text' => lang('ds_member_path_collect_list'),
+                'name' => 'fav_goods',
+                'text' => lang('ds_member_path_collect_list'),
                 'url' => (string)url('Memberfavorites/fglist')
-            ), array(
-                'name' => 'fav_store', 'text' => lang('ds_member_path_collect_store'),
+            ),
+            array(
+                'name' => 'fav_store',
+                'text' => lang('ds_member_path_collect_store'),
                 'url' => (string)url('Memberfavorites/fslist')
             )
         );
         return $menu_array;
     }
-
 }

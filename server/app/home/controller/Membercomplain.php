@@ -1,30 +1,14 @@
 <?php
 
-/*
- * 交易投诉
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Membercomplain extends BaseMember {
+class Membercomplain extends BaseMember
+{
 
     //定义投诉状态常量
-
     const STATE_NEW = 10;
     const STATE_APPEAL = 20;
     const STATE_TALK = 30;
@@ -33,19 +17,18 @@ class Membercomplain extends BaseMember {
     const STATE_UNACTIVE = 1;
     const STATE_ACTIVE = 2;
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/membercomplain.lang.php');
     }
 
-    /*
+    /**
      * 我的投诉页面
      */
-
-    public function index() {
-        /*
-         * 得到当前用户的投诉列表
-         */
+    public function index()
+    {
+        // 得到当前用户的投诉列表
         $complain_model = model('complain');
         $condition = array();
         $condition[] = array('accuser_id', '=', session('member_id'));
@@ -69,14 +52,14 @@ class Membercomplain extends BaseMember {
         return View::fetch($this->template_dir . 'index');
     }
 
-    /*
+    /**
      * 新投诉
      */
-
-    public function complain_new() {
+    public function complain_new()
+    {
         $order_id = intval(input('order_id'));
         $goods_id = intval(input('goods_id')); //订单商品表编号
-        if ($order_id < 1 || $goods_id < 1) {//参数验证
+        if ($order_id < 1 || $goods_id < 1) { //参数验证
             $this->error(lang('param_error'), 'Memberorder/index');
         }
         $condition = array();
@@ -115,11 +98,11 @@ class Membercomplain extends BaseMember {
         return View::fetch($this->template_dir . 'complain_new');
     }
 
-    /*
+    /**
      * 处理投诉请求
      */
-
-    public function complain_show() {
+    public function complain_show()
+    {
         $complain_id = intval(input('complain_id'));
         //获取投诉详细信息
         $complain_info = $this->get_complain_info($complain_id);
@@ -152,11 +135,11 @@ class Membercomplain extends BaseMember {
         return View::fetch($this->template_dir . 'complain_show');
     }
 
-    /*
+    /**
      * 保存用户提交的投诉
      */
-
-    public function complain_save() {
+    public function complain_save()
+    {
         //获取输入的投诉信息
         $input = array();
         $input['order_id'] = intval(input('post.input_order_id'));
@@ -175,9 +158,9 @@ class Membercomplain extends BaseMember {
             $this->error(lang('complain_repeat'));
         }
         list($input['complain_subject_id'], $input['complain_subject_content']) = explode(',', trim(input('post.input_complain_subject')));
-        
-        $input_complain_content=trim(input('post.input_complain_content'));
-        
+
+        $input_complain_content = trim(input('post.input_complain_content'));
+
         $input['complain_content'] = $input_complain_content;
         $input['accuser_id'] = $order_info['buyer_id'];
         $input['accuser_name'] = $order_info['buyer_name'];
@@ -199,11 +182,11 @@ class Membercomplain extends BaseMember {
         }
     }
 
-    /*
+    /**
      * 保存用户提交的补充证据
      */
-
-    public function complain_add_pic() {
+    public function complain_add_pic()
+    {
         $complain_id = input('param.complain_id');
         //获取投诉详细信息
         $complain_info = $this->get_complain_info($complain_id);
@@ -224,11 +207,11 @@ class Membercomplain extends BaseMember {
         }
     }
 
-    /*
+    /**
      * 取消用户提交的投诉
      */
-
-    public function complain_cancel() {
+    public function complain_cancel()
+    {
         $complain_id = intval(input('param.complain_id'));
         $complain_info = $this->get_complain_info($complain_id);
         if (intval($complain_info['complain_state']) === 10) {
@@ -239,9 +222,9 @@ class Membercomplain extends BaseMember {
                 $pics[] = $complain_info['complain_pic2'];
             if (!empty($complain_info['complain_pic3']))
                 $pics[] = $complain_info['complain_pic3'];
-            if (!empty($pics)) {//删除图片
+            if (!empty($pics)) { //删除图片
                 foreach ($pics as $pic) {
-                    ds_del_pic(ATTACH_COMPLAIN,$pic);
+                    ds_del_pic(ATTACH_COMPLAIN, $pic);
                 }
             }
             $complain_model = model('complain');
@@ -252,11 +235,11 @@ class Membercomplain extends BaseMember {
         }
     }
 
-    /*
+    /**
      * 处理用户申请仲裁
      */
-
-    public function apply_handle() {
+    public function apply_handle()
+    {
         $complain_id = intval(input('post.input_complain_id'));
         //获取投诉详细信息
         $complain_info = $this->get_complain_info($complain_id);
@@ -275,11 +258,11 @@ class Membercomplain extends BaseMember {
         ds_json_encode(10000, lang('handle_submit_success'));
     }
 
-    /*
+    /**
      * 根据投诉id获取投诉对话
      */
-
-    public function get_complain_talk() {
+    public function get_complain_talk()
+    {
         $complain_id = intval(input('post.complain_id'));
         $complain_info = $this->get_complain_info($complain_id);
         $complaintalk_model = model('complaintalk');
@@ -314,11 +297,11 @@ class Membercomplain extends BaseMember {
         echo json_encode($talk_list);
     }
 
-    /*
+    /**
      * 根据发布投诉对话
      */
-
-    public function publish_complain_talk() {
+    public function publish_complain_talk()
+    {
         $complain_id = intval(input('post.complain_id'));
         $complain_talk = trim(input('post.complain_talk'));
         $talk_len = strlen($complain_talk);
@@ -351,11 +334,11 @@ class Membercomplain extends BaseMember {
         }
     }
 
-    /*
+    /**
      * 获取投诉信息
      */
-
-    private function get_complain_info($complain_id) {
+    private function get_complain_info($complain_id)
+    {
         $complain_model = model('complain');
         $complain_info = $complain_model->getOneComplain($complain_id);
         if ($complain_info['accuser_id'] != session('member_id')) {
@@ -366,11 +349,11 @@ class Membercomplain extends BaseMember {
         return $complain_info;
     }
 
-    /*
+    /**
      * 检查投诉是否已经存在
      */
-
-    private function check_complain_exist($goods_id) {
+    private function check_complain_exist($goods_id)
+    {
         $complain_model = model('complain');
         $param = array();
         $param[] = array('order_goods_id', '=', $goods_id);
@@ -379,11 +362,11 @@ class Membercomplain extends BaseMember {
         return $complain_model->isComplainExist($param);
     }
 
-    /*
+    /**
      * 获得投诉状态文本
      */
-
-    private function get_complain_state_text($complain_state) {
+    private function get_complain_state_text($complain_state)
+    {
         switch (intval($complain_state)) {
             case self::STATE_NEW:
                 return lang('complain_state_new');
@@ -405,7 +388,8 @@ class Membercomplain extends BaseMember {
         }
     }
 
-    private function upload_pic() {
+    private function upload_pic()
+    {
         $complain_pic = array();
         $complain_pic[1] = 'input_complain_pic1';
         $complain_pic[2] = 'input_complain_pic2';
@@ -433,7 +417,8 @@ class Membercomplain extends BaseMember {
      * @param array $array 附加菜单
      * @return
      */
-    public function getMemberItemList() {
+    public function getMemberItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'complain_list',
@@ -443,7 +428,4 @@ class Membercomplain extends BaseMember {
         );
         return $menu_array;
     }
-
 }
-
-?>

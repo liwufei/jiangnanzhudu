@@ -1,30 +1,16 @@
 <?php
 
-/*
- * 发货设置
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellerdeliverset extends BaseSeller {
+class Sellerdeliverset extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellerdeliver.lang.php');
     }
@@ -32,7 +18,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 发货地址列表
      */
-    public function index() {
+    public function index()
+    {
         $daddress_model = model('daddress');
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -48,7 +35,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 新增/编辑发货地址
      */
-    public function daddress_add() {
+    public function daddress_add()
+    {
         $address_id = intval(input('param.address_id'));
         $daddress_mod = model('daddress');
         if ($address_id > 0) {
@@ -67,9 +55,9 @@ class Sellerdeliverset extends BaseSeller {
                     'daddress_telphone' => input('post.telphone'),
                     'daddress_company' => input('post.company'),
                 );
-                
+
                 $this->validate($data, 'app\common\validate\Daddress.edit');
-                
+
                 $result = $daddress_mod->editDaddress($data, array('daddress_id' => $address_id, 'store_id' => session('store_id')));
                 if ($result) {
                     ds_json_encode(10000, lang('ds_common_op_succ'));
@@ -81,8 +69,14 @@ class Sellerdeliverset extends BaseSeller {
             //新增
             if (!request()->isPost()) {
                 $address_info = array(
-                    'daddress_id' => '', 'city_id' => '1', 'area_id' => '1', 'seller_name' => '',
-                    'area_info' => '', 'daddress_detail' => '', 'daddress_telphone' => '', 'daddress_company' => '',
+                    'daddress_id' => '',
+                    'city_id' => '1',
+                    'area_id' => '1',
+                    'seller_name' => '',
+                    'area_info' => '',
+                    'daddress_detail' => '',
+                    'daddress_telphone' => '',
+                    'daddress_company' => '',
                 );
                 View::assign('address_info', $address_info);
                 return View::fetch($this->template_dir . 'daddress_add');
@@ -97,9 +91,9 @@ class Sellerdeliverset extends BaseSeller {
                     'daddress_telphone' => input('post.telphone'),
                     'daddress_company' => input('post.company'),
                 );
-                
+
                 $this->validate($data, 'app\common\validate\Daddress.add');
-                
+
                 $result = $daddress_mod->addDaddress($data);
                 if ($result) {
                     ds_json_encode(10000, lang('ds_common_op_succ'));
@@ -113,7 +107,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 删除发货地址
      */
-    public function daddress_del() {
+    public function daddress_del()
+    {
         $address_id = intval(input('param.address_id'));
         if ($address_id <= 0) {
             ds_json_encode(10001, lang('store_daddress_del_fail'));
@@ -132,7 +127,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 设置默认发货地址
      */
-    public function daddress_default_set() {
+    public function daddress_default_set()
+    {
         $address_id = intval(input('get.address_id'));
         if ($address_id <= 0)
             return false;
@@ -143,7 +139,8 @@ class Sellerdeliverset extends BaseSeller {
         $update = model('daddress')->editDaddress(array('daddress_isdefault' => 1), $condition);
     }
 
-    public function express() {
+    public function express()
+    {
         $storeextend_model = model('storeextend');
         if (!request()->isPost()) {
             $express_list = rkcache('express', true);
@@ -191,7 +188,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 免运费额度设置
      */
-    public function free_freight() {
+    public function free_freight()
+    {
         if (!request()->isPost()) {
             View::assign('store_free_price', $this->store_info['store_free_price']);
             View::assign('store_free_time', $this->store_info['store_free_time']);
@@ -208,7 +206,7 @@ class Sellerdeliverset extends BaseSeller {
             $store_model->editStore(array(
                 'store_free_price' => $store_free_price,
                 'store_free_time' => $store_free_time
-                    ), array('store_id' => session('store_id')));
+            ), array('store_id' => session('store_id')));
             ds_json_encode(10000, lang('ds_common_save_succ'));
         }
     }
@@ -216,7 +214,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 电子面单
      */
-    public function eorder_set() {
+    public function eorder_set()
+    {
         if (!request()->isPost()) {
             View::assign('store_info', $this->store_info);
 
@@ -232,7 +231,7 @@ class Sellerdeliverset extends BaseSeller {
                 'expresscf_kdn_id' => input('post.expresscf_kdn_id'),
                 'expresscf_kdn_key' => input('post.expresscf_kdn_key'),
                 'expresscf_kdn_printer' => input('post.expresscf_kdn_printer'),
-                    ), array('store_id' => session('store_id')));
+            ), array('store_id' => session('store_id')));
             ds_json_encode(10000, lang('ds_common_save_succ'));
         }
     }
@@ -240,7 +239,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 电子面单
      */
-    public function eorder_list() {
+    public function eorder_list()
+    {
         $expresscf_kdn_config_model = model('expresscf_kdn_config');
         $condition = array();
         $condition[] = array('store_id', '=', session('store_id'));
@@ -264,7 +264,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 电子面单
      */
-    public function eorder_add() {
+    public function eorder_add()
+    {
         if (!request()->isPost()) {
             $express_list = rkcache('express', true);
             //快递公司
@@ -275,7 +276,7 @@ class Sellerdeliverset extends BaseSeller {
                     if (!in_array($v['express_id'], $my_express_list))
                         unset($express_list[$k]);
                 }
-            }else {
+            } else {
                 $express_list = array();
             }
             View::assign('my_express_list', array_values($express_list));
@@ -296,9 +297,9 @@ class Sellerdeliverset extends BaseSeller {
                 'expresscf_kdn_config_month_code' => input('post.expresscf_kdn_config_month_code'),
                 'expresscf_kdn_config_pay_type' => input('post.expresscf_kdn_config_pay_type'),
             );
-            
+
             $this->validate($data, 'app\common\validate\ExpresscfKdnConfig.add');
-            
+
             $expresscf_kdn_config_model = model('expresscf_kdn_config');
             $condition = array();
             $condition[] = array('store_id', '=', session('store_id'));
@@ -318,7 +319,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 电子面单
      */
-    public function eorder_edit() {
+    public function eorder_edit()
+    {
         $expresscf_kdn_config_id = input('get.expresscf_kdn_config_id');
         $expresscf_kdn_config_model = model('expresscf_kdn_config');
         $condition = array();
@@ -336,7 +338,7 @@ class Sellerdeliverset extends BaseSeller {
                     if (!in_array($v['express_id'], $my_express_list))
                         unset($express_list[$k]);
                 }
-            }else {
+            } else {
                 $express_list = array();
             }
             View::assign('my_express_list', array_values($express_list));
@@ -357,7 +359,7 @@ class Sellerdeliverset extends BaseSeller {
                 'expresscf_kdn_config_month_code' => input('post.expresscf_kdn_config_month_code'),
                 'expresscf_kdn_config_pay_type' => input('post.expresscf_kdn_config_pay_type'),
             );
-            
+
             $this->validate($data, 'app\common\validate\ExpresscfKdnConfig.edit');
 
             $flag = $expresscf_kdn_config_model->editExpresscfKdnConfig($data, $condition);
@@ -371,7 +373,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 电子面单
      */
-    public function eorder_del() {
+    public function eorder_del()
+    {
         $expresscf_kdn_config_id = intval(input('param.expresscf_kdn_config_id'));
         if ($expresscf_kdn_config_id <= 0) {
             ds_json_encode(10001, lang('param_error'));
@@ -391,10 +394,12 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 默认配送区域设置
      */
-    public function deliver_region() {
+    public function deliver_region()
+    {
         if (!request()->isPost()) {
             $deliver_region = array(
-                '', ''
+                '',
+                ''
             );
             if (strpos($this->store_info['deliver_region'], '|')) {
                 $deliver_region = explode('|', $this->store_info['deliver_region']);
@@ -414,7 +419,8 @@ class Sellerdeliverset extends BaseSeller {
     /**
      * 发货单打印设置
      */
-    public function print_set() {
+    public function print_set()
+    {
         $store_info = $this->store_info;
 
         if (!request()->isPost()) {
@@ -435,7 +441,7 @@ class Sellerdeliverset extends BaseSeller {
                     $update_arr['store_seal'] = $file_name;
                     //删除旧认证图片
                     if (!empty($store_info['store_seal'])) {
-                        ds_del_pic(ATTACH_STORE,$store_info['store_seal']);
+                        ds_del_pic(ATTACH_STORE, $store_info['store_seal']);
                     }
                 } else {
                     $this->error($res['msg']);
@@ -459,7 +465,8 @@ class Sellerdeliverset extends BaseSeller {
      * @param string $menu_key 当前导航的menu_key
      * @return
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $menu_array = array(
             array(
                 'name' => 'daddress',
@@ -499,7 +506,4 @@ class Sellerdeliverset extends BaseSeller {
         );
         return $menu_array;
     }
-
 }
-
-?>

@@ -5,21 +5,12 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 use think\facade\Db;
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellergoodsadd extends BaseSeller {
 
-    public function initialize() {
+class Sellergoodsadd extends BaseSeller
+{
+
+    public function initialize()
+    {
         parent::initialize();
         error_reporting(E_ERROR | E_WARNING);
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellergoodsadd.lang.php');
@@ -28,7 +19,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 三方店铺验证，商品数量，有效期
      */
-    private function checkStore() {
+    private function checkStore()
+    {
         $goodsLimit = (int) $this->store_grade['storegrade_goods_limit'];
         if ($goodsLimit > 0) {
             // 是否到达商品数上限
@@ -39,7 +31,8 @@ class Sellergoodsadd extends BaseSeller {
         }
     }
 
-    public function index() {
+    public function index()
+    {
         $this->checkStore();
         $this->add_step_one();
     }
@@ -47,7 +40,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 添加商品
      */
-    public function add_step_one() {
+    public function add_step_one()
+    {
         // 实例化商品分类模型
         $goodsclass_model = model('goodsclass');
         // 商品分类
@@ -71,7 +65,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 添加商品
      */
-    public function add_step_two() {
+    public function add_step_two()
+    {
         // 实例化商品分类模型
         $goodsclass_model = model('goodsclass');
 
@@ -84,35 +79,35 @@ class Sellergoodsadd extends BaseSeller {
         }
 
         // 如果不是自营店铺或者自营店铺未绑定全部商品类目，读取绑定分类
-            //商品分类  支持批量显示分类
-            $storebindclass_model = model('storebindclass');
-            $goods_class = model('goodsclass')->getGoodsclassForCacheModel();
-            $condition = array();
-            $condition[] = array('store_id', '=', session('store_id'));
-            $class_2 = isset($goods_class[$gc_id]['gc_parent_id'])?$goods_class[$gc_id]['gc_parent_id']:0;
-            $class_1 = isset($goods_class[$class_2]['gc_parent_id'])?$goods_class[$class_2]['gc_parent_id']:0;
-            $condition_class_1 = array(array('class_1', '=', ($class_1 > 0) ? $class_1 : (($class_2 > 0) ? $class_2 : $gc_id)));
-            $condition_class_2 = array(array('class_2', '=', ($class_1 > 0) ? $class_2 : (($class_2 > 0) ? $gc_id : 0)));
-            $condition_class_3 = array(array('class_3', '=', ($class_1 > 0 && $class_2 > 0) ? $gc_id : 0));
-            $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
+        //商品分类  支持批量显示分类
+        $storebindclass_model = model('storebindclass');
+        $goods_class = model('goodsclass')->getGoodsclassForCacheModel();
+        $condition = array();
+        $condition[] = array('store_id', '=', session('store_id'));
+        $class_2 = isset($goods_class[$gc_id]['gc_parent_id']) ? $goods_class[$gc_id]['gc_parent_id'] : 0;
+        $class_1 = isset($goods_class[$class_2]['gc_parent_id']) ? $goods_class[$class_2]['gc_parent_id'] : 0;
+        $condition_class_1 = array(array('class_1', '=', ($class_1 > 0) ? $class_1 : (($class_2 > 0) ? $class_2 : $gc_id)));
+        $condition_class_2 = array(array('class_2', '=', ($class_1 > 0) ? $class_2 : (($class_2 > 0) ? $gc_id : 0)));
+        $condition_class_3 = array(array('class_3', '=', ($class_1 > 0 && $class_2 > 0) ? $gc_id : 0));
+        $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
+        if (empty($bind_info)) {
+            $condition_class_3 = array(array('class_3', '=', 0));
+            $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
             if (empty($bind_info)) {
-                $condition_class_3 = array(array('class_3', '=',0));
-                $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
+                $condition_class_2 = array(array('class_2', '=', 0));
+                $condition_class_3 = array(array('class_3', '=', 0));
+                $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
                 if (empty($bind_info)) {
+                    $condition_class_1 = array(array('class_1', '=', 0));
                     $condition_class_2 = array(array('class_2', '=', 0));
                     $condition_class_3 = array(array('class_3', '=', 0));
-                    $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
+                    $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition, $condition_class_1, $condition_class_2, $condition_class_3));
                     if (empty($bind_info)) {
-                        $condition_class_1 = array(array('class_1', '=', 0));
-                        $condition_class_2 = array(array('class_2', '=', 0));
-                        $condition_class_3 = array(array('class_3', '=', 0));
-                        $bind_info = $storebindclass_model->getStorebindclassInfo(array_merge($condition,$condition_class_1,$condition_class_2,$condition_class_3));
-                        if (empty($bind_info)) {
-                            $this->error(lang('store_goods_index_again_choose_category2'));
-                        }
+                        $this->error(lang('store_goods_index_again_choose_category2'));
                     }
                 }
             }
+        }
 
         // 更新常用分类信息
         $goods_class = $goodsclass_model->getGoodsclassLineForTag($gc_id);
@@ -136,8 +131,30 @@ class Sellergoodsadd extends BaseSeller {
 
         // 小时分钟显示
         $hour_array = array(
-            '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17',
-            '18', '19', '20', '21', '22', '23'
+            '00',
+            '01',
+            '02',
+            '03',
+            '04',
+            '05',
+            '06',
+            '07',
+            '08',
+            '09',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20',
+            '21',
+            '22',
+            '23'
         );
         View::assign('hour_array', $hour_array);
         $minute_array = array('05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55');
@@ -147,8 +164,8 @@ class Sellergoodsadd extends BaseSeller {
         $plate_list = model('storeplate')->getStoreplateList(array('store_id' => session('store_id')), 'storeplate_id,storeplate_name,storeplate_position');
         $plate_list = array_under_reset($plate_list, 'storeplate_position', 2);
         View::assign('plate_list', $plate_list);
-        $store_service_model=model('store_service');
-        $store_service_list=$store_service_model->getStoreServiceList(array(array('store_id','=',session('store_id'))),'*',0);
+        $store_service_model = model('store_service');
+        $store_service_list = $store_service_model->getStoreServiceList(array(array('store_id', '=', session('store_id'))), '*', 0);
         View::assign('store_service_list', $store_service_list);
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('sellergoodsadd');
@@ -159,7 +176,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 保存商品（商品发布第二步使用）
      */
-    public function save_goods() {
+    public function save_goods()
+    {
         if (request()->isPost()) {
             $goods_model = model('goods');
             Db::startTrans();
@@ -188,7 +206,7 @@ class Sellergoodsadd extends BaseSeller {
                 $common_array['goods_discount'] = floatval(input('post.g_discount'));
                 $common_array['goods_serial'] = input('post.g_serial');
                 $common_array['goods_storage_alarm'] = intval(input('post.g_alarm'));
-                $common_array['store_service_ids'] = !empty(input('post.store_service_ids/a')) ? implode(',',input('post.store_service_ids/a')) : '';
+                $common_array['store_service_ids'] = !empty(input('post.store_service_ids/a')) ? implode(',', input('post.store_service_ids/a')) : '';
 
                 $attr_array = input('post.attr/a'); #获取数组
                 if (!empty($attr_array)) {
@@ -285,7 +303,7 @@ class Sellergoodsadd extends BaseSeller {
                 $common_array['plateid_top'] = intval(input('post.plate_top')) > 0 ? intval(input('post.plate_top')) : '';
                 $common_array['plateid_bottom'] = intval(input('post.plate_bottom')) > 0 ? intval(input('post.plate_bottom')) : '';
                 $common_array['is_virtual'] = intval(input('post.is_gv'));
-                $common_array['virtual_type'] = $common_array['is_virtual']?intval(input('post.virtual_type')):0;
+                $common_array['virtual_type'] = $common_array['is_virtual'] ? intval(input('post.virtual_type')) : 0;
                 $common_array['virtual_indate'] = input('post.g_vindate') != '' ? (strtotime(input('post.g_vindate')) + 24 * 60 * 60 - 1) : 0;  // 当天的最后一秒结束
                 $common_array['virtual_limit'] = intval(input('post.g_vlimit')) > 10 || intval(input('post.g_vlimit')) < 0 ? 10 : intval(input('post.g_vlimit'));
                 $common_array['virtual_invalid_refund'] = intval(input('post.g_vinvalidrefund'));
@@ -340,10 +358,10 @@ class Sellergoodsadd extends BaseSeller {
                             $goods['virtual_invalid_refund'] = $common_array['virtual_invalid_refund'];
                             $goods['is_goodsfcode'] = $common_array['is_goodsfcode'];
                             $goods['is_appoint'] = $common_array['is_appoint'];
-                            switch($common_array['virtual_type']){
+                            switch ($common_array['virtual_type']) {
                                 case 1:
                                     $goods['virtual_content'] = $value['vc_card'];
-                                    $card_list=explode("\r\n",$goods['virtual_content']);
+                                    $card_list = explode("\r\n", $goods['virtual_content']);
                                     $goods['goods_storage'] = count($card_list);
                                     break;
                                 case 2:
@@ -359,7 +377,9 @@ class Sellergoodsadd extends BaseSeller {
                             }
                             $goods_id = $goods_model->addGoods($goods);
                             $type_model->addGoodsType($goods_id, $common_id, array(
-                                'cate_id' => input('post.cate_id'), 'type_id' => input('post.type_id'), 'attr' => input('post.attr/a')
+                                'cate_id' => input('post.cate_id'),
+                                'type_id' => input('post.type_id'),
+                                'attr' => input('post.attr/a')
                             ));
 
                             $goodsid_array[] = $goods_id;
@@ -403,31 +423,32 @@ class Sellergoodsadd extends BaseSeller {
                         $goods['virtual_invalid_refund'] = $common_array['virtual_invalid_refund'];
                         $goods['is_goodsfcode'] = $common_array['is_goodsfcode'];
                         $goods['is_appoint'] = $common_array['is_appoint'];
-                        switch($common_array['virtual_type']){
-                                case 1:
-                                    $goods['virtual_content'] = input('post.vc_card');
-                                    $card_list=explode("\r\n",$goods['virtual_content']);
-                                    $goods['goods_storage'] = count($card_list);
-                                    break;
-                                case 2:
-                                    $goods['virtual_content'] = input('post.vc_pan');
-                                    $goods['goods_storage'] = 1;
-                                    break;
-                                case 3:
-                                    $goods['virtual_content'] = input('post.vc_file');
-                                    $goods['goods_storage'] = 1;
-                                    break;
-                                default:
-                                    $goods['virtual_content'] = '';
-                            }
+                        switch ($common_array['virtual_type']) {
+                            case 1:
+                                $goods['virtual_content'] = input('post.vc_card');
+                                $card_list = explode("\r\n", $goods['virtual_content']);
+                                $goods['goods_storage'] = count($card_list);
+                                break;
+                            case 2:
+                                $goods['virtual_content'] = input('post.vc_pan');
+                                $goods['goods_storage'] = 1;
+                                break;
+                            case 3:
+                                $goods['virtual_content'] = input('post.vc_file');
+                                $goods['goods_storage'] = 1;
+                                break;
+                            default:
+                                $goods['virtual_content'] = '';
+                        }
                         $goods_id = $goods_model->addGoods($goods);
                         $type_model->addGoodsType($goods_id, $common_id, array(
-                            'cate_id' => input('post.cate_id'), 'type_id' => input('post.type_id'), 'attr' => input('post.attr/a')
+                            'cate_id' => input('post.cate_id'),
+                            'type_id' => input('post.type_id'),
+                            'attr' => input('post.attr/a')
                         ));
 
                         $goodsid_array[] = $goods_id;
                     }
-
 
                     // 商品加入上架队列
                     if (!empty(input('post.starttime'))) {
@@ -443,8 +464,10 @@ class Sellergoodsadd extends BaseSeller {
                     // 生成F码
                     if ($common_array['is_goodsfcode'] == 1) {
                         model('goodsfcode')->createGoodsfcode(array(
-                            'goods_commonid' => $common_id, 'goodsfcode_count' => intval(input('post.g_fccount')),
-                            'goodsfcode_prefix' => input('post.g_fcprefix')));
+                            'goods_commonid' => $common_id,
+                            'goodsfcode_count' => intval(input('post.g_fccount')),
+                            'goodsfcode_prefix' => input('post.g_fcprefix')
+                        ));
                     }
                 } else {
                     throw new \think\Exception(lang('store_goods_index_goods_add_fail'), 10006);
@@ -454,7 +477,7 @@ class Sellergoodsadd extends BaseSeller {
                 Db::rollback();
                 $this->error($e->getMessage(), get_referer());
             }
-            
+
             $this->redirect((string) url('Sellergoodsadd/add_step_three', ['commonid' => $common_id]));
         }
     }
@@ -462,7 +485,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 第三步添加颜色图片
      */
-    public function add_step_three() {
+    public function add_step_three()
+    {
         $common_id = input('param.commonid');
         if ($common_id <= 0) {
             $this->error(lang('param_error'), (string) url('Seller/index'));
@@ -490,14 +514,13 @@ class Sellergoodsadd extends BaseSeller {
         $value_array = $spec_model->getSpecvalueList(array(
             array('spvalue_id', 'in', $colorid_array),
             array('store_id', '=', session('store_id'))
-                ), 'spvalue_id,spvalue_name');
+        ), 'spvalue_id,spvalue_name');
         if (empty($value_array)) {
             $value_array[] = array('spvalue_id' => '0', 'spvalue_name' => lang('no_color'));
         }
         View::assign('value_array', $value_array);
 
         View::assign('commonid', $common_id);
-
 
         /* 设置卖家当前菜单 */
         $this->setSellerCurMenu('sellergoodsadd');
@@ -508,7 +531,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 保存商品颜色图片
      */
-    public function save_image() {
+    public function save_image()
+    {
         if (request()->isPost()) {
             $common_id = intval(input('param.commonid'));
             $img_array = input('post.img/a'); #获取数组
@@ -548,14 +572,14 @@ class Sellergoodsadd extends BaseSeller {
                     $insert_array[] = $tmp_insert;
                 }
             }
-            if(!empty($insert_array)){
+            if (!empty($insert_array)) {
                 $rs = $goods_model->addGoodsImagesAll($insert_array);
                 if ($rs) {
                     $this->redirect((string) url('Sellergoodsadd/add_step_four', ['commonid' => $common_id]));
                 } else {
                     $this->error(lang('ds_common_save_fail'));
                 }
-            }else{
+            } else {
                 $this->redirect((string) url('Sellergoodsadd/add_step_four', ['commonid' => $common_id]));
             }
         }
@@ -564,7 +588,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 商品发布第四步
      */
-    public function add_step_four() {
+    public function add_step_four()
+    {
         $commonid = input('param.commonid');
         // 单条商品信息
         $goods_info = model('goods')->getGoodsInfo(array('goods_commonid' => $commonid));
@@ -578,7 +603,6 @@ class Sellergoodsadd extends BaseSeller {
         $data_array['goods_price'] = $goods_info['goods_price'];
         $data_array['goods_transfee_charge'] = $goods_info['goods_freight'] == 0 ? 1 : 0;
         $data_array['goods_freight'] = $goods_info['goods_freight'];
-
 
         //自动发布店铺动态
         $this->storeAutoShare($data_array, 'new');
@@ -596,7 +620,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * 上传图片
      */
-    public function image_upload() {
+    public function image_upload()
+    {
         // 判断图片数量是否超限
         $album_model = model('album');
         $album_limit = $this->store_grade['storegrade_album_limit'];
@@ -608,24 +633,21 @@ class Sellergoodsadd extends BaseSeller {
                 exit(json_encode(array('error' => $error)));
             }
         }
-        $aclass_id=input('param.aclass_id');
-        if($aclass_id){
+        $aclass_id = input('param.aclass_id');
+        if ($aclass_id) {
             $class_info = $album_model->getOne(array('store_id' => session('store_id'), 'aclass_id' => $aclass_id), 'albumclass');
         }
-        if(!$aclass_id || !$class_info){
+        if (!$aclass_id || !$class_info) {
             $class_info = $album_model->getOne(array('store_id' => session('store_id'), 'aclass_isdefault' => 1), 'albumclass');
         }
 
-
         $store_id = session('store_id');
-        /**
-         * 上传图片
-         */
-        $index=intval(input('param.index'));
-        $time=TIMESTAMP;
+
+        $index = intval(input('param.index'));
+        $time = TIMESTAMP;
         //上传文件保存路径
-        $upload_path = ATTACH_GOODS . '/' . $store_id . '/' . date('Ymd',$time);
-        $save_name = session('store_id') . '_' . date('YmdHis',$time) . ($index?(10000+$index):(rand(20000, 99999)));
+        $upload_path = ATTACH_GOODS . '/' . $store_id . '/' . date('Ymd', $time);
+        $save_name = session('store_id') . '_' . date('YmdHis', $time) . ($index ? (10000 + $index) : (rand(20000, 99999)));
         $file_name = input('post.name');
 
         $result = upload_albumpic($upload_path, $file_name, $save_name);
@@ -649,10 +671,9 @@ class Sellergoodsadd extends BaseSeller {
         $insert_array['store_id'] = $store_id;
         $result = model('album')->addAlbumpic($insert_array);
 
-
         $data = array();
-        $data ['thumb_name'] = goods_cthumb($img_path, 240, session('store_id'));
-        $data ['name'] = $img_path;
+        $data['thumb_name'] = goods_cthumb($img_path, 240, session('store_id'));
+        $data['name'] = $img_path;
 
         // 整理为json格式
         $output = json_encode($data);
@@ -663,7 +684,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * ajax获取商品分类的子级数据
      */
-    public function ajax_goods_class() {
+    public function ajax_goods_class()
+    {
         $gc_id = intval(input('get.gc_id'));
         $deep = intval(input('get.deep'));
         if ($gc_id <= 0 || $deep <= 0 || $deep >= 4) {
@@ -680,15 +702,14 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * ajax删除常用分类
      */
-    public function ajax_stapledel() {
+    public function ajax_stapledel()
+    {
         $staple_id = intval(input('get.staple_id'));
         if ($staple_id < 1) {
             echo json_encode(array('done' => false, 'msg' => lang('param_error')));
             die();
         }
-        /**
-         * 实例化模型
-         */
+
         $staple_model = model('goodsclassstaple');
 
         $result = $staple_model->delGoodsclassstaple(array('staple_id' => $staple_id, 'member_id' => session('member_id')));
@@ -699,7 +720,8 @@ class Sellergoodsadd extends BaseSeller {
             die();
         } else {
             echo json_encode(array(
-                'done' => false, 'msg' => ''
+                'done' => false,
+                'msg' => ''
             ));
             die();
         }
@@ -708,17 +730,17 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * ajax选择常用商品分类
      */
-    public function ajax_show_comm() {
+    public function ajax_show_comm()
+    {
         $staple_id = intval(input('get.stapleid'));
 
-        /**
-         * 查询相应的商品分类id
-         */
+        // 查询相应的商品分类id
         $staple_model = model('goodsclassstaple');
         $staple_info = $staple_model->getGoodsclassstapleInfo(array('staple_id' => intval($staple_id)), 'gc_id_1,gc_id_2,gc_id_3');
         if (empty($staple_info) || !is_array($staple_info)) {
             echo json_encode(array(
-                'done' => false, 'msg' => ''
+                'done' => false,
+                'msg' => ''
             ));
             die();
         }
@@ -735,9 +757,7 @@ class Sellergoodsadd extends BaseSeller {
         $gc_id_2 = intval($staple_info['gc_id_2']);
         $gc_id_3 = intval($staple_info['gc_id_3']);
 
-        /**
-         * 查询同级分类列表
-         */
+        // 查询同级分类列表
         $goodsclass_model = model('goodsclass');
         // 1级
         if ($gc_id_1 > 0) {
@@ -748,10 +768,10 @@ class Sellergoodsadd extends BaseSeller {
                 die();
             }
             foreach ($class_list as $val) {
-                if ($val ['gc_id'] == $gc_id_1) {
-                    $list_array ['one'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val ['gc_id'] . ', deep:1, tid:' . $val ['type_id'] . '}" dstype="selClass"> <a class="classDivClick" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val ['gc_name'] . '</span></a> </li>';
+                if ($val['gc_id'] == $gc_id_1) {
+                    $list_array['one'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val['gc_id'] . ', deep:1, tid:' . $val['type_id'] . '}" dstype="selClass"> <a class="classDivClick" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val['gc_name'] . '</span></a> </li>';
                 } else {
-                    $list_array ['one'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val ['gc_id'] . ', deep:1, tid:' . $val ['type_id'] . '}" dstype="selClass"> <a class="" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val ['gc_name'] . '</span></a> </li>';
+                    $list_array['one'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val['gc_id'] . ', deep:1, tid:' . $val['type_id'] . '}" dstype="selClass"> <a class="" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val['gc_name'] . '</span></a> </li>';
                 }
             }
         }
@@ -761,15 +781,16 @@ class Sellergoodsadd extends BaseSeller {
             $class_list = $goodsclass_model->getGoodsclass(session('store_id'), $gc_id_1, 2);
             if (empty($class_list) || !is_array($class_list)) {
                 echo json_encode(array(
-                    'done' => false, 'msg' => ''
+                    'done' => false,
+                    'msg' => ''
                 ));
                 die();
             }
             foreach ($class_list as $val) {
-                if ($val ['gc_id'] == $gc_id_2) {
-                    $list_array ['two'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val ['gc_id'] . ', deep:2, tid:' . $val ['type_id'] . '}" dstype="selClass"> <a class="classDivClick" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val ['gc_name'] . '</span></a> </li>';
+                if ($val['gc_id'] == $gc_id_2) {
+                    $list_array['two'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val['gc_id'] . ', deep:2, tid:' . $val['type_id'] . '}" dstype="selClass"> <a class="classDivClick" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val['gc_name'] . '</span></a> </li>';
                 } else {
-                    $list_array ['two'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val ['gc_id'] . ', deep:2, tid:' . $val ['type_id'] . '}" dstype="selClass"> <a class="" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val ['gc_name'] . '</span></a> </li>';
+                    $list_array['two'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val['gc_id'] . ', deep:2, tid:' . $val['type_id'] . '}" dstype="selClass"> <a class="" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val['gc_name'] . '</span></a> </li>';
                 }
             }
         }
@@ -779,15 +800,16 @@ class Sellergoodsadd extends BaseSeller {
             $class_list = $goodsclass_model->getGoodsclass(session('store_id'), $gc_id_2, 3);
             if (empty($class_list) || !is_array($class_list)) {
                 echo json_encode(array(
-                    'done' => false, 'msg' => ''
+                    'done' => false,
+                    'msg' => ''
                 ));
                 die();
             }
             foreach ($class_list as $val) {
-                if ($val ['gc_id'] == $gc_id_3) {
-                    $list_array ['three'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val ['gc_id'] . ', deep:3, tid:' . $val ['type_id'] . '}" dstype="selClass"> <a class="classDivClick" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val ['gc_name'] . '</span></a> </li>';
+                if ($val['gc_id'] == $gc_id_3) {
+                    $list_array['three'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val['gc_id'] . ', deep:3, tid:' . $val['type_id'] . '}" dstype="selClass"> <a class="classDivClick" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val['gc_name'] . '</span></a> </li>';
                 } else {
-                    $list_array ['three'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val ['gc_id'] . ', deep:3, tid:' . $val ['type_id'] . '}" dstype="selClass"> <a class="" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val ['gc_name'] . '</span></a> </li>';
+                    $list_array['three'] .= '<li class="" onclick="selClass($(this));" data-param="{gcid:' . $val['gc_id'] . ', deep:3, tid:' . $val['type_id'] . '}" dstype="selClass"> <a class="" href="javascript:void(0)"><span class="has_leaf"><i class="iconfont"></i>' . $val['gc_name'] . '</span></a> </li>';
                 }
             }
         }
@@ -798,7 +820,8 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * AJAX添加商品规格值
      */
-    public function ajax_add_spec() {
+    public function ajax_add_spec()
+    {
         $name = trim(input('get.name'));
         $gc_id = intval(input('get.gc_id'));
         $sp_id = intval(input('get.sp_id'));
@@ -827,14 +850,16 @@ class Sellergoodsadd extends BaseSeller {
     /**
      * AJAX查询品牌
      */
-    public function ajax_get_brand() {
+    public function ajax_get_brand()
+    {
         $type_id = intval(input('tid'));
         $initial = trim(input('letter'));
         $keyword = trim(input('keyword'));
         $type = trim(input('type'));
         if (!in_array($type, array(
-                    'letter', 'keyword'
-                )) || ($type == 'letter' && empty($initial)) || ($type == 'keyword' && empty($keyword))) {
+            'letter',
+            'keyword'
+        )) || ($type == 'letter' && empty($initial)) || ($type == 'keyword' && empty($keyword))) {
             echo json_encode(array());
             die();
         }
@@ -842,7 +867,7 @@ class Sellergoodsadd extends BaseSeller {
         // 实例化模型
         $type_model = model('type');
         $where = array();
-        $where[]=array('type_id','=',$type_id);
+        $where[] = array('type_id', '=', $type_id);
         // 验证类型是否关联品牌
         $count = $type_model->getTypebrandCount($where);
         if ($type == 'letter') {
@@ -850,10 +875,10 @@ class Sellergoodsadd extends BaseSeller {
                 case 'all':
                     break;
                 case '0-9':
-                    $where[] = array('brand_initial','in', array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+                    $where[] = array('brand_initial', 'in', array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
                     break;
                 default:
-                    $where[]=array('brand_initial','=',$initial);
+                    $where[] = array('brand_initial', '=', $initial);
                     break;
             }
         } else {
@@ -865,7 +890,4 @@ class Sellergoodsadd extends BaseSeller {
         echo json_encode($brand_array);
         die();
     }
-
 }
-
-?>

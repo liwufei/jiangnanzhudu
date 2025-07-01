@@ -5,34 +5,26 @@ namespace app\home\controller;
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Sellergoodsoffline extends BaseSeller {
+class Sellergoodsoffline extends BaseSeller
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/sellergoodsadd.lang.php');
         $this->template_dir = 'default/seller/sellergoodsadd/';
     }
 
-    public function index() {
+    public function index()
+    {
         $this->goods_storage();
     }
 
     /**
      * 仓库中的商品列表
      */
-    public function goods_storage() {
+    public function goods_storage()
+    {
         $goods_model = model('goods');
 
         $where = array();
@@ -119,7 +111,8 @@ class Sellergoodsoffline extends BaseSeller {
     /**
      * 商品上架
      */
-    public function goods_show() {
+    public function goods_show()
+    {
         $commonid = input('param.commonid');
         if (!preg_match('/^[\d,]+$/i', $commonid)) {
             ds_json_encode(10001, lang('param_error'));
@@ -139,9 +132,10 @@ class Sellergoodsoffline extends BaseSeller {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getSellerItemList() {
+    function getSellerItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'goods_storage',
@@ -161,7 +155,4 @@ class Sellergoodsoffline extends BaseSeller {
         );
         return $item_list;
     }
-
 }
-
-?>

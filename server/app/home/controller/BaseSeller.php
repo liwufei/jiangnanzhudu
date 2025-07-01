@@ -1,9 +1,5 @@
 <?php
 
-/*
- * 卖家相关控制中心
- */
-
 namespace app\home\controller;
 
 use think\facade\View;
@@ -11,34 +7,24 @@ use think\facade\Lang;
 use think\facade\Db;
 use app\common\model\Storemoneylog;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class BaseSeller extends BaseMall {
+class BaseSeller extends BaseMall
+{
 
     //店铺信息
     protected $store_info = array();
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/basemember.lang.php');
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/baseseller.lang.php');
-        if(input('post.PHPSESSID') && !session('seller_id') && request()->controller() == 'SellerTaobaoImport' && request()->action() == 'upload'){
-          $this->app->session->setId(input('post.PHPSESSID'));
-          $this->app->session->init();
-          session('limited', 1);
+        if (input('post.PHPSESSID') && !session('seller_id') && request()->controller() == 'SellerTaobaoImport' && request()->action() == 'upload') {
+            $this->app->session->setId(input('post.PHPSESSID'));
+            $this->app->session->init();
+            session('limited', 1);
         }
-        if(session('limited') && (request()->controller() != 'SellerTaobaoImport' || request()->action() != 'upload')){
-          $this->redirect('home/Sellerlogin/login');
+        if (session('limited') && (request()->controller() != 'SellerTaobaoImport' || request()->action() != 'upload')) {
+            $this->redirect('home/Sellerlogin/login');
         }
         //卖家中心模板路径
         $this->template_dir = 'default/seller/' . strtolower(request()->controller()) . '/';
@@ -64,8 +50,8 @@ class BaseSeller extends BaseMall {
             }
 
             // 店铺等级
-                $store_grade = rkcache('storegrade', true);
-                $this->store_grade = @$store_grade[$this->store_info['grade_id']];
+            $store_grade = rkcache('storegrade', true);
+            $this->store_grade = @$store_grade[$this->store_info['grade_id']];
             if (session('seller_is_admin') !== 1 && request()->controller() !== 'Seller' && request()->controller() !== 'Sellerlogin') {
                 $this->checkPermission();
             }
@@ -74,11 +60,11 @@ class BaseSeller extends BaseMall {
 
     /**
      * 记录卖家日志
-     *
      * @param $content 日志内容
      * @param $state 1成功 0失败
      */
-    protected function recordSellerlog($content = '', $state = 1) {
+    protected function recordSellerlog($content = '', $state = 1)
+    {
         $seller_info = array();
         $seller_info['sellerlog_content'] = $content;
         $seller_info['sellerlog_time'] = TIMESTAMP;
@@ -94,15 +80,13 @@ class BaseSeller extends BaseMall {
 
     /**
      * 记录店铺费用
-     *
      * @param $storecost_price 费用金额
      * @param $storecost_remark 费用备注
      */
-    protected function recordStorecost($storecost_price, $storecost_remark) {
-
+    protected function recordStorecost($storecost_price, $storecost_remark)
+    {
         Db::startTrans();
         try {
-
             $storecost_model = model('storecost');
             $param = array();
             $param['storecost_store_id'] = session('store_id');
@@ -128,7 +112,7 @@ class BaseSeller extends BaseMall {
             ds_json_encode(10001, $e->getMessage());
             Db::rollback();
         }
-        
+
         // 发送店铺消息
         $param = array();
         $param['code'] = 'store_cost';
@@ -158,17 +142,16 @@ class BaseSeller extends BaseMall {
                 )
             ),
         );
-        model('cron')->addCron(array('cron_exetime'=>TIMESTAMP,'cron_type'=>'sendStoremsg','cron_value'=>serialize($param)));
+        model('cron')->addCron(array('cron_exetime' => TIMESTAMP, 'cron_type' => 'sendStoremsg', 'cron_value' => serialize($param)));
     }
-    
 
     /**
      * 添加到任务队列
-     *
      * @param array $goods_array
      * @param boolean $ifdel 是否删除以原记录
      */
-    protected function addcron($data = array(), $ifdel = false) {
+    protected function addcron($data = array(), $ifdel = false)
+    {
         $cron_model = model('cron');
         if (isset($data[0])) { // 批量插入
             $where = array();
@@ -193,19 +176,21 @@ class BaseSeller extends BaseMall {
     }
 
     /**
-     *    当前选中的栏目
+     * 当前选中的栏目
      */
-    protected function setSellerCurItem($curitem = '') {
+    protected function setSellerCurItem($curitem = '')
+    {
         View::assign('seller_item', $this->getSellerItemList());
         View::assign('curitem', $curitem);
     }
 
     /**
-     *    当前选中的子菜单
+     * 当前选中的子菜单
      */
-    protected function setSellerCurMenu($cursubmenu = '') {
+    protected function setSellerCurMenu($cursubmenu = '')
+    {
         $seller_menu = self::getSellerMenuList();
-        $seller_menu=$this->parseMenu($seller_menu);
+        $seller_menu = $this->parseMenu($seller_menu);
         View::assign('seller_menu', $seller_menu);
         $curmenu = '';
         foreach ($seller_menu as $key => $menu) {
@@ -221,21 +206,21 @@ class BaseSeller extends BaseMall {
         View::assign('cursubmenu', $cursubmenu);
     }
 
-    /*
+    /**
      * 获取卖家栏目列表,针对控制器下的栏目
      */
-
-    protected function getSellerItemList() {
+    protected function getSellerItemList()
+    {
         return array();
     }
 
     /**
      * 验证当前管理员权限是否可以进行操作
-     *
      * @param string $link_nav
      * @return
      */
-    protected final function checkPermission($link_nav = null) {
+    protected final function checkPermission($link_nav = null)
+    {
         if (session('seller_is_admin') == 1)
             return true;
 
@@ -278,11 +263,11 @@ class BaseSeller extends BaseMall {
 
     /**
      * 过滤掉无权查看的菜单
-     *
      * @param array $menu
      * @return array
      */
-    private final function parseMenu($menu = array()) {
+    private final function parseMenu($menu = array())
+    {
         if (session('seller_is_admin') === 1) {
             return $menu;
         }
@@ -301,18 +286,18 @@ class BaseSeller extends BaseMall {
                 unset($menu[$k]);
                 unset($menu[$k]['submenu']);
             } else {
-                $temp=current($menu[$k]['submenu']);
+                $temp = current($menu[$k]['submenu']);
                 $menu[$k]['url'] = $temp['url'];
             }
         }
         return $menu;
     }
 
-    /*
+    /**
      * 获取卖家菜单列表
      */
-
-    public static function getSellerMenuList() {
+    public static function getSellerMenuList()
+    {
         //controller  注意第一个字母要大写
         $menu_list = array(
             'sellergoods' =>
@@ -438,8 +423,8 @@ class BaseSeller extends BaseMall {
                 )
             ),
         );
-            $menu_list['seller']['submenu'] = array_merge(array(array('name' => 'seller_money', 'text' => lang('store_money'), 'action' => null, 'controller' => 'Sellermoney', 'url' => (string) url('Sellermoney/index'),), array('name' => 'seller_deposit', 'text' => lang('store_deposit'), 'action' => null, 'controller' => 'Sellerdeposit', 'url' => (string) url('Sellerdeposit/index'),),array('name' => 'sellerinfo', 'text' => lang('store_information'), 'action' => null, 'controller' => 'Sellerinfo', 'url' => (string) url('Sellerinfo/index'),),), $menu_list['seller']['submenu']);
-            $menu_list['selleraccount']['submenu'] = array_merge(array(array('name' => 'sellercost', 'text' => lang('store_consumption'), 'action' => null, 'controller' => 'Sellercost', 'url' => (string) url('Sellercost/cost_list'),)), $menu_list['selleraccount']['submenu']);
+        $menu_list['seller']['submenu'] = array_merge(array(array('name' => 'seller_money', 'text' => lang('store_money'), 'action' => null, 'controller' => 'Sellermoney', 'url' => (string) url('Sellermoney/index'),), array('name' => 'seller_deposit', 'text' => lang('store_deposit'), 'action' => null, 'controller' => 'Sellerdeposit', 'url' => (string) url('Sellerdeposit/index'),), array('name' => 'sellerinfo', 'text' => lang('store_information'), 'action' => null, 'controller' => 'Sellerinfo', 'url' => (string) url('Sellerinfo/index'),),), $menu_list['seller']['submenu']);
+        $menu_list['selleraccount']['submenu'] = array_merge(array(array('name' => 'sellercost', 'text' => lang('store_consumption'), 'action' => null, 'controller' => 'Sellercost', 'url' => (string) url('Sellercost/cost_list'),)), $menu_list['selleraccount']['submenu']);
         if (config('ds_config.inviter_open')) {
             $menu_list['sellerinviter'] = array(
                 'ico' => '&#xe6ed;',
@@ -468,7 +453,8 @@ class BaseSeller extends BaseMall {
      *            groupbuy  goodsgroup表'       group_id,group_name,goods_id,goods_price,groupbuy_price,group_pic,rebate,start_time,end_time
      *            coupon在后台发布
      */
-    public function storeAutoShare($data, $type) {
+    public function storeAutoShare($data, $type)
+    {
         $param = array(
             3 => 'new',
             4 => 'coupon',
@@ -513,7 +499,4 @@ class BaseSeller extends BaseMall {
             return false;
         }
     }
-
 }
-
-?>

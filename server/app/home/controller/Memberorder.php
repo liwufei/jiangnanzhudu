@@ -6,26 +6,17 @@ use think\facade\Lang;
 use think\facade\View;
 use think\facade\Db;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Memberorder extends BaseMember {
+class Memberorder extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
         Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/memberorder.lang.php');
     }
 
-    public function index() {
+    public function index()
+    {
         $order_model = model('order');
 
         //搜索
@@ -52,7 +43,10 @@ class Memberorder extends BaseMember {
         $state_type = input('param.state_type');
         if ($state_type != '') {
             $condition[] = array('order_state', '=', str_replace(
-                        array('state_new', 'state_pay', 'state_send', 'state_success', 'state_noeval', 'state_cancel'), array(ORDER_STATE_NEW, ORDER_STATE_PAY, ORDER_STATE_SEND, ORDER_STATE_SUCCESS, ORDER_STATE_SUCCESS, ORDER_STATE_CANCEL), $state_type));
+                array('state_new', 'state_pay', 'state_send', 'state_success', 'state_noeval', 'state_cancel'),
+                array(ORDER_STATE_NEW, ORDER_STATE_PAY, ORDER_STATE_SEND, ORDER_STATE_SUCCESS, ORDER_STATE_SUCCESS, ORDER_STATE_CANCEL),
+                $state_type
+            ));
         }
         if ($state_type == 'state_noeval') {
             $condition[] = array('evaluation_state', '=', 0);
@@ -68,9 +62,8 @@ class Memberorder extends BaseMember {
             $condition[] = array('delete_state', '=', 0);
         }
 
-
         $order_list = $order_model->getOrderList($condition, 5, '*', 'order_id desc', '', array('order_common', 'order_goods', 'ppintuanorder', 'store'));
-        
+
         View::assign('show_page', $order_model->page_info->render());
 
         $refundreturn_model = model('refundreturn');
@@ -122,7 +115,7 @@ class Memberorder extends BaseMember {
                 if (!isset($order_group_list[$order['pay_sn']]['pay_amount'])) {
                     $order_group_list[$order['pay_sn']]['pay_amount'] = 0;
                 }
-                $order_group_list[$order['pay_sn']]['pay_amount'] += ($order['order_state'] == ORDER_STATE_DEPOSIT?$order['presell_deposit_amount']:($order['order_amount'] - $order['presell_deposit_amount'] + $order['presell_rcb_amount'] + $order['presell_pd_amount'])) - $order['pd_amount'] - $order['rcb_amount'];
+                $order_group_list[$order['pay_sn']]['pay_amount'] += ($order['order_state'] == ORDER_STATE_DEPOSIT ? $order['presell_deposit_amount'] : ($order['order_amount'] - $order['presell_deposit_amount'] + $order['presell_rcb_amount'] + $order['presell_pd_amount'])) - $order['pd_amount'] - $order['rcb_amount'];
             }
             $order_group_list[$order['pay_sn']]['add_time'] = $order['add_time'];
 
@@ -155,8 +148,8 @@ class Memberorder extends BaseMember {
     /**
      * 物流跟踪
      */
-    public function search_deliver() {
-
+    public function search_deliver()
+    {
         $order_id = intval(input('param.order_id'));
         if ($order_id <= 0) {
             $this->error(lang('param_error'), '');
@@ -182,11 +175,10 @@ class Memberorder extends BaseMember {
 
         //取得配送公司代码
         $express = rkcache('express', true);
-        View::assign('express_code', isset($express[$order_info['extend_order_common']['shipping_express_id']])?$express[$order_info['extend_order_common']['shipping_express_id']]['express_code']:'');
-        View::assign('express_name', isset($express[$order_info['extend_order_common']['shipping_express_id']])?$express[$order_info['extend_order_common']['shipping_express_id']]['express_name']:'');
-        View::assign('express_url', isset($express[$order_info['extend_order_common']['shipping_express_id']])?$express[$order_info['extend_order_common']['shipping_express_id']]['express_url']:'');
+        View::assign('express_code', isset($express[$order_info['extend_order_common']['shipping_express_id']]) ? $express[$order_info['extend_order_common']['shipping_express_id']]['express_code'] : '');
+        View::assign('express_name', isset($express[$order_info['extend_order_common']['shipping_express_id']]) ? $express[$order_info['extend_order_common']['shipping_express_id']]['express_name'] : '');
+        View::assign('express_url', isset($express[$order_info['extend_order_common']['shipping_express_id']]) ? $express[$order_info['extend_order_common']['shipping_express_id']]['express_url'] : '');
         View::assign('shipping_code', $order_info['shipping_code']);
-
 
         View::assign('left_show', 'order_view');
 
@@ -199,12 +191,12 @@ class Memberorder extends BaseMember {
 
     /**
      * 从第三方取快递信息
-     *
      */
-    public function get_express() {
+    public function get_express()
+    {
         $result = model('express')->queryExpress(input('param.express_code'), input('param.shipping_code'), input('param.phone'));
         $output = array();
-        foreach($result as $k => $v){
+        foreach ($result as $k => $v) {
             $output[] = $v['trace_time'] . '&nbsp;&nbsp;' . $v['trace_desc'];
         }
         echo json_encode($output);
@@ -212,9 +204,9 @@ class Memberorder extends BaseMember {
 
     /**
      * 订单详细
-     *
      */
-    public function show_order() {
+    public function show_order()
+    {
         $order_id = intval(input('param.order_id'));
         if ($order_id <= 0) {
             $this->error(lang('member_order_none_exist'));
@@ -258,18 +250,18 @@ class Memberorder extends BaseMember {
         //显示系统自动取消订单日期
         if ($order_info['order_state'] == ORDER_STATE_NEW || $order_info['order_state'] == ORDER_STATE_DEPOSIT) {
             $order_info['order_cancel_day'] = $order_info['add_time'] + config('ds_config.order_auto_cancel_day') * 24 * 3600;
-        }else if($order_info['order_state'] == ORDER_STATE_REST){
+        } else if ($order_info['order_state'] == ORDER_STATE_REST) {
             $order_info['order_cancel_day'] = $order_info['presell_end_time'] + 72 * 3600;
         }
 
         //显示快递信息
         if ($order_info['shipping_code'] != '') {
             $express = rkcache('express', true);
-            if(isset($express[$order_info['extend_order_common']['shipping_express_id']])){
+            if (isset($express[$order_info['extend_order_common']['shipping_express_id']])) {
                 $order_info['express_info']['express_code'] = $express[$order_info['extend_order_common']['shipping_express_id']]['express_code'];
                 $order_info['express_info']['express_name'] = $express[$order_info['extend_order_common']['shipping_express_id']]['express_name'];
                 $order_info['express_info']['express_url'] = $express[$order_info['extend_order_common']['shipping_express_id']]['express_url'];
-            }else{
+            } else {
                 $order_info['express_info']['express_code'] = '';
                 $order_info['express_info']['express_name'] = '';
                 $order_info['express_info']['express_url'] = '';
@@ -320,6 +312,7 @@ class Memberorder extends BaseMember {
             $order_info['goods_count'] = count($order_info['goods_list']) + 1;
         }
         View::assign('order_info', $order_info);
+
         //卖家发货信息
         if (!empty($order_info['extend_order_common']['daddress_id'])) {
             $daddress_info = model('daddress')->getAddressInfo(array('daddress_id' => $order_info['extend_order_common']['daddress_id']));
@@ -336,9 +329,9 @@ class Memberorder extends BaseMember {
 
     /**
      * 买家订单状态操作
-     *
      */
-    public function change_state() {
+    public function change_state()
+    {
         $state_type = input('param.state_type');
         $order_id = intval(input('param.order_id'));
 
@@ -369,7 +362,8 @@ class Memberorder extends BaseMember {
     /**
      * 取消订单
      */
-    private function _order_cancel($order_info, $post) {
+    private function _order_cancel($order_info, $post)
+    {
         if (!request()->isPost()) {
             View::assign('order_info', $order_info);
             echo View::fetch($this->template_dir . 'cancel');
@@ -382,16 +376,16 @@ class Memberorder extends BaseMember {
                 return ds_callback(false, lang('have_right_operate'));
             }
             $msg = $post['state_info1'] != '' ? $post['state_info1'] : $post['state_info'];
-            
+
             Db::startTrans();
-            try{
+            try {
                 $logic_order->changeOrderStateCancel($order_info, 'buyer', session('member_name'), $msg);
                 Db::commit();
             } catch (\Exception $e) {
                 Db::rollback();
                 return ds_callback(false, $e->getMessage());
             }
-            
+
             return ds_callback(true, lang('ds_common_op_succ'));
         }
     }
@@ -399,7 +393,8 @@ class Memberorder extends BaseMember {
     /**
      * 收货
      */
-    private function _order_receive($order_info, $post) {
+    private function _order_receive($order_info, $post)
+    {
         if (!request()->isPost()) {
             View::assign('order_info', $order_info);
             echo View::fetch($this->template_dir . 'receive');
@@ -419,7 +414,8 @@ class Memberorder extends BaseMember {
     /**
      * 回收站
      */
-    private function _order_recycle($order_info, $get) {
+    private function _order_recycle($order_info, $get)
+    {
         $order_model = model('order');
         $logic_order = model('order', 'logic');
         $state_type = str_replace(array('order_delete', 'order_drop', 'order_restore'), array('delete', 'drop', 'restore'), input('param.state_type'));
@@ -432,9 +428,10 @@ class Memberorder extends BaseMember {
     }
 
     /**
-     *    栏目菜单
+     * 目菜单
      */
-    function getMemberItemList() {
+    function getMemberItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'member_order',
@@ -450,5 +447,4 @@ class Memberorder extends BaseMember {
 
         return $item_list;
     }
-
 }

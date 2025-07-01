@@ -1,70 +1,55 @@
 <?php
 
-/*
- * 买家退货
- */
-
 namespace app\home\controller;
+
 use think\facade\View;
 use think\facade\Lang;
 
-/**
- * ============================================================================
- * DSMall多用户商城
- * ============================================================================
- * 版权所有 2014-2028 长沙德尚网络科技有限公司，并保留所有权利。
- * 网站地址: http://www.csdeshang.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * ============================================================================
- * 控制器
- */
-class Memberreturn extends BaseMember {
+class Memberreturn extends BaseMember
+{
 
-    public function initialize() {
+    public function initialize()
+    {
         parent::initialize();
-        Lang::load(base_path() . 'home/lang/'.config('lang.default_lang').'/memberreturn.lang.php');
+        Lang::load(base_path() . 'home/lang/' . config('lang.default_lang') . '/memberreturn.lang.php');
     }
 
     /**
      * 退货记录列表页
-     *
      */
-    public function index() {
+    public function index()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[]=array('buyer_id','=',session('member_id'));
-        $condition[]=array('refund_type','=','2'); //类型:1为退款,2为退货
+        $condition[] = array('buyer_id', '=', session('member_id'));
+        $condition[] = array('refund_type', '=', '2'); //类型:1为退款,2为退货
 
         $keyword_type = array('order_sn', 'refund_sn', 'goods_name');
 
         $key = input('get.key');
         $type = input('get.type');
         if (trim($key) != '' && in_array($type, $keyword_type)) {
-            $condition[]=array($type,'like', '%' . $key . '%');
+            $condition[] = array($type, 'like', '%' . $key . '%');
         }
         $add_time_from = input('get.add_time_from');
         $add_time_to = input('get.add_time_to');
         if (trim($add_time_from) != '') {
             $add_time_from = strtotime(trim($add_time_from));
             if ($add_time_from !== false) {
-                $condition[] = array('refundreturn_add_time','>=', $add_time_from);
+                $condition[] = array('refundreturn_add_time', '>=', $add_time_from);
             }
         }
         if (trim($add_time_to) != '') {
             $add_time_to = strtotime(trim($add_time_to));
             if ($add_time_to !== false) {
-                $add_time_to=$add_time_to+86399;
-                $condition[] = array('refundreturn_add_time','<=', $add_time_to);
+                $add_time_to = $add_time_to + 86399;
+                $condition[] = array('refundreturn_add_time', '<=', $add_time_to);
             }
         }
-
 
         $return_list = $refundreturn_model->getReturnList($condition, 10);
         View::assign('return_list', $return_list);
         View::assign('show_page', $refundreturn_model->page_info->render());
-        
 
         $store_list = $refundreturn_model->getRefundStoreList($return_list);
         View::assign('store_list', $store_list);
@@ -78,23 +63,23 @@ class Memberreturn extends BaseMember {
 
     /**
      * 发货
-     *
      */
-    public function ship() {
+    public function ship()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[] = array('buyer_id','=',session('member_id'));
-        $condition[] = array('refund_id','=',intval(input('param.return_id')));
-        $condition[] = array('refund_type','=','2');//类型:1为退款,2为退货
+        $condition[] = array('buyer_id', '=', session('member_id'));
+        $condition[] = array('refund_id', '=', intval(input('param.return_id')));
+        $condition[] = array('refund_type', '=', '2'); //类型:1为退款,2为退货
         $return = $refundreturn_model->getRefundreturnInfo($condition);
-        if(empty($return)){
+        if (empty($return)) {
             $this->error(lang('param_error'));
         }
         View::assign('return', $return);
         $express_list = rkcache('express', true);
         View::assign('express_list', $express_list);
-        if ($return['refundreturn_seller_state'] != '2' || $return['refundreturn_goods_state'] != '1') {//检查状态,防止页面刷新不及时造成数据错误
-            ds_json_encode(10001,lang('param_error'));
+        if ($return['refundreturn_seller_state'] != '2' || $return['refundreturn_goods_state'] != '1') { //检查状态,防止页面刷新不及时造成数据错误
+            ds_json_encode(10001, lang('param_error'));
         }
         if (request()->isPost()) {
             $refund_array = array();
@@ -105,9 +90,9 @@ class Memberreturn extends BaseMember {
             $refund_array['refundreturn_goods_state'] = '2';
             $state = $refundreturn_model->editRefundreturn($condition, $refund_array);
             if ($state) {
-                ds_json_encode(10000,lang('ds_common_save_succ'));
+                ds_json_encode(10000, lang('ds_common_save_succ'));
             } else {
-                ds_json_encode(10001,lang('ds_common_save_fail'));
+                ds_json_encode(10001, lang('ds_common_save_fail'));
             }
         }
 
@@ -118,13 +103,12 @@ class Memberreturn extends BaseMember {
 
         View::assign('pic_list', $info['buyer']);
         $condition = array();
-        $condition[] = array('order_id','=',$return['order_id']);
+        $condition[] = array('order_id', '=', $return['order_id']);
         $order = $refundreturn_model->getRightOrderList($condition, $return['order_goods_id']);
         View::assign('order', $order);
         View::assign('store', $order['extend_store']);
         View::assign('order_common', $order['extend_order_common']);
         View::assign('goods_list', $order['goods_list']);
-
 
         $trade_model = model('trade');
         $return_delay = $trade_model->getMaxDay('return_delay'); //发货默认5天后才能选择没收到
@@ -139,31 +123,31 @@ class Memberreturn extends BaseMember {
 
     /**
      * 延迟时间
-     *
      */
-    public function delay() {
+    public function delay()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[] = array('buyer_id','=',session('member_id'));
-        $condition[] = array('refund_id','=',intval(input('param.return_id')));
-        $condition[] = array('refund_type','=','2'); //类型:1为退款,2为退货
+        $condition[] = array('buyer_id', '=', session('member_id'));
+        $condition[] = array('refund_id', '=', intval(input('param.return_id')));
+        $condition[] = array('refund_type', '=', '2'); //类型:1为退款,2为退货
         $return = $refundreturn_model->getRefundreturnInfo($condition);
-        if(empty($return)){
+        if (empty($return)) {
             $this->error(lang('param_error'));
         }
         View::assign('return', $return);
         if (request()->isPost()) {
-            if ($return['refundreturn_seller_state'] != '2' || $return['refundreturn_goods_state'] != '3') {//检查状态,防止页面刷新不及时造成数据错误
-                ds_json_encode(10001,lang('param_error'));
+            if ($return['refundreturn_seller_state'] != '2' || $return['refundreturn_goods_state'] != '3') { //检查状态,防止页面刷新不及时造成数据错误
+                ds_json_encode(10001, lang('param_error'));
             }
             $refund_array = array();
             $refund_array['refundreturn_delay_time'] = TIMESTAMP;
             $refund_array['refundreturn_goods_state'] = '2';
             $state = $refundreturn_model->editRefundreturn($condition, $refund_array);
             if ($state) {
-                ds_json_encode(10000,lang('ds_common_save_succ'));
+                ds_json_encode(10000, lang('ds_common_save_succ'));
             } else {
-                ds_json_encode(10001,lang('ds_common_save_fail'));
+                ds_json_encode(10001, lang('ds_common_save_fail'));
             }
         } else {
             $trade_model = model('trade');
@@ -176,22 +160,22 @@ class Memberreturn extends BaseMember {
 
     /**
      * 退货记录查看页
-     *
      */
-    public function view() {
+    public function view()
+    {
         $refundreturn_model = model('refundreturn');
         $condition = array();
-        $condition[] = array('buyer_id','=',session('member_id'));
-        $condition[] = array('refund_id','=',intval(input('param.return_id')));
-        $condition[] = array('refund_type','=','2');//类型:1为退款,2为退货
+        $condition[] = array('buyer_id', '=', session('member_id'));
+        $condition[] = array('refund_id', '=', intval(input('param.return_id')));
+        $condition[] = array('refund_type', '=', '2'); //类型:1为退款,2为退货
         $return = $refundreturn_model->getRefundreturnInfo($condition);
-        if(empty($return)){
+        if (empty($return)) {
             $this->error(lang('param_error'));
         }
         View::assign('return', $return);
         $express_list = rkcache('express', true);
         if ($return['express_id'] > 0 && !empty($return['invoice_no'])) {
-            View::assign('return_e_name', isset($express_list[$return['express_id']])?$express_list[$return['express_id']]['express_name']:'');
+            View::assign('return_e_name', isset($express_list[$return['express_id']]) ? $express_list[$return['express_id']]['express_name'] : '');
         }
         $info['buyer'] = array();
         if (!empty($return['pic_info'])) {
@@ -199,7 +183,7 @@ class Memberreturn extends BaseMember {
         }
         View::assign('pic_list', $info['buyer']);
         $condition = array();
-        $condition[] = array('order_id','=',$return['order_id']);
+        $condition[] = array('order_id', '=', $return['order_id']);
         $order = $refundreturn_model->getRightOrderList($condition, $return['order_goods_id']);
         //halt($order);
         View::assign('order', $order);
@@ -207,7 +191,6 @@ class Memberreturn extends BaseMember {
         View::assign('store', $order['extend_store']);
         View::assign('order_common', $order['extend_order_common']);
         View::assign('goods_list', $order['goods_list']);
-
 
         /* 设置买家当前菜单 */
         $this->setMemberCurMenu('member_refund');
@@ -217,9 +200,10 @@ class Memberreturn extends BaseMember {
     }
 
     /**
-     *    栏目菜单
+     * 栏目菜单
      */
-    function getMemberItemList() {
+    function getMemberItemList()
+    {
         $item_list = array(
             array(
                 'name' => 'buyer_refund',
@@ -239,6 +223,4 @@ class Memberreturn extends BaseMember {
         );
         return $item_list;
     }
-
-
 }
