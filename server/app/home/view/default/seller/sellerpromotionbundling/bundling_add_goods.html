@@ -1,27 +1,33 @@
 <div class="div-goods-select">
     <table class="search-form">
         <tbody>
-        <tr>
-            <td>&nbsp;</td>
-            <th>{$Think.lang.bundling_goods_store_class}</th>
-            <td class="w160"><select name="storegc_id" class="w150">
-                <option value="0">{$Think.lang.ds_please_choose}</option>
-                {notempty name="store_goods_class"}
-                {foreach name="store_goods_class" item="val"}
-                <option value="{$val.storegc_id}" {if $val.storegc_id == $Request.get.storegc_id}selected="selected"{/if}>{$val.storegc_name}</option>
-                {if isset($val['child']) && count($val['child'])>0}
-                {foreach name="val.child" item="val"}
-                <option value="{$val.storegc_id}" {if $val.storegc_id == $Request.get.storegc_id}selected="selected"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;{$val.storegc_name}</option>
-                {/foreach}
-                {/if}
-                {/foreach}
-                {/notempty}
-            </select></td>
-            <th>{$Think.lang.bundling_goods_name}</th>
-            <td class="w160"><input type="text" name="b_search_keyword" class="text" value="{$Request.get.keyword}" /></td>
-            <td class="tc w70"><a href="{:url('Sellerpromotionbundling/bundling_add_goods')}" dstype="search_a" class="dss-btn"><i class="iconfont">&#xe718;</i>{$Think.lang.ds_search}</a></td>
-            <td class="w10"></td>
-        </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <th>{$Think.lang.bundling_goods_store_class}</th>
+                <td class="w160"><select name="storegc_id" class="w150">
+                        <option value="0">{$Think.lang.ds_please_choose}</option>
+                        {notempty name="store_goods_class"}
+                        {foreach name="store_goods_class" item="val"}
+                        <option value="{$val.storegc_id}" {if
+                            $val.storegc_id==$Request.get.storegc_id}selected="selected" {/if}>{$val.storegc_name}
+                        </option>
+                        {if isset($val['child']) && count($val['child'])>0}
+                        {foreach name="val.child" item="val"}
+                        <option value="{$val.storegc_id}" {if
+                            $val.storegc_id==$Request.get.storegc_id}selected="selected" {/if}>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{$val.storegc_name}</option>
+                        {/foreach}
+                        {/if}
+                        {/foreach}
+                        {/notempty}
+                    </select></td>
+                <th>{$Think.lang.bundling_goods_name}</th>
+                <td class="w160"><input type="text" name="b_search_keyword" class="text"
+                        value="{$Request.get.keyword}" /></td>
+                <td class="tc w70"><a href="{:url('Sellerpromotionbundling/bundling_add_goods')}" dstype="search_a"
+                        class="dss-btn"><i class="iconfont">&#xe718;</i>{$Think.lang.ds_search}</a></td>
+                <td class="w10"></td>
+            </tr>
         </tbody>
     </table>
     <div class="search-result" style="width:739px;">
@@ -29,14 +35,19 @@
         <ul class="goods-list" dstype="bundling_goods_add_tbody" style=" width:760px;">
             {foreach name="goods_list" item="val"}
             <li dstype="{$val.goods_id}">
-                <div class="goods-thumb"><img src="{:goods_cthumb($val.goods_image,240,session('store_id'))}" dstype="{$val.goods_image}" /></div>
+                <div class="goods-thumb"><img src="{:goods_cthumb($val.goods_image,240,session('store_id'))}"
+                        dstype="{$val.goods_image}" /></div>
                 <dl class="goods-info">
                     <dt><a href="#" target="_blank" title="{$Think.lang.bundling_goods_name}'/'{$Think.lang.bundling_goods_code}{$val.goods_name}
                     {if $val.goods_serial != ''}{$val.goods_serial}{/if}">{$val.goods_name}</a></dt>
                     <dd>{$Think.lang.bundling_goods_price}¥{$val.goods_price}</dd>
                     <dd>{$Think.lang.bundling_goods_storage}{$val.goods_storage}{$Think.lang.piece}</dd>
                 </dl>
-                <div data-param="{gid:{$val.goods_id},image:'{$val.goods_image}',src:'{:goods_cthumb($val.goods_image,240,session('store_id'))}',gname:'{$val.goods_name}',gprice:'{$val.goods_price}',gstorang:'{$val.goods_storage}'}"><a href="JavaScript:void(0);" class="dssc-btn-mini dssc-btn-green" onclick="bundling_goods_add($(this))"><i class="iconfont">&#xe6db;</i>{$Think.lang.bundling_goods_add_bundling}</a></div>
+                <div
+                    data-param="{gid:{$val.goods_id},image:'{$val.goods_image}',src:'{:goods_cthumb($val.goods_image,240,session('store_id'))}',gname:'{$val.goods_name}',gprice:'{$val.goods_price}',gstorang:'{$val.goods_storage}'}">
+                    <a href="JavaScript:void(0);" class="dssc-btn-mini dssc-btn-green"
+                        onclick="bundling_goods_add($(this))"><i
+                            class="iconfont">&#xe6db;</i>{$Think.lang.bundling_goods_add_bundling}</a></div>
             </li>
             {/foreach}
         </ul>
@@ -54,52 +65,51 @@
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery-2.1.4.min.js"></script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.ajaxContent.pack.js"></script>
 <script>
-    $(function(){
+    $(function () {
         /* ajax添加商品  */
         $('.demo').unbind().ajaxContent({
-            event:'click', //mouseover
-            loaderType:"img",
-            loadingMsg:"{$Think.HOME_SITE_ROOT}/images/loading.gif",
-            target:'#bundling_add_goods_ajaxContent'
+            event: 'click', //mouseover
+            loaderType: "img",
+            loadingMsg: "{$Think.HOME_SITE_ROOT}/images/loading.gif",
+            target: '#bundling_add_goods_ajaxContent'
         });
 
-        $('a[dstype="search_a"]').click(function(){
-            $(this).attr('href', $(this).attr('href')+'?storegc_id='+$('select[name="storegc_id"]').val()+ '&' +$.param({'keyword':$('input[name="b_search_keyword"]').val()}));
+        $('a[dstype="search_a"]').click(function () {
+            $(this).attr('href', $(this).attr('href') + '?storegc_id=' + $('select[name="storegc_id"]').val() + '&' + $.param({ 'keyword': $('input[name="b_search_keyword"]').val() }));
             $('a[dstype="search_a"]').ajaxContent({
-                event:'dblclick', //mouseover
-                loaderType:'img',
-                loadingMsg:'{$Think.HOME_SITE_ROOT}/images/loading.gif',
-                target:'#bundling_add_goods_ajaxContent'
+                event: 'dblclick', //mouseover
+                loaderType: 'img',
+                loadingMsg: '{$Think.HOME_SITE_ROOT}/images/loading.gif',
+                target: '#bundling_add_goods_ajaxContent'
             });
             $(this).dblclick();
             return false;
         });
 
-
         // 验证商品是否已经被选择。
         O = $('input[dstype="goods_id"]');
         A = new Array();
-        if(typeof(O) != 'undefined'){
-            O.each(function(){
+        if (typeof (O) != 'undefined') {
+            O.each(function () {
                 A[$(this).val()] = $(this).val();
             });
         }
         T = $('ul[dstype="bundling_goods_add_tbody"] li');
-        if(typeof(T) != 'undefined'){
-            T.each(function(){
-                if(typeof(A[$(this).attr('dstype')]) != 'undefined'){
-                    $(this).children(':last').html('<a href="JavaScript:void(0);" onclick="bundling_operate_delete($(\'#bundling_tr_'+$(this).attr('dstype')+'\'), '+$(this).attr('dstype')+')" class="dssc-btn-mini dssc-btn-orange"><i class="iconfont">&#xe754;</i>{$Think.lang.bundling_goods_add_bundling_exit}</a>');
+        if (typeof (T) != 'undefined') {
+            T.each(function () {
+                if (typeof (A[$(this).attr('dstype')]) != 'undefined') {
+                    $(this).children(':last').html('<a href="JavaScript:void(0);" onclick="bundling_operate_delete($(\'#bundling_tr_' + $(this).attr('dstype') + '\'), ' + $(this).attr('dstype') + ')" class="dssc-btn-mini dssc-btn-orange"><i class="iconfont">&#xe754;</i>{$Think.lang.bundling_goods_add_bundling_exit}</a>');
                 }
             });
         }
     });
 
     /* 添加商品 */
-    function bundling_goods_add(o){
+    function bundling_goods_add(o) {
         // 验证商品是否已经添加。
         var _bundlingtr = $('tbody[dstype="bundling_data"] tr:not(:first)');
-        if(typeof(_bundlingtr) != 'undefined'){
-            if(_bundlingtr.length == {$Think.config.ds_config.promotion_bundling_goods_sum}){
+        if (typeof (_bundlingtr) != 'undefined') {
+            if (_bundlingtr.length == { $Think.config.ds_config.promotion_bundling_goods_sum }) {
                 layer.msg("{php}printf(lang('bundling_goods_add_enough_prompt'), config('ds_config.promotion_bundling_goods_sum')){/php}");
                 return false;
             }
@@ -121,11 +131,11 @@
             .append('<td class="w90 goods-price" dstype="bundling_data_price">' + _data.gprice + '</td>')
             .append('<td class="w90"><input type="text" dstype="price" name="goods[g_' + _data.gid + '][price]" value="' + _data.gprice + '" class="text w70"></td>')
             .append('<td class="dscs-table-handle w90"><span><a href="javascript:void(0);" onclick="bundling_operate_delete($(\'#bundling_tr_' + _data.gid + '\'), ' + _data.gid + ')" class="btn-orange"><i class="iconfont">&#xe754;</i><p>{$Think.lang.bundling_goods_remove}</p></a></span></td>')
-    .fadeIn().appendTo('tbody[dstype="bundling_data"]');
+            .fadeIn().appendTo('tbody[dstype="bundling_data"]');
 
         $('li[dstype="' + _data.gid + '"]').children(':last').html('<a href="JavaScript:void(0);" class="dssc-btn-mini dssc-btn-orange" onclick="bundling_operate_delete($(\'#bundling_tr_' + _data.gid + '\'), ' + _data.gid + ')"><i class="iconfont">&#xe754;</i>{$Think.lang.bundling_goods_add_bundling_exit}</a>');
         count_cost_price_sum();
         count_price_sum();
     }
 
-</script> 
+</script>

@@ -3,10 +3,13 @@
 <div class="dssc-store-templet">
     <dl class="current-style">
         <dt class="templet-thumb"><img src="{$curr_theme.curr_image}" id="current_theme_img" /></dt>
-        <dd>{$Think.lang.store_theme_tpl_name}{$Think.lang.ds_colon}<strong id="current_template">{$curr_theme.curr_name}</strong></dd>
-        <dd>{$Think.lang.store_theme_style_name}{$Think.lang.ds_colon}<strong id="current_style">{$curr_theme.curr_truename}</strong></dd>
+        <dd>{$Think.lang.store_theme_tpl_name}{$Think.lang.ds_colon}<strong
+                id="current_template">{$curr_theme.curr_name}</strong></dd>
+        <dd>{$Think.lang.store_theme_style_name}{$Think.lang.ds_colon}<strong
+                id="current_style">{$curr_theme.curr_truename}</strong></dd>
         <dd>{$Think.lang.store_create_store_name}{$Think.lang.ds_colon}<strong>{$store_info.store_name}</strong></dd>
-        <dd><a href="{:url('Store/index',['store_id'=>$store_info.store_id])}" class="dssc-btn">{$Think.lang.store_theme_homepage}</a></dd>
+        <dd><a href="{:url('Store/index',['store_id'=>$store_info.store_id])}"
+                class="dssc-btn">{$Think.lang.store_theme_homepage}</a></dd>
     </dl>
     <h3>{$Think.lang.store_theme_valid}</h3>
     <div class="templet-list">
@@ -14,10 +17,15 @@
             {foreach name="theme_list" item="theme"}
             <li>
                 <dl>
-                    <dt><a href="javascript:void(0)" onclick="preview_theme('{$theme.name}');"><img id="themeimg_{$theme.name}" src="{$theme.image}"></a></dt>
+                    <dt><a href="javascript:void(0)" onclick="preview_theme('{$theme.name}');"><img
+                                id="themeimg_{$theme.name}" src="{$theme.image}"></a></dt>
                     <dd>{$Think.lang.store_theme_tpl_name1}{$Think.lang.ds_colon}{$theme.name}</dd>
                     <dd>{$Think.lang.store_theme_style_name1}{$Think.lang.ds_colon}{$theme.truename}</dd>
-                    <dd class="btn"> <a href="javascript:void(0)" onclick=" use_theme('{$theme.name}', '{$theme.truename}');" class="dssc-btn"><i class="iconfont">&#xe734;</i>{$Think.lang.store_theme_use}</a> <a href="javascript:preview_theme('{$theme.name}');" class="dssc-btn"><i class="iconfont">&#xe718;</i>{$Think.lang.store_theme_preview}</a> </dd>
+                    <dd class="btn"> <a href="javascript:void(0)"
+                            onclick=" use_theme('{$theme.name}', '{$theme.truename}');" class="dssc-btn"><i
+                                class="iconfont">&#xe734;</i>{$Think.lang.store_theme_use}</a> <a
+                            href="javascript:preview_theme('{$theme.name}');" class="dssc-btn"><i
+                                class="iconfont">&#xe718;</i>{$Think.lang.store_theme_preview}</a> </dd>
                 </dl>
             </li>
             {/foreach}
@@ -35,13 +43,11 @@
     var preview_img = new Image();
     preview_img.onload = function () {
         var d = DialogManager.get('preview_image');
-        if (!d)
-        {
+        if (!d) {
             return;
         }
 
-        if (d.getStatus() != 'loading')
-        {
+        if (d.getStatus() != 'loading') {
 
             return;
         }
@@ -59,7 +65,7 @@
         var screenshot = '{$Think.BASE_SITE_ROOT}/static/home/default/store/styles/' + style_name + '/screenshot.jpg';
         var d = DialogManager.create('preview_image');
         d.setTitle('{$Think.lang.store_theme_effect_preview}');
-        d.setContents('loading', {'text': '{$Think.lang.store_theme_loading1}...'});
+        d.setContents('loading', { 'text': '{$Think.lang.store_theme_loading1}...' });
         d.setWidth(270);
         d.show('center');
 
@@ -68,5 +74,3 @@
 </script>
 
 {/block}
-
-

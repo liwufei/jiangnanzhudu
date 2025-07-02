@@ -9,9 +9,11 @@
             <dl>
                 <dt><i class="required">*</i>{$Think.lang.bundling_quota_add_quantity}{$Think.lang.ds_colon}</dt>
                 <dd>
-                    <input id="bundling_quota_quantity" name="bundling_quota_quantity" type="text" class="text w50"/><em class="add-on">{$Think.lang.ds_month}</em><span></span>
+                    <input id="bundling_quota_quantity" name="bundling_quota_quantity" type="text"
+                        class="text w50" /><em class="add-on">{$Think.lang.ds_month}</em><span></span>
                     <p class="hint">{$Think.lang.bundling_price_explain1}</p>
-                    <p class="hint">{php}printf(lang('bundling_price_explain2'), intval(config('ds_config.promotion_bundling_price'))){/php}</p>
+                    <p class="hint">{php}printf(lang('bundling_price_explain2'),
+                        intval(config('ds_config.promotion_bundling_price'))){/php}</p>
                     <p class="hint"><strong style="color: red">{$Think.lang.notice_package_renewal6}</strong></p>
                 </dd>
             </dl>
@@ -30,7 +32,7 @@
                 error_td.append(error);
             },
             submitHandler: function (form) {
-                var unit_price = parseInt({$Think.config.ds_config.promotion_bundling_price});
+                var unit_price = parseInt({ $Think.config.ds_config.promotion_bundling_price });
                 var quantity = parseInt($("#bundling_quota_quantity").val());
                 var price = unit_price * quantity;
                 layer.confirm('{$Think.lang.bundling_quota_add_confirm}' + price + '{$Think.lang.ds_yuan}', {
@@ -58,7 +60,6 @@
             }
         });
     });
-</script> 
+</script>
 
 {/block}
-

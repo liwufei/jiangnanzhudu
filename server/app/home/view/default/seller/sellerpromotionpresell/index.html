@@ -1,13 +1,17 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_btn"}
 {if config('ds_config.promotion_presell_price')==0}
-<a class="dssc-btn dssc-btn-green" href="{:url('Sellerpromotionpresell/presell_add')}"><i class="iconfont">&#xe6db;</i>{$Think.lang.presell_add}</a>
+<a class="dssc-btn dssc-btn-green" href="{:url('Sellerpromotionpresell/presell_add')}"><i
+        class="iconfont">&#xe6db;</i>{$Think.lang.presell_add}</a>
 {else /}
 {notempty name="current_presell_quota"}
-<a class="dssc-btn dssc-btn-green" style="right:100px" href="{:url('Sellerpromotionpresell/presell_add')}"><i class="iconfont">&#xe6db;</i>{$Think.lang.presell_add}</a>
-<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionpresell/presell_quota_add')}" title=""><i class="iconfont">&#xe6a1;</i>{$Think.lang.package_renewal}</a>
+<a class="dssc-btn dssc-btn-green" style="right:100px" href="{:url('Sellerpromotionpresell/presell_add')}"><i
+        class="iconfont">&#xe6db;</i>{$Think.lang.presell_add}</a>
+<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionpresell/presell_quota_add')}" title=""><i
+        class="iconfont">&#xe6a1;</i>{$Think.lang.package_renewal}</a>
 {else }
-<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionpresell/presell_quota_add')}" title=""><i class="iconfont">&#xe6a1;</i>{$Think.lang.purchase_package}</a>
+<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionpresell/presell_quota_add')}" title=""><i
+        class="iconfont">&#xe6a1;</i>{$Think.lang.purchase_package}</a>
 {/notempty}
 {/if}
 
@@ -24,7 +28,8 @@
 {else }
 <div class="alert alert-block mt10">
     {notempty name="current_presell_quota"}
-    <strong>{$Think.lang.overdue_package}{$Think.lang.ds_colon}</strong><strong style="color:#F00;">{$current_presell_quota.presellquota_endtime|date="Y-m-d H:i:s"}</strong>
+    <strong>{$Think.lang.overdue_package}{$Think.lang.ds_colon}</strong><strong
+        style="color:#F00;">{$current_presell_quota.presellquota_endtime|date="Y-m-d H:i:s"}</strong>
     {else /}
     <strong>{$Think.lang.please_package_first}</strong>
     {/notempty}
@@ -46,14 +51,16 @@
                     <option value="">{$Think.lang.ds_please_choose}</option>
                     {notempty name="presell_state_array"}
                     {foreach name="presell_state_array" item="val"}
-                    <option value="{$key}" {if $Request.get.state!='' && $key==$Request.get.state}selected{/if}>{$val}</option>
+                    <option value="{$key}" {if $Request.get.state!='' && $key==$Request.get.state}selected{/if}>{$val}
+                    </option>
                     {/foreach}
                     {/notempty}
                 </select></td>
             <th class="w110">{$Think.lang.presell_goods_name}</th>
-            <td class="w160"><input type="text" class="text w150" name="goods_name" value="{$Request.get.goods_name}"/></td>
+            <td class="w160"><input type="text" class="text w150" name="goods_name" value="{$Request.get.goods_name}" />
+            </td>
             <td class="w70 tc">
-                <input type="submit" class="submit" value="{$Think.lang.ds_search}"/>
+                <input type="submit" class="submit" value="{$Think.lang.ds_search}" />
             </td>
         </tr>
     </table>
@@ -77,11 +84,13 @@
             <td>{$val.presell_price}</td>
             <td>{if $val.presell_type==1}{$Think.lang.presell_type_1}{else}{$Think.lang.presell_type_2}{/if}</td>
             <td>{$val.presell_state_text}</td>
-            <td class="goods-time">{$val.presell_start_time|date="Y-m-d H:i"}<br>~<br>{$val.presell_end_time|date="Y-m-d H:i"}</td>
+            <td class="goods-time">{$val.presell_start_time|date="Y-m-d H:i"}<br>~<br>{$val.presell_end_time|date="Y-m-d
+                H:i"}</td>
             <td class="dscs-table-handle tc">
                 {if $val.editable}
                 <span>
-                    <a href="{:url('Sellerpromotionpresell/presell_edit',['presell_id'=>$val.presell_id])}" class="btn-blue">
+                    <a href="{:url('Sellerpromotionpresell/presell_edit',['presell_id'=>$val.presell_id])}"
+                        class="btn-blue">
                         <i class="iconfont">&#xe731;</i>
                         <p>{$Think.lang.ds_edit}</p>
                     </a>

@@ -1,7 +1,8 @@
 <div class="eject_con">
     <div id="warning"></div>
     {if $order_info}
-    <form id="changeform" method="post" action="{:url('Sellerorder/change_state',['state_type'=>'spay_price','order_id'=>$order_info.order_id])}">
+    <form id="changeform" method="post"
+        action="{:url('Sellerorder/change_state',['state_type'=>'spay_price','order_id'=>$order_info.order_id])}">
         <dl>
             <dt>{$Think.lang.store_order_buyer_with}{$Think.lang.ds_colon}</dt>
             <dd>{$order_info.buyer_name}</dd>
@@ -13,7 +14,8 @@
         <dl>
             <dt>{$Think.lang.store_order_modify_price}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input type="text" class="text" id="goods_amount" name="goods_amount" value="{$order_info.goods_amount}"/>
+                <input type="text" class="text" id="goods_amount" name="goods_amount"
+                    value="{$order_info.goods_amount}" />
             </dd>
         </dl>
         <dl class="bottom">

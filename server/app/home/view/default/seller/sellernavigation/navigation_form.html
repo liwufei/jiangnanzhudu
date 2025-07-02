@@ -1,19 +1,21 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_main"}
 <div class="dssc-form-default">
-    <form method="post" action="{:url('Sellernavigation/navigation_save')}" target="_parent" name="store_navigation_form" id="store_navigation_form" enctype="multipart/form-data">
-        <input type="hidden" name="storenav_id" value="{$sn_info.storenav_id}"/>
+    <form method="post" action="{:url('Sellernavigation/navigation_save')}" target="_parent"
+        name="store_navigation_form" id="store_navigation_form" enctype="multipart/form-data">
+        <input type="hidden" name="storenav_id" value="{$sn_info.storenav_id}" />
         <dl>
             <dt><i class="required">*</i>{$Think.lang.store_navigation_name}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input type="text" class="w150 text" name="storenav_title" value="{$sn_info.storenav_title}" /><span></span>
+                <input type="text" class="w150 text" name="storenav_title"
+                    value="{$sn_info.storenav_title}" /><span></span>
             </dd>
         </dl>
-       
         <dl>
             <dt>{$Think.lang.store_goods_class_sort}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input type="text" class="w50 text" name="storenav_sort" value="{if $sn_info.storenav_sort neq ''}{$sn_info.storenav_sort}{else}255{/if}"/>
+                <input type="text" class="w50 text" name="storenav_sort"
+                    value="{if $sn_info.storenav_sort neq ''}{$sn_info.storenav_sort}{else}255{/if}" />
             </dd>
         </dl>
         <dl>
@@ -46,8 +48,8 @@
                 var error_td = element.parent('dd').children('span');
                 error_td.append(error);
             },
-            submitHandler:function(form){
-                ds_ajaxpost('store_navigation_form','url','{:url('Sellernavigation/index')}')
+            submitHandler: function (form) {
+                ds_ajaxpost('store_navigation_form', 'url', '{:url('Sellernavigation / index')}')
             },
             rules: {
                 storenav_title: {
@@ -66,4 +68,3 @@
 </script>
 
 {/block}
-

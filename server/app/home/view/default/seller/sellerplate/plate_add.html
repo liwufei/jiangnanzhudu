@@ -1,7 +1,9 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_main"}
 <div class="dssc-form-default">
-    <form method="post" action="{if $Request.action eq 'plate_add'}{:url('Sellerplate/plate_add')}{else/}{:url('Sellerplate/plate_edit',['p_id'=>$Request.param.p_id])}{/if}" id="plate_form">
+    <form method="post"
+        action="{if $Request.action eq 'plate_add'}{:url('Sellerplate/plate_add')}{else/}{:url('Sellerplate/plate_edit',['p_id'=>$Request.param.p_id])}{/if}"
+        id="plate_form">
         <dl>
             <dt><i class="required">*</i>{$Think.lang.format_name}{$Think.lang.ds_colon}</dt>
             <dd>
@@ -13,8 +15,12 @@
             <dt><i class="required">*</i>{$Think.lang.layout_position}{$Think.lang.ds_colon}</dt>
             <dd id="gcategory">
                 <ul class="dssc-form-radio-list">
-                    <li><label><input type="radio" name="p_position" id="p_position" value="1" class="radio" {if empty($plate_info) || $plate_info['storeplate_position'] == 1}checked="checked"{/if} />{$Think.lang.top}</label></li>
-                    <li><label><input type="radio" name="p_position" id="p_position" value="0" class="radio" {if !empty($plate_info) && $plate_info['storeplate_position'] == 0}checked="checked"{/if}/>{$Think.lang.bottom}</label></li>
+                    <li><label><input type="radio" name="p_position" id="p_position" value="1" class="radio" {if
+                                empty($plate_info) || $plate_info['storeplate_position']==1}checked="checked"
+                                {/if} />{$Think.lang.top}</label></li>
+                    <li><label><input type="radio" name="p_position" id="p_position" value="0" class="radio" {if
+                                !empty($plate_info) && $plate_info['storeplate_position']==0}checked="checked"
+                                {/if} />{$Think.lang.bottom}</label></li>
                 </ul>
                 <p class="hint">{$Think.lang.insert_description}</p>
             </dd>
@@ -25,22 +31,29 @@
                 {:build_editor(['name'=>'p_content','content'=>htmlspecialchars_decode($plate_info.storeplate_content)])}
                 <textarea id="p_content" name="p_content"></textarea>
                 <p class="hr8">
-                    <a class="dssc-btn" dstype="show_desc" href="{:url('Selleralbum/pic_list',['item'=>'des'])}"><i class="iconfont">&#xe72a;</i>{$Think.lang.insert_photo_album}</a>
-                    <a href="javascript:void(0);" dstype="del_desc" class="dssc-btn ml5" style="display: none;"><i class=" iconfont">&#xe67a;</i>{$Think.lang.close_album}</a>
+                    <a class="dssc-btn" dstype="show_desc" href="{:url('Selleralbum/pic_list',['item'=>'des'])}"><i
+                            class="iconfont">&#xe72a;</i>{$Think.lang.insert_photo_album}</a>
+                    <a href="javascript:void(0);" dstype="del_desc" class="dssc-btn ml5" style="display: none;"><i
+                            class=" iconfont">&#xe67a;</i>{$Think.lang.close_album}</a>
                 </p>
                 <p id="des_demo"></p>
             </dd>
         </dl>
         <div class="bottom">
-            <input type="submit" class="submit" value="{$Think.lang.ds_submit}"/>
+            <input type="submit" class="submit" value="{$Think.lang.ds_submit}" />
         </div>
     </form>
 </div>
 
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.ajaxContent.pack.js"></script>
 <style type="text/css">
-    .dssc-form-default dl dt { width: 16%;}
-    .dssc-form-default dl dd { width: 82%;}
+    .dssc-form-default dl dt {
+        width: 16%;
+    }
+
+    .dssc-form-default dl dd {
+        width: 82%;
+    }
 </style>
 <script>
     $(function () {
@@ -86,14 +99,11 @@
     });
     /* 插入编辑器 */
     function insert_editor(file_path) {
-        ue.execCommand('insertimage', {src: file_path});
+        ue.execCommand('insertimage', { src: file_path });
     }
-</script> 
-
-
+</script>
 
 </div>
 
 
 {/block}
-

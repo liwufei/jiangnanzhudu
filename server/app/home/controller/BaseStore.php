@@ -8,6 +8,7 @@ use think\facade\Lang;
 class BaseStore extends BaseHome
 {
     protected $store_info;
+    protected $template_dir;
 
     public function initialize()
     {

@@ -4,7 +4,7 @@
 
 <div class="alert mt10" style="clear:both;">
     <ul class="mt5">
-	<li>{$Think.lang.set_order_amount_range}</li>
+        <li>{$Think.lang.set_order_amount_range}</li>
         <li>{$Think.lang.set_price_range_recommended}</li>
     </ul>
 </div>
@@ -18,7 +18,8 @@
             </tr>
             <tr>
                 <td colspan="20">
-                    <a id="addrow" href="javascript:void(0);" class="dssc-btn-mini"><span>{$Think.lang.add_line}</span></a>
+                    <a id="addrow" href="javascript:void(0);"
+                        class="dssc-btn-mini"><span>{$Think.lang.add_line}</span></a>
                 </td>
             </tr>
         </thead>
@@ -73,36 +74,36 @@
     </table>
 </form>
 <script type="text/javascript">
-function delrow(i){
-    $("#row_"+i).remove();
-}
-function checksubmit(){
-    var result = true;
-    $("#pricerang_table").find("[name^='pricerange']").each(function(){
-        if(!$(this).val()){
-            result = false;
-        }
-    });
-    if(!result){
-        layer.alert('{$Think.lang.please_complete_price_range}');
+    function delrow(i) {
+        $("#row_" + i).remove();
     }
-    return result;
-}
-$(function(){
-    var i = {:count($pricerange)};
-    i += 1;
-    var html = '';
-    /*新增一行*/
-    $('#addrow').click(function(){
-        html = '<tr id="row_'+i+'">';
-        html += '<td class="tl"><input type="text" name="pricerange['+i+'][s]" value=""/></td>';
-        html += '<td class="tl"><input type="text" name="pricerange['+i+'][e]" value=""/></td>';
-        html += '<td class="dscs-table-handle"><span><a class="btn-red" href="JavaScript:void(0);" onclick="delrow('+i+');"><i class="iconfont">&#xe725;</i><p>{$Think.lang.ds_del}</p></a></span></td>';
-
-        $('#pricerang_table').find('tbody').append(html);
+    function checksubmit() {
+        var result = true;
+        $("#pricerang_table").find("[name^='pricerange']").each(function () {
+            if (!$(this).val()) {
+                result = false;
+            }
+        });
+        if (!result) {
+            layer.alert('{$Think.lang.please_complete_price_range}');
+        }
+        return result;
+    }
+    $(function () {
+        var i = {: count($pricerange) };
         i += 1;
-    });
-})
+        var html = '';
+        /*新增一行*/
+        $('#addrow').click(function () {
+            html = '<tr id="row_' + i + '">';
+            html += '<td class="tl"><input type="text" name="pricerange[' + i + '][s]" value=""/></td>';
+            html += '<td class="tl"><input type="text" name="pricerange[' + i + '][e]" value=""/></td>';
+            html += '<td class="dscs-table-handle"><span><a class="btn-red" href="JavaScript:void(0);" onclick="delrow(' + i + ');"><i class="iconfont">&#xe725;</i><p>{$Think.lang.ds_del}</p></a></span></td>';
+
+            $('#pricerang_table').find('tbody').append(html);
+            i += 1;
+        });
+    })
 </script>
 
 

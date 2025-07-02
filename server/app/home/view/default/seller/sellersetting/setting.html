@@ -1,7 +1,7 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_main"}
 <div class="dssc-form-default">
-    <form method="post" enctype="multipart/form-data" id="my_store_form" >
+    <form method="post" enctype="multipart/form-data" id="my_store_form">
         <dl>
             <dt>{$Think.lang.store_setting_grade}{$Think.lang.ds_colon}</dt>
             <dd>
@@ -18,7 +18,8 @@
         <dl>
             <dt>{$Think.lang.store_setting_store_zy}{$Think.lang.ds_colon}</dt>
             <dd>
-                <textarea name="store_mainbusiness" rows="2" class="textarea w400">{$store_info.store_mainbusiness}</textarea>
+                <textarea name="store_mainbusiness" rows="2"
+                    class="textarea w400">{$store_info.store_mainbusiness}</textarea>
                 <p class="hint">{$Think.lang.store_create_store_zy_hint}</p>
             </dd>
         </dl>
@@ -26,7 +27,9 @@
         <dl>
             <dt>{$Think.lang.store_qr_code}：</dt>
             <dd>
-                <p><img src="{:store_qrcode($store_info.store_id)}"  title="{$Think.lang.place_origin}{:url('Store/goods_all',['store_id'=>$store_info.store_id])}"></p>
+                <p><img src="{:store_qrcode($store_info.store_id)}"
+                        title="{$Think.lang.place_origin}{:url('Store/goods_all',['store_id'=>$store_info.store_id])}">
+                </p>
                 <p class="hint">{$Think.lang.generate_new_qr_code}</p>
             </dd>
         </dl>
@@ -45,12 +48,14 @@
             <dd>
                 <div class="dssc-upload-thumb store-logo">
                     <p>
-                        <img src="{notempty name='store_info.store_logo'}{:ds_get_pic(ATTACH_STORE.'/'.session('store_id'),$store_info.store_logo)}{/notempty}" id="img_store_logo" />
+                        <img src="{notempty name='store_info.store_logo'}{:ds_get_pic(ATTACH_STORE.'/'.session('store_id'),$store_info.store_logo)}{/notempty}"
+                            id="img_store_logo" />
                     </p>
                 </div>
-                <div class="dssc-upload-btn"> 
+                <div class="dssc-upload-btn">
                     <a href="javascript:void(0);">
-                        <span><input type="file" hidefocus="true" size="1" class="input-file" name="store_logo" id="store_logo" /></span>
+                        <span><input type="file" hidefocus="true" size="1" class="input-file" name="store_logo"
+                                id="store_logo" /></span>
                         <p><i class="iconfont">&#xe733;</i>{$Think.lang.image_upload}</p>
                     </a>
                 </div>
@@ -62,11 +67,13 @@
             <dd>
                 <div class="dssc-upload-thumb store-banner">
                     <p>
-                        <img src="{notempty name='store_info.store_banner'}{:ds_get_pic(ATTACH_STORE.'/'.session('store_id'),$store_info.store_banner)}{/notempty}" id="img_store_banner" />
+                        <img src="{notempty name='store_info.store_banner'}{:ds_get_pic(ATTACH_STORE.'/'.session('store_id'),$store_info.store_banner)}{/notempty}"
+                            id="img_store_banner" />
                     </p>
                 </div>
                 <div class="dssc-upload-btn"> <a href="javascript:void(0);"><span>
-                            <input type="file" hidefocus="true" size="1" class="input-file" name="store_banner" id="store_banner" />
+                            <input type="file" hidefocus="true" size="1" class="input-file" name="store_banner"
+                                id="store_banner" />
                         </span>
                         <p><i class="iconfont">&#xe733;</i>{$Think.lang.image_upload}</p>
                     </a> </div>
@@ -79,12 +86,14 @@
             <dd>
                 <div class="dssc-upload-thumb store-avatar">
                     <p>
-                        <img src="{notempty name='store_info.store_avatar'}{:ds_get_pic(ATTACH_STORE.'/'.session('store_id'),$store_info.store_avatar)}{/notempty}" id="img_store_avatar" />
+                        <img src="{notempty name='store_info.store_avatar'}{:ds_get_pic(ATTACH_STORE.'/'.session('store_id'),$store_info.store_avatar)}{/notempty}"
+                            id="img_store_avatar" />
                     </p>
                 </div>
-                <div class="dssc-upload-btn"> 
+                <div class="dssc-upload-btn">
                     <a href="javascript:void(0);">
-                        <span><input type="file" hidefocus="true" size="1" class="input-file" name="store_avatar" id="store_avatar" /></span>
+                        <span><input type="file" hidefocus="true" size="1" class="input-file" name="store_avatar"
+                                id="store_avatar" /></span>
                         <p><i class="iconfont">&#xe733;</i>{$Think.lang.image_upload}</p>
                     </a>
                 </div>
@@ -94,7 +103,8 @@
         <dl>
             <dt>{$Think.lang.conversion_code_generate}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input class="w50 text" name="store_vrcode_prefix" type="text" maxlength="3" value="{$store_info.store_vrcode_prefix}"  />
+                <input class="w50 text" name="store_vrcode_prefix" type="text" maxlength="3"
+                    value="{$store_info.store_vrcode_prefix}" />
                 <span></span>
                 <p class="hint">{$Think.lang.conversion_code_generate_interpretation}</p>
             </dd>
@@ -102,26 +112,27 @@
         <dl>
             <dt>QQ{$Think.lang.ds_colon}</dt>
             <dd>
-                <input class="w200 text" name="store_qq" type="text"  id="store_qq" value="{$store_info.store_qq}" />
+                <input class="w200 text" name="store_qq" type="text" id="store_qq" value="{$store_info.store_qq}" />
             </dd>
         </dl>
         <dl>
             <dt>{$Think.lang.store_setting_wangwang}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input class="text w200" name="store_ww" type="text"  id="store_ww" value="{$store_info.store_ww}" />
+                <input class="text w200" name="store_ww" type="text" id="store_ww" value="{$store_info.store_ww}" />
             </dd>
         </dl>
         <dl>
             <dt>{$Think.lang.store_phone}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input class="text w200" name="store_phone" maxlength="20" type="text"  id="store_phone" value="{$store_info.store_phone}" />
+                <input class="text w200" name="store_phone" maxlength="20" type="text" id="store_phone"
+                    value="{$store_info.store_phone}" />
             </dd>
         </dl>
         <dl>
             <dt>{$Think.lang.store_setting_seo_keywords}{$Think.lang.ds_colon}</dt>
             <dd>
                 <p>
-                    <input class="text w400" name="seo_keywords" type="text"  value="{$store_info.store_keywords}" />
+                    <input class="text w400" name="seo_keywords" type="text" value="{$store_info.store_keywords}" />
                 </p>
                 <p class="hint">{$Think.lang.store_setting_seo_keywords_help}</p>
             </dd>
@@ -130,7 +141,8 @@
             <dt>{$Think.lang.store_setting_seo_description}{$Think.lang.ds_colon}</dt>
             <dd>
                 <p>
-                    <textarea name="seo_description" rows="3" class="textarea w400" id="remark_input" >{$store_info.store_description}</textarea>
+                    <textarea name="seo_description" rows="3" class="textarea w400"
+                        id="remark_input">{$store_info.store_description}</textarea>
                 </p>
                 <p class="hint">{$Think.lang.store_setting_seo_description_help}</p>
             </dd>
@@ -141,7 +153,7 @@
     </form>
 </div>
 
-<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/ajaxfileupload.js"></script> 
+<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/ajaxfileupload.js"></script>
 <script>
 
     $(function () {
@@ -153,54 +165,51 @@
     });
 
     $('#my_store_form').validate({
-        submitHandler:function(form){
+        submitHandler: function (form) {
             ds_ajaxpost('my_store_form');
         },
-        errorPlacement: function(error, element){
+        errorPlacement: function (error, element) {
             var error_td = element.parent('dd').children('span');
             error_td.append(error);
         },
-        rules : {
+        rules: {
             store_name: {
-                required : true,
-                rangelength:[0,50]
+                required: true,
+                rangelength: [0, 50]
             },
         },
-        messages : {
+        messages: {
             store_name: {
-                required : '<i class="iconfont">&#xe64c;</i>店铺名称为必填',
-                rangelength : '<i class="iconfont">&#xe64c;</i>店铺名称长度在0-50'
+                required: '<i class="iconfont">&#xe64c;</i>店铺名称为必填',
+                rangelength: '<i class="iconfont">&#xe64c;</i>店铺名称长度在0-50'
             },
         }
-        
+
     });
-    
-    function ajaxFileUpload(url, id)
-    {
+
+    function ajaxFileUpload(url, id) {
         $(document).off('change', "#store_banner").on('change', function () {
             $.ajaxFileUpload({
                 url: url,
                 secureuri: false,
                 fileElementId: id,
                 dataType: 'json',
-                data: {id: id},
-                success: function (data)
-                {
+                data: { id: id },
+                success: function (data) {
                     if (data.error) {
                         alert(data.error);
                     } else {
                         $("#img_" + id).attr('src', data.file_path);
                     }
                 },
-                error: function (data, status, e)
-                {
+                error: function (data, status, e) {
                     console.error(data);
                 }
             })
             return false;
         });
     }
-</script>    
+</script>
 
 
 {/block}

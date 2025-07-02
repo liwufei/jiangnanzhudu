@@ -5,10 +5,13 @@
         <dl>
             <dt><i class="required">*</i>{$Think.lang.mansong_quota_add_quantity}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input id="mansong_quota_quantity" name="mansong_quota_quantity" type="text" class="text w50"/><em class="add-on">{$Think.lang.text_month}</em>
+                <input id="mansong_quota_quantity" name="mansong_quota_quantity" type="text" class="text w50" /><em
+                    class="add-on">{$Think.lang.text_month}</em>
                 <span></span>
                 <p class="hint">{$Think.lang.mansong_price_explain1}</p>
-                <p class="hint">{$Think.lang.mansong_price_explain2}{$Think.config.ds_config.promotion_mansong_price}{$Think.lang.ds_yuan}</p>
+                <p class="hint">
+                    {$Think.lang.mansong_price_explain2}{$Think.config.ds_config.promotion_mansong_price}{$Think.lang.ds_yuan}
+                </p>
                 <p class="hint"><strong style="color: red">{$Think.lang.notice_package_renewal6}</strong></p>
             </dd>
         </dl>
@@ -59,5 +62,3 @@
 </script>
 
 {/block}
-
-

@@ -1,13 +1,17 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_btn"}
 {if config('ds_config.promotion_wholesale_price')==0}
-<a class="dssc-btn dssc-btn-green" href="{:url('Sellerpromotionwholesale/wholesale_add')}"><i class="iconfont">&#xe6db;</i>{$Think.lang.wholesale_add}</a>
+<a class="dssc-btn dssc-btn-green" href="{:url('Sellerpromotionwholesale/wholesale_add')}"><i
+        class="iconfont">&#xe6db;</i>{$Think.lang.wholesale_add}</a>
 {else /}
 {notempty name="current_wholesale_quota"}
-<a class="dssc-btn dssc-btn-green" style="right:100px" href="{:url('Sellerpromotionwholesale/wholesale_add')}"><i class="iconfont">&#xe6db;</i>{$Think.lang.wholesale_add}</a>
-<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionwholesale/wholesale_quota_add')}" title=""><i class="iconfont">&#xe6a1;</i>{$Think.lang.set_renewal}</a>
+<a class="dssc-btn dssc-btn-green" style="right:100px" href="{:url('Sellerpromotionwholesale/wholesale_add')}"><i
+        class="iconfont">&#xe6db;</i>{$Think.lang.wholesale_add}</a>
+<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionwholesale/wholesale_quota_add')}" title=""><i
+        class="iconfont">&#xe6a1;</i>{$Think.lang.set_renewal}</a>
 {else }
-<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionwholesale/wholesale_quota_add')}" title=""><i class="iconfont">&#xe6a1;</i>{$Think.lang.wholesale_quota_add}</a>
+<a class="dssc-btn dssc-btn-acidblue" href="{:url('Sellerpromotionwholesale/wholesale_quota_add')}" title=""><i
+        class="iconfont">&#xe6a1;</i>{$Think.lang.wholesale_quota_add}</a>
 {/notempty}
 {/if}
 
@@ -24,7 +28,8 @@
 {else }
 <div class="alert alert-block mt10">
     {notempty name="current_wholesale_quota"}
-    <strong>{$Think.lang.overdue_set_meal}{$Think.lang.ds_colon}</strong><strong style="color:#F00;">{$current_wholesale_quota.wholesalequota_endtime|date="Y-m-d H:i:s"}</strong>
+    <strong>{$Think.lang.overdue_set_meal}{$Think.lang.ds_colon}</strong><strong
+        style="color:#F00;">{$current_wholesale_quota.wholesalequota_endtime|date="Y-m-d H:i:s"}</strong>
     {else /}
     <strong>{$Think.lang.please_buy_set_meal}</strong>
     {/notempty}
@@ -50,8 +55,9 @@
                     {/notempty}
                 </select></td>
             <th class="w110">{$Think.lang.wholesale_name}</th>
-            <td class="w160"><input type="text" class="text w150" name="wholesale_name" value="{$Request.get.wholesale_name}"/></td>
-            <td class="w70 tc"><input type="submit" class="submit" value="{$Think.lang.ds_search}"/></td>
+            <td class="w160"><input type="text" class="text w150" name="wholesale_name"
+                    value="{$Request.get.wholesale_name}" /></td>
+            <td class="w70 tc"><input type="submit" class="submit" value="{$Think.lang.ds_search}" /></td>
         </tr>
     </table>
 </form>
@@ -82,14 +88,16 @@
             <td class="dscs-table-handle tc">
                 {if $val.editable}
                 <span>
-                    <a href="{:url('Sellerpromotionwholesale/wholesale_edit',['wholesale_id'=>$val.wholesale_id])}" class="btn-blue">
+                    <a href="{:url('Sellerpromotionwholesale/wholesale_edit',['wholesale_id'=>$val.wholesale_id])}"
+                        class="btn-blue">
                         <i class="iconfont">&#xe731;</i>
                         <p>{$Think.lang.ds_edit}</p>
                     </a>
                 </span>
                 {/if}
                 <span>
-                    <a href="javascript:;" dstype="btn_del_wholesale" data-wholesale-id={$val.wholesale_id} class="btn-red">
+                    <a href="javascript:;" dstype="btn_del_wholesale" data-wholesale-id={$val.wholesale_id}
+                        class="btn-red">
                         <i class="iconfont">&#xe725;</i>
                         <p>{$Think.lang.ds_delete}</p>
                     </a>

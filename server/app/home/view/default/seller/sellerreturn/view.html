@@ -58,7 +58,8 @@
                         <ul class="dssc-evidence-pic">
                             {foreach name="pic_list" item="val" key="key" }
                             {notempty name="val"}
-                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
+                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img
+                                        class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
                             {/notempty}
                             {/foreach}
                         </ul>
@@ -107,7 +108,8 @@
                 </ul>
                 {/if}
                 <div class="bottom">
-                    <label class=""><a href="javascript:history.go(-1);" class="dssc-btn"><i class="iconfont">&#xe74e;</i>{$Think.lang.returns_list}</a></label>
+                    <label class=""><a href="javascript:history.go(-1);" class="dssc-btn"><i
+                                class="iconfont">&#xe74e;</i>{$Think.lang.returns_list}</a></label>
                 </div>
             </div>
         </div>

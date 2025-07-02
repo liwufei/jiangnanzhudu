@@ -2,24 +2,32 @@
 {block name="seller_main"}
 
 
-
 <div class="dssc-form-default">
-    <form id="store_service_form" enctype="multipart/form-data" method="post" >
+    <form id="store_service_form" enctype="multipart/form-data" method="post">
         <dl>
             <dt><i class="required">*</i>{$Think.lang.store_service_title}{$Think.lang.ds_colon}</dt>
-            <dd><input type="text" value="{present name='store_service_info'}{$store_service_info.store_service_title}{/present}" name="store_service_title" id="store_service_title" class="w200 text"><span></span>
-                <p class="hint"></p></dd>
+            <dd><input type="text"
+                    value="{present name='store_service_info'}{$store_service_info.store_service_title}{/present}"
+                    name="store_service_title" id="store_service_title" class="w200 text"><span></span>
+                <p class="hint"></p>
+            </dd>
         </dl>
 
         <dl>
             <dt>{$Think.lang.store_service_desc}{$Think.lang.ds_colon}</dt>
-            <dd><input type="text" value="{present name='store_service_info'}{$store_service_info.store_service_desc}{/present}" name="store_service_desc" id="store_service_desc" class="w200 text"><span></span>
-                <p class="hint"></p></dd>
+            <dd><input type="text"
+                    value="{present name='store_service_info'}{$store_service_info.store_service_desc}{/present}"
+                    name="store_service_desc" id="store_service_desc" class="w200 text"><span></span>
+                <p class="hint"></p>
+            </dd>
         </dl>
         <dl>
             <dt>{$Think.lang.ds_sort}{$Think.lang.ds_colon}</dt>
-            <dd><input type="text" value="{present name='store_service_info'}{$store_service_info.store_service_sort}{else}255{/present}" name="store_service_sort" id="store_service_sort" class="w200 text"><span></span>
-                <p class="hint"></p></dd>
+            <dd><input type="text"
+                    value="{present name='store_service_info'}{$store_service_info.store_service_sort}{else}255{/present}"
+                    name="store_service_sort" id="store_service_sort" class="w200 text"><span></span>
+                <p class="hint"></p>
+            </dd>
         </dl>
 
         <div class="bottom">
@@ -52,9 +60,6 @@
     });
 
 </script>
-
-
-
 
 
 {/block}

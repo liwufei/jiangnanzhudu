@@ -4,9 +4,6 @@ namespace app\common\model;
 
 use think\facade\Db;
 
-/**
- * 会员折扣
- */
 class Pmgdiscount extends BaseModel
 {
 

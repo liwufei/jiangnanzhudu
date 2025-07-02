@@ -7,13 +7,15 @@
             <div class="content">
                 <dl>
                     <dt>{$Think.lang.store_show_order_receiver|raw}{$Think.lang.ds_colon}</dt>
-                    <dd>{$order_info['extend_order_common']['reciver_name']}&nbsp; {$order_info['extend_order_common']['reciver_info']['phone']}&nbsp; {$order_info['extend_order_common']['reciver_info']['address']}</dd>
+                    <dd>{$order_info['extend_order_common']['reciver_name']}&nbsp;
+                        {$order_info['extend_order_common']['reciver_info']['phone']}&nbsp;
+                        {$order_info['extend_order_common']['reciver_info']['address']}</dd>
                 </dl>
                 <dl>
                     <dt>{$Think.lang.invoice_spaces|raw}：</dt>
                     <dd>
                         {foreach name="$order_info['extend_order_common']['invoice_info']" item="value" key="key" }
-                        <span>{$key} (<strong>{$value}</strong>)</span><br/>
+                        <span>{$key} (<strong>{$value}</strong>)</span><br />
                         {/foreach}
                     </dd>
                 </dl>
@@ -23,7 +25,8 @@
                 </dl>
                 <dl class="line">
                     <dt>{$Think.lang.store_order_order_sn}{$Think.lang.ds_colon}</dt>
-                    <dd>{$order_info.order_sn}<a href="javascript:void(0);">{$Think.lang.store_more}<i class="iconfont">&#xe689;</i>
+                    <dd>{$order_info.order_sn}<a href="javascript:void(0);">{$Think.lang.store_more}<i
+                                class="iconfont">&#xe689;</i>
                             <div class="more"><span class="arrow"></span>
                                 <ul>
                                     {if $order_info.payment_name}
@@ -33,15 +36,19 @@
                                             <?php } ?>
                                         </span></li>
                                     {/if}
-                                    <li>{$Think.lang.store_order_add_time}{$Think.lang.ds_colon}<span>{$order_info.add_time|date="Y-m-d H:i:s"}</span></li>
+                                    <li>{$Think.lang.store_order_add_time}{$Think.lang.ds_colon}<span>{$order_info.add_time|date="Y-m-d
+                                            H:i:s"}</span></li>
                                     {if intval($order_info['payment_time'])}
-                                    <li>{$Think.lang.store_show_order_pay_time}{$Think.lang.ds_colon}<span>{$order_info.payment_time|date="Y-m-d H:i:s"}</span></li>
+                                    <li>{$Think.lang.store_show_order_pay_time}{$Think.lang.ds_colon}<span>{$order_info.payment_time|date="Y-m-d
+                                            H:i:s"}</span></li>
                                     {/if}
                                     {if $order_info['extend_order_common']['shipping_time']}
-                                    <li>{$Think.lang.store_show_order_send_time}{$Think.lang.ds_colon}<span>{$order_info['extend_order_common']['shipping_time']|date="Y-m-d H:i:s"}</span></li>
+                                    <li>{$Think.lang.store_show_order_send_time}{$Think.lang.ds_colon}<span>{$order_info['extend_order_common']['shipping_time']|date="Y-m-d
+                                            H:i:s"}</span></li>
                                     {/if}
                                     {if intval($order_info['finnshed_time'])}
-                                    <li>{$Think.lang.store_show_order_finish_time}{$Think.lang.ds_colon}<span>{$order_info.finnshed_time|date="Y-m-d H:i:s"}</span></li>
+                                    <li>{$Think.lang.store_show_order_finish_time}{$Think.lang.ds_colon}<span>{$order_info.finnshed_time|date="Y-m-d
+                                            H:i:s"}</span></li>
                                     {/if}
                                 </ul>
                             </div>
@@ -62,7 +69,8 @@
                 </dd>
             </dl>
             <ul>
-                <li>{$Think.lang.successful_ordering_tips3}{:get_order_payment_name($order_info['payment_code'])}{$Think.lang.successful_ordering_tips4}{$order_info.pay_sn}”。</li>
+                <li>{$Think.lang.successful_ordering_tips3}{:get_order_payment_name($order_info['payment_code'])}{$Think.lang.successful_ordering_tips4}{$order_info.pay_sn}”。
+                </li>
                 <li>2.买家需自行前往自提点取货。</li>
             </ul>
         </div>
@@ -85,7 +93,8 @@
                 <li>{$Think.lang.order_payment_steps1}</li>
                 <li>{$Think.lang.order_payment_steps2}
                     <time>{$order_info.order_cancel_day|date="Y-m-d H:i:s"}</time>
-                   {$Think.lang.order_payment_steps3}</li>
+                    {$Think.lang.order_payment_steps3}
+                </li>
             </ul>
         </div>
         {/if}
@@ -98,7 +107,8 @@
                 </dd>
             </dl>
             <ul>
-                <li>{$Think.lang.successful_ordering_tips3}{:get_order_payment_name($order_info['payment_code'])}{$Think.lang.successful_ordering_tips4}{$order_info.pay_sn}”。</li>
+                <li>{$Think.lang.successful_ordering_tips3}{:get_order_payment_name($order_info['payment_code'])}{$Think.lang.successful_ordering_tips4}{$order_info.pay_sn}”。
+                </li>
                 <li>{$Think.lang.successful_ordering_tips5}</li>
             </ul>
         </div>
@@ -114,7 +124,9 @@
                     {if $order_info.shipping_code != ''}
                     {$Think.lang.successful_ordering_tips8}：{$order_info['express_info']['express_name']}；{$Think.lang.store_order_sn}：{$order_info.shipping_code}。
                     {if $order_info.if_deliver}
-                    {$Think.lang.ds_view} <a href="#order-step" class="blue">“{$Think.lang.successful_ordering_tips9}”</a> {$Think.lang.successful_ordering_tips10}
+                    {$Think.lang.ds_view} <a href="#order-step"
+                        class="blue">“{$Think.lang.successful_ordering_tips9}”</a>
+                    {$Think.lang.successful_ordering_tips10}
                     {/if}
                     {else /}
                     {$Think.lang.successful_ordering_tips11}
@@ -122,7 +134,8 @@
                 </li>
                 <li>{$Think.lang.successful_ordering_tips12}
                     <time>{$order_info.order_confirm_day|date="Y-m-d H:i:s"}</time>
-                    {$Think.lang.successful_ordering_tips13}</li>
+                    {$Think.lang.successful_ordering_tips13}
+                </li>
             </ul>
         </div>
         {/if}
@@ -135,7 +148,9 @@
             </dl>
             <ul>
                 <li>{$Think.lang.successful_ordering_tips15}</li>
-                <li>{$Think.lang.successful_ordering_tips16}<a href="{:url('Sellerevaluate/index')}" class="dssc-btn-mini">{$Think.lang.successful_ordering_tips17}</a>{$Think.lang.successful_ordering_tips18}</li>
+                <li>{$Think.lang.successful_ordering_tips16}<a href="{:url('Sellerevaluate/index')}"
+                        class="dssc-btn-mini">{$Think.lang.successful_ordering_tips17}</a>{$Think.lang.successful_ordering_tips18}
+                </li>
             </ul>
         </div>
         {elseif $order_info['refund_state'] != 0}
@@ -173,24 +188,28 @@
         <dl class="{if intval($order_info['payment_time'])}current{/if}">
             <dt>{$Think.lang.order_payment_information2}</dt>
             <dd class="bg"> </dd>
-            <dd class="date" title="{$Think.lang.store_show_order_pay_time}">{$order_info.payment_time|date="Y-m-d H:i:s"}</dd>
+            <dd class="date" title="{$Think.lang.store_show_order_pay_time}">{$order_info.payment_time|date="Y-m-d
+                H:i:s"}</dd>
         </dl>
         {if $order_info['chain_order_type'] != 2}
         <dl class="{if $order_info.extend_order_common.shipping_time}current{/if}">
             <dt>{$Think.lang.merchant_delivery}</dt>
             <dd class="bg"> </dd>
-            <dd class="date" title="{$Think.lang.store_show_order_send_time}">{$order_info['extend_order_common']['shipping_time']|date="Y-m-d H:i:s"}</dd>
+            <dd class="date" title="{$Think.lang.store_show_order_send_time}">
+                {$order_info['extend_order_common']['shipping_time']|date="Y-m-d H:i:s"}</dd>
         </dl>
         {/if}
         <dl class="{if intval($order_info['finnshed_time'])}current{/if}">
             <dt>{$Think.lang.confirmation_receipt}</dt>
             <dd class="bg"> </dd>
-            <dd class="date" title="{$Think.lang.store_show_order_finish_time}">{$order_info.finnshed_time|date="Y-m-d H:i:s"}</dd>
+            <dd class="date" title="{$Think.lang.store_show_order_finish_time}">{$order_info.finnshed_time|date="Y-m-d
+                H:i:s"}</dd>
         </dl>
         <dl class="{if $order_info['evaluation_state'] == 1}current{/if}">
             <dt>{$Think.lang.evaluation}</dt>
             <dd class="bg"></dd>
-            <dd class="date" title="{$Think.lang.store_show_order_finish_time}">{$order_info.extend_order_common.evaluation_time|date="Y-m-d H:i:s"}</dd>
+            <dd class="date" title="{$Think.lang.store_show_order_finish_time}">
+                {$order_info.extend_order_common.evaluation_time|date="Y-m-d H:i:s"}</dd>
         </dl>
     </div>
     {/if}
@@ -210,23 +229,34 @@
             <tbody>
                 {notempty name="$order_info.shipping_code"}
                 <tr>
-                    <th colspan="6" style="border-right: 0;"> <div class="order-deliver"> <span>{$Think.lang.successful_ordering_tips8}： <a target="_blank" href="{$order_info['express_info']['express_url']}">{$order_info['express_info']['express_name']}</a></span> <span>{$Think.lang.store_order_shipping_no}{$Think.lang.ds_colon}{$order_info.shipping_code}</span><span><a href="javascript:void(0);" id="show_shipping">{$Think.lang.successful_ordering_tips9}<i class="iconfont">&#xe689;</i>
+                    <th colspan="6" style="border-right: 0;">
+                        <div class="order-deliver"> <span>{$Think.lang.successful_ordering_tips8}： <a target="_blank"
+                                    href="{$order_info['express_info']['express_url']}">{$order_info['express_info']['express_name']}</a></span>
+                            <span>{$Think.lang.store_order_shipping_no}{$Think.lang.ds_colon}{$order_info.shipping_code}</span><span><a
+                                    href="javascript:void(0);"
+                                    id="show_shipping">{$Think.lang.successful_ordering_tips9}<i
+                                        class="iconfont">&#xe689;</i>
                                     <div class="more"><span class="arrow"></span>
                                         <ul id="shipping_ul">
                                             <li>{$Think.lang.ds_common_loading}</li>
                                         </ul>
                                     </div>
-                                </a></span> </div></th>
+                                </a></span> </div>
+                    </th>
                     <th colspan="3" style=" border-left: 0;">
                         {notempty name="daddress_info"}
                         <dl class="daddress-info">
                             <dt>{$Think.lang.consignor_space|raw}：</dt>
-                            <dd>{$daddress_info.seller_name}<a href="javascript:void(0);">{$Think.lang.store_more}<i class="iconfont">&#xe689;</i>
+                            <dd>{$daddress_info.seller_name}<a href="javascript:void(0);">{$Think.lang.store_more}<i
+                                        class="iconfont">&#xe689;</i>
                                     <div class="more"><span class="arrow"></span>
                                         <ul>
-                                            <li>{$Think.lang.company_space|raw}：<span>{$daddress_info.daddress_company}v</span></li>
-                                            <li>{$Think.lang.contact_phone_number}：<span>{$daddress_info.daddress_telphone}</span></li>
-                                            <li>{$Think.lang.shipping_address}：<span>{$daddress_info.area_info}&nbsp;{$daddress_info.daddress_detail}</span></li>
+                                            <li>{$Think.lang.company_space|raw}：<span>{$daddress_info.daddress_company}v</span>
+                                            </li>
+                                            <li>{$Think.lang.contact_phone_number}：<span>{$daddress_info.daddress_telphone}</span>
+                                            </li>
+                                            <li>{$Think.lang.shipping_address}：<span>{$daddress_info.area_info}&nbsp;{$daddress_info.daddress_detail}</span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </a></dd>
@@ -240,16 +270,22 @@
                 <?php $i++;?>
                 <tr class="bd-line">
                     <td>&nbsp;</td>
-                    <td class="w50"><div class="pic-thumb"><a target="_blank" href="{$goods.goods_url}"><img src="{:goods_thumb($goods,240)}" /></a></div></td>
+                    <td class="w50">
+                        <div class="pic-thumb"><a target="_blank" href="{$goods.goods_url}"><img
+                                    src="{:goods_thumb($goods,240)}" /></a></div>
+                    </td>
                     <td class="tl">
                         <dl class="goods-name">
                             <dt><a target="_blank" href="{$goods.goods_url}">{$goods.goods_name}</a></dt>
                             <dd>
                                 <?php if (isset($goods['extend_order_goods_refund'])) {?>
                                 <?php if($goods['extend_order_goods_refund']['refund_type'] == 1) {?>
-                                 {$Think.lang.refund_number}：<a target="_blank" href="{:url('Sellerrefund/view',['refund_id'=>$goods.extend_order_goods_refund.refund_id])}">{$goods['extend_order_goods_refund']['refund_sn']}</a></dd>
+                                {$Think.lang.refund_number}：<a target="_blank"
+                                    href="{:url('Sellerrefund/view',['refund_id'=>$goods.extend_order_goods_refund.refund_id])}">{$goods['extend_order_goods_refund']['refund_sn']}</a>
+                            </dd>
                             <?php }else if($goods['extend_order_goods_refund']['refund_type'] == 2) {?>
-                            {$Think.lang.return_number}：<a target="_blank" href="{:url('Sellerreturn/view',['return_id'=>$goods.extend_order_goods_refund.refund_id])}">{$goods['extend_order_goods_refund']['refund_sn']}</a>
+                            {$Think.lang.return_number}：<a target="_blank"
+                                href="{:url('Sellerreturn/view',['return_id'=>$goods.extend_order_goods_refund.refund_id])}">{$goods['extend_order_goods_refund']['refund_sn']}</a>
                             <?php } ?>
                             <?php } ?>
                             </dd>
@@ -258,15 +294,18 @@
                     <td>{$goods.goods_price}
                         <p>实付:{$goods.goods_pay_price}</p>
                         <p>
-                            {if isset($goods['extend_order_goods_refund']) && $goods['extend_order_goods_refund']['refundreturn_admin_time'] > 0}
+                            {if isset($goods['extend_order_goods_refund']) &&
+                            $goods['extend_order_goods_refund']['refundreturn_admin_time'] > 0}
                             退款:{$goods.extend_order_goods_refund.refund_amount}
                             {/if}
-                        </p></td>
+                        </p>
+                    </td>
                     <td>{$goods.goods_num}</td>
                     <td>{$goods.goods_type_cn}</td>
                     <td class="commis bdl bdr">
                         {if $goods.commis_rate != 200}
-                        {$goods.goods_pay_price} * {$goods.commis_rate}% = <b>{:ds_price_format($goods['goods_pay_price']*$goods['commis_rate']/100)}</b>
+                        {$goods.goods_pay_price} * {$goods.commis_rate}% =
+                        <b>{:ds_price_format($goods['goods_pay_price']*$goods['commis_rate']/100)}</b>
                         {/if}
                     </td>
 
@@ -279,18 +318,30 @@
 
                         <!-- 修改价格 -->
                         {if $order_info.if_modify_price}
-                        <p><a href="javascript:void(0)" class="dssc-btn" uri="{:url('Sellerorder/change_state',['state_type'=>'modify_price','order_sn'=>$order_info.order_sn,'order_id'=>$order_info.order_id])}" dialog_width="480" dialog_title="{$Think.lang.store_order_modify_price}" ds_type="dialog"  dialog_id="seller_order_adjust_fee" id="order.`{$order_info.order_id}_action_adjust_fee" />{$Think.lang.modify_freight}</a></p>
+                        <p><a href="javascript:void(0)" class="dssc-btn"
+                                uri="{:url('Sellerorder/change_state',['state_type'=>'modify_price','order_sn'=>$order_info.order_sn,'order_id'=>$order_info.order_id])}"
+                                dialog_width="480" dialog_title="{$Think.lang.store_order_modify_price}"
+                                ds_type="dialog" dialog_id="seller_order_adjust_fee"
+                                id="order.`{$order_info.order_id}_action_adjust_fee" />{$Think.lang.modify_freight}</a>
+                        </p>
                         {/if}
 
                         <!-- 取消订单 -->
                         {if $order_info.if_cancel}
-                        <p><a href="javascript:void(0)" style="color:#F30; text-decoration:underline;" ds_type="dialog" uri="{:url('Sellerorder/change_state',['state_type'=>'order_cancel','order_sn'=>$order_info.order_sn,'order_id'=>$order_info.order_id])}" dialog_title="{$Think.lang.store_order_cancel_order}" dialog_id="seller_order_cancel_order" dialog_width="400" id="order{$order_info.order_id}_action_cancel" />{$Think.lang.store_order_cancel_order}</a></p>
+                        <p><a href="javascript:void(0)" style="color:#F30; text-decoration:underline;" ds_type="dialog"
+                                uri="{:url('Sellerorder/change_state',['state_type'=>'order_cancel','order_sn'=>$order_info.order_sn,'order_id'=>$order_info.order_id])}"
+                                dialog_title="{$Think.lang.store_order_cancel_order}"
+                                dialog_id="seller_order_cancel_order" dialog_width="400"
+                                id="order{$order_info.order_id}_action_cancel" />{$Think.lang.store_order_cancel_order}</a>
+                        </p>
                         {/if}
 
                         <!-- 发货 -->
                         {if $order_info.if_send}
                         {if !isset($order_info.pintuanorder_state) || $order_info.pintuanorder_state==2}
-                        <p><a class="dssc-btn" href="{:url('Sellerdeliver/send',['order_id'=>$order_info.order_id])}"/><i class="iconfont">&#xe6f1;</i>{$Think.lang.store_order_send}</a></p>
+                        <p><a class="dssc-btn"
+                                href="{:url('Sellerdeliver/send',['order_id'=>$order_info.order_id])}" /><i
+                                class="iconfont">&#xe6f1;</i>{$Think.lang.store_order_send}</a></p>
                         {/if}
                         {/if}
                     </td>
@@ -306,7 +357,9 @@
                         <div class="dssc-goods-gift">{$Think.lang.store_order_gifts}：
                             <ul>
                                 {foreach name="$order_info.zengpin_list" item="zengpin_info" }
-                                <li><a title="{$Think.lang.store_order_gifts}：{$zengpin_info.goods_name} * {$zengpin_info.goods_num}" target="_blank" href="{$zengpin_info.goods_url}"><img src="{:goods_thumb($zengpin_info,240)}" /></a></li>
+                                <li><a title="{$Think.lang.store_order_gifts}：{$zengpin_info.goods_name} * {$zengpin_info.goods_num}"
+                                        target="_blank" href="{$zengpin_info.goods_url}"><img
+                                            src="{:goods_thumb($zengpin_info,240)}" /></a></li>
                                 {/foreach}
                             </ul>
                         </div>
@@ -318,27 +371,35 @@
                 <?php } ?>
             </tbody>
             <tfoot>
-                {if (!empty($order_info['extend_order_common']['promotion_info']) || !empty($order_info['extend_order_common']['voucher_code'])|| !empty($order_info['extend_order_common']['mallvoucher_price']))}
+                {if (!empty($order_info['extend_order_common']['promotion_info']) ||
+                !empty($order_info['extend_order_common']['voucher_code'])||
+                !empty($order_info['extend_order_common']['mallvoucher_price']))}
                 <tr>
-                    <td colspan="20"><dl class="dssc-store-sales">
+                    <td colspan="20">
+                        <dl class="dssc-store-sales">
                             <dt>{$Think.lang.other_information}{$Think.lang.ds_colon}</dt>
                             {if (!empty($order_info['extend_order_common']['promotion_info']))}
                             <dd>{:stripslashes($order_info.extend_order_common.promotion_info)}</dd>
                             {/if}
                             {if (!empty($order_info['extend_order_common']['voucher_code']))}
-                            <dd>{$Think.lang.used_denomination} {$order_info.extend_order_common.voucher_price} {$Think.lang.voucher_code}{$order_info.extend_order_common.voucher_code}</span></dd>
+                            <dd>{$Think.lang.used_denomination} {$order_info.extend_order_common.voucher_price}
+                                {$Think.lang.voucher_code}{$order_info.extend_order_common.voucher_code}</span></dd>
                             {/if}
                             {if (!empty($order_info['extend_order_common']['mallvoucher_price']))}
-                            <dd>{$Think.lang.used_denomination} {$order_info.extend_order_common.mallvoucher_price} {$Think.lang.mallvoucher}</span></dd>
+                            <dd>{$Think.lang.used_denomination} {$order_info.extend_order_common.mallvoucher_price}
+                                {$Think.lang.mallvoucher}</span></dd>
                             {/if}
-                        </dl></td>
+                        </dl>
+                    </td>
                 </tr>
                 {/if}
                 <tr>
-                    <td colspan="20"><dl class="freight">
+                    <td colspan="20">
+                        <dl class="freight">
                             <dd>
                                 {if (!empty($order_info['shipping_fee']) && $order_info['shipping_fee'] != '0.00')}
-                                {$Think.lang.store_show_order_tp_fee}: <span>{$Think.lang.currency}{$order_info.shipping_fee}</span>
+                                {$Think.lang.store_show_order_tp_fee}:
+                                <span>{$Think.lang.currency}{$order_info.shipping_fee}</span>
                                 {else/}
                                 {$Think.lang.ds_common_shipping_free}
                                 {/if}
@@ -350,7 +411,8 @@
                         <dl class="sum">
                             <dt>{$Think.lang.store_order_sum}{$Think.lang.ds_colon}</dt>
                             <dd><em>{$order_info.order_amount}</em>{$Think.lang.ds_yuan}</dd>
-                        </dl></td>
+                        </dl>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -361,7 +423,7 @@
             {$orderlog.log_role} {$orderlog.log_user} {$orderlog.log_time|date="Y-m-d H:i:s"}&emsp;{$orderlog.log_msg}
         </dl>
         {/foreach}
-    </div> 
+    </div>
 </div>
 <script type="text/javascript">
     $(function () {

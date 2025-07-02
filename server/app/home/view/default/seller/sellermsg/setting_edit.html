@@ -5,7 +5,10 @@
         {if $smt_info.storemt_message_switch}
         <dl>
             <dt>
-                <input type="checkbox" class="checkbox mr5" name="message_forced" value="1" {if $smt_info.storemt_message_forced}disabled="disabled" checked="checked"{/if}{if $smsetting_info.storems_message_switch}checked="checked"{/if} /> <strong>{$Think.lang.business_alert}{$Think.lang.ds_colon}</strong>
+                <input type="checkbox" class="checkbox mr5" name="message_forced" value="1" {if
+                    $smt_info.storemt_message_forced}disabled="disabled" checked="checked" {/if}{if
+                    $smsetting_info.storems_message_switch}checked="checked" {/if} />
+                <strong>{$Think.lang.business_alert}{$Think.lang.ds_colon}</strong>
             </dt>
             <dd>{$Think.lang.send_station_message_automatically}。</dd>
         </dl>
@@ -13,11 +16,14 @@
         {if $smt_info.storemt_short_switch}
         <dl>
             <dt>
-                <input type="checkbox" class="checkbox mr5" name="short_forced" id="short_forced" value="1" {if $smt_info.smt_short_forced}disabled="disabled" checked="checked"{/if}{if $smsetting_info.storems_short_switch}checked="checked"{/if} /> <strong>{$Think.lang.sms_alerts}{$Think.lang.ds_colon}</strong>
+                <input type="checkbox" class="checkbox mr5" name="short_forced" id="short_forced" value="1" {if
+                    $smt_info.smt_short_forced}disabled="disabled" checked="checked" {/if}{if
+                    $smsetting_info.storems_short_switch}checked="checked" {/if} />
+                <strong>{$Think.lang.sms_alerts}{$Think.lang.ds_colon}</strong>
             </dt>
             <dd>
                 <input type="text" class="text w250" name="storems_short_number" id="storems_short_number"
-                       value="{$smsetting_info.storems_short_number}" />
+                    value="{$smsetting_info.storems_short_number}" />
                 <p class="hint">{$Think.lang.select_sms_alerts}。</p>
             </dd>
         </dl>
@@ -25,54 +31,61 @@
         {if $smt_info.storemt_mail_switch}
         <dl>
             <dt>
-                <input type="checkbox" class="checkbox mr5" name="mail_forced" id="mail_forced" value="1" {if $smt_info.storemt_mail_forced}disabled="disabled" checked="checked"{/if}{if $smsetting_info.storems_mail_switch}checked="checked"{/if} /> <strong>{$Think.lang.email_alerts}{$Think.lang.ds_colon}</strong>
+                <input type="checkbox" class="checkbox mr5" name="mail_forced" id="mail_forced" value="1" {if
+                    $smt_info.storemt_mail_forced}disabled="disabled" checked="checked" {/if}{if
+                    $smsetting_info.storems_mail_switch}checked="checked" {/if} />
+                <strong>{$Think.lang.email_alerts}{$Think.lang.ds_colon}</strong>
             </dt>
             <dd>
-                <input type="text" class="text w250" name="storems_mail_number" id="storems_mail_number"  value="{$smsetting_info.storems_mail_number}" />
+                <input type="text" class="text w250" name="storems_mail_number" id="storems_mail_number"
+                    value="{$smsetting_info.storems_mail_number}" />
                 <p class="hint">{$Think.lang.select_email_alerts}。</p>
             </dd>
         </dl>
-       {/if}
-       {if $smt_info.storemt_weixin_switch}
+        {/if}
+        {if $smt_info.storemt_weixin_switch}
         <dl>
             <dt>
-                <input type="checkbox" class="checkbox mr5" name="weixin_forced" id="weixin_forced" value="1" {if $smt_info.storemt_weixin_forced}disabled="disabled" checked="checked"{/if}{if $smsetting_info.storems_weixin_switch}checked="checked"{/if} /> <strong>{$Think.lang.weixin_alerts}{$Think.lang.ds_colon}</strong>
+                <input type="checkbox" class="checkbox mr5" name="weixin_forced" id="weixin_forced" value="1" {if
+                    $smt_info.storemt_weixin_forced}disabled="disabled" checked="checked" {/if}{if
+                    $smsetting_info.storems_weixin_switch}checked="checked" {/if} />
+                <strong>{$Think.lang.weixin_alerts}{$Think.lang.ds_colon}</strong>
             </dt>
             <dd>{$Think.lang.select_weixin_alerts}。</dd>
         </dl>
-       {/if}
-       <div class="bottom">
-           <input type="submit" class="submit" value="{$Think.lang.ds_submit}" />
-       </div>
+        {/if}
+        <div class="bottom">
+            <input type="submit" class="submit" value="{$Think.lang.ds_submit}" />
+        </div>
     </form>
 </div>
 <script>
-    $(function(){
+    $(function () {
         $('#store_msg_setting').validate({
             errorLabelContainer: $('#warning'),
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('store_msg_setting');
             },
-            rules : {
-                storems_short_number : {
-                    required : '#short_forced:checked',
-                    digits : true,
-                    rangelength : [11,11]
+            rules: {
+                storems_short_number: {
+                    required: '#short_forced:checked',
+                    digits: true,
+                    rangelength: [11, 11]
                 },
-                storems_mail_number : {
-                    required : '#mail_forced:checked',
-                    email : true
+                storems_mail_number: {
+                    required: '#mail_forced:checked',
+                    email: true
                 }
             },
-            messages : {
-                storems_short_number : {
-                    required : '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_phone_number}',
-                    digits : '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_phone_number}',
-                    rangelength : '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_phone_number}'
+            messages: {
+                storems_short_number: {
+                    required: '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_phone_number}',
+                    digits: '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_phone_number}',
+                    rangelength: '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_phone_number}'
                 },
-                storems_mail_number : {
-                    required : '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_email_address}',
-                    email : '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_email_address}'
+                storems_mail_number: {
+                    required: '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_email_address}',
+                    email: '<i class="iconfont">&#xe64c;</i>{$Think.lang.fill_correct_email_address}'
                 }
             }
         });

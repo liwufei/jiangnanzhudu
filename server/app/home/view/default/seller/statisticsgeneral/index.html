@@ -53,7 +53,8 @@
             </span>
             <span class="w400 fl h30" style="display:block;">
                 <i title="{$Think.lang.order_peak_title}" class="tip iconfont">&#xe649;</i>
-                {$Think.lang.order_peak}：<strong>{$statnew_arr.hothour ?$statnew_arr.hothour :lang('temporary_no')}</strong>
+                {$Think.lang.order_peak}：<strong>{$statnew_arr.hothour ?$statnew_arr.hothour
+                    :lang('temporary_no')}</strong>
             </span>
         </li>
     </ul>
@@ -141,24 +142,24 @@
 </div>
 <div class="h30 cb">&nbsp;</div>
 <script>
-    jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
+    jQuery.browser = {}; (function () { jQuery.browser.msie = false; jQuery.browser.version = 0; if (navigator.userAgent.match(/MSIE ([0-9]+)./)) { jQuery.browser.msie = true; jQuery.browser.version = RegExp.$1; } })();
 </script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.poshytip.min.js"></script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/highcharts/highcharts.js"></script>
 <script>
-$(function(){
-    //Ajax提示
-    $('.tip').poshytip({
-        className: 'tip-yellowsimple',
-        showTimeout: 1,
-        alignTo: 'target',
-        alignX: 'center',
-        alignY: 'top',
-        offsetY: 5,
-        allowTipHover: false
-    });
+    $(function () {
+        //Ajax提示
+        $('.tip').poshytip({
+            className: 'tip-yellowsimple',
+            showTimeout: 1,
+            alignTo: 'target',
+            alignX: 'center',
+            alignY: 'top',
+            offsetY: 5,
+            allowTipHover: false
+        });
 
-    $('#container').highcharts({$stattoday_json|raw});
+        $('#container').highcharts({ $stattoday_json| raw});
 });
 </script>
 

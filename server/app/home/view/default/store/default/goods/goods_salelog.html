@@ -21,8 +21,11 @@
     <tbody>
         {foreach name="sales" item="sale"}
         <tr>
-            <td><a href="javascript:void(0)" target="_blank" data-param="{'id':{$sale.buyer_id}}" dstype="mcard">{:str_cut($sale.buyer_name,2)}***</a></td>
-            <td><em class="price">{$Think.lang.currency}{$sale.goods_price}</em> {present name="$order_type[$sale.goods_type]"}<i style="color:red;">{$order_type[$sale.goods_type]}</i>{/present}</td>
+            <td><a href="javascript:void(0)" target="_blank" data-param="{'id':{$sale.buyer_id}}"
+                    dstype="mcard">{:str_cut($sale.buyer_name,2)}***</a></td>
+            <td><em class="price">{$Think.lang.currency}{$sale.goods_price}</em> {present
+                name="$order_type[$sale.goods_type]"}<i style="color:red;">{$order_type[$sale.goods_type]}</i>{/present}
+            </td>
             <td>{$sale.goods_num}</td>
             <td><time>{:date('Y-m-d H:i:s',$sale.add_time)}</time></td>
         </tr>
@@ -30,7 +33,9 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="10" class="tr" ><div class="pagination"> {$show_page|raw} </div></td>
+            <td colspan="10" class="tr">
+                <div class="pagination"> {$show_page|raw} </div>
+            </td>
         </tr>
     </tfoot>
     {else /}

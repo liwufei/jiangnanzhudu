@@ -59,14 +59,16 @@
                         <ul class="dssc-evidence-pic">
                             {foreach name="pic_list" item="val" key="key" }
                             {notempty name="val"}
-                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
+                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img
+                                        class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
                             {/notempty}
                             {/foreach}
                         </ul>
                         {/notempty}
                     </dd>
                 </dl>
-                <form id="post_form" method="post" action="{:url('Sellerreturn/edit',['return_id'=>$return.refund_id])}">
+                <form id="post_form" method="post"
+                    action="{:url('Sellerreturn/edit',['return_id'=>$return.refund_id])}">
                     <h3>{$Think.lang.business_processing}</h3>
                     <dl>
                         <dt><i class="required">*</i>{$Think.lang.return_seller_confirm}{$Think.lang.ds_colon}</dt>
@@ -139,8 +141,6 @@
         });
     });
 </script>
-
-
 
 
 {/block}

@@ -1,9 +1,11 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_main"}
+
 <div class="alert alert-block mt10"> <strong>{$Think.lang.instructions}：</strong>
     <ul class="mt5">
         <li>{$Think.lang.notes_message_setup1}</li>
-        <li>{$Think.lang.notes_message_setup2}<a style="color: red" href="{:url('Selleraccountgroup/group_list')}" target="_blank">{$Think.lang.account_group}</a>{$Think.lang.inside_setting}。</li>
+        <li>{$Think.lang.notes_message_setup2}<a style="color: red" href="{:url('Selleraccountgroup/group_list')}"
+                target="_blank">{$Think.lang.account_group}</a>{$Think.lang.inside_setting}。</li>
     </ul>
 </div>
 <table class="dssc-default-table">
@@ -25,7 +27,10 @@
             <td class="dscs-table-handle">
                 {notempty name="val.is_opened"}
                 <span>
-                    <a href="javascript:void(0);" class="btn-acidblue" ds_type="dialog" dialog_title="{$Think.lang.receiving_setting}" dialog_id="msg_setting" dialog_width="480" uri="{:url('Sellermsg/edit_msg_setting',['code'=>$val.storemt_code])}"><i class="iconfont">&#xe734;</i>
+                    <a href="javascript:void(0);" class="btn-acidblue" ds_type="dialog"
+                        dialog_title="{$Think.lang.receiving_setting}" dialog_id="msg_setting" dialog_width="480"
+                        uri="{:url('Sellermsg/edit_msg_setting',['code'=>$val.storemt_code])}"><i
+                            class="iconfont">&#xe734;</i>
                         <p>{$Think.lang.setting}</p>
                     </a>
                 </span>
@@ -35,7 +40,9 @@
         {/foreach}
         {else /}
         <tr>
-            <td colspan="20" class="norecord"><div class="warning-option"><i class="iconfont">&#xe64c;</i><span>{$Think.lang.no_record}</span></div></td>
+            <td colspan="20" class="norecord">
+                <div class="warning-option"><i class="iconfont">&#xe64c;</i><span>{$Think.lang.no_record}</span></div>
+            </td>
         </tr>
         {/notempty}
     </tbody>

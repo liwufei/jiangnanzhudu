@@ -10,13 +10,14 @@
                     <option value="">{$Think.lang.ds_please_choose}</option>
                     {notempty name="bargainorder_state_array"}
                     {foreach name="bargainorder_state_array" item="val"}
-                    <option value="{$key}" {if $Request.get.bargainorder_state!='' && $key==$Request.get.bargainorder_state}selected{/if}>{$val}</option>
+                    <option value="{$key}" {if $Request.get.bargainorder_state!='' &&
+                        $key==$Request.get.bargainorder_state}selected{/if}>{$val}</option>
                     {/foreach}
                     {/notempty}
                 </select>
             </td>
             <td class="w70 tc">
-                <input type="submit" class="submit" value="{$Think.lang.ds_search}"/>
+                <input type="submit" class="submit" value="{$Think.lang.ds_search}" />
             </td>
         </tr>
     </table>
@@ -46,7 +47,7 @@
             <td>
                 <span>
                     <a href="{:url('Sellerpromotionbargain/bargain_log',['bargainorder_id'=>$val.bargainorder_id])}"
-                       class="btn-green">
+                        class="btn-green">
                         <i class="iconfont">&#xe734;</i>
                         <p>{$Think.lang.ds_manage_bargain}</p>
                     </a>

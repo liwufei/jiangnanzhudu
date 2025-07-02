@@ -9,16 +9,18 @@
     <dl>
         <dt><i class="required">*</i>{$Think.lang.quantity_package_purchase}：</dt>
         <dd>
-            <input id="booth_quota_quantity" name="booth_quota_quantity" type="text" class="text w50"/><em class="add-on">{$Think.lang.ds_month}</em><span></span>
+            <input id="booth_quota_quantity" name="booth_quota_quantity" type="text" class="text w50" /><em
+                class="add-on">{$Think.lang.ds_month}</em><span></span>
             <p class="hint">{$Think.lang.plan_buy_instructions}</p>
-            <p class="hint">{$Think.lang.need_pay_monthly}{$Think.config.ds_config.promotion_booth_price}{$Think.lang.ds_yuan}</p>
+            <p class="hint">
+                {$Think.lang.need_pay_monthly}{$Think.config.ds_config.promotion_booth_price}{$Think.lang.ds_yuan}</p>
             <p class="hint"><strong style="color: red">{$Think.lang.deduction_settlement_payment_days}</strong></p>
         </dd>
     </dl>
     <div class="bottom">
         <input id="submit_button" type="submit" value="{$Think.lang.ds_submit}" class="submit">
     </div>
-</form>
+    </form>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -29,7 +31,7 @@
                 error_td.append(error);
             },
             submitHandler: function (form) {
-                var unit_price = parseInt({$Think.config.ds_config.promotion_booth_price});
+                var unit_price = parseInt({ $Think.config.ds_config.promotion_booth_price });
                 var quantity = parseInt($("#booth_quota_quantity").val());
                 var price = unit_price * quantity;
                 layer.confirm('{$Think.lang.need_pay_total}' + price + '{$Think.lang.ds_yuan}', {
@@ -55,8 +57,6 @@
             }
         });
     });
-</script> 
+</script>
 
 {/block}
-
-

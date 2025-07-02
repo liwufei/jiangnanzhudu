@@ -18,62 +18,92 @@
         </thead>
         <tbody>
             <tr class="bd-line">
-                <td><input type="checkbox" name="new" {if !isset($storesnsset_info) || $storesnsset_info['storesnsset_new'] == 1}checked="checked"{/if} value="1" /></td>
+                <td><input type="checkbox" name="new" {if !isset($storesnsset_info) ||
+                        $storesnsset_info['storesnsset_new']==1}checked="checked" {/if} value="1" /></td>
                 <td class="tl">
                     <strong>{$Think.lang.store_sns_new_selease}</strong>
-                    <textarea dstype="charcount" class="textarea w400" name="new_title" rows="2" id="new_title">{$storesnsset_info.storesnsset_newtitle}</textarea>
-                    <div id="charcount_new_title" class="tr w400"></div></td>
-                <td><p>{$Think.lang.ds_store_auto_share_new1}</p>
+                    <textarea dstype="charcount" class="textarea w400" name="new_title" rows="2"
+                        id="new_title">{$storesnsset_info.storesnsset_newtitle}</textarea>
+                    <div id="charcount_new_title" class="tr w400"></div>
+                </td>
+                <td>
+                    <p>{$Think.lang.ds_store_auto_share_new1}</p>
                     <p>{$Think.lang.ds_store_auto_share_new2}</p>
                     <p>{$Think.lang.ds_store_auto_share_new3}</p>
                     <p>{$Think.lang.ds_store_auto_share_new4}</p>
-                    <p>{$Think.lang.ds_store_auto_share_new5}</p></td>
+                    <p>{$Think.lang.ds_store_auto_share_new5}</p>
+                </td>
             </tr>
 
             <tr class="bd-line">
-                <td><input type="checkbox" name="xianshi" {if !isset($storesnsset_info) || $storesnsset_info['storesnsset_xianshi'] == 1}checked="checked"{/if} value="1" /></td>
-                <td class="tl"><strong>{$Think.lang.store_sns_xianshi}</strong><textarea dstype="charcount" class="w400" name="xianshi_title" rows="2" id="xianshi_title">{$storesnsset_info.storesnsset_xianshititle}</textarea>
-                    <div id="charcount_xianshi_title" class="tr w400"></div></td>
-                <td><p>{$Think.lang.ds_store_auto_share_xianshi1}</p>
+                <td><input type="checkbox" name="xianshi" {if !isset($storesnsset_info) ||
+                        $storesnsset_info['storesnsset_xianshi']==1}checked="checked" {/if} value="1" /></td>
+                <td class="tl"><strong>{$Think.lang.store_sns_xianshi}</strong><textarea dstype="charcount" class="w400"
+                        name="xianshi_title" rows="2"
+                        id="xianshi_title">{$storesnsset_info.storesnsset_xianshititle}</textarea>
+                    <div id="charcount_xianshi_title" class="tr w400"></div>
+                </td>
+                <td>
+                    <p>{$Think.lang.ds_store_auto_share_xianshi1}</p>
                     <p>{$Think.lang.ds_store_auto_share_xianshi2}</p>
                     <p>{$Think.lang.ds_store_auto_share_xianshi3}</p>
                     <p>{$Think.lang.ds_store_auto_share_xianshi4}</p>
-                    <p>{$Think.lang.ds_store_auto_share_xianshi5}</p></td>
+                    <p>{$Think.lang.ds_store_auto_share_xianshi5}</p>
+                </td>
             </tr>
             <tr class="bd-line">
-                <td><input type="checkbox" name="mansong" {if !isset($storesnsset_info) || $storesnsset_info['storesnsset_mansong'] == 1}checked="checked"{/if} value="1" /></td>
-                <td class="tl"><strong>{$Think.lang.store_sns_mansong}</strong><textarea dstype="charcount" class="w400" name="mansong_title" rows="2" id="mansong_title">{$storesnsset_info.storesnsset_mansongtitle}</textarea>
-                    <div id="charcount_mansong_title" class="tr w400"></div></td>
-                <td><p>{$Think.lang.ds_store_auto_share_mansong1}</p>
+                <td><input type="checkbox" name="mansong" {if !isset($storesnsset_info) ||
+                        $storesnsset_info['storesnsset_mansong']==1}checked="checked" {/if} value="1" /></td>
+                <td class="tl"><strong>{$Think.lang.store_sns_mansong}</strong><textarea dstype="charcount" class="w400"
+                        name="mansong_title" rows="2"
+                        id="mansong_title">{$storesnsset_info.storesnsset_mansongtitle}</textarea>
+                    <div id="charcount_mansong_title" class="tr w400"></div>
+                </td>
+                <td>
+                    <p>{$Think.lang.ds_store_auto_share_mansong1}</p>
                     <p>{$Think.lang.ds_store_auto_share_mansong2}</p>
                     <p>{$Think.lang.ds_store_auto_share_mansong3}</p>
                     <p>{$Think.lang.ds_store_auto_share_mansong4}</p>
-                    <p>{$Think.lang.ds_store_auto_share_mansong5}</p></td>
+                    <p>{$Think.lang.ds_store_auto_share_mansong5}</p>
+                </td>
             </tr>
             <tr class="bd-line">
-                <td><input type="checkbox" name="bundling" {if !isset($storesnsset_info) || $storesnsset_info['storesnsset_bundling'] == 1}checked="checked"{/if} value="1" /></td>
-                <td class="tl"><strong>{$Think.lang.store_sns_bundling}</strong><textarea dstype="charcount" class="w400" name="bundling_title" rows="2" id="bundling_title">{$storesnsset_info.storesnsset_bundlingtitle}</textarea>
-                    <div id="charcount_bundling_title" class="tr w400"></div></td>
-                <td><p>{$Think.lang.ds_store_auto_share_bundling1}</p>
+                <td><input type="checkbox" name="bundling" {if !isset($storesnsset_info) ||
+                        $storesnsset_info['storesnsset_bundling']==1}checked="checked" {/if} value="1" /></td>
+                <td class="tl"><strong>{$Think.lang.store_sns_bundling}</strong><textarea dstype="charcount"
+                        class="w400" name="bundling_title" rows="2"
+                        id="bundling_title">{$storesnsset_info.storesnsset_bundlingtitle}</textarea>
+                    <div id="charcount_bundling_title" class="tr w400"></div>
+                </td>
+                <td>
+                    <p>{$Think.lang.ds_store_auto_share_bundling1}</p>
                     <p>{$Think.lang.ds_store_auto_share_bundling2}</p>
                     <p>{$Think.lang.ds_store_auto_share_bundling3}</p>
                     <p>{$Think.lang.ds_store_auto_share_bundling4}</p>
-                    <p>{$Think.lang.ds_store_auto_share_bundling5}</p></td>
+                    <p>{$Think.lang.ds_store_auto_share_bundling5}</p>
+                </td>
             </tr>
             <tr class="bd-line">
-                <td><input type="checkbox" name="groupbuy" {if !isset($storesnsset_info) || $storesnsset_info['storesnsset_groupbuy'] == 1}checked="checked"{/if} value="1" /></td>
-                <td class="tl"><strong>{$Think.lang.store_sns_groupbuy}</strong><textarea dstype="charcount" class="w400" name="groupbuy_title" rows="2" id="groupbuy_title">{$storesnsset_info.storesnsset_bundlingtitle}</textarea>
-                    <div id="charcount_groupbuy_title" class="tr w400"></div></td>
-                <td><p>{$Think.lang.ds_store_auto_share_groupbuy1}</p>
+                <td><input type="checkbox" name="groupbuy" {if !isset($storesnsset_info) ||
+                        $storesnsset_info['storesnsset_groupbuy']==1}checked="checked" {/if} value="1" /></td>
+                <td class="tl"><strong>{$Think.lang.store_sns_groupbuy}</strong><textarea dstype="charcount"
+                        class="w400" name="groupbuy_title" rows="2"
+                        id="groupbuy_title">{$storesnsset_info.storesnsset_bundlingtitle}</textarea>
+                    <div id="charcount_groupbuy_title" class="tr w400"></div>
+                </td>
+                <td>
+                    <p>{$Think.lang.ds_store_auto_share_groupbuy1}</p>
                     <p>{$Think.lang.ds_store_auto_share_groupbuy2}</p>
                     <p>{$Think.lang.ds_store_auto_share_groupbuy3}</p>
                     <p>{$Think.lang.ds_store_auto_share_groupbuy4}</p>
-                    <p>{$Think.lang.ds_store_auto_share_groupbuy5}</p></td>
+                    <p>{$Think.lang.ds_store_auto_share_groupbuy5}</p>
+                </td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="20" class="bottom"><input type="submit" value="{$Think.lang.ds_common_button_save}" class="submit mt10 mb5" style="display: inline-block;"></td>
+                <td colspan="20" class="bottom"><input type="submit" value="{$Think.lang.ds_common_button_save}"
+                        class="submit mt10 mb5" style="display: inline-block;"></td>
             </tr>
         </tfoot>
     </table>
@@ -82,7 +112,7 @@
 
 
 
-<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/jquery.charCount.js"></script> 
+<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/jquery.charCount.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#form_snssetting').validate({

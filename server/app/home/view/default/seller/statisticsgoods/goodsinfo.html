@@ -26,27 +26,26 @@
 <div id="container_ordergoodsnum"></div>
 <div id="container_ordernum"></div>
 <script>
-    jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
+    jQuery.browser = {}; (function () { jQuery.browser.msie = false; jQuery.browser.version = 0; if (navigator.userAgent.match(/MSIE ([0-9]+)./)) { jQuery.browser.msie = true; jQuery.browser.version = RegExp.$1; } })();
 </script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.poshytip.min.js"></script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/highcharts/highcharts.js"></script>
 <script type="text/javascript">
-$(function(){
-    $('#container_ordergamount').highcharts({$stat_json.ordergamount|raw});
-    $('#container_ordergoodsnum').highcharts({$stat_json.ordergoodsnum|raw});
-    $('#container_ordernum').highcharts({$stat_json.ordernum|raw});
+    $(function () {
+        $('#container_ordergamount').highcharts({ $stat_json.ordergamount | raw });
+        $('#container_ordergoodsnum').highcharts({ $stat_json.ordergoodsnum | raw });
+        $('#container_ordernum').highcharts({ $stat_json.ordernum | raw });
 
-    //Ajax提示
-    $('.tip').poshytip({
-        className: 'tip-yellowsimple',
-        showTimeout: 1,
-        alignTo: 'target',
-        alignX: 'center',
-        alignY: 'top',
-        offsetY: 5,
-        allowTipHover: false
+        //Ajax提示
+        $('.tip').poshytip({
+            className: 'tip-yellowsimple',
+            showTimeout: 1,
+            alignTo: 'target',
+            alignX: 'center',
+            alignY: 'top',
+            offsetY: 5,
+            allowTipHover: false
+        });
     });
-});
 </script>
 {/if}
-

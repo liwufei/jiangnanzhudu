@@ -3,7 +3,8 @@
 <div class="alert mt15 mb5"><strong>{$Think.lang.operating_instructions}：</strong>
     <ul>
         <li>{$Think.lang.sellerspec_tip1}</li>
-        <li>{$Think.lang.sellerspec_tip2}<font color="red">{$Think.lang.sellerspec_tip3}</font>{$Think.lang.sellerspec_tip4}</li>
+        <li>{$Think.lang.sellerspec_tip2}<font color="red">{$Think.lang.sellerspec_tip3}</font>
+            {$Think.lang.sellerspec_tip4}</li>
         <li>{$Think.lang.sellerspec_tip5}</li>
     </ul>
 </div>
@@ -52,9 +53,9 @@
 
 
 <script>
-    $(function() {
+    $(function () {
         // 查询下级分类，分类不存在显示当前分类绑定的规格
-        $('select[dstype="gc"]').change(function() {
+        $('select[dstype="gc"]').change(function () {
             $(this).parents('td:first').nextAll().html('');
             $('div[dstype="spec_ul"]').html('');
             $('div[dstype="spec_iframe"]').html('');
@@ -72,7 +73,7 @@
             // 清理分类
             clearClassHtml(parseInt(deep) + 1);
         }
-        $.getJSON('ajax_class?id=' + id + '&deep=' + deep, function(data) {
+        $.getJSON('ajax_class?id=' + id + '&deep=' + deep, function (data) {
             $('div[dstype="spec_iframe"]').empty();
             $('div[dstype="spec_ul"]').empty();
             if (data) {
@@ -88,10 +89,10 @@
     // 下一级商品分类
     function nextClass(data, deep) {
         $('span[dstype="gc' + deep + '"]').html('').append('<select data-param="{deep:' + deep + '}"></select>')
-                .find('select').change(function() {
-            getClassSpec($(this));
-        }).append('<option>{$Think.lang.ds_please_choose}</option>');
-        $.each(data, function(i, n) {
+            .find('select').change(function () {
+                getClassSpec($(this));
+            }).append('<option>{$Think.lang.ds_please_choose}</option>');
+        $.each(data, function (i, n) {
             if (n != null) {
                 $('span[dstype="gc' + deep + '"] > select').append('<option value="' + n.gc_id + '">' + n.gc_name + '</option>');
             }
@@ -102,12 +103,12 @@
 
     // 列出规格信息
     function specList(data, deep, gcid) {
-        if (typeof(data) != 'undefined' && data != '') {
+        if (typeof (data) != 'undefined' && data != '') {
             var $_ul = $('<ul></ul>');
-            $.each(data, function(i, n) {
+            $.each(data, function (i, n) {
                 $_ul.append('<li><a href="javascript:void(0);" dstype="editSpec" data-param="{spid:' + n.sp_id + ',gcid:' + gcid + '}">{$Think.lang.ds_edit}' + n.sp_name + '{$Think.lang.specifications}</a></li>');
             });
-            $_ul.find('a').click(function() {
+            $_ul.find('a').click(function () {
                 $_ul.find('li').removeClass('selected');
                 $(this).parents('li:first').addClass('selected');
                 editSpecvalue($(this));
@@ -137,16 +138,12 @@
         $('div[dstype="spec_iframe"]').html('');
         var data_str = '';
         eval('data_str =' + o.attr('data-param'));
-        $_iframe = $('<iframe id="iframepage" name="iframepage" frameBorder=0 scrolling=no width="100%" height="630px" ' + 'src="{:url('Sellerspec/add_spec')}?spid=' + data_str.spid + '&gcid=' + data_str.gcid + '" ></iframe>'
-                )
-                ;
+        $_iframe = $('<iframe id="iframepage" name="iframepage" frameBorder=0 scrolling=no width="100%" height="630px" ' + 'src="{:url('Sellerspec / add_spec')}?spid=' + data_str.spid + '&gcid=' + data_str.gcid + '" ></iframe>'
+        )
+            ;
         $('div[dstype="spec_iframe"]').append($_iframe);
     }
 
 </script>
 
 {/block}
-
-
-
-
