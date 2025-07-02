@@ -2,9 +2,6 @@
 {block name="member_main"}
 
 
-
-
-
 <div class="dsm-flow-layout">
     <div class="dsm-flow-container">
         <div class="title">
@@ -65,7 +62,8 @@
                         <ul class="dsm-evidence-pic">
                             {foreach name="pic_list" item="val" key="key" }
                             {notempty name="val"}
-                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"  data-lightbox="lightbox-image"> <img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
+                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img
+                                        class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
                             {/notempty}
                             {/foreach}
                         </ul>
@@ -83,7 +81,8 @@
                     <dd>{$return.refundreturn_seller_message} </dd>
                 </dl>
                 {/if}
-                {if ($return['refundreturn_seller_state'] == 2 && $return['return_type'] == 2 && $return['refundreturn_goods_state'] == 1 && $ship == 1)}
+                {if ($return['refundreturn_seller_state'] == 2 && $return['return_type'] == 2 &&
+                $return['refundreturn_goods_state'] == 1 && $ship == 1)}
                 {include file="default/member/memberreturn/ship"}
                 {else/}
                 {if ($return['express_id'] > 0 && !empty($return['invoice_no']))}
@@ -106,7 +105,8 @@
                     <dd>{$return.refundreturn_admin_message} </dd>
                 </dl>
                 {/if}
-                <div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i class="iconfont">&#xe74e;</i>{$Think.lang.return_list}</a></div>
+                <div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i
+                            class="iconfont">&#xe74e;</i>{$Think.lang.return_list}</a></div>
                 {/if}
             </div>
         </div>
@@ -117,9 +117,4 @@
 <script src="{$Think.PLUGINS_SITE_ROOT}/js/jquery.lightbox/js/lightbox.min.js"></script>
 
 
-
-
-
-
 {/block}
-

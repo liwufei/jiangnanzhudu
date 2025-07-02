@@ -8,18 +8,17 @@
         <li>
             <div class="p_img">
                 <a href="{:url('Activity/detail',['activity_id'=>$activity.activity_id])}">
-                    <img src="{:ds_get_pic(ATTACH_ACTIVITY,$activity.activity_banner)}"/>
+                    <img src="{:ds_get_pic(ATTACH_ACTIVITY,$activity.activity_banner)}" />
                 </a>
             </div>
             <div class="p_info">
                 <span class="p_name">{$activity.activity_title}</span>
-                <span class="p_time"><i class="iconfont">&#xe736;</i>{$activity.activity_startdate|date='Y-m-d'} {$Think.lang.activity_to} {$activity.activity_enddate|date='Y-m-d'}</span>
+                <span class="p_time"><i class="iconfont">&#xe736;</i>{$activity.activity_startdate|date='Y-m-d'}
+                    {$Think.lang.activity_to} {$activity.activity_enddate|date='Y-m-d'}</span>
             </div>
         </li>
         {/foreach}
     </ul>
     {$show_page|raw}
 </div>
-
-
 {/block}

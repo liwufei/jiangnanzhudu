@@ -2,7 +2,6 @@
 {block name="member_main"}
 
 
-
 <div class="dsm-oredr-show">
   <div class="dsm-order-info">
     <div class="dsm-order-details">
@@ -22,24 +21,25 @@
           <dd>
             {if $order_info.point_ordermessage}
             {$order_info.point_ordermessage}
-           {/if}
+            {/if}
           </dd>
         </dl>
         <dl class="line">
           <dt>{$Think.lang.member_pointorder_ordersn}{$Think.lang.ds_colon}</dt>
-          <dd>{$order_info.point_ordersn}<a href="javascript:void(0);">{$Think.lang.more_more}<i class="iconfont">&#xe689;</i>
-            <div class="more"><span class="arrow"></span>
-              <ul>
-                <li>{$Think.lang.member_pointorder_addtime}{$Think.lang.ds_colon}
-                  <span>{:date('Y-m-d H:i:s',$order_info.point_addtime)}</span>
-                </li>
-                {if $order_info.point_shippingtime !=''}
-                <li>{$Think.lang.member_pointorder_shipping_time}{$Think.lang.ds_colon}
-                  <span> {:date('Y-m-d H:i:s',$order_info.point_shippingtime)} </span>
-                </li>
-               {/if}
-              </ul>
-            </div>
+          <dd>{$order_info.point_ordersn}<a href="javascript:void(0);">{$Think.lang.more_more}<i
+                class="iconfont">&#xe689;</i>
+              <div class="more"><span class="arrow"></span>
+                <ul>
+                  <li>{$Think.lang.member_pointorder_addtime}{$Think.lang.ds_colon}
+                    <span>{:date('Y-m-d H:i:s',$order_info.point_addtime)}</span>
+                  </li>
+                  {if $order_info.point_shippingtime !=''}
+                  <li>{$Think.lang.member_pointorder_shipping_time}{$Think.lang.ds_colon}
+                    <span> {:date('Y-m-d H:i:s',$order_info.point_shippingtime)} </span>
+                  </li>
+                  {/if}
+                </ul>
+              </div>
             </a>
           </dd>
         </dl>
@@ -52,19 +52,22 @@
         <dd>{$pointorderstate_arr.canceled.1}</dd>
       </dl>
       <ul>
-        <li>{$Think.lang.exchange_order_been_canceled}，<a href="{:url('Pointprod/plist')}">{$Think.lang.look_other_exchange_gifts}</a></li>
+        <li>{$Think.lang.exchange_order_been_canceled}，<a
+            href="{:url('Pointprod/plist')}">{$Think.lang.look_other_exchange_gifts}</a></li>
       </ul>
       {else /}
       <div class="dsm-order-step">
         <dl class="step-first current">
           <dt>{$Think.lang.submit_conversion}</dt>
           <dd class="bg"></dd>
-          <dd class="date" title="{$Think.lang.member_pointorder_addtime}">{:date('Y-m-d H:i:s',$order_info.point_addtime)}</dd>
+          <dd class="date" title="{$Think.lang.member_pointorder_addtime}">{:date('Y-m-d
+            H:i:s',$order_info.point_addtime)}</dd>
         </dl>
         <dl class="{if $order_info.point_shippingtime !=''}current{/if}">
           <dt>{$Think.lang.gift_delivery}</dt>
           <dd class="bg"> </dd>
-          <dd class="date" title="{$Think.lang.member_pointorder_shipping_time} ">{:date('Y-m-d H:i:s',$order_info.point_shippingtime)}</dd>
+          <dd class="date" title="{$Think.lang.member_pointorder_shipping_time} ">{:date('Y-m-d
+            H:i:s',$order_info.point_shippingtime)}</dd>
         </dl>
         <dl class="{if $order_info.point_finnshedtime !=''}current{/if}">
           <dt>{$Think.lang.member_pointorder_confirmreceiving}</dt>
@@ -88,34 +91,42 @@
         </tr>
       </thead>
       <tbody>
-      {notempty name="prod_list"}
+        {notempty name="prod_list"}
         {if $order_info.point_shippingtime !=''}
         <tr>
           <th colspan="20">
-          <div class="order-deliver">
-            <span>{$Think.lang.logistics_company}： <a target="_blank" href="{$express_info.express_url|default=''}">{$express_info.express_name|default=''}</a></span>
-            <span> {$Think.lang.member_pointorder_shipping_code}{$Think.lang.ds_colon} {$order_info.point_shippingcode} </span>
-            <span><a href="javascript:void(0);" id="show_shipping">{$Think.lang.logistics_tracking}<i class="iconfont">&#xe689;</i>
-              <div class="more"><span class="arrow"></span>
-              <ul id="shipping_ul"><li>{$Think.lang.loading}...</li></ul>
-              </div>
-              </a></span></div></th>
+            <div class="order-deliver">
+              <span>{$Think.lang.logistics_company}： <a target="_blank"
+                  href="{$express_info.express_url|default=''}">{$express_info.express_name|default=''}</a></span>
+              <span> {$Think.lang.member_pointorder_shipping_code}{$Think.lang.ds_colon}
+                {$order_info.point_shippingcode} </span>
+              <span><a href="javascript:void(0);" id="show_shipping">{$Think.lang.logistics_tracking}<i
+                    class="iconfont">&#xe689;</i>
+                  <div class="more"><span class="arrow"></span>
+                    <ul id="shipping_ul">
+                      <li>{$Think.lang.loading}...</li>
+                    </ul>
+                  </div>
+                </a></span>
+            </div>
+          </th>
         </tr>
         {/if}
-      {foreach name="prod_list" item="val"}
+        {foreach name="prod_list" item="val"}
         <tr>
           <td></td>
           <td class="w50">
             <div class="pic-thumb">
               <a href="{:url('Pointprod/pinfo',['id'=>$val.pointog_goodsid])}" target="_blank">
-                <img src="{$val.pointog_goodsimage_url}"/>
+                <img src="{$val.pointog_goodsimage_url}" />
               </a>
             </div>
           </td>
           <td class="tl">
             <dl class="goods-name">
               <dt>
-                <a href="{:url('Pointprod/pinfo',['id'=>$val.pointog_goodsid])}" target="_blank">{$val.pointog_goodsname}</a>
+                <a href="{:url('Pointprod/pinfo',['id'=>$val.pointog_goodsid])}"
+                  target="_blank">{$val.pointog_goodsname}</a>
               </dt>
             </dl>
           </td>
@@ -126,19 +137,20 @@
           <td class="bdl" rowspan="{:count($prod_list)}">
             {if $order_info.point_orderallowcancel}
             <p><a href="javascript:void(0)" class="dsm-btn dsm-btn-orange"
-                  onclick="ds_ajaxget_confirm('{:url('Memberpointorder/cancel_order',['order_id'=>$order_info.point_orderid])}','{$Think.lang.member_pointorder_cancel_confirmtip}');">{$Think.lang.member_pointorder_cancel_title}</a></p>
+                onclick="ds_ajaxget_confirm('{:url('Memberpointorder/cancel_order',['order_id'=>$order_info.point_orderid])}','{$Think.lang.member_pointorder_cancel_confirmtip}');">{$Think.lang.member_pointorder_cancel_title}</a>
+            </p>
             {/if}
             {if $order_info.point_orderallowreceiving}
             <p>
               <a href="javascript:void(0)" class="dsm-btn"
-                 onclick="ds_ajaxget_confirm('{:url('Memberpointorder/receiving_order',['order_id'=>$order_info.point_orderid])}','{$Think.lang.member_pointorder_confirmreceivingtip}');">{$Think.lang.member_pointorder_confirmreceiving}</a>
+                onclick="ds_ajaxget_confirm('{:url('Memberpointorder/receiving_order',['order_id'=>$order_info.point_orderid])}','{$Think.lang.member_pointorder_confirmreceivingtip}');">{$Think.lang.member_pointorder_confirmreceiving}</a>
             </p>
             {/if}
           </td>
           {/if}
         </tr>
-       {/foreach}
-      {/notempty}
+        {/foreach}
+        {/notempty}
       </tbody>
       <tfoot>
         <tr>
@@ -146,30 +158,29 @@
             <dl class="sum">
               <dt>{$Think.lang.exchange_form_required}：</dt>
               <dd><em>{$order_info.point_allpoint}</em>{$Think.lang.credit_unit}</dd>
-            </dl></td>
+            </dl>
+          </td>
         </tr>
       </tfoot>
     </table>
   </div>
 </div>
 <script type="text/javascript">
-$(function(){
-    
-        var_send = '{$order_info.point_shippingtime|date="Y-m-d H:i:s"}&nbsp;&nbsp;{$Think.lang.platform_delivered}<br/>';
-        $.getJSON(HOMESITEURL+'/Memberorder/get_express.html?express_code={$order_info.point_shipping_ecode}&shipping_code={$order_info.point_shippingcode}&t={:random(7)}',function(data){
-            if(data){
-                data = var_send+data.join('<br/>');
-                $('#shipping_ul').html('<li>'+data+'</li>');
-                $('#show_shipping').unbind('hover');
-            }else{
-                $('#shipping_ul').html(var_send);
-                $('#show_shipping').unbind('hover');
-            }
-        });
-});
+  $(function () {
+
+    var_send = '{$order_info.point_shippingtime|date="Y-m-d H:i:s"}&nbsp;&nbsp;{$Think.lang.platform_delivered}<br/>';
+    $.getJSON(HOMESITEURL + '/Memberorder/get_express.html?express_code={$order_info.point_shipping_ecode}&shipping_code={$order_info.point_shippingcode}&t={:random(7)}', function (data) {
+      if (data) {
+        data = var_send + data.join('<br/>');
+        $('#shipping_ul').html('<li>' + data + '</li>');
+        $('#show_shipping').unbind('hover');
+      } else {
+        $('#shipping_ul').html(var_send);
+        $('#show_shipping').unbind('hover');
+      }
+    });
+  });
 </script>
-
-
 
 
 {/block}

@@ -30,7 +30,8 @@
             </div>
             <div class=" dsm-default-form">
                 <div id="warning"></div>
-                <form id="post_form1" enctype="multipart/form-data" method="post" action="{:url('Memberrefund/add_refund_all',['order_id'=>$order.order_id])}">
+                <form id="post_form1" enctype="multipart/form-data" method="post"
+                    action="{:url('Memberrefund/add_refund_all',['order_id'=>$order.order_id])}">
                     <h3>{$Think.lang.refund_notice3}</h3>
                     <dl>
                         <dt>{$Think.lang.refund_buyer_message}：</dt>
@@ -38,27 +39,33 @@
                     </dl>
                     <dl>
                         <dt><i class="required">*</i>{$Think.lang.refund_order_refund}：</dt>
-                        <dd><strong class="green">{:ds_price_format($order['order_amount']-$order['presell_deposit_amount'])}</strong> {$Think.lang.ds_yuan}</dd>
+                        <dd><strong
+                                class="green">{:ds_price_format($order['order_amount']-$order['presell_deposit_amount'])}</strong>
+                            {$Think.lang.ds_yuan}</dd>
                     </dl>
                     <dl>
                         <dt><i class="required">*</i>{$Think.lang.refund_instructions}：</dt>
                         <dd>
                             <textarea name="refundreturn_buyer_message" rows="3" class="textarea w400"></textarea>
                             <br />
-                            <span class="error"></span> </dd>
+                            <span class="error"></span>
+                        </dd>
                     </dl>
                     <dl>
                         <dt>{$Think.lang.upload_voucher}：</dt>
                         <dd>
                             <p>
                                 <input name="refund_pic1" type="file" />
-                                <span class="error"></span> </p>
+                                <span class="error"></span>
+                            </p>
                             <p>
                                 <input name="refund_pic2" type="file" />
-                                <span class="error"></span> </p>
+                                <span class="error"></span>
+                            </p>
                             <p>
                                 <input name="refund_pic3" type="file" />
-                                <span class="error"></span> </p>
+                                <span class="error"></span>
+                            </p>
                         </dd>
                     </dl>
                     <div class="bottom">
@@ -107,10 +114,6 @@
         });
     });
 </script>
-
-
-
-
 
 
 {/block}

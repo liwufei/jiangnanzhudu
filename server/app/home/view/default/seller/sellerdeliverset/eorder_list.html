@@ -1,6 +1,8 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_btn"}
-<a href="javascript:void(0)" class="dssc-btn dssc-btn-green" ds_type="dialog" dialog_title="{$Think.lang.ds_new}" dialog_id="eorder_add"  uri=" {:url('Sellerdeliverset/eorder_add')}" dialog_width="550" title="{$Think.lang.ds_new}">{$Think.lang.ds_new}</a>
+<a href="javascript:void(0)" class="dssc-btn dssc-btn-green" ds_type="dialog" dialog_title="{$Think.lang.ds_new}"
+    dialog_id="eorder_add" uri=" {:url('Sellerdeliverset/eorder_add')}" dialog_width="550"
+    title="{$Think.lang.ds_new}">{$Think.lang.ds_new}</a>
 {/block}
 
 {block name="seller_main"}
@@ -28,12 +30,17 @@
             <td>{$expresscf_kdn_config.expresscf_kdn_config_pay_type_text}</td>
             <td class="dscs-table-handle">
                 <span>
-                    <a href="javascript:void(0);" dialog_id="eorder_edit" dialog_width="640" dialog_title="{$Think.lang.ds_edit}" ds_type="dialog" uri="{:url('Sellerdeliverset/eorder_edit',['expresscf_kdn_config_id'=>$expresscf_kdn_config.expresscf_kdn_config_id])}" class="btn-blue"><i class="iconfont">&#xe731;</i>
+                    <a href="javascript:void(0);" dialog_id="eorder_edit" dialog_width="640"
+                        dialog_title="{$Think.lang.ds_edit}" ds_type="dialog"
+                        uri="{:url('Sellerdeliverset/eorder_edit',['expresscf_kdn_config_id'=>$expresscf_kdn_config.expresscf_kdn_config_id])}"
+                        class="btn-blue"><i class="iconfont">&#xe731;</i>
                         <p>{$Think.lang.ds_edit}</p>
                     </a>
                 </span>
                 <span>
-                    <a href="javascript:void(0)" onclick="ds_ajaxget_confirm('{:url('Sellerdeliverset/eorder_del',['expresscf_kdn_config_id'=>$expresscf_kdn_config.expresscf_kdn_config_id])}','{$Think.lang.ds_common_op_confirm}');" class="btn-red"><i class="iconfont">&#xe725;</i>
+                    <a href="javascript:void(0)"
+                        onclick="ds_ajaxget_confirm('{:url('Sellerdeliverset/eorder_del',['expresscf_kdn_config_id'=>$expresscf_kdn_config.expresscf_kdn_config_id])}','{$Think.lang.ds_common_op_confirm}');"
+                        class="btn-red"><i class="iconfont">&#xe725;</i>
                         <p>{$Think.lang.ds_del}</p>
                     </a>
                 </span>
@@ -60,4 +67,3 @@
     </tfoot>
 </table>
 {/block}
-

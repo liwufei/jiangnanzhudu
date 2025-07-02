@@ -8,18 +8,23 @@
             {foreach name="pintuan_list" item="value"}
             <li>
                 <div class="goods-pic">
-                    <img class="lazyload item-img" data-original="{$value.pintuan_image}" title="{$value.pintuan_goods_name}" src="{$Think.HOME_SITE_ROOT}/images/loading.gif" alt="{$value.pintuan_goods_name}" />
-                    <span class="item-shadow"><img src="{$Think.HOME_SITE_URL}/qrcode?url={$value.pintuan_url}"> 扫我拼团</span>
+                    <img class="lazyload item-img" data-original="{$value.pintuan_image}"
+                        title="{$value.pintuan_goods_name}" src="{$Think.HOME_SITE_ROOT}/images/loading.gif"
+                        alt="{$value.pintuan_goods_name}" />
+                    <span class="item-shadow"><img src="{$Think.HOME_SITE_URL}/qrcode?url={$value.pintuan_url}">
+                        扫我拼团</span>
                 </div>
                 <div class="goods-name">{$value.pintuan_goods_name}</div>
                 <p>
-                    <span class="limit-num"><i class="iconfont">&#xe701;</i>{$value.pintuan_limit_number}人团</span>已组团{$value.pintuan_count}件
+                    <span class="limit-num"><i
+                            class="iconfont">&#xe701;</i>{$value.pintuan_limit_number}人团</span>已组团{$value.pintuan_count}件
                 </p>
                 <p>
                     <em class="goods-price">{:ds_price_format_forlist($value['pintuan_zhe_price'])}</em>
                     <em class="zhe-price">{:ds_price_format_forlist($value['pintuan_goods_price'])}</em>
                     <em class="countdown" data-time="{$value.pintuan_end_time|date='Y-m-d H:i:s'}">
-                        距结束<span class="days">00</span>天&nbsp;<span class="hours">01</span>:<span class="minutes">56</span>:<span class="seconds">23</span>
+                        距结束<span class="days">00</span>天&nbsp;<span class="hours">01</span>:<span
+                            class="minutes">56</span>:<span class="seconds">23</span>
                     </em>
                 </p>
             </li>
@@ -32,10 +37,10 @@
     {/notempty}
 </div>
 <script type="text/javascript">
-        //倒计时JS
-        $(".countdown").each(function(){
-                $(this).countdown();
-        });
+    //倒计时JS
+    $(".countdown").each(function () {
+        $(this).countdown();
+    });
 </script>
 
 {/block}

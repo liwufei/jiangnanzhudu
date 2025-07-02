@@ -22,10 +22,15 @@
             <td>{$memberbank.memberbank_name}</td>
             <td class="dsm-table-handle">
                 <span>
-                    <a href="{:url('Memberbank/edit',['memberbank_id'=>$memberbank.memberbank_id])}" class="btn-blue"><i class="iconfont">&#xe731;</i><p>{$Think.lang.ds_edit}</p></a>
+                    <a href="{:url('Memberbank/edit',['memberbank_id'=>$memberbank.memberbank_id])}" class="btn-blue"><i
+                            class="iconfont">&#xe731;</i>
+                        <p>{$Think.lang.ds_edit}</p>
+                    </a>
                 </span>
                 <span>
-                    <a href="javascript:void(0)" onclick="ds_ajaxget_confirm('{:url('Memberbank/drop',['memberbank_id'=>$memberbank.memberbank_id])}','{$Think.lang.ds_ensure_del}');" class="btn-red" ><i class="iconfont">&#xe725;</i>
+                    <a href="javascript:void(0)"
+                        onclick="ds_ajaxget_confirm('{:url('Memberbank/drop',['memberbank_id'=>$memberbank.memberbank_id])}','{$Think.lang.ds_ensure_del}');"
+                        class="btn-red"><i class="iconfont">&#xe725;</i>
                         <p>{$Think.lang.ds_delete}</p>
                     </a>
                 </span>
@@ -34,18 +39,13 @@
         {/foreach}
         {else}
         <tr>
-                <td colspan="20" class="norecord"><div class="warning-option"><i>&nbsp;</i><span>{$Think.lang.no_record}</span></div></td>
-            </tr>
+            <td colspan="20" class="norecord">
+                <div class="warning-option"><i>&nbsp;</i><span>{$Think.lang.no_record}</span></div>
+            </td>
+        </tr>
         {/notempty}
     </tbody>
 </table>
-
-
-
-
-
-
-
 
 
 {/block}

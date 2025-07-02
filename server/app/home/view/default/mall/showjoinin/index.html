@@ -1,7 +1,6 @@
 {extend name="default/base/base_joinin" /}
 {block name="joinin_main"}
 
-
 <div class="join_banner">
     <div class="bd">
         <ul>
@@ -10,7 +9,7 @@
             {foreach name="pic_list" item="val" key="key" }
             {if !empty($val)}
             {php}$pic_n++;{/php}
-            <li style="background-image: url({:ds_get_pic('admin/Storejion',$val)})" ></li>
+            <li style="background-image: url({:ds_get_pic('admin/Storejion',$val)})"></li>
             {/if}
             {/foreach}
             {/notempty}
@@ -28,15 +27,15 @@
     <a class="next" href="javascript:void(0)"></a>
     <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.SuperSlide.2.1.1.js"></script>
     <script>
-        jQuery(".join_banner").slide({mainCell: ".bd ul", autoPlay: true, interTime: 4000});
+        jQuery(".join_banner").slide({ mainCell: ".bd ul", autoPlay: true, interTime: 4000 });
     </script>
     {/gt}
 </div>
 
 <div class="indextip">
     <div class="container"> <span class="title"><i class="iconfont">&#xe651;</i>
-    <h3>{$Think.lang.prompt}</h3>
-    </span>
+            <h3>{$Think.lang.prompt}</h3>
+        </span>
         <span class="content">{$show_txt}</span>
     </div>
 </div>
@@ -46,18 +45,22 @@
         <li>
             <h1>{$Think.lang.application_for_entry}</h1>
             <p>{$Think.lang.fill_in_entry_information}</p>
-            <a href="{if session('is_login') eq '1'}{if $joinin_detail.store_type eq 0}{:url('Sellerjoinin/index')}{else}{:url('Sellerjoininc2c/index')}{/if}{else/}javascript:login_dialog();{/if}" class="index-notice-btn setUpShop">{$Think.lang.my_settled_in}</a>
+            <a href="{if session('is_login') eq '1'}{if $joinin_detail.store_type eq 0}{:url('Sellerjoinin/index')}{else}{:url('Sellerjoininc2c/index')}{/if}{else/}javascript:login_dialog();{/if}"
+                class="index-notice-btn setUpShop">{$Think.lang.my_settled_in}</a>
         </li>
         <li>
             <h1>{$Think.lang.settled_in_progress}</h1>
             <p>{$Think.lang.understanding_store_opening_condition}</p>
-            <a href="{if session('is_login') eq '1'}{if $joinin_detail.store_type eq 0}{:url('Sellerjoinin/index')}{else}{:url('Sellerjoininc2c/index')}{/if}{else/}javascript:login_dialog();{/if}" class="index-notice-btn merchantsSettled">{$Think.lang.check_your_progress}</a>
+            <a href="{if session('is_login') eq '1'}{if $joinin_detail.store_type eq 0}{:url('Sellerjoinin/index')}{else}{:url('Sellerjoininc2c/index')}{/if}{else/}javascript:login_dialog();{/if}"
+                class="index-notice-btn merchantsSettled">{$Think.lang.check_your_progress}</a>
         </li>
-        <li class="index-notice-last"><h1>{$Think.lang.information_announcement}</h1>
+        <li class="index-notice-last">
+            <h1>{$Think.lang.information_announcement}</h1>
             <ul class="index-list">
                 {foreach $index_articles as $i_a}
                 <li>
-                    <a target="_blank" title="{$i_a.article_title}" href="{if $i_a.article_url !=''}{$i_a.article_url}{else /}{:url('Article/show',['article_id'=>$i_a.article_id])}{/if}">
+                    <a target="_blank" title="{$i_a.article_title}"
+                        href="{if $i_a.article_url !=''}{$i_a.article_url}{else /}{:url('Article/show',['article_id'=>$i_a.article_id])}{/if}">
                         {$i_a.article_title}
                     </a>
                     <em>{$Think.lang.important}</em>
@@ -148,19 +151,19 @@
 </div>
 
 <script>
-$(document).ready(function(){
-    $(".tabs-nav > li > h3").bind('mouseover', (function(e) {
-    	if (e.target == this) {
-    		var tabs = $(this).parent().parent().children("li");
-    		var panels = $(this).parent().parent().parent().children(".tabs-panel");
-    		var index = $.inArray(this, $(this).parent().parent().find("h3"));
-    		if (panels.eq(index)[0]) {
-    			tabs.removeClass("tabs-selected").eq(index).addClass("tabs-selected");
-    			panels.addClass("tabs-hide").eq(index).removeClass("tabs-hide");
-    		}
-    	}
-    }));
-});
+    $(document).ready(function () {
+        $(".tabs-nav > li > h3").bind('mouseover', (function (e) {
+            if (e.target == this) {
+                var tabs = $(this).parent().parent().children("li");
+                var panels = $(this).parent().parent().parent().children(".tabs-panel");
+                var index = $.inArray(this, $(this).parent().parent().find("h3"));
+                if (panels.eq(index)[0]) {
+                    tabs.removeClass("tabs-selected").eq(index).addClass("tabs-selected");
+                    panels.addClass("tabs-hide").eq(index).removeClass("tabs-hide");
+                }
+            }
+        }));
+    });
 </script>
 
 

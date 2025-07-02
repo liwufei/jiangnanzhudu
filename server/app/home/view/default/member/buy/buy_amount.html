@@ -1,4 +1,5 @@
-<div class="dsc-bottom" id='submitOrder'> <a href="javascript:void(0)"  class="dsc-btn dsc-btn-acidblue fr">{$Think.lang.cart_index_submit_order}</a> </div>
+<div class="dsc-bottom" id='submitOrder'> <a href="javascript:void(0)"
+        class="dsc-btn dsc-btn-acidblue fr">{$Think.lang.cart_index_submit_order}</a> </div>
 <script>
     function submitNext() {
         if (!SUBMIT_FORM)
@@ -9,7 +10,7 @@
         }
         if ($('#address_id').val() == '') {
             layer.msg('{$Think.lang.cart_step1_please_set_address}');
-                    return;
+            return;
         }
         if ($('#buy_city_id').val() == '') {
             layer.msg('{$Think.lang.reselect_the_item}');
@@ -18,18 +19,18 @@
         if ($('input[name="fcode"]').size() == 1 && $('#fcode_callback').val() != '1') {
             layer.alert('{$Think.lang.enter_f_code}');
             return;
-	}
+        }
         SUBMIT_FORM = false;
         $('#order_form').submit();
     }
-    $(function() {
-        $(document).keydown(function(e) {
+    $(function () {
+        $(document).keydown(function (e) {
             if (e.keyCode == 13) {
                 submitNext();
                 return false;
             }
         });
-        $('#submitOrder').on('click', function() {
+        $('#submitOrder').on('click', function () {
             submitNext()
         });
         calcOrder();

@@ -1,15 +1,13 @@
 {extend name="default/base/base_seller" /}
 {block name="seller_main"}
 
-
-
-
-
 <form method="post" target="_self">
     <table class="search-form">
         <tr>
             <th>{$Think.lang.order_number}</th>
-            <td class="w160"><input type="text" class="text w150 fl" name="orderinviter_order_sn" value="{$Request.param.orderinviter_order_sn}"><input type="submit" class="submit fl ml10" value="{$Think.lang.ds_search}"/></td>
+            <td class="w160"><input type="text" class="text w150 fl" name="orderinviter_order_sn"
+                    value="{$Request.param.orderinviter_order_sn}"><input type="submit" class="submit fl ml10"
+                    value="{$Think.lang.ds_search}" /></td>
         </tr>
     </table>
 </form>
@@ -25,7 +23,8 @@
             <th class="w100">{$Think.lang.inviter_name}</th>
             <th class="w100">{$Think.lang.inviter_addtime}</th>
             <th class="w200">{$Think.lang.remark}</th>
-            <th class="w100">{$Think.lang.whether_effective}    </thead>
+            <th class="w100">{$Think.lang.whether_effective}
+    </thead>
     <tbody>
         {notempty name="orderinviter_list"}
         {foreach name="orderinviter_list" item="v" }
@@ -43,28 +42,29 @@
         {/foreach}
         {else/}
         <tr>
-            <td colspan="9" class="norecord"><div class="warning-option"><i>&nbsp;</i><span>{$Think.lang.no_record}</span></div></td>
+            <td colspan="9" class="norecord">
+                <div class="warning-option"><i>&nbsp;</i><span>{$Think.lang.no_record}</span></div>
+            </td>
         </tr>
         {/notempty}
     </tbody>
     <tfoot>
         {notempty name="orderinviter_list"}
         <tr>
-            <td colspan="9"><div class="pagination">{$show_page|raw}</div></td>
+            <td colspan="9">
+                <div class="pagination">{$show_page|raw}</div>
+            </td>
         </tr>
         {/notempty}
     </tfoot>
 </table>
 
-
 <script type="text/javascript">
-$(function(){
-    $('#query_start_date').datepicker({dateFormat: 'yy-mm-dd'});
-    $('#query_end_date').datepicker({dateFormat: 'yy-mm-dd'});
-});
+    $(function () {
+        $('#query_start_date').datepicker({ dateFormat: 'yy-mm-dd' });
+        $('#query_end_date').datepicker({ dateFormat: 'yy-mm-dd' });
+    });
 </script>
-
-
 
 
 {/block}

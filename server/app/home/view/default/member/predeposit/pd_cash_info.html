@@ -29,7 +29,8 @@
     </dl>
     <dl>
         <dt>{$Think.lang.predeposit_paystate}{$Think.lang.ds_colon}</dt>
-        <dd>{:str_replace(array('0','1','2'),array(lang('predeposit_rechargestate_auditing'),lang('predeposit_rechargestate_approved'),lang('predeposit_rechargepaysuccess')),$info['pdc_payment_state'])}</dd>
+        <dd>{:str_replace(array('0','1','2'),array(lang('predeposit_rechargestate_auditing'),lang('predeposit_rechargestate_approved'),lang('predeposit_rechargepaysuccess')),$info['pdc_payment_state'])}
+        </dd>
     </dl>
     {if intval($info.pdc_payment_time)}
     <dl>
@@ -38,8 +39,6 @@
     </dl>
     {/if}
 </div>
-
-
 
 
 {/block}

@@ -5,7 +5,6 @@
         <div class="title">
             <h3>{$Think.lang.complain_trade_complaint}</h3>
         </div>
-
         <div class="dssc-flow-step">
             <dl id="state_new" class="step-first current">
                 <dt>{$Think.lang.complain_state_new}</dt>
@@ -36,18 +35,25 @@
                 <dd>{$complain_info.complain_subject_content}</dd>
                 <dt>{$Think.lang.complain_evidence}{$Think.lang.ds_colon}</dt>
                 <dd>
-                    {if empty($complain_info.complain_pic1) && empty($complain_info.complain_pic2) && empty($complain_info.complain_pic3)}
-                        {$Think.lang.complain_pic_none}
+                    {if empty($complain_info.complain_pic1) && empty($complain_info.complain_pic2) &&
+                    empty($complain_info.complain_pic3)}
+                    {$Think.lang.complain_pic_none}
                     {else/}
-                        {notempty name="$complain_info.complain_pic1"}
-                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" target="_blank" data-lightbox="lightbox-image"><img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" width="50"></a>
-                        {/notempty}
-                        {notempty name="$complain_info.complain_pic2"}
-                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" target="_blank" data-lightbox="lightbox-image"><img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" width="50"></a>
-                        {/notempty}
-                        {notempty name="$complain_info.complain_pic3"}
-                        <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" target="_blank" data-lightbox="lightbox-image"><img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" width="50"></a>
-                        {/notempty}
+                    {notempty name="$complain_info.complain_pic1"}
+                    <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" target="_blank"
+                        data-lightbox="lightbox-image"><img class="show_image"
+                            src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic1)}" width="50"></a>
+                    {/notempty}
+                    {notempty name="$complain_info.complain_pic2"}
+                    <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" target="_blank"
+                        data-lightbox="lightbox-image"><img class="show_image"
+                            src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic2)}" width="50"></a>
+                    {/notempty}
+                    {notempty name="$complain_info.complain_pic3"}
+                    <a href="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" target="_blank"
+                        data-lightbox="lightbox-image"><img class="show_image"
+                            src="{:ds_get_pic(ATTACH_PATH.'/complain',$complain_info.complain_pic3)}" width="50"></a>
+                    {/notempty}
                     {/if}
                 </dd>
                 <dt>{$Think.lang.complain_datetime}{$Think.lang.ds_colon}</dt>
@@ -56,8 +62,9 @@
                 <dd>{$complain_info.complain_content}</dd>
             </dl>
             <h3>{$Think.lang.complain_appeal_detail}</h3>
-            <form action="{:url('Sellercomplain/appeal_save')}" method="post" id="appeal_add_form" enctype="multipart/form-data">
-                <input name="input_complain_id" type="hidden" value="{$complain_info.complain_id}"/>
+            <form action="{:url('Sellercomplain/appeal_save')}" method="post" id="appeal_add_form"
+                enctype="multipart/form-data">
+                <input name="input_complain_id" type="hidden" value="{$complain_info.complain_id}" />
                 <dl>
                     <dt>{$Think.lang.complain_appeal_content}{$Think.lang.ds_colon}</dt>
                     <dd>
@@ -68,13 +75,13 @@
                     <dt>{$Think.lang.complain_appeal_evidence_upload}{$Think.lang.ds_colon}</dt>
                     <dd>
                         <p>
-                            <input name="input_appeal_pic1" type="file"/>
+                            <input name="input_appeal_pic1" type="file" />
                         </p>
                         <p>
-                            <input name="input_appeal_pic2" type="file"/>
+                            <input name="input_appeal_pic2" type="file" />
                         </p>
                         <p>
-                            <input name="input_appeal_pic3" type="file"/>
+                            <input name="input_appeal_pic3" type="file" />
                         </p>
                     </dd>
                 </dl>
@@ -162,4 +169,3 @@
 </script>
 
 {/block}
-

@@ -6,10 +6,10 @@
 <div data-type="html" data-id="{$key+1}">{$item.html|raw}</div>
 {/foreach}
 <script>
-    {foreach name='config_list' item='item' key='key'}
-    if(typeof(window['loadHtml{$item.val.editable_page_model_id}'])!='undefined'){
+    {foreach name = 'config_list' item = 'item' key = 'key' }
+    if (typeof (window['loadHtml{$item.val.editable_page_model_id}']) != 'undefined') {
         window['loadHtml{$item.val.editable_page_model_id}']($('*[data-type="html"][data-id={$key+1}]'))
     }
-    {/foreach}
+    {/foreach }
 </script>
 {/block}

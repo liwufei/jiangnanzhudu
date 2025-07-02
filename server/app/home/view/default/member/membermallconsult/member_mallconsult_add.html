@@ -2,8 +2,6 @@
 {block name="member_main"}
 
 
-
-
 <div class="dsm-flow-layout">
     <div id="dsmInformFlow" class="dsm-flow-container">
         <div class="title">
@@ -36,7 +34,8 @@
                                 {/foreach}
                                 {/notempty}
                             </select>
-                            <span class="error"></span></div>
+                            <span class="error"></span>
+                        </div>
                         <div>
                             <div></div>
                             {notempty name="type_list"}
@@ -50,7 +49,7 @@
                 <dl>
                     <dt>{$Think.lang.content_consultation}{$Think.lang.ds_colon}</dt>
                     <dd>
-                        <textarea id="consult_content" name="consult_content" class="textarea w400" ></textarea>
+                        <textarea id="consult_content" name="consult_content" class="textarea w400"></textarea>
                         <br>
                         <span class="error"></span>
                     </dd>
@@ -75,7 +74,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script>
@@ -116,8 +114,4 @@
 </script>
 
 
-
-
 {/block}
-
-

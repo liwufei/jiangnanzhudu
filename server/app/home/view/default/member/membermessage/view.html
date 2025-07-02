@@ -2,11 +2,6 @@
 {block name="member_main"}
 
 
-
-
-
-
-
 <div class="dsm-default-form">
     {notempty name="message_list"}
     {foreach name="message_list" item="v"}
@@ -22,7 +17,9 @@
             {$Think.lang.ds_colon}
         </dt>
         <dd>
-            <p>{if $v.message_type==1}{:htmlspecialchars_decode($v.message_body)}{else}{:parsesmiles($v.message_body)}{/if}</p>
+            <p>{if
+                $v.message_type==1}{:htmlspecialchars_decode($v.message_body)}{else}{:parsesmiles($v.message_body)}{/if}
+            </p>
             <p class="hint">({:date('Y-m-d H:i',$v.message_time)})</p>
         </dd>
     </dl>
@@ -77,5 +74,3 @@
 
 
 {/block}
-
-

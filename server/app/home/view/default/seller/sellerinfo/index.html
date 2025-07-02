@@ -16,7 +16,7 @@
             <th>{$Think.lang.company_location}：</th>
             <td>{$joinin_detail.company_address}</td>
             <th>{$Think.lang.registered_capital}：</th>
-            <td  colspan="20">{$joinin_detail.company_registered_capital}&nbsp;{$Think.lang.ten_thousand_yuan} </td>
+            <td colspan="20">{$joinin_detail.company_registered_capital}&nbsp;{$Think.lang.ten_thousand_yuan} </td>
         </tr>
         <tr>
             <th>{$Think.lang.company_address}：</th>
@@ -42,11 +42,13 @@
     <tbody>
         <tr>
             <th class="w150">{$Think.lang.business_license_number}：</th>
-            <td>{$joinin_detail.business_licence_number}</td></tr><tr>
-
+            <td>{$joinin_detail.business_licence_number}</td>
+        </tr>
+        <tr>
             <th>{$Think.lang.place_business_license}：</th>
-            <td>{$joinin_detail.business_licence_address}</td></tr><tr>
-
+            <td>{$joinin_detail.business_licence_address}</td>
+        </tr>
+        <tr>
             <th>{$Think.lang.validity_business_license}：</th>
             <td>{$joinin_detail.business_licence_start} - {$joinin_detail.business_licence_end}</td>
         </tr>
@@ -59,7 +61,10 @@
                 {$Think.lang.electronic_version}：</th>
             <td colspan="20">
                 {notempty name="joinin_detail.business_licence_number_electronic"}
-                <a data-lightbox="lightbox-image"  href="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}"> <img src="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}" alt="" /> </a>
+                <a data-lightbox="lightbox-image"
+                    href="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}"> <img
+                        src="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}" alt="" />
+                </a>
                 {/notempty}
             </td>
         </tr>
@@ -75,20 +80,25 @@
     <tbody>
         <tr>
             <th class="w150">{$Think.lang.identification_number}：</th>
-            <td>{$joinin_detail.business_licence_number}</td></tr><tr>
+            <td>{$joinin_detail.business_licence_number}</td>
+        </tr>
+        <tr>
         </tr>
         <tr>
             <th>{$Think.lang.identification_photo}：</th>
             <td colspan="20">
                 {notempty name="joinin_detail.business_licence_number_electronic"}
-                <a data-lightbox="lightbox-image"  href="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}"> <img src="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}" alt="" /> </a>
+                <a data-lightbox="lightbox-image"
+                    href="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}"> <img
+                        src="{:get_store_joinin_imageurl($joinin_detail.business_licence_number_electronic)}" alt="" />
+                </a>
                 {/notempty}
             </td>
         </tr>
     </tbody>
 </table>
 {/if}
- {if $joinin_detail.store_type eq 0}
+{if $joinin_detail.store_type eq 0}
 <table border="0" cellpadding="0" cellspacing="0" class="store-joinin">
     <thead>
         <tr>
@@ -99,9 +109,11 @@
         <tr>
             <th class="w150">{$Think.lang.bank_name}：</th>
             <td>{$joinin_detail.bank_account_name}</td>
-        </tr><tr>
+        </tr>
+        <tr>
             <th>{$Think.lang.company_bank_account}：</th>
-            <td>{$joinin_detail.bank_account_number}</td></tr>
+            <td>{$joinin_detail.bank_account_number}</td>
+        </tr>
         <tr>
             <th>{$Think.lang.name_branch_bank}：</th>
             <td>{$joinin_detail.bank_name}</td>
@@ -110,11 +122,9 @@
             <th>{$Think.lang.location_bank_account}：</th>
             <td colspan="20">{$joinin_detail.bank_address}</td>
         </tr>
-
     </tbody>
-
 </table>
- {/if}
+{/if}
 <table border="0" cellpadding="0" cellspacing="0" class="store-joinin">
     <thead>
         <tr>
@@ -178,7 +188,8 @@
         </tr>
         <tr>
             <th>{$Think.lang.business_category}：</th>
-            <td colspan="2"><table border="0" cellpadding="0" cellspacing="0" id="table_category" class="type">
+            <td colspan="2">
+                <table border="0" cellpadding="0" cellspacing="0" id="table_category" class="type">
                     <thead>
                         <tr>
                             <th>{$Think.lang.classification_1}</th>
@@ -198,7 +209,8 @@
                     {/foreach}
                     {/notempty}
     </tbody>
-</table></td>
+</table>
+</td>
 </tr>
 <tr>
     <th>{$Think.lang.audit_opinion}：</th>

@@ -3,8 +3,10 @@
     {foreach name="chain_list" item="v"}
     <li>
         <label>
-            <input type="radio" {if $Request.get.chain_id == $v.chain_id}checked{/if} dstype="chain_radio" data-lng="{$v.chain_longitude}" data-lat="{$v.chain_latitude}" value="{$v.chain_id}" name="chain_id">
-                   {$v.chain_addressname|default='，'}{$v.chain_address}，{$Think.lang.phone}：{if $v.chain_telephony}{$v.chain_telephony}{else/}{$v.chain_mobile}{/if}
+            <input type="radio" {if $Request.get.chain_id==$v.chain_id}checked{/if} dstype="chain_radio"
+                data-lng="{$v.chain_longitude}" data-lat="{$v.chain_latitude}" value="{$v.chain_id}" name="chain_id">
+            {$v.chain_addressname|default='，'}{$v.chain_address}，{$Think.lang.phone}：{if
+            $v.chain_telephony}{$v.chain_telephony}{else/}{$v.chain_mobile}{/if}
         </label>
     </li>
     {/foreach}
@@ -32,25 +34,25 @@
             target: '#zt_address'
         });
         function setMarker(lng, lat) {
-			if('{$Think.config.ds_config.mapak_type}' === '1'){
-				map.clearMap();
-				marker = new AMap.Marker({
-				    position: new AMap.LngLat(lng, lat),
-				    icon: '//api.map.baidu.com/images/marker_red_sprite.png',
-					zoom: 15
-				});
-				
-				map.add(marker);
-				map.panTo([lng, lat]);
-			}
-                        if('{$Think.config.ds_config.mapak_type}' === '2'){
-				map.clearOverlays();
-				var point = new BMap.Point(lng, lat);
-				var marker = new BMap.Marker(point); // 创建点
-				map.centerAndZoom(point, 15);
-				map.addOverlay(marker);
-			}
-            
+            if ('{$Think.config.ds_config.mapak_type}' === '1') {
+                map.clearMap();
+                marker = new AMap.Marker({
+                    position: new AMap.LngLat(lng, lat),
+                    icon: '//api.map.baidu.com/images/marker_red_sprite.png',
+                    zoom: 15
+                });
+
+                map.add(marker);
+                map.panTo([lng, lat]);
+            }
+            if ('{$Think.config.ds_config.mapak_type}' === '2') {
+                map.clearOverlays();
+                var point = new BMap.Point(lng, lat);
+                var marker = new BMap.Marker(point); // 创建点
+                map.centerAndZoom(point, 15);
+                map.addOverlay(marker);
+            }
+
         }
     });
 </script>

@@ -8,7 +8,8 @@
             <div class="dd">
                 <ul>
                     {foreach name="menu.submenu" item="submenu" }
-                    <li {if condition="$submenu.name eq $cursubmenu"}class="selected"{/if}><a href="{$submenu.url}">{$submenu.text}</a></li>
+                    <li {if condition="$submenu.name eq $cursubmenu" }class="selected" {/if}><a
+                            href="{$submenu.url}">{$submenu.text}</a></li>
                     {/foreach}
                 </ul>
             </div>

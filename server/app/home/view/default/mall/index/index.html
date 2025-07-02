@@ -5,8 +5,13 @@
 <link rel="stylesheet" href="{$Think.HOME_SITE_ROOT}/css/index.css">
 <script src="{$Think.PLUGINS_SITE_ROOT}/jquery.SuperSlide.2.1.1.js"></script>
 <style>
-    .mall_nav{border-bottom:none;}
-    .mall_nav .all_categorys .mc{display: block;}
+    .mall_nav {
+        border-bottom: none;
+    }
+
+    .mall_nav .all_categorys .mc {
+        display: block;
+    }
 </style>
 <div class="clear"></div>
 <!-- HomeFocusLayout Begin-->
@@ -15,8 +20,10 @@
     <div class="bd">
         <ul>
             {foreach name='adv_index_1' item="v"}
-            <li style="background: url({:ds_get_pic(ATTACH_ADV,$v.adv_code)}) center top no-repeat rgb(35, 35, 35); display: none;background-color: {$v.adv_bgcolor|default=''}" style="{$v.adv_style|default=''}">
-                <a href="{:url('Advclick/Advclick',['adv_id'=>$v['adv_id']])}" target="_blank" title="{$v.adv_title}">&nbsp;</a>
+            <li style="background: url({:ds_get_pic(ATTACH_ADV,$v.adv_code)}) center top no-repeat rgb(35, 35, 35); display: none;background-color: {$v.adv_bgcolor|default=''}"
+                style="{$v.adv_style|default=''}">
+                <a href="{:url('Advclick/Advclick',['adv_id'=>$v['adv_id']])}" target="_blank"
+                    title="{$v.adv_title}">&nbsp;</a>
             </li>
             {/foreach}
         </ul>
@@ -34,20 +41,23 @@
         <div class="mod_personal_center">
             {if session('is_login')}
             <div class="avata_pic_wrap">
-                <a id="index_account_icon_login" href="{:url('Member/index')}" target="_blank"><img class="lazyload"  data-original="{:get_member_avatar(session('avatar'))}?{$Think.TIMESTAMP}"></a>
+                <a id="index_account_icon_login" href="{:url('Member/index')}" target="_blank"><img class="lazyload"
+                        data-original="{:get_member_avatar(session('avatar'))}?{$Think.TIMESTAMP}"></a>
             </div>
             <div class="info_wrap">
                 <div class="login_box">
                     <div class="user_info clearfix">
                         <em>Hi，{:session('member_nickname')}</em>
                     </div>
-             
+
                     <div class="clearfix treasure">
-                        <a href="{:url('Memberorder/index',['state_type'=>'state_new'])}" target="_blank" class="gold_coin">
+                        <a href="{:url('Memberorder/index',['state_type'=>'state_new'])}" target="_blank"
+                            class="gold_coin">
                             <em>{$member_order_info.order_nopay_count}</em>
                             <p>{$Think.lang.pending_payment}</p>
                         </a>
-                        <a href="{:url('Memberorder/index',['state_type'=>'state_send'])}" target="_blank" class="gold_coin">
+                        <a href="{:url('Memberorder/index',['state_type'=>'state_send'])}" target="_blank"
+                            class="gold_coin">
                             <em>{$member_order_info.order_noreceipt_count}</em>
                             <p>{$Think.lang.pending_receipt}</p>
                         </a>
@@ -60,7 +70,8 @@
             </div>
             {else /}
             <div class="avata_pic_wrap">
-                <a id="index_account_icon_unlogin" href="javascript:void(0)"><img class="lazyload"  data-original="{:get_member_avatar(session('avatar'))}?{$Think.TIMESTAMP}"></a>
+                <a id="index_account_icon_unlogin" href="javascript:void(0)"><img class="lazyload"
+                        data-original="{:get_member_avatar(session('avatar'))}?{$Think.TIMESTAMP}"></a>
             </div>
             <div class="info_wrap">
                 <div class="unlogin_box">
@@ -69,7 +80,8 @@
                     </div>
                     <div class="btn_wrap">
                         <a href="{:url('Login/login')}" class="login_btn">{$Think.lang.login}</a>
-                        {if $Think.config.ds_config.member_normal_register==1 || $Think.config.ds_config.sms_register==1}
+                        {if $Think.config.ds_config.member_normal_register==1 ||
+                        $Think.config.ds_config.sms_register==1}
                         <a href="{:url('Login/register')}" class="regist_btn">{$Think.lang.login_index_regist_now_2}</a>
                         {/if}
                     </div>
@@ -95,7 +107,9 @@
             </div>
             <div class="notice_list">
                 {foreach $index_articles as $i_a}
-                <a title="{$i_a.article_title}" href="{if $i_a.article_url !=''}{$i_a.article_url}{else /}{:url('Article/show',['article_id'=>$i_a.article_id])}{/if}" target="_blank">
+                <a title="{$i_a.article_title}"
+                    href="{if $i_a.article_url !=''}{$i_a.article_url}{else /}{:url('Article/show',['article_id'=>$i_a.article_id])}{/if}"
+                    target="_blank">
                     <span>{$i_a.article_title}</span>
                 </a>
                 {/foreach}
@@ -111,26 +125,34 @@
             <li>
                 {foreach name='adv_index_2' item="v"}
                 <a href="{:url('Advclick/Advclick',['adv_id'=>$v['adv_id']])}" target="_blank" title="">
-                    <img class="lazyload" data-original="{:ds_get_pic(ATTACH_ADV,$v.adv_code)}" style="{$v.adv_style|default=''}">
+                    <img class="lazyload" data-original="{:ds_get_pic(ATTACH_ADV,$v.adv_code)}"
+                        style="{$v.adv_style|default=''}">
                 </a>
                 {/foreach}
             </li>
         </ul>
-        <a class="ctrl prev" href="javascript:void(0)"><</a>
-        <a class="ctrl next" href="javascript:void(0)">></a>
+        <a class="ctrl prev" href="javascript:void(0)">
+            << /a>
+                <a class="ctrl next" href="javascript:void(0)">></a>
     </div>
 </div>
 {/if}
 
-
-
 <div class="home-sale-layout w1200 mt20">
     <div class="hd">
         <ul class="tabs-nav">
-            <li class="tabs-selected on"><i class="arrow"></i><h3>{$Think.lang.recommendation}</h3></li>
-            <li class=""><i class="arrow"></i><h3>{$Think.lang.discount}</h3></li>
-            <li class=""><i class="arrow"></i><h3>{$Think.lang.latest_hot_sale}</h3></li>
-            <li class=""><i class="arrow"></i><h3>{$Think.lang.shopping_frenzy}</h3></li>
+            <li class="tabs-selected on"><i class="arrow"></i>
+                <h3>{$Think.lang.recommendation}</h3>
+            </li>
+            <li class=""><i class="arrow"></i>
+                <h3>{$Think.lang.discount}</h3>
+            </li>
+            <li class=""><i class="arrow"></i>
+                <h3>{$Think.lang.latest_hot_sale}</h3>
+            </li>
+            <li class=""><i class="arrow"></i>
+                <h3>{$Think.lang.shopping_frenzy}</h3>
+            </li>
         </ul>
     </div>
     <div class="bd tabs-panel">
@@ -139,13 +161,15 @@
             {foreach name="recommend_list" item="goods"}
             <li>
                 <dl>
-                    
+
                     <dd class="goods-thumb">
                         <a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}">
-                            <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}" alt="{$goods.goods_name}">
+                            <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}"
+                                alt="{$goods.goods_name}">
                         </a>
                     </dd>
-                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}" title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
+                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}"
+                            title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
                     <dd class="goods-price"><em>￥{$goods.goods_price}</em></dd>
                 </dl>
             </li>
@@ -157,13 +181,15 @@
             {foreach name="promotion_list" item="goods"}
             <li>
                 <dl>
-                    
+
                     <dd class="goods-thumb">
                         <a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}">
-                            <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}" alt="{$goods.goods_name}">
+                            <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}"
+                                alt="{$goods.goods_name}">
                         </a>
                     </dd>
-                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}" title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
+                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}"
+                            title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
                     <dd class="goods-price">{$Think.lang.shopping_mall_price}：<em>￥{$goods.xianshigoods_price}</em></dd>
                 </dl>
             </li>
@@ -175,13 +201,15 @@
             {foreach name="new_list" item="goods"}
             <li>
                 <dl>
-                    
+
                     <dd class="goods-thumb">
                         <a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}">
-                            <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}" alt="{$goods.goods_name}">
+                            <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}"
+                                alt="{$goods.goods_name}">
                         </a>
                     </dd>
-                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}" title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
+                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}"
+                            title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
                     <dd class="goods-price">{$Think.lang.shopping_mall_price}：<em>￥{$goods.goods_price}</em></dd>
                 </dl>
             </li>
@@ -193,13 +221,15 @@
             {foreach name="groupbuy_list" item="goods"}
             <li>
                 <dl>
-                    
+
                     <dd class="goods-thumb">
                         <a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}">
-                            <img class="lazyload" data-original="{:groupbuy_thumb($goods.groupbuy_image)}" alt="{$goods.goods_name}">
+                            <img class="lazyload" data-original="{:groupbuy_thumb($goods.groupbuy_image)}"
+                                alt="{$goods.goods_name}">
                         </a>
                     </dd>
-                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}" title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
+                    <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}"
+                            title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
                     <dd class="goods-price">{$Think.lang.shopping_mall_price}：<em>￥{$goods.groupbuy_price}</em></dd>
                 </dl>
             </li>
@@ -210,54 +240,59 @@
 </div>
 <div class="floor_wrap">
     <div class="floor floor0 w1200" style="height:0"></div>
-{foreach name="floor_block" item="vo" key="k" }
-<div class="{if $k>4}style2{/if} floor floor{php}echo $k+1;{/php} w1200">
-    <div class="floor-left">
-        <div class="title">
-            <h2 title="{$vo.gc_name}">{$vo.gc_name}</h2>
-        </div>
-        {if $k<5}
-        <div class="left-ads">
-            {if $k<5 && $vo.adv_left}
-            <a href="{:url('Advclick/Advclick',['adv_id'=>$vo['adv_left']['adv_id']])}" target="_blank" title="">
-                <img class="lazyload" data-original="{:ds_get_pic(ATTACH_ADV,$vo.adv_left.adv_code)}" style="{$vo.adv_left.adv_style|default=''}">
-            </a>
-            {/if}
+    {foreach name="floor_block" item="vo" key="k" }
+    <div class="{if $k>4}style2{/if} floor floor{php}echo $k+1;{/php} w1200">
+        <div class="floor-left">
+            <div class="title">
+                <h2 title="{$vo.gc_name}">{$vo.gc_name}</h2>
+            </div>
+            {if $k<5} <div class="left-ads">
+                {if $k<5 && $vo.adv_left} <a href="{:url('Advclick/Advclick',['adv_id'=>$vo['adv_left']['adv_id']])}"
+                    target="_blank" title="">
+                    <img class="lazyload" data-original="{:ds_get_pic(ATTACH_ADV,$vo.adv_left.adv_code)}"
+                        style="{$vo.adv_left.adv_style|default=''}">
+                    </a>
+                    {/if}
         </div>
         {/if}
     </div>
     <div class="floor-right">
         <ul class="tabs-nav hd">
-            {foreach name="vo.goods_list" item="list"  key="list_key"}
-            <li {if condition="$list_key eq '0'"}class="on"{/if}><h3>{$list.gc_name}</h3></li>
+            {foreach name="vo.goods_list" item="list" key="list_key"}
+            <li {if condition="$list_key eq '0'" }class="on" {/if}>
+                <h3>{$list.gc_name}</h3>
+            </li>
             {/foreach}
         </ul>
         <div class="goods-list bd">
             {foreach name="vo.goods_list" item="list" key="list_key"}
-            <ul class="clearfix"  {if condition="$list_key eq '0'"}style="display:block"{/if}>
+            <ul class="clearfix" {if condition="$list_key eq '0'" }style="display:block" {/if}>
                 {notempty name="list.gc_list"}
                 {foreach name="list.gc_list" key="goods_key" item="goods"}
                 {if ($k<5 && $goods_key<8) || $k>4}
-                <li>
-                    <dl>
-                        
-                        <dd class="goods-thumb">
-                            <a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}">
-                                <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}" alt="{$goods.goods_name}"/>
-                            </a>
-                        </dd>
-                        <dt class="goods-name"><a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}" title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
-                        <dd class="goods-price">
-                            <em>{$goods.goods_price}{$Think.lang.ds_yuan}</em>
-                            {if $goods.goods_marketprice > 0}
-                            <span class="original">{$goods.goods_marketprice}{$Think.lang.ds_yuan}</span>
-                            {/if}
-                        </dd>
-                    </dl>
-                </li>
-                {/if}
-                {/foreach}
-                {/notempty}
+                    <li>
+                        <dl>
+
+                            <dd class="goods-thumb">
+                                <a target="_blank" href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}">
+                                    <img class="lazyload" data-original="{:goods_cthumb($goods.goods_image)}"
+                                        alt="{$goods.goods_name}" />
+                                </a>
+                            </dd>
+                            <dt class="goods-name"><a target="_blank"
+                                    href="{:url('Goods/index',['goods_id'=>$goods.goods_id])}"
+                                    title="{$goods.goods_name}">{$goods.goods_name}</a></dt>
+                            <dd class="goods-price">
+                                <em>{$goods.goods_price}{$Think.lang.ds_yuan}</em>
+                                {if $goods.goods_marketprice > 0}
+                                <span class="original">{$goods.goods_marketprice}{$Think.lang.ds_yuan}</span>
+                                {/if}
+                            </dd>
+                        </dl>
+                    </li>
+                    {/if}
+                    {/foreach}
+                    {/notempty}
             </ul>
             {/foreach}
         </div>
@@ -265,14 +300,15 @@
 </div>
 
 <div class="w1200 floor-banner">
-    {if $k<5 && $vo.adv_bottom}
-    <a href="{:url('Advclick/Advclick',['adv_id'=>$vo['adv_bottom']['adv_id']])}" target="_blank" title="">
-        <img class="lazyload" data-original="{:ds_get_pic(ATTACH_ADV,$vo.adv_bottom.adv_code)}" style="{$vo.adv_bottom.adv_style|default=''}">
-    </a>
-    {/if}
+    {if $k<5 && $vo.adv_bottom} <a href="{:url('Advclick/Advclick',['adv_id'=>$vo['adv_bottom']['adv_id']])}"
+        target="_blank" title="">
+        <img class="lazyload" data-original="{:ds_get_pic(ATTACH_ADV,$vo.adv_bottom.adv_code)}"
+            style="{$vo.adv_bottom.adv_style|default=''}">
+        </a>
+        {/if}
 </div>
 <script>
-    jQuery(".floor{php}echo $k+1;{/php} .floor-right").slide({mainCell: ".bd", autoPlay: false, interTime: 5000});
+    jQuery(".floor{php}echo $k+1;{/php} .floor-right").slide({ mainCell: ".bd", autoPlay: false, interTime: 5000 });
 </script>
 {/foreach}
 </div>
@@ -298,32 +334,110 @@
 
 <!--StandardLayout End-->
 
-
-
-
-
-
 <style>
-.fsFixedTopContent{display:none;overflow:visible;width:50px;height:auto;position:fixed;left:50%;top:40%;margin:-150px 0 0 -675px;z-index:3333;}
-.fsFixedTop{width:50px;height:auto;background:#fdfdfd;box-shadow: 0 0 4px rgba(0,0,0,.2);-webkit-transform:scale(1.2);-moz-transform:scale(1.2);transform:scale(1.2);opacity:0;-webkit-transition:all .3s ease;-moz-transition:all .3s ease;transition:all .3s ease;position:absolute;left:0;top:0}
-.fsFixedTop a{width:36px;height:36px;line-height:36px;display:block;position:relative;cursor:pointer;text-decoration:none;padding:7px;border-top: 1px solid #D4D4D4;}
-.fsFixedTop b{width:36px;height:36px;color:#333;font-size:13px;font-weight:600;text-align:center;display:block;}
-.fsFixedTop .fs-name{width:36px;height:36px;line-height:18px;color:#ff4040;text-align:center;display:none;overflow:hidden;font-size:13px;letter-spacing: 1px;word-wrap:break-word;}
-.fsFixedTop a.active{background:#ff4040 }
-.fsFixedTop a.active .fs-name{color:#fff;display:block;}
-.fsFixedTop a.active .fs {display: none}
-.fsFixedTop a.active .fs-name:hover {background:#ff4040;text-decoration:none}
-.fsFixedTop a:hover{background:#ff4040}
-.fsFixedTop a:hover .fs-name {display: block;color: #fff}
-.fsFixedTop a:hover b {display: none}
+    .fsFixedTopContent {
+        display: none;
+        overflow: visible;
+        width: 50px;
+        height: auto;
+        position: fixed;
+        left: 50%;
+        top: 40%;
+        margin: -150px 0 0 -675px;
+        z-index: 3333;
+    }
+
+    .fsFixedTop {
+        width: 50px;
+        height: auto;
+        background: #fdfdfd;
+        box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+        -webkit-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        transform: scale(1.2);
+        opacity: 0;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        transition: all .3s ease;
+        position: absolute;
+        left: 0;
+        top: 0
+    }
+
+    .fsFixedTop a {
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        display: block;
+        position: relative;
+        cursor: pointer;
+        text-decoration: none;
+        padding: 7px;
+        border-top: 1px solid #D4D4D4;
+    }
+
+    .fsFixedTop b {
+        width: 36px;
+        height: 36px;
+        color: #333;
+        font-size: 13px;
+        font-weight: 600;
+        text-align: center;
+        display: block;
+    }
+
+    .fsFixedTop .fs-name {
+        width: 36px;
+        height: 36px;
+        line-height: 18px;
+        color: #ff4040;
+        text-align: center;
+        display: none;
+        overflow: hidden;
+        font-size: 13px;
+        letter-spacing: 1px;
+        word-wrap: break-word;
+    }
+
+    .fsFixedTop a.active {
+        background: #ff4040
+    }
+
+    .fsFixedTop a.active .fs-name {
+        color: #fff;
+        display: block;
+    }
+
+    .fsFixedTop a.active .fs {
+        display: none
+    }
+
+    .fsFixedTop a.active .fs-name:hover {
+        background: #ff4040;
+        text-decoration: none
+    }
+
+    .fsFixedTop a:hover {
+        background: #ff4040
+    }
+
+    .fsFixedTop a:hover .fs-name {
+        display: block;
+        color: #fff
+    }
+
+    .fsFixedTop a:hover b {
+        display: none
+    }
 </style>
 <div class="fsFixedTopContent" style="visibility: hidden; display: block;">
-    <div class="fsFixedTop" style="opacity: 0;"> 
+    <div class="fsFixedTop" style="opacity: 0;">
         {foreach name="floor_block" item="vo" key="k" }
-        <a class="smooth active" href="javascript:;"> <b class="fs">{$k+1}F</b> <em class="fs-name">{$vo.gc_name}</em> </a> 
+        <a class="smooth active" href="javascript:;"> <b class="fs">{$k+1}F</b> <em class="fs-name">{$vo.gc_name}</em>
+        </a>
         {/foreach}
     </div>
-    </div>		
+</div>
 <script>
     $(function () {
         $(window).scroll(function () {
@@ -352,7 +466,7 @@
             }
             setTab()
         });
-        var arr = [],fsOffset = 0;
+        var arr = [], fsOffset = 0;
         for (var i = 1; i < $(".floor").length; i++) {
             arr.push(parseInt($(".floor").eq(i).offset().top) + 30)
         }
@@ -361,14 +475,14 @@
             _th.blur();
             var index = $(".fsFixedTop a.smooth").index(this);
             if (index > 0) {
-                fsOffset =index* 100-50;
-            }else{
-                fsOffset =-50;
+                fsOffset = index * 100 - 50;
+            } else {
+                fsOffset = -50;
             }
             var hh = arr[index];
-            var clickheight = hh+fsOffset;
+            var clickheight = hh + fsOffset;
             $("html,body").stop().animate({
-                scrollTop:clickheight+ "px"
+                scrollTop: clickheight + "px"
             }, 400)
         });
         $(".fsFixedTop a.fsbacktotop").click(function () {
@@ -390,13 +504,11 @@
     });
 </script>
 
-
-
 <script>
     //轮播
-    jQuery(".home-focus-layout").slide({mainCell: ".bd ul", autoPlay: true, delayTime: 500, interTime: 5000});
-    jQuery(".home-scroll").slide({mainCell: ".bd li", autoPage: true,autoPlay: true, delayTime: 1000, effect: "left", interTime: 5000, vis: 5});
-    jQuery(".home-sale-layout").slide({autoPlay: false, });
+    jQuery(".home-focus-layout").slide({ mainCell: ".bd ul", autoPlay: true, delayTime: 500, interTime: 5000 });
+    jQuery(".home-scroll").slide({ mainCell: ".bd li", autoPage: true, autoPlay: true, delayTime: 1000, effect: "left", interTime: 5000, vis: 5 });
+    jQuery(".home-sale-layout").slide({ autoPlay: false, });
 </script>
 
 {else}
@@ -406,11 +518,11 @@
 <div data-type="html" data-id="{$key+1}">{$item.html|raw}</div>
 {/foreach}
 <script>
-    {foreach name='config_list' item='item' key='key'}
-    if(typeof(window['loadHtml{$item.val.editable_page_model_id}'])!='undefined'){
+    {foreach name = 'config_list' item = 'item' key = 'key' }
+    if (typeof (window['loadHtml{$item.val.editable_page_model_id}']) != 'undefined') {
         window['loadHtml{$item.val.editable_page_model_id}']($('*[data-type="html"][data-id={$key+1}]'))
     }
-    {/foreach}
+    {/foreach }
 </script>
 {/notpresent}
 <!--首页悬浮弹窗BEGIN-->
@@ -418,29 +530,70 @@
 <div class="fixed-suspension-layer" style="display: none;">
     <div class="fixed-suspension-con">
         <a href="{$Think.config.ds_config.fixed_suspension_url}" class="fixed-suspension-img">
-		<img class="lazy" src="{:ds_get_pic(ATTACH_COMMON,$Think.config.ds_config.fixed_suspension_img)}">
+            <img class="lazy" src="{:ds_get_pic(ATTACH_COMMON,$Think.config.ds_config.fixed_suspension_img)}">
         </a>
         <div class="close-fixed-suspension"></div>
-	</div>
+    </div>
 </div>
 <style>
-/*首页悬浮窗-BEGIN*/
-.fixed-suspension-layer{ position: fixed; top: 0; left: 0;right: 0; bottom: 0; z-index:100000; background: rgba(0,0,0,.5); text-align: center;}
-.fixed-suspension-layer .fixed-suspension-con{ width: 800px; height: 500px; margin: 0 auto; position: absolute; left: 50%; top: 50%; margin-left: -400px; margin-top: -250px;}
-.fixed-suspension-layer .fixed-suspension-con .fixed-suspension-img{ display: block; text-align: center; max-width: 800px; max-height: 500px;}
-.fixed-suspension-layer .fixed-suspension-con .fixed-suspension-img img{ max-width: 100%; max-height: 100%;}
-.close-fixed-suspension{ position: absolute; width: 36px; height: 36px; top: -40px; z-index: 2; background: url({$Think.HOME_SITE_ROOT}/images/close-fixed-suspension.png); background-size: cover; right: -40px; cursor: pointer;}
-/*首页悬浮窗-END*/
+    /*首页悬浮窗-BEGIN*/
+    .fixed-suspension-layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 100000;
+        background: rgba(0, 0, 0, .5);
+        text-align: center;
+    }
+
+    .fixed-suspension-layer .fixed-suspension-con {
+        width: 800px;
+        height: 500px;
+        margin: 0 auto;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -400px;
+        margin-top: -250px;
+    }
+
+    .fixed-suspension-layer .fixed-suspension-con .fixed-suspension-img {
+        display: block;
+        text-align: center;
+        max-width: 800px;
+        max-height: 500px;
+    }
+
+    .fixed-suspension-layer .fixed-suspension-con .fixed-suspension-img img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .close-fixed-suspension {
+        position: absolute;
+        width: 36px;
+        height: 36px;
+        top: -40px;
+        z-index: 2;
+        background: url({$Think.HOME_SITE_ROOT}/images/close-fixed-suspension.png);
+        background-size: cover;
+        right: -40px;
+        cursor: pointer;
+    }
+
+    /*首页悬浮窗-END*/
 </style>
 <script type="text/javascript">
-if(!localStorage.fixed_ad_layer){
+    if (!localStorage.fixed_ad_layer) {
         $('.fixed-suspension-layer').show();
-}
-//悬浮广告弹出层
-$('body').on('click','.close-fixed-suspension',function(){
+    }
+    //悬浮广告弹出层
+    $('body').on('click', '.close-fixed-suspension', function () {
         localStorage.fixed_ad_layer = true;
         $('.fixed-suspension-layer').hide();
-});
+    });
 </script>
 {/if}
 <!--首页悬浮弹窗END-->

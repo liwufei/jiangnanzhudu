@@ -1,7 +1,8 @@
 <div class="eject_con">
     <div id="warning"></div>
     {if $order_info}
-    <form id="changeform" method="post" action="{:url('Sellerdeliver/delay_receive',['order_id'=>$order_info.order_id])}">
+    <form id="changeform" method="post"
+        action="{:url('Sellerdeliver/delay_receive',['order_id'=>$order_info.order_id])}">
         <dl>
             <dt>{$Think.lang.store_order_sn}{$Think.lang.ds_colon}</dt>
             <dd><span class="num">{$order_info.order_sn}</span></dd>
@@ -12,7 +13,7 @@
         </dl>
         <dl>
             <dt>{$Think.lang.latest_time_delivery}{$Think.lang.ds_colon}</dt>
-            <dd>{$order_info.delay_time|date="Y-m-d H:i:s"}<br/>{$Think.lang.automatic_change_receiving_state} </dd>
+            <dd>{$order_info.delay_time|date="Y-m-d H:i:s"}<br />{$Think.lang.automatic_change_receiving_state} </dd>
         </dl>
         <dl>
             <dt>{$Think.lang.store_deliver_delay}{$Think.lang.ds_colon}</dt>

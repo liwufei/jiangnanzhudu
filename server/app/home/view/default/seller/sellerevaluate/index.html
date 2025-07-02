@@ -5,15 +5,17 @@
         <tr>
             <td>&nbsp;</td>
             <th class="w110">{$Think.lang.member_evaluation_goodsname}</th>
-            <td class="w160"><input type="text" class="text w150" name="goods_name" value="{$Request.param.goods_name}"/></td>
+            <td class="w160"><input type="text" class="text w150" name="goods_name"
+                    value="{$Request.param.goods_name}" /></td>
             <th class="w110">{$Think.lang.member_evaluation_frommembertitle}</th>
-            <td class="w160"><input type="text" class="text w150" name="member_name" value="{$Request.param.member_name}"/></td>
+            <td class="w160"><input type="text" class="text w150" name="member_name"
+                    value="{$Request.param.member_name}" /></td>
             <td class="w70 tc">
                 <input type="submit" class="submit" value="{$Think.lang.ds_search}" />
             </td>
         </tr>
     </table>
-</form>    
+</form>
 <table class="dssc-default-table">
     <thead>
         <tr>
@@ -28,9 +30,11 @@
         <tr>
             <th></th>
             <th>
-                <span class="goods-name"><a target="_blank" href=" {:url('Goods/index',['goods_id'=>$v.geval_goodsid])}">{$v.geval_goodsname}</a></span>
+                <span class="goods-name"><a target="_blank"
+                        href=" {:url('Goods/index',['goods_id'=>$v.geval_goodsid])}">{$v.geval_goodsname}</a></span>
                 <span>{$Think.lang.product_evaluation}：<em class="raty" data-score="{$v.geval_scores}"></em></span>
-                <span>{$Think.lang.member_evaluation_frommembertitle}：{$v.geval_frommembername} <time>[{$v.geval_addtime|date="Y-m-d H:i:s"}]</time></span>
+                <span>{$Think.lang.member_evaluation_frommembertitle}：{$v.geval_frommembername}
+                    <time>[{$v.geval_addtime|date="Y-m-d H:i:s"}]</time></span>
             </th>
             <th></th>
         </tr>
@@ -41,15 +45,16 @@
                 <span>{$v.geval_content}</span>
             </td>
             <td rowspan="2" class="dscs-table-handle vt">
-                <span><a dstype="btn_show_explain_dialog" data-geval-id="{$v.geval_id}" data-geval-content="{$v.geval_content}" href="javascript:;" class="btn-acidblue">
+                <span><a dstype="btn_show_explain_dialog" data-geval-id="{$v.geval_id}"
+                        data-geval-content="{$v.geval_content}" href="javascript:;" class="btn-acidblue">
                         <i class="iconfont">&#xe71b;</i>
                         <p>{$Think.lang.member_evaluation_explain}</p>
                     </a></span>
             </td>
         </tr>
-        <tr class="bd-line" >
+        <tr class="bd-line">
             <td class="tl" colspan="20">
-                <div {if empty($v['geval_explain'])}style="display:none;"{/if}>
+                <div {if empty($v['geval_explain'])}style="display:none;" {/if}>
                     <strong>{$Think.lang.explain_contents}：</strong>
                     <span dstype="explain">{$v.geval_explain}</span>
                 </div>
@@ -58,7 +63,9 @@
         {/foreach}
         {else /}
         <tr>
-            <td colspan="20" class="norecord"><div class="warning-option"><i class="iconfont">&#xe64c;</i><span>{$Think.lang.no_record}</span></div></td>
+            <td colspan="20" class="norecord">
+                <div class="warning-option"><i class="iconfont">&#xe64c;</i><span>{$Think.lang.no_record}</span></div>
+            </td>
         </tr>
         {/notempty}
     </tbody>
@@ -109,7 +116,7 @@
             $('#geval_id').val(geval_id);
             $('#geval_content').text(geval_content);
             $('#geval_explain').val('');
-            $('#dialog_explain').ds_show_dialog({title: '{$Think.lang.explain_evaluation}'});
+            $('#dialog_explain').ds_show_dialog({ title: '{$Think.lang.explain_evaluation}' });
         });
 
         $('#btn_explain_submit').on('click', function () {
@@ -136,11 +143,9 @@
             errorLabelContainer: $('#warning'),
             invalidHandler: function (form, validator) {
                 var errors = validator.numberOfInvalids();
-                if (errors)
-                {
+                if (errors) {
                     $('#warning').show();
-                } else
-                {
+                } else {
                     $('#warning').hide();
                 }
             },

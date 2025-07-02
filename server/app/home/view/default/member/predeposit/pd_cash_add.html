@@ -2,14 +2,16 @@
 {block name="member_main"}
 
 
-
 <div class="dsm-default-form">
     <form method="post" id="cash_form" action="{:url('Predeposit/pd_cash_add')}">
         <dl>
             <dt><i class="required">*</i>{$Think.lang.withdrawal_amount}：</dt>
-            <dd><input name="pdc_amount" type="text" class="text w50" id="pdc_amount" maxlength="10" ><em class="add-on">
-                    <i class="iconfont">&#xe65c;</i></em> （{$Think.lang.current_available_amount}：<strong class="orange">{:floatval($member_info.available_predeposit)}</strong>&nbsp;&nbsp;{$Think.lang.ds_yuan}）<span></span>
-                <p class="hint mt5">{$Think.lang.predeposit_withdraw_cycle}{$Think.config.ds_config.member_withdraw_cycle}{$Think.lang.day}，{$Think.lang.predeposit_withdraw_min}{$Think.config.ds_config.member_withdraw_min}{$Think.lang.ds_yuan}，{$Think.lang.predeposit_withdraw_max}{$Think.config.ds_config.member_withdraw_max}{$Think.lang.ds_yuan}</p>
+            <dd><input name="pdc_amount" type="text" class="text w50" id="pdc_amount" maxlength="10"><em class="add-on">
+                    <i class="iconfont">&#xe65c;</i></em> （{$Think.lang.current_available_amount}：<strong
+                    class="orange">{:floatval($member_info.available_predeposit)}</strong>&nbsp;&nbsp;{$Think.lang.ds_yuan}）<span></span>
+                <p class="hint mt5">
+                    {$Think.lang.predeposit_withdraw_cycle}{$Think.config.ds_config.member_withdraw_cycle}{$Think.lang.day}，{$Think.lang.predeposit_withdraw_min}{$Think.config.ds_config.member_withdraw_min}{$Think.lang.ds_yuan}，{$Think.lang.predeposit_withdraw_max}{$Think.config.ds_config.member_withdraw_max}{$Think.lang.ds_yuan}
+                </p>
             </dd>
         </dl>
         <dl>
@@ -17,7 +19,7 @@
             <dd>
                 <select name="memberbank_id">
                     {foreach name="memberbank_list" item="memberbank"}
-                    <option value="{$memberbank.memberbank_id}" >
+                    <option value="{$memberbank.memberbank_id}">
                         {if $memberbank.memberbank_type eq 'alipay'}
                         {$Think.lang.pay_method_alipay}
                         {elseif $memberbank.memberbank_type eq 'weixin'}
@@ -29,29 +31,32 @@
                     </option>
                     {/foreach}
                 </select>
-                
+
                 <p class="hint mt5"><a href="{:url('Memberbank/index')}" target="_blank">管理提现账户</a></p>
             </dd>
         </dl>
         <dl>
             <dt><i class="required">*</i>{$Think.lang.payment_password}：</dt>
-            <dd><input name="password" type="password" autocomplete="new-password" class="text w100" id="password" maxlength="20"/><span></span>
+            <dd><input name="password" type="password" autocomplete="new-password" class="text w100" id="password"
+                    maxlength="20" /><span></span>
                 <p class="hint">
                     {if !$member_info.member_paypwd}
-                    <strong class="red">{$Think.lang.withdrawal_information3}</strong><a href="{:url('Membersecurity/auth',['type'=>'modify_paypwd'])}" class="dsm-btn-mini dsm-btn-acidblue vm ml10" target="_blank">{$Think.lang.immediately_set}</a>
+                    <strong class="red">{$Think.lang.withdrawal_information3}</strong><a
+                        href="{:url('Membersecurity/auth',['type'=>'modify_paypwd'])}"
+                        class="dsm-btn-mini dsm-btn-acidblue vm ml10" target="_blank">{$Think.lang.immediately_set}</a>
                     {/if}
                 </p>
             </dd>
         </dl>
-        <dl class="bottom"><dt>&nbsp;</dt>
+        <dl class="bottom">
+            <dt>&nbsp;</dt>
             <dd>
-                <input type="submit"  class="submit" value="{$Think.lang.confirm_withdrawal}" />
+                <input type="submit" class="submit" value="{$Think.lang.confirm_withdrawal}" />
                 <a class="dsm-btn ml10" href="javascript:history.go(-1);">{$Think.lang.cancel_return}</a>
             </dd>
         </dl>
     </form>
 </div>
-
 
 
 <script type="text/javascript">
@@ -69,7 +74,7 @@
                     required: true,
                     number: true,
                     min: 0.01,
-                    max: {$member_info.available_predeposit}
+                    max: { $member_info.available_predeposit }
                 },
                 password: {
                     required: true
@@ -89,9 +94,6 @@
         });
     });
 </script>
-
-
-
 
 
 {/block}

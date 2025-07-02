@@ -2,10 +2,10 @@
 {block name="member_main"}
 
 
-
 <div class="dsm-flow-layout">
     <div class="dsm-flow-container">
-        <div class="title"><a href="{:url('Memberevaluate/index')}" class="dsm-btn-mini fr"><i class="iconfont">&#xe74e;</i>{$Think.lang.return_space|raw}</a>
+        <div class="title"><a href="{:url('Memberevaluate/index')}" class="dsm-btn-mini fr"><i
+                    class="iconfont">&#xe74e;</i>{$Think.lang.return_space|raw}</a>
             <h3>{$Think.lang.merchandise_carry_share_order}</h3>
         </div>
         <div class="alert">
@@ -20,16 +20,18 @@
                     <dt>{$Think.lang.commodity_information}：</dt>
                     <dd>
                         <div>
-                            <a href="{:url('Goods/index',['goods_id'=>$geval_info.geval_goodsid])}" target="_blank"><img  src="{:goods_cthumb($geval_info.geval_goodsimage)}" onload="javascript:ResizeImage(this,44,44);"/></a>
-                            <a href="{:url('Goods/index',['goods_id'=>$geval_info.geval_goodsid])}" target="_blank">{$geval_info.geval_goodsname}</a>
+                            <a href="{:url('Goods/index',['goods_id'=>$geval_info.geval_goodsid])}" target="_blank"><img
+                                    src="{:goods_cthumb($geval_info.geval_goodsimage)}"
+                                    onload="javascript:ResizeImage(this,44,44);" /></a>
+                            <a href="{:url('Goods/index',['goods_id'=>$geval_info.geval_goodsid])}"
+                                target="_blank">{$geval_info.geval_goodsname}</a>
                         </div>
                     </dd>
                 </dl>
                 <dl>
                     <dt>{$Think.lang.commodity_rating}：</dt>
                     <dd>
-                        <div class="raty" style="display:inline-block;"
-                             data-score="{$geval_info.geval_scores}"></div>
+                        <div class="raty" style="display:inline-block;" data-score="{$geval_info.geval_scores}"></div>
                     </dd>
                 </dl>
                 <dl>
@@ -48,8 +50,9 @@
                                 </div>
                             </div>
                             <div class="upload-btn">
-                                <a href="javascript:void(0);"> 
-                                    <span><input type="file" hidefocus="true" size="1" class="input-file" name="file"></span>
+                                <a href="javascript:void(0);">
+                                    <span><input type="file" hidefocus="true" size="1" class="input-file"
+                                            name="file"></span>
                                     <p>{$Think.lang.image_upload}</p>
                                 </a>
                             </div>
@@ -64,8 +67,6 @@
         </form>
     </div>
     <div class="dsm-flow-item">
-
-
         <div class="dsm-evaluation-store">
             <div class="title">{$Think.lang.member_evaluation_storeinfotitle}</div>
             <div class="store-name"> {$store_info.store_name}</div>
@@ -74,10 +75,12 @@
                     <dt>{$Think.lang.comprehensive_score}：</dt>
                     <dd>
                         <div class="rating"><span style="width:{$store_info.store_credit_percent}%"></span></div>
-                        <em>{$store_info.store_credit_average}</em>{$Think.lang.credit_unit}</dd>
+                        <em>{$store_info.store_credit_average}</em>{$Think.lang.credit_unit}
+                    </dd>
                 </dl>
                 <div class="detail-rate">
-                    <h5><strong>{$Think.lang.member_evaluation_storeevalstat}</strong>{$Think.lang.compare_with_industry}</h5>
+                    <h5><strong>{$Think.lang.member_evaluation_storeevalstat}</strong>{$Think.lang.compare_with_industry}
+                    </h5>
                     <ul>
                         {foreach name="store_info.store_credit" item="val"}
                         <li>
@@ -94,10 +97,18 @@
                     <dt>{$Think.lang.contact_information}：</dt>
                     <dd><span member_id="{$store_info.member_id}"></span>
                         {if $store_info.store_qq}
-                        <a target="_blank" href="{$Think.HTTP_TYPE}wpa.qq.com/msgrd?v=3&uin={$store_info.store_qq}&site=qq&menu=yes" title="QQ: {$store_info.store_qq}"><img border="0" src="{$Think.BASE_SITE_ROOT}/uploads/home/common/qq_icon.png" height="17" style=" vertical-align: middle;"/></a>
+                        <a target="_blank"
+                            href="{$Think.HTTP_TYPE}wpa.qq.com/msgrd?v=3&uin={$store_info.store_qq}&site=qq&menu=yes"
+                            title="QQ: {$store_info.store_qq}"><img border="0"
+                                src="{$Think.BASE_SITE_ROOT}/uploads/home/common/qq_icon.png" height="17"
+                                style=" vertical-align: middle;" /></a>
                         {/if}
                         {if $store_info.store_ww}
-                        <a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&amp;uid={$store_info.store_ww}&site=cntaobao&s=1&charset=utf-8" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid={$store_info.store_ww}&site=cntaobao&s=2&charset=utf-8" alt="{$Think.lang.ds_message_me}" style=" vertical-align: middle;"/></a>
+                        <a target="_blank"
+                            href="http://amos.im.alisoft.com/msg.aw?v=2&amp;uid={$store_info.store_ww}&site=cntaobao&s=1&charset=utf-8"><img
+                                border="0"
+                                src="http://amos.im.alisoft.com/online.aw?v=2&uid={$store_info.store_ww}&site=cntaobao&s=2&charset=utf-8"
+                                alt="{$Think.lang.ds_message_me}" style=" vertical-align: middle;" /></a>
                         {/if}
                     </dd>
                 </dl>
@@ -112,29 +123,30 @@
                     <dt>{$Think.lang.company_name}：</dt>
                     <dd>{$store_info.store_company_name}</dd>
                 </dl>
-                <dl >
+                <dl>
                     <dt>{$Think.lang.location_space|raw}：</dt>
                     <dd>{$store_info.store_address}</dd>
                 </dl>
             </div>
         </div>
-
-
     </div>
 </div>
 
 
-<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/jquery.raty/jquery.raty.min.js"></script> 
-<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/fileupload/jquery.iframe-transport.js" charset="utf-8"></script>
-<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/fileupload/jquery.ui.widget.js" charset="utf-8"></script>
-<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/fileupload/jquery.fileupload.js" charset="utf-8"></script>
+<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/jquery.raty/jquery.raty.min.js"></script>
+<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/fileupload/jquery.iframe-transport.js"
+    charset="utf-8"></script>
+<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/fileupload/jquery.ui.widget.js"
+    charset="utf-8"></script>
+<script type="text/javascript" src="{$Think.PLUGINS_SITE_ROOT}/js/fileupload/jquery.fileupload.js"
+    charset="utf-8"></script>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-      $('.raty').raty({
+    $(document).ready(function () {
+        $('.raty').raty({
             path: "{$Think.PLUGINS_SITE_ROOT}/js/jquery.raty/img",
             readOnly: true,
-            score: function() {
+            score: function () {
                 return $(this).attr('data-score');
             }
         });
@@ -143,18 +155,18 @@
                 ds_ajaxpost('add_form', 'url', "{:url('Memberevaluate/index')}")
             }
         });
-        
+
         //图片上传
         $(".input-file").fileupload({
             dataType: 'json',
             url: "{:url('Snsalbum/swfupload')}",
             formData: "",
-            add: function(e, data) {
-                data.formData = {category_id:{$ac_id}}
+            add: function (e, data) {
+                data.formData = { category_id: { $ac_id } }
                 data.submit();
             },
             done: function (e, data) {
-                if(data.result.state) {
+                if (data.result.state) {
                     $item = $(this).parents('li');
                     $item.find('img').attr('src', data.result.file_url);
                     $item.find('[dstype="input_image"]').val(data.result.file_name);
@@ -168,7 +180,7 @@
             }
         });
 
-        $('[dstype="del"]').on('click', function() {
+        $('[dstype="del"]').on('click', function () {
             album_pic_del($(this).attr('data-file-id'));
             $item = $(this).parent();
             $item.find('[dstype="input_image"]').val('');
@@ -176,14 +188,13 @@
         });
 
         function album_pic_del(file_id) {
-            $.getJSON("{:url('Snsalbum/album_pic_del')}",{id: + file_id}, function(result){
+            $.getJSON("{:url('Snsalbum/album_pic_del')}", { id: + file_id }, function (result) {
                 layer.msg(result.message);
             })
 
         }
     });
 </script>
-
 
 
 {/block}

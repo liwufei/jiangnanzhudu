@@ -1,4 +1,3 @@
-
 <form id="post_form" method="post" action="{:url('Memberreturn/ship',['return_id'=>$return.refund_id])}">
     <h3>{$Think.lang.fill_return_shipping_information}</h3>
     <dl>
@@ -7,7 +6,7 @@
             <select name="express_id">
                 <option value="0">{$Think.lang.ds_please_choose}</option>
                 {notempty name="express_list"}
-                {foreach name="express_list" item="val"  }
+                {foreach name="express_list" item="val" }
                 <option value="{$val.express_id}">{$val.express_name}</option>
                 {/foreach}
                 {/notempty}
@@ -24,7 +23,8 @@
     </dl>
     <div class="bottom">
         <input type="submit" class="submit" id="confirm_button" value="{$Think.lang.ds_ok}" />
-        <a href="javascript:history.go(-1);" class="dsm-btn ml10"><i class="iconfont">&#xe74e;</i>{$Think.lang.return_list}</a>
+        <a href="javascript:history.go(-1);" class="dsm-btn ml10"><i
+                class="iconfont">&#xe74e;</i>{$Think.lang.return_list}</a>
     </div>
 </form>
 <script type="text/javascript">

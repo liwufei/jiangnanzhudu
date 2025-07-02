@@ -10,27 +10,27 @@
             </dd>
         </dl>
         <div class="bottom">
-            <input type="submit" class="submit" value="{$Think.lang.ds_submit}"/>
+            <input type="submit" class="submit" value="{$Think.lang.ds_submit}" />
         </div>
     </form>
 </div>
 <script>
-    $(function(){
+    $(function () {
         $('#jingle_form').validate({
             errorLabelContainer: $('#warning'),
-            invalidHandler: function(form, validator) {
+            invalidHandler: function (form, validator) {
                 $('#warning').show();
             },
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('jingle_form');
             },
-            rules : {
-                g_jingle : {
+            rules: {
+                g_jingle: {
                     maxlength: 50
                 }
             },
-            messages : {
-                g_jingle : {
+            messages: {
+                g_jingle: {
                     maxlength: '<i class="iconfont">&#xe64c;</i>{$Think.lang.cannot_exceed_qualifier}'
                 }
             }

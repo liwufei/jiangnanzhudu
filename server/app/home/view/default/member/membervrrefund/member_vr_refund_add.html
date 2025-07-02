@@ -2,7 +2,6 @@
 {block name="member_main"}
 
 
-
 <div class="dsm-flow-layout">
   <div class="dsm-flow-container">
     <div class="title">
@@ -12,7 +11,8 @@
       <h4>{$Think.lang.operating_hints}：</h4>
       <ul>
         <li>1. {$Think.lang.refund_declaration1|raw}</li>
-        <li>2. {$Think.lang.refund_declaration2|raw}{$Think.lang.code_invalid_refund}{$Think.lang.refund_declaration3}</li>
+        <li>2. {$Think.lang.refund_declaration2|raw}{$Think.lang.code_invalid_refund}{$Think.lang.refund_declaration3}
+        </li>
         <li>3. {$Think.lang.refund_declaration4}</li>
       </ul>
     </div>
@@ -33,70 +33,67 @@
       </div>
       <div class="dsm-default-form">
         <div id="warning"></div>
-        <form id="post_form1" enctype="multipart/form-data" method="post" action="{:url('Membervrrefund/add_refund',['order_id'=>$order.order_id])}">
+        <form id="post_form1" enctype="multipart/form-data" method="post"
+          action="{:url('Membervrrefund/add_refund',['order_id'=>$order.order_id])}">
           <h3>{$Think.lang.refund_saved_successfully}</h3>
           <dl>
             <dt><i class="required">*</i>{$Think.lang.refund_exchange_code}：</dt>
             <dd>
-                {notempty name="code_list"}
-                {foreach name="code_list" item="val"}
-                <label><input name="rec_id[]" class="vm" type="checkbox" value="{$val.rec_id}" checked="checked" />{$val.vr_code}</label><br />
-               {/foreach}
+              {notempty name="code_list"}
+              {foreach name="code_list" item="val"}
+              <label><input name="rec_id[]" class="vm" type="checkbox" value="{$val.rec_id}"
+                  checked="checked" />{$val.vr_code}</label><br />
+              {/foreach}
               {/notempty}
-                <span class="error"></span>
-                </dd>
+              <span class="error"></span>
+            </dd>
           </dl>
           <dl>
             <dt><i class="required">*</i>{$Think.lang.refund_instructions}：</dt>
             <dd>
               <textarea name="buyer_message" rows="3" class="textarea w400"></textarea>
               <br />
-              <span class="error"></span> </dd>
+              <span class="error"></span>
+            </dd>
           </dl>
           <div class="bottom">
-              <input type="submit" class="submit" value="{$Think.lang.submit_confirmation}" />
-              <a href="javascript:history.go(-1);" class="dsm-btn ml10">{$Think.lang.cancel_return}</a>
+            <input type="submit" class="submit" value="{$Think.lang.submit_confirmation}" />
+            <a href="javascript:history.go(-1);" class="dsm-btn ml10">{$Think.lang.cancel_return}</a>
           </div>
         </form>
       </div>
     </div>
   </div>
-    {include file="default/member/membervrrefund/member_vr_refund_right"}
+  {include file="default/member/membervrrefund/member_vr_refund_right"}
 </div>
 <script type="text/javascript">
-$(function(){
+  $(function () {
     $('#post_form1').validate({
-        errorPlacement: function(error, element){
-            error.appendTo(element.parentsUntil('dl').find('span.error'));
+      errorPlacement: function (error, element) {
+        error.appendTo(element.parentsUntil('dl').find('span.error'));
+      },
+      submitHandler: function (form) {
+        ds_ajaxpost('post_form1', 'url', "{:url('Membervrrefund/index')}")
+      },
+      rules: {
+        'rec_id[]': {
+          required: true
         },
-        submitHandler:function(form){
-            ds_ajaxpost('post_form1', 'url', "{:url('Membervrrefund/index')}")
-        },
-        rules : {
-            'rec_id[]' : {
-                required   : true
-            },
-            'buyer_message' : {
-                required   : true
-            }
-        },
-        messages : {
-            'rec_id[]'  : {
-                required  : '<i class="iconfont">&#xe64c;</i>{$Think.lang.option_exchange_code}'
-            },
-            'buyer_message'  : {
-                required   : '<i class="iconfont">&#xe64c;</i>{$Think.lang.please_fill_refund_instructions}'
-            }
+        'buyer_message': {
+          required: true
         }
+      },
+      messages: {
+        'rec_id[]': {
+          required: '<i class="iconfont">&#xe64c;</i>{$Think.lang.option_exchange_code}'
+        },
+        'buyer_message': {
+          required: '<i class="iconfont">&#xe64c;</i>{$Think.lang.please_fill_refund_instructions}'
+        }
+      }
     });
-});
+  });
 </script>
-
-
-
-
-
-
 
 
 {/block}

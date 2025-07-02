@@ -2,7 +2,6 @@
 {block name="member_main"}
 
 
-
 <div class="dsm-flow-layout">
   <div class="dsm-flow-container">
     <div class="title">
@@ -31,7 +30,7 @@
         </dl>
       </div>
       <div class=" dsm-default-form">
-      <h3>{$Think.lang.my_refund_application}</h3>
+        <h3>{$Think.lang.my_refund_application}</h3>
         <dl>
           <dt>{$Think.lang.refund_order_refundsn}{$Think.lang.ds_colon}</dt>
           <dd>{$refund.refund_sn} </dd>
@@ -41,9 +40,9 @@
           <dd>
             {notempty name="code_array"}
             {foreach name="code_array" item="val"}
-            {$val}<br/>
+            {$val}<br />
             {/foreach}
-           {/notempty}
+            {/notempty}
           </dd>
         </dl>
         <dl>
@@ -65,18 +64,13 @@
           <dd>{$refund.admin_message} </dd>
         </dl>
         {/if}
-        <div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i class="iconfont">&#xe74e;</i>{$Think.lang.returns_list}</a></div>
+        <div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i
+              class="iconfont">&#xe74e;</i>{$Think.lang.returns_list}</a></div>
       </div>
     </div>
   </div>
   {include file="default/member/membervrrefund/member_vr_refund_right"}
 </div>
-
-
-
-
-
-
 
 
 {/block}

@@ -2,13 +2,12 @@
 {block name="member_main"}
 
 
-
-
 <div class="dsm-flow-layout">
     <div class="dsm-flow-container">
         <div class="title">
             <h3>{$Think.lang.refund_service}</h3>
-        </div><div class="alert">
+        </div>
+        <div class="alert">
             <h4>{$Think.lang.reminder}：</h4>
             <ul>
                 <li>1. {$Think.lang.refund_instructions3|raw}</li>
@@ -55,7 +54,8 @@
                         <ul class="dsm-evidence-pic">
                             {foreach name="pic_list" item="val" key="key" }
                             {notempty name="val"}
-                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
+                            <li><a href="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}" data-lightbox="lightbox-image"> <img
+                                        class="show_image" src="{:ds_get_pic(ATTACH_PATH.'/refund',$val)}"></a></li>
                             {/notempty}
                             {/foreach}
                         </ul>
@@ -85,18 +85,16 @@
                     <dt>{$Think.lang.remarks_platform}{$Think.lang.ds_colon}</dt>
                     <dd>{$refund.refundreturn_admin_message} </dd>
                 </dl>
-                {/if}<div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i class="iconfont">&#xe74e;</i>{$Think.lang.returns_list}</a></div>
+                {/if}<div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i
+                            class="iconfont">&#xe74e;</i>{$Think.lang.returns_list}</a></div>
             </div>
         </div>
     </div>
     {include file="default/member/memberrefund/member_refund_right"}
 </div>
 
-
-
 <link rel="stylesheet" href="{$Think.PLUGINS_SITE_ROOT}/js/jquery.lightbox/css/lightbox.min.css">
 <script src="{$Think.PLUGINS_SITE_ROOT}/js/jquery.lightbox/js/lightbox.min.js"></script>
-
 
 
 {/block}

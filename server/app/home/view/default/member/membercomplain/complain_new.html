@@ -2,8 +2,6 @@
 {block name="member_main"}
 
 
-
-
 <div class="dsm-flow-layout" id=" dsmComplainFlow">
     <div class="dsm-flow-container">
         <div class="title">
@@ -32,7 +30,8 @@
             </dl>
         </div>
         <div class="dsm-default-form">
-            <form action="{:url('Membercomplain/complain_save')}" method="post" id="complain_form" enctype="multipart/form-data">
+            <form action="{:url('Membercomplain/complain_save')}" method="post" id="complain_form"
+                enctype="multipart/form-data">
                 <input name="input_order_id" type="hidden" value="{$return_info.order_id}" />
                 <input name="input_goods_id" type="hidden" value="{$goods_id}" />
                 <dl>
@@ -40,8 +39,10 @@
                     <dd>
                         {notempty name="subject_list"}
                         {foreach name="subject_list" item="val"}
-                        <input name="input_complain_subject" type="radio" value="{$val.complainsubject_id},{$val.complainsubject_content}" />
-                        <span class="mr30"><strong>{$val.complainsubject_content}</strong></span><p class="hint">{$val.complainsubject_desc} </p>
+                        <input name="input_complain_subject" type="radio"
+                            value="{$val.complainsubject_id},{$val.complainsubject_content}" />
+                        <span class="mr30"><strong>{$val.complainsubject_content}</strong></span>
+                        <p class="hint">{$val.complainsubject_desc} </p>
                         {/foreach}
                         {/notempty}
                     </dd>
@@ -51,7 +52,8 @@
                 <dl>
                     <dt>{$Think.lang.complain_content}{$Think.lang.ds_colon}</dt>
                     <dd>
-                        <textarea name="input_complain_content" rows="3" class="textarea w400" id="input_complain_content"></textarea>
+                        <textarea name="input_complain_content" rows="3" class="textarea w400"
+                            id="input_complain_content"></textarea>
                     </dd>
                 </dl>
                 <dl>
@@ -70,7 +72,7 @@
                     </dd>
                 </dl>
                 <div class="bottom">
-                    <input id="submit_button" type="submit" class="submit" value="{$Think.lang.complain_text_submit}" >
+                    <input id="submit_button" type="submit" class="submit" value="{$Think.lang.complain_text_submit}">
                     <a href="javascript:history.go(-1);" class="dsm-btn ml10">{$Think.lang.cancel_and_return}</a>
                 </div>
             </form>
@@ -80,29 +82,28 @@
 </div>
 
 <script type="text/javascript">
-    $(function(){
+    $(function () {
         //默认选中第一个radio
-        $(":radio").first().attr("checked",true);
+        $(":radio").first().attr("checked", true);
 
         $("#complain_form").validate({
-            errorPlacement: function(error, element){
+            errorPlacement: function (error, element) {
                 $(element).next('.field_notice').hide();
                 $(element).after(error);
             },
-            rules : {
-                input_complain_content : {
-                    required   : true
+            rules: {
+                input_complain_content: {
+                    required: true
                 }
             },
-            messages : {
-                input_complain_content  : {
-                    required   : '{$Think.lang.please_fill_complaint}'
+            messages: {
+                input_complain_content: {
+                    required: '{$Think.lang.please_fill_complaint}'
                 }
             }
         });
     });
 </script>
-
 
 
 {/block}

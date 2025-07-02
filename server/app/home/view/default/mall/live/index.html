@@ -2,63 +2,78 @@
 {block name="mall_main"}
 
 <link rel="stylesheet" href="{$Think.HOME_SITE_ROOT}/css/live_list.css">
-<div id="pclive-top"> 
-    <div class="w1200"> 
-        <img width="1190" height="207" src="{$Think.HOME_SITE_ROOT}/images/live/58b9654aN2be569d9.jpg" alt="" /> 
-    </div> 
-</div> 
-<div class="pclive-content"> 
-    <div class="w1200"> 
+<div id="pclive-top">
+    <div class="w1200">
+        <img width="1190" height="207" src="{$Think.HOME_SITE_ROOT}/images/live/58b9654aN2be569d9.jpg" alt="" />
+    </div>
+</div>
+<div class="pclive-content">
+    <div class="w1200">
         <div class="ui-ceilinglamp-8" style="height:75px;">
-            <ul id="ceilinglamp" class="title-tab"> 
-                <li class="fore0 curr-layout" onclick="changeTab(0)"><a href="javascript:void(0)"><i></i>{$Think.lang.hot_live}</a></li> 
-                <li class="fore1" onclick="changeTab(1)"><a href="javascript:void(0)"><i></i>{$Think.lang.live_preview}</a></li> 
-                <li class="fore2" onclick="changeTab(2)"><a href="javascript:void(0)"><i></i>{$Think.lang.live_replay}</a></li> 
+            <ul id="ceilinglamp" class="title-tab">
+                <li class="fore0 curr-layout" onclick="changeTab(0)"><a
+                        href="javascript:void(0)"><i></i>{$Think.lang.hot_live}</a></li>
+                <li class="fore1" onclick="changeTab(1)"><a
+                        href="javascript:void(0)"><i></i>{$Think.lang.live_preview}</a></li>
+                <li class="fore2" onclick="changeTab(2)"><a
+                        href="javascript:void(0)"><i></i>{$Think.lang.live_replay}</a></li>
             </ul>
-        </div> 
-    </div> 
-    <ul class="w1200 content-layout"> 
-        <!--热门直播 start--> 
-        <li id="pc-hotlive" class="w1200 channel-comfloor hotlive-20170124 curr-layout"> 
-            <div class="m"> 
-                <div class="mc"> 
-                    <ul class="list"> 
-                        <li class='no-record'><p style="height:30px;line-height:30px;text-align:center;">{$Think.lang.ds_common_result_null}</p></li>
-                    </ul> 
-                </div> 
-                <div class="mb"> 
-
-                </div> 
-            </div> </li> 
-        <!--热门直播 end--> 
-        <!--直播预告 start--> 
-        <li id="foreshow" class="w1200 channel-comfloor hotlive-20170124"> 
-            <div class="m"> 
-                <div class="mc"> 
+        </div>
+    </div>
+    <ul class="w1200 content-layout">
+        <!--热门直播 start-->
+        <li id="pc-hotlive" class="w1200 channel-comfloor hotlive-20170124 curr-layout">
+            <div class="m">
+                <div class="mc">
                     <ul class="list">
-                        <li class='no-record'><p style="height:30px;line-height:30px;text-align:center;">{$Think.lang.ds_common_result_null}</p></li>
-                    </ul> 
-                </div> 
-                <div class="mb"> 
+                        <li class='no-record'>
+                            <p style="height:30px;line-height:30px;text-align:center;">
+                                {$Think.lang.ds_common_result_null}</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mb">
 
-                </div> 
-            </div> </li> 
-        <!--精彩回放 end--> 
-        <li id="playback" class="w1200 channel-comfloor hotlive-20170124"> 
-            <div class="m"> 
-                <div class="mc"> 
-                    <div class="anchor-list"> 
+                </div>
+            </div>
+        </li>
+        <!--热门直播 end-->
+        <!--直播预告 start-->
+        <li id="foreshow" class="w1200 channel-comfloor hotlive-20170124">
+            <div class="m">
+                <div class="mc">
+                    <ul class="list">
+                        <li class='no-record'>
+                            <p style="height:30px;line-height:30px;text-align:center;">
+                                {$Think.lang.ds_common_result_null}</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mb">
+
+                </div>
+            </div>
+        </li>
+        <!--精彩回放 end-->
+        <li id="playback" class="w1200 channel-comfloor hotlive-20170124">
+            <div class="m">
+                <div class="mc">
+                    <div class="anchor-list">
                         <ul class="list">
-                            <li class='no-record'><p style="height:30px;line-height:30px;text-align:center;">{$Think.lang.ds_common_result_null}</p></li>
-                        </ul> 
-                    </div> 
-                </div> 
-            </div> 
-            <div class="mb"> 
+                            <li class='no-record'>
+                                <p style="height:30px;line-height:30px;text-align:center;">
+                                    {$Think.lang.ds_common_result_null}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mb">
 
-            </div> </li> 
-        <!--精彩回放 end--> 
-    </ul> 
+            </div>
+        </li>
+        <!--精彩回放 end-->
+    </ul>
 </div>
 <script id="goods_template" type="text/html">
     <li class="c-live J-tips1"> 
@@ -101,7 +116,6 @@
                     <%=live_apply_name%>
                 </div> 
             </div> 
-
         </div> 
         <div class="anchor-products"> 
             <%if(!goods_list.length){%>
@@ -141,96 +155,96 @@
             </dl> 
             <%}%>
         </div> </li> 
-</script>    
+</script>
 <script src="{$Think.PLUGINS_SITE_ROOT}/template.min.js"></script>
 <script>
-$(function(){
-    loadMore()
-})    
-function changeTab(index) {
-    $('#ceilinglamp li').removeClass('curr-layout')
-    $('.content-layout li').removeClass('curr-layout')
-    switch (index) {
-        case 0:
-            $('.fore0').addClass('curr-layout')
-            $('#pc-hotlive').addClass('curr-layout')
-            break;
-        case 1:
-            $('.fore1').addClass('curr-layout')
-            $('#foreshow').addClass('curr-layout')
-            break;
-        case 2:
-            $('.fore2').addClass('curr-layout')
-            $('#playback').addClass('curr-layout')
-            break;
-    }
-    loadMore()
-}
-function goSlide(obj, dir) {
-    var left = obj.position().left;
-    if (dir) {
-        //向右
-        if (-left >= (Math.ceil(obj.find('li').length / 3) - 1) * 162) {
-            return
+    $(function () {
+        loadMore()
+    })
+    function changeTab(index) {
+        $('#ceilinglamp li').removeClass('curr-layout')
+        $('.content-layout li').removeClass('curr-layout')
+        switch (index) {
+            case 0:
+                $('.fore0').addClass('curr-layout')
+                $('#pc-hotlive').addClass('curr-layout')
+                break;
+            case 1:
+                $('.fore1').addClass('curr-layout')
+                $('#foreshow').addClass('curr-layout')
+                break;
+            case 2:
+                $('.fore2').addClass('curr-layout')
+                $('#playback').addClass('curr-layout')
+                break;
         }
-        obj.css('left', (left - (162 * 3)) + 'px')
-    } else {
-        if (left >= 0) {
-            return
-        }
-        obj.css('left', (left + (162 * 3)) + 'px')
-    }
-}
-$(window).on("scroll", function () {
-
-    var windowHeight = $(window).height();//当前窗口的高度             
-    var scrollTop = $(window).scrollTop();//当前滚动条从上往下滚动的距离            
-    var docHeight = $(document).height(); //当前文档的高度 
-    //当 滚动条距底部的距离 + 滚动条滚动的距离 >= 文档的高度 - 窗口的高度  
-    //换句话说：（滚动条滚动的距离 + 窗口的高度 = 文档的高度）  这个是基本的公式  
-    if (scrollTop + windowHeight + 500 >= docHeight) {
         loadMore()
     }
-});
-var page = new Array(0, 0, 0);
-var no_more = new Array(false, false, false);
+    function goSlide(obj, dir) {
+        var left = obj.position().left;
+        if (dir) {
+            //向右
+            if (-left >= (Math.ceil(obj.find('li').length / 3) - 1) * 162) {
+                return
+            }
+            obj.css('left', (left - (162 * 3)) + 'px')
+        } else {
+            if (left >= 0) {
+                return
+            }
+            obj.css('left', (left + (162 * 3)) + 'px')
+        }
+    }
+    $(window).on("scroll", function () {
 
-function loadMore() {
-    var index
-    var state
-    var obj
-    
-    index = 0
-    state = 1
-    obj='pc-hotlive'
-    if ($('.fore0').hasClass('curr-layout')) {
-        
-    } else if ($('.fore1').hasClass('curr-layout')) {
-        index = 1
-        state = 2
-        obj='foreshow'
-    } else if ($('.fore2').hasClass('curr-layout')) {
-        index = 2
-        state = 3
-        obj='playback'
+        var windowHeight = $(window).height();//当前窗口的高度             
+        var scrollTop = $(window).scrollTop();//当前滚动条从上往下滚动的距离            
+        var docHeight = $(document).height(); //当前文档的高度 
+        //当 滚动条距底部的距离 + 滚动条滚动的距离 >= 文档的高度 - 窗口的高度  
+        //换句话说：（滚动条滚动的距离 + 窗口的高度 = 文档的高度）  这个是基本的公式  
+        if (scrollTop + windowHeight + 500 >= docHeight) {
+            loadMore()
+        }
+    });
+    var page = new Array(0, 0, 0);
+    var no_more = new Array(false, false, false);
+
+    function loadMore() {
+        var index
+        var state
+        var obj
+
+        index = 0
+        state = 1
+        obj = 'pc-hotlive'
+        if ($('.fore0').hasClass('curr-layout')) {
+
+        } else if ($('.fore1').hasClass('curr-layout')) {
+            index = 1
+            state = 2
+            obj = 'foreshow'
+        } else if ($('.fore2').hasClass('curr-layout')) {
+            index = 2
+            state = 3
+            obj = 'playback'
+        }
+        if (no_more[index]) {
+            return
+        }
+        page[index]++
+        $.getJSON(HOMESITEURL + '/Live/get_live_list', { state: state, page: page[index] }, function (res) {
+            if (!res.result.hasmore) {
+                no_more[index] = true
+            }
+            if (res.result.live_apply_list.length) {
+                $('#' + obj + ' .no-record').hide()
+            }
+            for (var i in res.result.live_apply_list) {
+                var item = template.render('goods_template', res.result.live_apply_list[i]);
+                $('#' + obj + ' .list').append(item);
+            }
+
+        })
     }
-    if (no_more[index]) {
-        return
-    }
-    page[index]++
-    $.getJSON(HOMESITEURL + '/Live/get_live_list', {state: state, page: page[index]}, function (res) {
-        if (!res.result.hasmore) {
-            no_more[index] = true
-        }
-        if(res.result.live_apply_list.length){
-            $('#'+obj+' .no-record').hide()
-        }
-        for(var i in res.result.live_apply_list){
-            var item = template.render('goods_template', res.result.live_apply_list[i]);
-            $('#'+obj+' .list').append(item);
-        }
-        
-    })
-}
 </script>
 {/block}

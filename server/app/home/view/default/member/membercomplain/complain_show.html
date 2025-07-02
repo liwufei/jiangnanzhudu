@@ -2,7 +2,6 @@
 {block name="member_main"}
 
 
-
 <div class="dsm-flow-layout" id="dsmComplainFlow">
     <div class="dsm-flow-container">
         <div class="title">
@@ -55,8 +54,12 @@
                     {else /}
                     {$Think.lang.complain_pic_none}
                     {if $complain_info.complain_state lt '99'}
-                    <a class="dsm-btn-mini dsm-btn-orange" href="javascript:void(0);" onclick="$('#post_add_pic_form').toggle();" title="{$Think.lang.complain_add_pic}"><i class="iconfont">&#xe733;</i>{$Think.lang.complain_add_pic}</a>
-                    <form style="display: none;" id="post_add_pic_form" method="post" action="{:url('Membercomplain/complain_add_pic',['complain_id'=>$complain_info.complain_id])}" enctype="multipart/form-data">
+                    <a class="dsm-btn-mini dsm-btn-orange" href="javascript:void(0);"
+                        onclick="$('#post_add_pic_form').toggle();" title="{$Think.lang.complain_add_pic}"><i
+                            class="iconfont">&#xe733;</i>{$Think.lang.complain_add_pic}</a>
+                    <form style="display: none;" id="post_add_pic_form" method="post"
+                        action="{:url('Membercomplain/complain_add_pic',['complain_id'=>$complain_info.complain_id])}"
+                        enctype="multipart/form-data">
                         <p>
                             <input name="input_complain_pic1" type="file" />
                         </p>
@@ -67,7 +70,8 @@
                             <input name="input_complain_pic3" type="file" />
                         </p>
                         <p>
-                            <input id="add_pic_submit_button" type="button" class="submit" value="{$Think.lang.complain_text_submit}" >
+                            <input id="add_pic_submit_button" type="button" class="submit"
+                                value="{$Think.lang.complain_text_submit}">
                         </p>
                     </form>
                     {/if}
@@ -113,7 +117,8 @@
                 <dd>{$complain_info.final_handle_datetime|date="Y-m-d H:i:s"}</dd>
             </dl>
             {/eq}
-            <div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i class="iconfont">&#xe74e;</i>{$Think.lang.return_list}</a></div>
+            <div class="bottom"><a href="javascript:history.go(-1);" class="dsm-btn"><i
+                        class="iconfont">&#xe74e;</i>{$Think.lang.return_list}</a></div>
         </div>
     </div>
     {include file="default/member/membercomplain/complain_order" /}
@@ -123,42 +128,39 @@
 <link rel="stylesheet" href="{$Think.PLUGINS_SITE_ROOT}/js/jquery.lightbox/css/lightbox.min.css">
 <script src="{$Think.PLUGINS_SITE_ROOT}/js/jquery.lightbox/js/lightbox.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        var state = {empty name="complain_info.complain_state"}0{else}{$complain_info.complain_state}{/empty};
-        if(state == 20 ){
+    $(document).ready(function () {
+        var state = { empty name="complain_info.complain_state" }0{else } { $complain_info.complain_state } {/empty };
+        if (state == 20) {
             $("#state_appeal").addClass('current');
         }
-        if(state == 30 ){
+        if (state == 30) {
             $("#state_appeal").addClass('current');
             $("#state_talk").addClass('current');
         }
-        if(state == 40 ){
+        if (state == 40) {
             $("#state_appeal").addClass('current');
             $("#state_talk").addClass('current');
             $("#state_handle").addClass('current');
         }
-        if(state == 99 ){
+        if (state == 99) {
             $("#state_appeal").addClass('current');
             $("#state_talk").addClass('current');
             $("#state_handle").addClass('current');
             $("#state_finish").addClass('current');
         }
-        $("#add_pic_submit_button").click(function(){
-            if($("#post_add_pic_form").valid()){
+        $("#add_pic_submit_button").click(function () {
+            if ($("#post_add_pic_form").valid()) {
                 $('#post_add_pic_form').submit();
             }
         });
         $('#post_add_pic_form').validate({
-            errorPlacement: function(error, element){
+            errorPlacement: function (error, element) {
                 $(element).next('.field_notice').hide();
                 $(element).after(error);
             },
         });
     });
 </script>
-
-
-
 
 
 {/block}

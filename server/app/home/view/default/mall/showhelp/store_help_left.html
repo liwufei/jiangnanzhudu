@@ -1,7 +1,7 @@
 <div class="content">
-  {notempty name="help_list"}
-      {foreach name="help_list" item="val"}
-      <dl show_id="{$val.helptype_id}">
+    {notempty name="help_list"}
+    {foreach name="help_list" item="val"}
+    <dl show_id="{$val.helptype_id}">
         <dt onclick="show_list('{$val.helptype_id}');">
             <i class="iconfont {$val.helptype_id == $helptype_id ? 'down':'right'}"></i>{$val.helptype_name}
         </dt>
@@ -12,7 +12,8 @@
                 <li class="{$v.help_id == $help_id ? 'curren' : ''}">
                     <i class="iconfont">&#xe6dc;</i>
                     {empty name="v.help_url"}
-                    <a href="{:url('Showhelp/index',['t_id'=>$v.helptype_id,'help_id'=>$v.help_id])}">{$v.help_title}</a>
+                    <a
+                        href="{:url('Showhelp/index',['t_id'=>$v.helptype_id,'help_id'=>$v.help_id])}">{$v.help_title}</a>
                     {else /}
                     <a href="{$v.help_url}">{$v.help_title}</a>
                     {/empty}
@@ -21,23 +22,23 @@
                 {/notempty}
             </ul>
         </dd>
-      </dl>
-  {/foreach}
-  {/notempty}
-    </div>
-    <div class="title">
-      <h3>{$Think.lang.platform_contact}</h3>
-    </div>
-    <div class="content">
-        <ul>
-          {notempty name="phone_array"}
-          {foreach name="phone_array" item="val"}
-          <li>{$Think.lang.phone}{$val}</li>
-         {/foreach}
-          {/notempty}
-          <li>{$Think.lang.email}{$Think.lang.ds_colon}{$Think.config.ds_config.site_email}</li>
-        </ul>
-    </div>
+    </dl>
+    {/foreach}
+    {/notempty}
+</div>
+<div class="title">
+    <h3>{$Think.lang.platform_contact}</h3>
+</div>
+<div class="content">
+    <ul>
+        {notempty name="phone_array"}
+        {foreach name="phone_array" item="val"}
+        <li>{$Think.lang.phone}{$val}</li>
+        {/foreach}
+        {/notempty}
+        <li>{$Think.lang.email}{$Think.lang.ds_colon}{$Think.config.ds_config.site_email}</li>
+    </ul>
+</div>
 
 <script type="text/javascript">
     function show_list(t_id) {

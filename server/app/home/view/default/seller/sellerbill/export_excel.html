@@ -5,15 +5,18 @@
     </div>
   </div>
   <div class="fixed-empty"></div>
-    <table class="tb-type1">
-      <tbody>
-      <tr><td>&nbsp;</td></tr>
-        <tr>
-          <td>
+  <table class="tb-type1">
+    <tbody>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
           {foreach name="export_list" item="v" key="k" }
-          	<a target="_blank" href="?{$Think.server.QUERY_STRING}&curpage={$k}">{$Think.lang.ds_download}{$k} ({$v})</a> | 
+          <a target="_blank" href="?{$Think.server.QUERY_STRING}&curpage={$k}">{$Think.lang.ds_download}{$k} ({$v})</a>
+          |
           {/foreach}
-          </td>
-        </tr>
-    </table>
+        </td>
+      </tr>
+  </table>
 </div>

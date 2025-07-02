@@ -15,7 +15,7 @@
     </ul>
     {else /}
     <div class="warning-option"><i class="iconfont">&#xe64c;&nbsp;</i><span>{$Think.lang.no_record}</span></div>
-   {/notempty}
+    {/notempty}
 </div>
 {notempty name="webchat_list"}
 <div class="pagination">{$show_page|raw}</div>
@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="{$Think.PLUGINS_SITE_ROOT}/perfect-scrollbar.min.css">
 <script type="text/javascript">
     $('#store_chat_log ul.pagination li a').ajaxContent({
-        target:'#store_chat_log'
+        target: '#store_chat_log'
     });
     //自定义滚定条
     $('#chatLogList').perfectScrollbar();

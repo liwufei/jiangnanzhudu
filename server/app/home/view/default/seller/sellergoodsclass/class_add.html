@@ -6,7 +6,8 @@
         <dl>
             <dt><i class="required">*</i>{$Think.lang.store_goods_class_name}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input class="text w200" type="text" name="storegc_name" id="storegc_name" value="{present name='class_info.storegc_name'}{$class_info.storegc_name}{/present}" />
+                <input class="text w200" type="text" name="storegc_name" id="storegc_name"
+                    value="{present name='class_info.storegc_name'}{$class_info.storegc_name}{/present}" />
             </dd>
         </dl>
 
@@ -17,9 +18,11 @@
                     <option value="0">{$Think.lang.store_create_please_choose}</option>
                     {notempty name="goods_class"}
                     {foreach name="goods_class" item="val"}
-                    <option value="{$val.storegc_id}" {if $val.storegc_id == $class_info.storegc_parent_id}selected="selected"{/if}>{$val.storegc_name}</option>
+                    <option value="{$val.storegc_id}" {if
+                        $val.storegc_id==$class_info.storegc_parent_id}selected="selected" {/if}>{$val.storegc_name}
+                    </option>
                     {/foreach}
-                   {/notempty}
+                    {/notempty}
                 </select>
             </dd>
         </dl>
@@ -27,7 +30,8 @@
         <dl>
             <dt>{$Think.lang.store_goods_class_sort}{$Think.lang.ds_colon}</dt>
             <dd>
-                <input class="text w60" type="text" name="storegc_sort" value="{present name='class_info.storegc_sort'}{:intval($class_info.storegc_sort)}{/present}"  />
+                <input class="text w60" type="text" name="storegc_sort"
+                    value="{present name='class_info.storegc_sort'}{:intval($class_info.storegc_sort)}{/present}" />
             </dd>
         </dl>
 
@@ -35,14 +39,12 @@
             <dt>{$Think.lang.store_goods_class_display_state}{$Think.lang.ds_colon}</dt>
             <dd>
                 <label>
-                    <input type="radio" name="storegc_state" value="1"
-                           {present name="class_info.storegc_state"}
-                    {if $class_info.storegc_state == 1}
-                    checked="checked"
-                    {/if}{else}checked="checked"{/present}/>
+                    <input type="radio" name="storegc_state" value="1" {present name="class_info.storegc_state" } {if
+                        $class_info.storegc_state==1} checked="checked" {/if}{else}checked="checked" {/present} />
                     {$Think.lang.store_create_yes}</label>
                 <label>
-                    <input type="radio" name="storegc_state" value="0" {present name="class_info.storegc_state"}{if $class_info.storegc_state == 0 }checked="checked"{/if}{/present} />
+                    <input type="radio" name="storegc_state" value="0" {present name="class_info.storegc_state" }{if
+                        $class_info.storegc_state==0 }checked="checked" {/if}{/present} />
                     {$Think.lang.store_create_no}</label>
             </dd>
         </dl>
@@ -52,32 +54,32 @@
     </form>
 </div>
 <script type="text/javascript">
-    $(function(){
+    $(function () {
         $('#category_form').validate({
             errorLabelContainer: $('#warning'),
-            invalidHandler: function(form, validator) {
+            invalidHandler: function (form, validator) {
                 $('#warning').show();
             },
-            submitHandler:function(form){
+            submitHandler: function (form) {
                 ds_ajaxpost('category_form', 'url', "{:url('Sellergoodsclass/index')}")
             },
-            rules : {
-                storegc_name : {
-                    required : true
+            rules: {
+                storegc_name: {
+                    required: true
                 },
-                storegc_sort : {
-                    number   : true
+                storegc_sort: {
+                    number: true
                 }
             },
-            messages : {
-                storegc_name : {
-                    required : '<i class="iconfont">&#xe64c;</i>{$Think.lang.store_goods_class_name_null}'
+            messages: {
+                storegc_name: {
+                    required: '<i class="iconfont">&#xe64c;</i>{$Think.lang.store_goods_class_name_null}'
 
                 },
-                storegc_sort  : {
-                    number   : '<i class="iconfont">&#xe64c;</i>{$Think.lang.store_goods_class_input_int}'
+                storegc_sort: {
+                    number: '<i class="iconfont">&#xe64c;</i>{$Think.lang.store_goods_class_input_int}'
                 }
             }
         });
     });
-</script> 
+</script>

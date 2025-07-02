@@ -2,16 +2,14 @@
 {block name="member_main"}
 
 
-
-
-
 <form method="post" target="_self">
     <table class="dsm-search-table">
         <tr>
             <th>{$Think.lang.inviter_order_number}</th>
-            <td class="w160"><input type="text" class="text w150" name="orderinviter_order_sn" value="{$Request.param.orderinviter_order_sn}"></td>
+            <td class="w160"><input type="text" class="text w150" name="orderinviter_order_sn"
+                    value="{$Request.param.orderinviter_order_sn}"></td>
             <td class="w70 tc">
-                <input type="submit" class="submit" value="{$Think.lang.ds_search}"/>
+                <input type="submit" class="submit" value="{$Think.lang.ds_search}" />
             </td>
         </tr>
     </table>
@@ -38,14 +36,18 @@
         {/foreach}
         {else/}
         <tr>
-            <td colspan="20" class="norecord"><div class="warning-option"><i>&nbsp;</i><span>{$Think.lang.no_record}</span></div></td>
+            <td colspan="20" class="norecord">
+                <div class="warning-option"><i>&nbsp;</i><span>{$Think.lang.no_record}</span></div>
+            </td>
         </tr>
         {/notempty}
     </tbody>
     <tfoot>
         {notempty name="orderinviter_list"}
         <tr>
-            <td colspan="20"><div class="pagination">{$show_page|raw}</div></td>
+            <td colspan="20">
+                <div class="pagination">{$show_page|raw}</div>
+            </td>
         </tr>
         {/notempty}
     </tfoot>
@@ -53,13 +55,11 @@
 
 
 <script type="text/javascript">
-$(function(){
-    $('#query_start_date').datepicker({dateFormat: 'yy-mm-dd'});
-    $('#query_end_date').datepicker({dateFormat: 'yy-mm-dd'});
-});
+    $(function () {
+        $('#query_start_date').datepicker({ dateFormat: 'yy-mm-dd' });
+        $('#query_end_date').datepicker({ dateFormat: 'yy-mm-dd' });
+    });
 </script>
-
-
 
 
 {/block}

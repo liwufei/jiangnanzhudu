@@ -8,22 +8,30 @@
             <ul class="ds-carousel-skin">
                 {foreach name="recommend_voucher" item="v" }
                 <li style='width: 155px;float:left'>
-                    <div class="dsm-goods-thumb-120"><a target="_blank" href="javascript:void(0);" ds_type="exchangebtn" data-param='{"vid":"{$v.vouchertemplate_id}"}'><img src="{$v.vouchertemplate_customimg}" onerror="this.src='{:ds_get_pic(ATTACH_COMMON,$Think.config.ds_config.default_goods_image)}'"></a>
+                    <div class="dsm-goods-thumb-120"><a target="_blank" href="javascript:void(0);" ds_type="exchangebtn"
+                            data-param='{"vid":"{$v.vouchertemplate_id}"}'><img src="{$v.vouchertemplate_customimg}"
+                                onerror="this.src='{:ds_get_pic(ATTACH_COMMON,$Think.config.ds_config.default_goods_image)}'"></a>
                         <div class="dsm-goods-price"><em>{$v.vouchertemplate_points}{$Think.lang.points_unit}</em></div>
                     </div>
-                    <div class="dsm-goods-name"><a target="_blank" href="javascript:void(0);" ds_type="exchangebtn" data-param='{"vid":"{$v.vouchertemplate_id}"}' title="{$Think.lang.currency}{$v.vouchertemplate_price}{$Think.lang.ds_vouchers}">{$Think.lang.currency}{$v.vouchertemplate_price}{$Think.lang.ds_vouchers}</a></div>
+                    <div class="dsm-goods-name"><a target="_blank" href="javascript:void(0);" ds_type="exchangebtn"
+                            data-param='{"vid":"{$v.vouchertemplate_id}"}'
+                            title="{$Think.lang.currency}{$v.vouchertemplate_price}{$Think.lang.ds_vouchers}">{$Think.lang.currency}{$v.vouchertemplate_price}{$Think.lang.ds_vouchers}</a>
+                    </div>
                 </li>
                 {/foreach}
-                {foreach name="recommend_pointsprod" item="v"  }
+                {foreach name="recommend_pointsprod" item="v" }
                 <li style='width: 155px;float:left'>
-                    <div class="dsm-goods-thumb-120"><a href="{:url('Pointprod/pinfo',['id'=>$v.pgoods_id])}" target="_blank" tile="{$v.pgoods_name}"><img src="{$v.pgoods_image_url}"></a>
+                    <div class="dsm-goods-thumb-120"><a href="{:url('Pointprod/pinfo',['id'=>$v.pgoods_id])}"
+                            target="_blank" tile="{$v.pgoods_name}"><img src="{$v.pgoods_image_url}"></a>
                         <div class="dsm-goods-price"><em>{$v.pgoods_points}{$Think.lang.points_unit}</em></div>
                     </div>
-                    <div class="dsm-goods-name"><a href="{:url('Pointprod/pinfo',['id'=>$v.pgoods_id])}" target="_blank" tile="{$v.pgoods_name}">{$v.pgoods_name}</a></div>
+                    <div class="dsm-goods-name"><a href="{:url('Pointprod/pinfo',['id'=>$v.pgoods_id])}" target="_blank"
+                            tile="{$v.pgoods_name}">{$v.pgoods_name}</a></div>
                 </li>
                 {/foreach}
             </ul>
-            <div class="more"><a target="_blank" href="{:url('Pointshop/index')}">{$Think.lang.enter_points_mall}</a></div>
+            <div class="more"><a target="_blank" href="{:url('Pointshop/index')}">{$Think.lang.enter_points_mall}</a>
+            </div>
         </div>
         {else/}
         <dl class="null-tip">
@@ -38,17 +46,17 @@
 </div>
 
 <script>
-$(function(){
-	//代金券兑换功能
-    $("[ds_type='exchangebtn']").on('click',function(){
-    	var data_str = $(this).attr('data-param');
-	    eval( "data_str = "+data_str);
-            {if session('is_login') != '1'}
+    $(function () {
+        //代金券兑换功能
+        $("[ds_type='exchangebtn']").on('click', function () {
+            var data_str = $(this).attr('data-param');
+            eval("data_str = " + data_str);
+            { if session('is_login') != '1'}
             login_dialog();
-            {else}
-            ajax_form('vexchange', '{$Think.lang.home_voucher_exchangtitle}', "{:url('Pointvoucher/voucherexchange')}?vid="+data_str.vid, 550);
-            {/if}
-	    return false;
+            {else }
+            ajax_form('vexchange', '{$Think.lang.home_voucher_exchangtitle}', "{:url('Pointvoucher/voucherexchange')}?vid=" + data_str.vid, 550);
+            {/if }
+            return false;
+        });
     });
-});
 </script>

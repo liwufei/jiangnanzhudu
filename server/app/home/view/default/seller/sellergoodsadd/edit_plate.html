@@ -10,10 +10,12 @@
                     <select name="plate_top">
                         <option>{$Think.lang.ds_please_choose}</option>
                         {notempty name="plate_list.1"}
-                       {foreach name="plate_list.1" item="val"}
-                        <option value="{$val.storeplate_id}" {if $plateid.plateid_top == $val.storeplate_id}selected="selected"{/if}>{$val.storeplate_name}</option>
-                       {/foreach}
-                       {/notempty}
+                        {foreach name="plate_list.1" item="val"}
+                        <option value="{$val.storeplate_id}" {if
+                            $plateid.plateid_top==$val.storeplate_id}selected="selected" {/if}>{$val.storeplate_name}
+                        </option>
+                        {/foreach}
+                        {/notempty}
                     </select>
                 </p>
                 <p>
@@ -21,23 +23,25 @@
                     <select name="plate_bottom">
                         <option>{$Think.lang.ds_please_choose}</option>
                         {notempty name="plate_list.0"}
-                       {foreach name="plate_list.0" item="val"}
-                        <option value="{$val.storeplate_id}" {if $plateid.plateid_bottom == $val.storeplate_id}selected="selected"{/if}>{$val.storeplate_name}</option>
-                       {/foreach}
-                       {/notempty}
+                        {foreach name="plate_list.0" item="val"}
+                        <option value="{$val.storeplate_id}" {if
+                            $plateid.plateid_bottom==$val.storeplate_id}selected="selected" {/if}>{$val.storeplate_name}
+                        </option>
+                        {/foreach}
+                        {/notempty}
                     </select>
                 </p>
                 <p class="hint">{$Think.lang.all_advertisements_will_blank}</p>
             </dd>
         </dl>
         <div class="bottom">
-            <input type="submit" class="submit" value="{$Think.lang.ds_submit}"/>
+            <input type="submit" class="submit" value="{$Think.lang.ds_submit}" />
         </div>
     </form>
 </div>
 <script>
-    $(function(){
-        $('#plate_form').submit(function(){
+    $(function () {
+        $('#plate_form').submit(function () {
             ds_ajaxpost('plate_form');
             return false;
         });

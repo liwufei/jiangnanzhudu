@@ -8,12 +8,13 @@
     <div class="mall_desc">
         {notempty name="article_list"}
         {foreach name="article_list" item="art" length='4'}
-        <dl> 
+        <dl>
             <dt>{$art.ac_name}</dt>
             <dd>
                 {notempty name="art.list"}
                 {foreach name="art.list" item="list"}
-                <a href="{if $list.article_url !=''}{$list.article_url}{else /}{:url('Article/show',['article_id'=>$list.article_id])}{/if}">{$list.article_title}</a>
+                <a
+                    href="{if $list.article_url !=''}{$list.article_url}{else /}{:url('Article/show',['article_id'=>$list.article_id])}{/if}">{$list.article_title}</a>
                 {/foreach}
                 {/notempty}
             </dd>
@@ -24,14 +25,10 @@
             <dt>{$Think.lang.ds_mobile_mall}</dt>
             <dd>
                 <a href="#" class="join">
-                    <img src="{$Think.HOME_SITE_URL}/qrcode?url={$Think.config.ds_config.h5_site_url}" width="105" height="105" >
+                    <img src="{$Think.HOME_SITE_URL}/qrcode?url={$Think.config.ds_config.h5_site_url}" width="105"
+                        height="105">
                 </a>
-            </dd> 
+            </dd>
         </dl>
     </div>
 </div>
-
-
-
-
-
