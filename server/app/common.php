@@ -3,22 +3,25 @@
 use think\facade\Db;
 
 /* 引用全局定义 */
+
 require __DIR__ . '/common_global.php';
 /* 商品相关调用 */
 require __DIR__ . '/common_goods.php';
 /* 图片上传、生成缩略图、删除等操作调用 */
 require __DIR__ . '/common_upload.php';
 
-function ds_validate($name) {
-    $name = preg_replace_callback('/([-_]+([a-z]{1}))/i', function($matches) {
+function ds_validate($name)
+{
+    $name = preg_replace_callback('/([-_]+([a-z]{1}))/i', function ($matches) {
         return strtoupper($matches[2]);
     }, $name);
     $class_name = '\app\common\validate\\' . ucfirst($name);
     return new $class_name;
 }
 
-function model($name, $layer = 'model') {
-    $name = preg_replace_callback('/([-_]+([a-z]{1}))/i', function($matches) {
+function model($name, $layer = 'model')
+{
+    $name = preg_replace_callback('/([-_]+([a-z]{1}))/i', function ($matches) {
         return strtoupper($matches[2]);
     }, $name);
     $class_name = '\app\common\\' . $layer . '\\' . ucfirst($name);
@@ -30,16 +33,17 @@ function model($name, $layer = 'model') {
  * @param type $clean_text
  * @return type
  */
-function remove_special_words($clean_text) {
+function remove_special_words($clean_text)
+{
     //不过滤变量
-    $filter = ['modify_pwd', 'modify_mobile', 'modify_email','modify_paypwd', 'unionpay', 'unionpay_h5',];
-    if(in_array($clean_text, $filter)){
+    $filter = ['modify_pwd', 'modify_mobile', 'modify_email', 'modify_paypwd', 'unionpay', 'unionpay_h5',];
+    if (in_array($clean_text, $filter)) {
         return $clean_text;
     }
-    
+
     $farr = [
-            "/select|join|where|drop|like|modify|rename|insert|update|table|database|alter|truncate|union|into|load_file|outfile/is"
-        ];
+        "/select|join|where|drop|like|modify|rename|insert|update|table|database|alter|truncate|union|into|load_file|outfile/is"
+    ];
     $clean_text = preg_replace($farr, '', $clean_text);
     return $clean_text;
 }
@@ -49,21 +53,23 @@ function remove_special_words($clean_text) {
  * @param type $string
  * @return type
  */
-function removeEmojis($clean_text) {
-    $clean_text = preg_replace_callback(//执行一个正则表达式搜索并且使用一个回调进行替换
-            '/./u',
-            function (array $match) {
-                return strlen($match[0]) >= 4 ? '' : $match[0];
-            },
-            $clean_text);
+function removeEmojis($clean_text)
+{
+    $clean_text = preg_replace_callback( //执行一个正则表达式搜索并且使用一个回调进行替换
+        '/./u',
+        function (array $match) {
+            return strlen($match[0]) >= 4 ? '' : $match[0];
+        },
+        $clean_text
+    );
     return $clean_text;
 }
 
-/*
+/**
  * 更换数组的键值 为了应对 ->key
  */
-
-function ds_change_arraykey($array, $key) {
+function ds_change_arraykey($array, $key)
+{
     $data = array();
     foreach ($array as $value) {
         $data[$value[$key]] = $value;
@@ -79,15 +85,16 @@ function ds_change_arraykey($array, $key) {
  * @param type $value 数值
  * @return type
  */
-function ds_getvalue_byname($table, $field, $name, $value) {
+function ds_getvalue_byname($table, $field, $name, $value)
+{
     return Db::name($table)->where($field, $name)->value($value);
 }
 
-/*
+/**
  * 编辑器内容
  */
-
-function build_editor($params = array()) {
+function build_editor($params = array())
+{
     $name = isset($params['name']) ? $params['name'] : null;
     $theme = isset($params['theme']) ? $params['theme'] : 'normal';
     $content = isset($params['content']) ? $params['content'] : null;
@@ -106,7 +113,8 @@ function build_editor($params = array()) {
            'horizontal', 'date', 'time', 'spechars', '|',   
            'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',   
            'searchreplace', 'help', 'drafts', 'charts'
-       ]", 'simple' => " ['fullscreen', 'source', 'undo', 'redo', 'bold']",
+       ]",
+        'simple' => " ['fullscreen', 'source', 'undo', 'redo', 'bold']",
     );
     switch ($theme) {
         case 'simple':
@@ -157,7 +165,8 @@ EOT;
  * @param type $result  返回数据
  * @param type $$requestMethod  返回请求Method
  */
-function ds_json_encode($code, $message = '', $result = '', $requestMethod = '', $if_exit = true) {
+function ds_json_encode($code, $message = '', $result = '', $requestMethod = '', $if_exit = true)
+{
     $data = array('code' => $code, 'message' => $message, 'result' => $result, 'requestMethod' => $requestMethod);
     if (!empty($_GET['callback'])) {
         echo $_GET['callback'] . '(' . json_encode($data) . ')';
@@ -176,7 +185,8 @@ function ds_json_encode($code, $message = '', $result = '', $requestMethod = '',
  * @param unknown $data
  * @return multitype:unknown
  */
-function ds_callback($code, $msg = '', $data = array()) {
+function ds_callback($code, $msg = '', $data = array())
+{
     return array('code' => $code, 'msg' => $msg, 'data' => $data);
 }
 
@@ -186,7 +196,8 @@ function ds_callback($code, $msg = '', $data = array()) {
  * @param  string $delimiter 数字和单位分隔符
  * @return string            格式化后的带单位的大小
  */
-function format_bytes($size, $delimiter = '') {
+function format_bytes($size, $delimiter = '')
+{
     $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
     for ($i = 0; $size >= 1024 && $i < 5; $i++)
         $size /= 1024;
@@ -202,7 +213,8 @@ function format_bytes($size, $delimiter = '') {
  * @param string $extrajs 扩展JS
  * @param int $time 停留时间
  */
-function ds_show_dialog($message = '', $url = '', $alert_type = 'error', $extrajs = '', $time = 2) {
+function ds_show_dialog($message = '', $url = '', $alert_type = 'error', $extrajs = '', $time = 2)
+{
     $message = str_replace("'", "\\'", strip_tags($message));
 
     $paramjs = null;
@@ -242,7 +254,8 @@ function ds_show_dialog($message = '', $url = '', $alert_type = 'error', $extraj
  * @param
  * @return string 字符串类型的返回结果
  */
-function get_referer() {
+function get_referer()
+{
     return empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
 }
 
@@ -253,7 +266,8 @@ function get_referer() {
  * @param string $key 密钥
  * @return string 返回加密结果
  */
-function ds_encrypt($txt, $key = '') {
+function ds_encrypt($txt, $key = '')
+{
     if (empty($txt))
         return $txt;
     if (empty($key))
@@ -269,7 +283,7 @@ function ds_encrypt($txt, $key = '') {
     $nhnum = $nh1 + $nh2 + $nh3;
     $knum = 0;
     $i = 0;
-    while (isset($key{$i}))
+    while (isset($key[$i]))
         $knum += ord($key[$i++]);
     $mdKey = substr(md5(md5(md5($key . $ch1) . $ch2 . $ikey) . $ch3), $nhnum % 8, $knum % 8 + 16);
     $txt = base64_encode(TIMESTAMP . '_' . $txt);
@@ -298,7 +312,8 @@ function ds_encrypt($txt, $key = '') {
  * @param string $key 密匙
  * @return string 字符串类型的返回结果
  */
-function ds_decrypt($txt, $key = '', $ttl = 0) {
+function ds_decrypt($txt, $key = '', $ttl = 0)
+{
     if (empty($txt))
         return $txt;
     if (empty($key))
@@ -309,7 +324,7 @@ function ds_decrypt($txt, $key = '', $ttl = 0) {
     $knum = 0;
     $i = 0;
     $tlen = @strlen($txt);
-    while (isset($key{$i}))
+    while (isset($key[$i]))
         $knum += ord($key[$i++]);
     $ch1 = @$txt[$knum % $tlen];
     $nh1 = strpos($chars, $ch1);
@@ -355,7 +370,8 @@ function ds_decrypt($txt, $key = '', $ttl = 0) {
  * @param array $ignore_dir 需要忽略的目录或文件
  * @return array 数据格式的返回结果
  */
-function read_file_list($path, &$file_list, $ignore_dir = array()) {
+function read_file_list($path, &$file_list, $ignore_dir = array())
+{
     $path = rtrim($path, '/');
     if (is_dir($path)) {
         $handle = @opendir($path);
@@ -386,7 +402,8 @@ function read_file_list($path, &$file_list, $ignore_dir = array()) {
  * @param int $price
  * @return string    $price_format
  */
-function ds_price_format($price) {
+function ds_price_format($price)
+{
     $price_format = number_format($price, 2, '.', '');
     return $price_format;
 }
@@ -397,7 +414,8 @@ function ds_price_format($price) {
  * @param int $price
  * @return string    $price_format
  */
-function ds_price_format_forlist($price) {
+function ds_price_format_forlist($price)
+{
     if ($price >= 10000) {
         return number_format(floor($price / 100) / 100, 2, '.', '') . lang('ten_thousand');
     } else {
@@ -412,7 +430,8 @@ function ds_price_format_forlist($price) {
  * @param array $param 内容参数数组
  * @return string 通知内容
  */
-function ds_replace_text($message, $param) {
+function ds_replace_text($message, $param)
+{
     if (!is_array($param))
         return false;
     foreach ($param as $k => $v) {
@@ -430,11 +449,21 @@ function ds_replace_text($message, $param) {
  * @param int $length 切割长度
  * @param string $dot 尾缀
  */
-function str_cut($string, $length, $dot = '') {
+function str_cut($string, $length, $dot = '')
+{
     $string = str_replace(array(
-        '&nbsp;', '&amp;', '&quot;', '&#039;', '&ldquo;', '&rdquo;', '&mdash;', '&lt;', '&gt;',
-        '&middot;', '&hellip;'
-            ), array(' ', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), $string);
+        '&nbsp;',
+        '&amp;',
+        '&quot;',
+        '&#039;',
+        '&ldquo;',
+        '&rdquo;',
+        '&mdash;',
+        '&lt;',
+        '&gt;',
+        '&middot;',
+        '&hellip;'
+    ), array(' ', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), $string);
     $strlen = strlen($string);
     if ($strlen <= $length)
         return $string;
@@ -481,11 +510,11 @@ function str_cut($string, $length, $dot = '') {
     return $strcut . $dot;
 }
 
-/*
+/**
  * 重写$_SERVER['REQUREST_URI']
  */
-
-function request_uri() {
+function request_uri()
+{
     if (isset($_SERVER['REQUEST_URI'])) {
         $uri = $_SERVER['REQUEST_URI'];
     } else {
@@ -499,13 +528,13 @@ function request_uri() {
 }
 
 
-
-function get_member_id_by_XDSKEY() {
+function get_member_id_by_XDSKEY()
+{
     $key = request()->header('X-DS-KEY');
     if (!$key) {
         return;
     }
-    
+
     $condition = array();
     $condition[] = array('platform_type', '=', 'member');
     $condition[] = array('platform_token', '=', $key);
@@ -518,7 +547,8 @@ function get_member_id_by_XDSKEY() {
     }
 }
 
-function get_member_idcard_image($member_image) {
+function get_member_idcard_image($member_image)
+{
     if ($member_image) {
         return ds_get_pic(ATTACH_IDCARD_IMAGE, $member_image);
     }
@@ -532,15 +562,16 @@ function get_member_idcard_image($member_image) {
  * @param string $member_avatar
  * @return string
  */
-function get_member_avatar($member_avatar) {
+function get_member_avatar($member_avatar)
+{
     if (empty($member_avatar)) {
-        return ds_get_pic(ATTACH_COMMON,config('ds_config.default_user_portrait'));
+        return ds_get_pic(ATTACH_COMMON, config('ds_config.default_user_portrait'));
     } else {
         $url = ds_get_pic(ATTACH_AVATAR, $member_avatar);
         if ($url) {
             return $url;
         } else {
-            return ds_get_pic(ATTACH_COMMON,config('ds_config.default_user_portrait'));
+            return ds_get_pic(ATTACH_COMMON, config('ds_config.default_user_portrait'));
         }
     }
 }
@@ -550,10 +581,11 @@ function get_member_avatar($member_avatar) {
  * @param string $member_id
  * @return string
  */
-function get_member_avatar_for_id($id) {
-    $member_model=model('member');
-    $member_info=$member_model->getMemberInfoByID($id);
-    if($member_info){
+function get_member_avatar_for_id($id)
+{
+    $member_model = model('member');
+    $member_info = $member_model->getMemberInfoByID($id);
+    if ($member_info) {
         return get_member_avatar($member_info['member_avatar']);
     }
 }
@@ -565,7 +597,8 @@ function get_member_avatar_for_id($id) {
  * @param string $type 查询类型 store_logo/store_avatar
  * @return string
  */
-function get_store_logo($img, $type = 'store_avatar') {
+function get_store_logo($img, $type = 'store_avatar')
+{
     $linfo = explode('_', $img);
     $store_id = $linfo['0'];
     if ($store_id == 'alioss') {
@@ -595,24 +628,25 @@ function get_store_logo($img, $type = 'store_avatar') {
     }
 }
 
-function get_adv_code($adv_code) {
+function get_adv_code($adv_code)
+{
     $url = ds_get_pic(ATTACH_ADV, $adv_code);
     if (!$url) {
-        return ds_get_pic(ATTACH_COMMON,config('ds_config.default_goods_image'));
+        return ds_get_pic(ATTACH_COMMON, config('ds_config.default_goods_image'));
     } else {
         return $url;
     }
 }
 
-function get_appadv_code($adv_code) {
+function get_appadv_code($adv_code)
+{
     $url = ds_get_pic(ATTACH_APPADV, $adv_code);
     if (!$url) {
-        return ds_get_pic(ATTACH_COMMON,config('ds_config.default_goods_image'));
+        return ds_get_pic(ATTACH_COMMON, config('ds_config.default_goods_image'));
     } else {
         return $url;
     }
 }
-
 
 /**
  * 获取用户相册图片
@@ -620,10 +654,11 @@ function get_appadv_code($adv_code) {
  * @param type $ap_cover
  * @return type
  */
-function get_snsalbumpic($user_id, $ap_cover) {
+function get_snsalbumpic($user_id, $ap_cover)
+{
     $url = ds_get_pic(ATTACH_MALBUM . '/' . $user_id, $ap_cover);
     if (!$url) {
-        return ds_get_pic(ATTACH_COMMON,config('ds_config.default_goods_image'));
+        return ds_get_pic(ATTACH_COMMON, config('ds_config.default_goods_image'));
     } else {
         return $url;
     }
@@ -632,14 +667,16 @@ function get_snsalbumpic($user_id, $ap_cover) {
 /**
  * 获取开店申请图片
  */
-function get_store_joinin_imageurl($image_name = '') {
+function get_store_joinin_imageurl($image_name = '')
+{
     return ds_get_pic(ATTACH_STORE_JOININ, $image_name);
 }
 
 /**
  * 获取提货点图片
  */
-function get_chain_imageurl($image_name = '') {
+function get_chain_imageurl($image_name = '')
+{
     return ds_get_pic(ATTACH_CHAIN, $image_name);
 }
 
@@ -650,7 +687,8 @@ function get_chain_imageurl($image_name = '') {
  * @param int $numeric 是否只产生数字随机数 1是0否
  * @return string
  */
-function random($length, $numeric = 0) {
+function random($length, $numeric = 0)
+{
     $seed = base_convert(md5(microtime() . $_SERVER['DOCUMENT_ROOT']), 16, $numeric ? 10 : 35);
     $seed = $numeric ? (str_replace('0', '', $seed) . '012340567890') : ($seed . 'zZ' . strtoupper($seed));
     $hash = '';
@@ -664,8 +702,9 @@ function random($length, $numeric = 0) {
 /**
  * sns表情标示符替换为html
  */
-function parsesmiles($message,$type=0) {
-    if ($type==1) {
+function parsesmiles($message, $type = 0)
+{
+    if ($type == 1) {
         $chat_goods = $message;
         $message = '<div class="dstouch-chat-product"> <a href="' . HOME_SITE_URL . '/goods/index?goods_id=' . $chat_goods['goods_id'] . '" target="_blank"><div class="goods-pic"><img src="' . $chat_goods['goods_image_url'] . '" alt=""/></div><div class="goods-info"><div class="goods-name">' . $chat_goods['goods_name'] . '</div><div class="goods-price">￥' . $chat_goods['goods_price'] . "</div></div></a> </div>";
     } else {
@@ -675,7 +714,7 @@ function parsesmiles($message,$type=0) {
             if (!empty($smilies_array) && is_array($smilies_array)) {
                 $imagesurl = PLUGINS_SITE_ROOT . '/js' . '/smilies' . '/images' . '/';
                 $replace_arr = array();
-                foreach ($smilies_array['replacearray'] AS $key => $smiley) {
+                foreach ($smilies_array['replacearray'] as $key => $smiley) {
                     $replace_arr[$key] = '<img src="' . $imagesurl . $smiley['imagename'] . '" title="' . $smiley['desc'] . '" border="0" alt="' . $imagesurl . $smiley['desc'] . '" />';
                 }
 
@@ -698,16 +737,17 @@ function parsesmiles($message,$type=0) {
  * @param int $page_limitstart 分页初始limit值
  * @return array array('hasmore'=>'是否显示更多连接','limitstart'=>'加载的limit开始值','delay_eachnum'=>'经过验证修改的$delay_eachnum值');
  */
-function lazypage($delay_eachnum, $delay_page, $count, $ispage = false, $page_nowpage = 1, $page_eachnum = 1, $page_limitstart = 1) {
+function lazypage($delay_eachnum, $delay_page, $count, $ispage = false, $page_nowpage = 1, $page_eachnum = 1, $page_limitstart = 1)
+{
     //是否有多余
     $hasmore = true;
     $limitstart = 0;
     if ($ispage == true) {
-        if ($delay_eachnum < $page_eachnum) {//当延时加载每页条数小于分页的每页条数时候实现延时加载，否则按照普通分页程序流程处理
+        if ($delay_eachnum < $page_eachnum) { //当延时加载每页条数小于分页的每页条数时候实现延时加载，否则按照普通分页程序流程处理
             $page_totlepage = ceil($count / $page_eachnum);
             //计算limit的开始值
             $limitstart = $page_limitstart + ($delay_page - 1) * $delay_eachnum;
-            if ($page_totlepage > $page_nowpage) {//当前不为最后一页
+            if ($page_totlepage > $page_nowpage) { //当前不为最后一页
                 if ($delay_page >= $page_eachnum / $delay_eachnum) {
                     $hasmore = false;
                 }
@@ -715,7 +755,7 @@ function lazypage($delay_eachnum, $delay_page, $count, $ispage = false, $page_no
                 if ($hasmore == false && $page_eachnum % $delay_eachnum > 0) {
                     $delay_eachnum = $page_eachnum % $delay_eachnum;
                 }
-            } else {//当前最后一页
+            } else { //当前最后一页
                 $showcount = ($page_totlepage - 1) * $page_eachnum + $delay_eachnum * $delay_page; //已经显示的记录总数
                 if ($count <= $showcount) {
                     $hasmore = false;
@@ -743,7 +783,8 @@ function lazypage($delay_eachnum, $delay_page, $count, $ispage = false, $page_no
  * @param int $type 1一维数组2二维数组
  * @return array
  */
-function array_under_reset($array, $key, $type = 1) {
+function array_under_reset($array, $key, $type = 1)
+{
     if (is_array($array)) {
         $tmp = array();
         foreach ($array as $v) {
@@ -767,7 +808,8 @@ function array_under_reset($array, $key, $type = 1) {
  * @param callable $callback 传递非boolean值时 通过is_callable进行判断 失败抛出异常 成功则将$key作为参数进行回调
  * @return mixed
  */
-function rkcache($key, $callback = false) {
+function rkcache($key, $callback = false)
+{
     $value = cache($key);
     if (empty($value) && $callback !== false) {
         if ($callback === true) {
@@ -791,7 +833,8 @@ function rkcache($key, $callback = false) {
  * @param int $expire 缓存时间 单位秒 null代表不过期
  * @return boolean
  */
-function wkcache($key, $value, $expire = 7200) {
+function wkcache($key, $value, $expire = 7200)
+{
     return cache($key, $value, $expire);
 }
 
@@ -801,7 +844,8 @@ function wkcache($key, $value, $expire = 7200) {
  * @param string $key 缓存名称
  * @return boolean
  */
-function dkcache($key) {
+function dkcache($key)
+{
     return cache($key, NULL);
 }
 
@@ -812,7 +856,8 @@ function dkcache($key) {
  * @param string $prefix 键值前缀
  * @return array/bool
  */
-function rcache($key = null, $prefix = '') {
+function rcache($key = null, $prefix = '')
+{
     if ($key === null || !config('ds_config.cache_open'))
         return array();
     if (!empty($prefix)) {
@@ -834,7 +879,8 @@ function rcache($key = null, $prefix = '') {
  * @param int $expire 缓存周期  单位分，0为永久缓存
  * @return bool 返回值
  */
-function wcache($key = null, $data = array(), $prefix = '', $expire = 3600) {
+function wcache($key = null, $data = array(), $prefix = '', $expire = 3600)
+{
     if ($key === null || !config('ds_config.cache_open') || !is_array($data))
         return;
 
@@ -854,7 +900,8 @@ function wcache($key = null, $data = array(), $prefix = '', $expire = 3600) {
  * @param string $prefix 键值前缀
  * @return boolean
  */
-function dcache($key = null, $prefix = '') {
+function dcache($key = null, $prefix = '')
+{
     if ($key === null || !config('ds_config.cache_open'))
         return true;
     if (!empty($prefix)) {
@@ -870,11 +917,10 @@ function dcache($key = null, $prefix = '') {
  *
  * @return string
  */
-function get_chat() {
+function get_chat()
+{
     return Chat::getChatHtml();
 }
-
-
 
 /**
  * 生成20位编号(时间+微秒+随机数+会员ID%1000)，该值会传给第三方支付接口
@@ -882,7 +928,8 @@ function get_chat() {
  * 1000个会员同一微秒提订单，重复机率为1/100
  * @return string
  */
-function makePaySn($member_id) {
+function makePaySn($member_id)
+{
     return date('ymdHis', TIMESTAMP) . sprintf('%03d', (float) microtime() * 1000) . mt_rand(10, 99) . sprintf('%03d', intval($member_id) % 1000);
 }
 
@@ -891,7 +938,8 @@ function makePaySn($member_id) {
  * @param $param array $store_info
  * @return string
  */
-function get_store_state_classname($store_info) {
+function get_store_state_classname($store_info)
+{
     $result = 'open';
     if (intval($store_info['store_state']) === 1) {
         $store_endtime = intval($store_info['store_endtime']);
@@ -911,12 +959,13 @@ function get_store_state_classname($store_info) {
 
 /**
  * 将字符部分加密并输出
- * @param unknown $str
- * @param unknown $start 从第几个位置开始加密(从1开始)
- * @param unknown $length 连续加密多少位
+ * @param $str
+ * @param $start 从第几个位置开始加密(从1开始)
+ * @param $length 连续加密多少位
  * @return string
  */
-function encrypt_show($str, $start, $length) {
+function encrypt_show($str, $start, $length)
+{
     $end = $start - 1 + $length;
     $array = str_split($str);
     foreach ($array as $k => $v) {
@@ -936,7 +985,8 @@ function encrypt_show($str, $start, $length) {
  * @param bool|false $debug 调试开启 默认false
  * @return mixed
  */
-function http_request($url, $method = "GET", $postfields = null, $headers = array(), $debug = false) {
+function http_request($url, $method = "GET", $postfields = null, $headers = array(), $debug = false)
+{
     $method = strtoupper($method);
     $ci = curl_init();
     /* Curl settings */
@@ -988,8 +1038,9 @@ function http_request($url, $method = "GET", $postfields = null, $headers = arra
  * Layer 提交成功返回函数
  * @param type $message
  */
-function dsLayerOpenSuccess($msg = '', $url = '') {
-//    echo "<script>var index = parent.layer.getFrameIndex(window.name);parent.layer.close(index);parent.location.reload();</script>";
+function dsLayerOpenSuccess($msg = '', $url = '')
+{
+    // echo "<script>var index = parent.layer.getFrameIndex(window.name);parent.layer.close(index);parent.location.reload();</script>";
     $url_js = empty($url) ? "parent.location.reload();" : "parent.location.href='" . $url . "';";
 
     $str = "<script>";
@@ -999,7 +1050,6 @@ function dsLayerOpenSuccess($msg = '', $url = '') {
     exit;
 }
 
-
 /**
  * 截取指定长度的字符
  * @param type $string  内容
@@ -1007,7 +1057,8 @@ function dsLayerOpenSuccess($msg = '', $url = '') {
  * @param type $length 长度
  * @return type
  */
-function ds_substing($string, $start = 0, $length = 80) {
+function ds_substing($string, $start = 0, $length = 80)
+{
     $string = strip_tags($string);
     $string = preg_replace('/\s/', '', $string);
     return mb_substr($string, $start, $length);
@@ -1018,7 +1069,8 @@ function ds_substing($string, $start = 0, $length = 80) {
  * @param type $ids
  * @return boolean
  */
-function ds_delete_param($ids) {
+function ds_delete_param($ids)
+{
     //转换为数组
     $ids_array = explode(',', $ids);
     //数组值转为整数型
@@ -1031,7 +1083,8 @@ function ds_delete_param($ids) {
 }
 
 //根据USER_AGENT 获取系统名称
-function getOSFromUserAgent() {
+function getOSFromUserAgent()
+{
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
     $osPatterns = array(
         '/windows nt 6.2/i' => 'Windows 8',
@@ -1078,17 +1131,19 @@ function getOSFromUserAgent() {
         if (preg_match($pattern, $userAgent)) {
             return $os;
         }
-    }   
+    }
     return '未知系统';
 }
 
 //获取来源
-function get_clienttype(){
-    return request()->header('from-clienttype') != null? request()->header('from-clienttype'):'unknow';
+function get_clienttype()
+{
+    return request()->header('from-clienttype') != null ? request()->header('from-clienttype') : 'unknow';
 }
 
 //获取指定长度的随机字符串
-function get_rand_str($length = 6) {
+function get_rand_str($length = 6)
+{
     $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     $str = '';
     for ($i = 0; $i < $length; $i++) {
@@ -1098,6 +1153,7 @@ function get_rand_str($length = 6) {
 }
 
 //获取随机昵称
-function get_rand_nickname($prefix='昵称'){
-    return $prefix.rand(100000,999999);
+function get_rand_nickname($prefix = '昵称')
+{
+    return $prefix . rand(100000, 999999);
 }

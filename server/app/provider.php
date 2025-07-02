@@ -1,4 +1,5 @@
 <?php
+
 use app\ExceptionHandle;
 use app\Request;
 
@@ -6,5 +7,5 @@ use app\Request;
 return [
     'think\Request'          => Request::class,
     'think\exception\Handle' => ExceptionHandle::class,
-	'think\Paginator' => '\app\common\paginator\Bootstrap',  //修改为分页类所在目录
+    'think\Paginator' => '\app\common\paginator\Bootstrap',  //修改为分页类所在目录
 ];

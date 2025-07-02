@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
     //列表下拉
-    $('img[ds_type="flex"]').click(function() {
+    $('img[ds_type="flex"]').click(function () {
         var status = $(this).attr('status');
         if (status == 'open') {
             var pr = $(this).parent('td').parent('tr');
@@ -11,11 +11,11 @@ $(document).ready(function() {
             $.ajax({
                 url: ADMINSITEURL + '/Goodsclass/goods_class.html?ajax=1&gc_parent_id=' + id,
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     var src = '';
                     for (var i = 0; i < data.length; i++) {
                         var tmp_vertline = "<img class='preimg' src='" + ADMINSITEROOT + "/images/treetable/vertline.gif'/>";
-                        src += "<tr id='ds_row_"+ data[i].gc_id +"' class='" + pr.attr('class') + " row" + id + "'>";
+                        src += "<tr id='ds_row_" + data[i].gc_id + "' class='" + pr.attr('class') + " row" + id + "'>";
                         src += "<td class='w36'><input type='checkbox' name='check_gc_id[]' value='" + data[i].gc_id + "' class='checkitem'>";
                         //图片
                         if (data[i].have_child == 1) {
@@ -41,7 +41,7 @@ $(document).ready(function() {
                         src += " <span title='可编辑下级分类名称' required='1' fieldid='" + data[i].gc_id + "' ajax_branch='goods_class_name' fieldname='gc_name' ds_type='inline_edit' class='editable tooltip'>" + data[i].gc_name + "</span>";
                         //新增下级
                         if (data[i].deep < 3) {
-                            src += "<a class='btn-add-nofloat marginleft' href='"+ADMINSITEURL+"/Goodsclass/goods_class_add.html?gc_parent_id=" + data[i].gc_id + "'><span>新增下级</span></a>";
+                            src += "<a class='btn-add-nofloat marginleft' href='" + ADMINSITEURL + "/Goodsclass/goods_class_add.html?gc_parent_id=" + data[i].gc_id + "'><span>新增下级</span></a>";
                         }
                         src += "</td>";
                         //是否显示
@@ -57,7 +57,7 @@ $(document).ready(function() {
                         src += "<td>" + data[i].type_name + "</td>";
                         //分佣
                         src += "<td>" + data[i].commis_rate + " %</td>";
-                        
+
                         //虚拟
                         if (data[i].gc_virtual == 1) {
                             src += "<td>虚拟</td>";
@@ -66,7 +66,7 @@ $(document).ready(function() {
                         }
                         //操作
                         src += "<td class='w84'>";
-                        src += "<a href='"+ADMINSITEURL+"/Goodsclass/goods_class_edit.html?gc_id=" + data[i].gc_id + "'>编辑</a>";
+                        src += "<a href='" + ADMINSITEURL + "/Goodsclass/goods_class_edit.html?gc_id=" + data[i].gc_id + "'>编辑</a>";
                         src += " | <a href=\"javascript:dsLayerConfirm('" + ADMINSITEURL + "/Goodsclass/goods_class_del/gc_id/" + data[i].gc_id + "','您确定要删除吗'," + data[i].gc_id + ");\">删除</a>";
                         src += "</td>";
                         src += "</tr>";
@@ -81,7 +81,7 @@ $(document).ready(function() {
                     $.getScript(ADMINSITEROOT + "/js/jquery.edit.js");
                     $.getScript(ADMINSITEROOT + "/js/jquery.goods_class.js");
                 },
-                error: function() {
+                error: function () {
                     alert('获取信息失败');
                 }
             });

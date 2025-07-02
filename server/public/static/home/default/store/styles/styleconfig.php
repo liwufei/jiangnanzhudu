@@ -7,4 +7,3 @@ $style_data = array(
     'style4' => array('truename' => '木纹爱心宠物'),
     'style5' => array('truename' => '纯色简约线条')*/
 );
-?>

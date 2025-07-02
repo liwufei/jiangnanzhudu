@@ -1,8 +1,9 @@
 <?php
+
 namespace excel;
+
 /**
  * 生成Excel文件类
- *
  */
 class Excel
 {
@@ -35,6 +36,7 @@ class Excel
      * @var array
      */
     private $lines = array();
+
     /**
      * 工作表(数组)
      *
@@ -42,6 +44,7 @@ class Excel
      * @var array
      */
     private $worksheets = array();
+
     /**
      * 单元格样式
      * @access private
@@ -181,11 +184,9 @@ class Excel
         header("Content-Type: application/vnd.ms-excel");
         if (preg_match("/MSIE/", $ua)) {
             header('Content-Disposition: attachment; filename="' . $encoded_filename . '.xls"');
-        }
-        else if (preg_match("/Firefox/", $ua)) {
+        } else if (preg_match("/Firefox/", $ua)) {
             header('Content-Disposition: attachment; filename*="utf8\'\'' . $filename . '.xls"');
-        }
-        else {
+        } else {
             header('Content-Disposition: attachment; filename="' . $filename . '.xls"');
         }
         header('Cache-Control: max-age=0');
@@ -223,26 +224,20 @@ class Excel
                 $content = mb_convert_encoding($content, $to, $from);
                 eval("\$content = $content;");
                 return $content;
-            }
-            else {
+            } else {
                 return mb_convert_encoding($content, $to, $from);
             }
-        }
-        elseif (function_exists('iconv')) {
+        } elseif (function_exists('iconv')) {
             if (is_array($content)) {
                 $content = var_export($content, true);
                 $content = iconv($from, $to, $content);
                 eval("\$content = $content;");
                 return $content;
-            }
-            else {
+            } else {
                 return iconv($from, $to, $content);
             }
-        }
-        else {
+        } else {
             return $content;
         }
     }
 }
-
-?>

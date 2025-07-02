@@ -22,7 +22,7 @@ function addCompare(gid) {
                 if (data.done == true) {
                     $("[ds_type='compare_" + gid + "']").addClass('selected');
                     loadCompare(true);
-                    $(".top #content-compare").animate({right: '40px'});
+                    $(".top #content-compare").animate({ right: '40px' });
                 } else {
                     layer.alert(data.msg);
                 }
@@ -56,7 +56,7 @@ function delCompare(gid, type) {
                     loadCompare(true);
                     //$("#content-compare").animate({right: '40px'});
                 } else {
-                    go(HOMESITEURL + '/Compare/index/' + (data.gid_str?('gids/'+data.gid_str):''));
+                    go(HOMESITEURL + '/Compare/index/' + (data.gid_str ? ('gids/' + data.gid_str) : ''));
                 }
             }
             $("#lockcompare").val('unlock');//解除加入对比按钮的锁定

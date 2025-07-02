@@ -1,8 +1,9 @@
 <?php
+
 namespace mall;
+
 /**
  * 树
- *
  * 0是根结点
  */
 class Tree
@@ -12,6 +13,7 @@ class Tree
     var $layer  = array(0 => 0);
     var $parent = array();
     var $value_field = '';
+
     /**
      * 构造函数
      *
@@ -38,8 +40,7 @@ class Tree
     function setTree($nodes, $id_field, $parent_field, $value_field)
     {
         $this->value_field = $value_field;
-        foreach ($nodes as $node)
-        {
+        foreach ($nodes as $node) {
             $this->setNode($node[$id_field], $node[$parent_field], $node);
         }
         $this->setLayer();
@@ -57,10 +58,8 @@ class Tree
     {
         $options = array();
         $childs = $this->getChilds($root, $except);
-        foreach ($childs as $id)
-        {
-            if ($id > 0 && ($layer <= 0 || $this->getLayer($id) <= $layer))
-            {
+        foreach ($childs as $id) {
+            if ($id > 0 && ($layer <= 0 || $this->getLayer($id) <= $layer)) {
                 $options[$id] = $this->getLayer($id, $space) . htmlspecialchars($this->getValue($id));
             }
         }
@@ -79,17 +78,13 @@ class Tree
         $parent = $parent ? $parent : 0;
 
         $this->data[$id] = $value;
-        if (!isset($this->child[$id]))
-        {
+        if (!isset($this->child[$id])) {
             $this->child[$id] = array();
         }
 
-        if (isset($this->child[$parent]))
-        {
+        if (isset($this->child[$parent])) {
             $this->child[$parent][] = $id;
-        }
-        else
-        {
+        } else {
             $this->child[$parent] = array($id);
         }
 
@@ -101,8 +96,7 @@ class Tree
      */
     function setLayer($root = 0)
     {
-        foreach ($this->child[$root] as $id)
-        {
+        foreach ($this->child[$root] as $id) {
             $this->layer[$id] = $this->layer[$this->parent[$id]] + 1;
             if ($this->child[$id]) $this->setLayer($id);
         }
@@ -117,10 +111,8 @@ class Tree
      */
     function getList(&$tree, $root = 0, $except = NULL)
     {
-        foreach ($this->child[$root] as $id)
-        {
-            if ($id == $except)
-            {
+        foreach ($this->child[$root] as $id) {
+            if ($id == $except) {
                 continue;
             }
 
@@ -153,8 +145,7 @@ class Tree
      */
     function getParents($id)
     {
-        while ($this->parent[$id] != -1)
-        {
+        while ($this->parent[$id] != -1) {
             $id = $parent[$this->layer[$id]] = $this->parent[$id];
         }
 
@@ -192,16 +183,14 @@ class Tree
      *     ))
      * )
      */
-    function getArrayList($root = 0 , $layer = NULL)
+    function getArrayList($root = 0, $layer = NULL)
     {
         $data = array();
-        foreach ($this->child[$root] as $id)
-        {
-            if($layer && $this->layer[$this->parent[$id]] > $layer-1)
-            {
+        foreach ($this->child[$root] as $id) {
+            if ($layer && $this->layer[$this->parent[$id]] > $layer - 1) {
                 continue;
             }
-            $data[] = array('id' => $id, 'value' => $this->getValue($id), 'children' => $this->child[$id] ? $this->getArrayList($id , $layer) : array());
+            $data[] = array('id' => $id, 'value' => $this->getValue($id), 'children' => $this->child[$id] ? $this->getArrayList($id, $layer) : array());
         }
         return $data;
     }
@@ -223,46 +212,33 @@ class Tree
     {
         $data = array();
         $main = $this->value_field; //用于显示树分级结果的字段
-        $extra =array(); //辅助的字段
-        if (!empty($ext_field))
-        {
-            if (is_array($ext_field))
-            {
+        $extra = array(); //辅助的字段
+        if (!empty($ext_field)) {
+            if (is_array($ext_field)) {
                 $extra = $ext_field;
-            }
-            elseif (is_string($ext_field))
-            {
+            } elseif (is_string($ext_field)) {
                 $extra = array($ext_field);
             }
         }
         $childs = $this->getChilds($root);
         array_values($extra) && $data[0] = array_values($extra);
         $main && $data[0] && array_push($data[0], $main);
-        foreach ($childs as $id)
-        {
+        foreach ($childs as $id) {
             $row = array();
             $value = $this->data[$id];
-            foreach ($extra as $field)
-            {
+            foreach ($extra as $field) {
                 $row[] = $value[$field];
             }
-            for ($i = 1; $i < $this->getLayer($id); $i++)
-            {
+            for ($i = 1; $i < $this->getLayer($id); $i++) {
                 $row[] = '';
             }
-            if ($main)
-            {
+            if ($main) {
                 $row[] = $value[$main];
-            }
-            else
-            {
+            } else {
                 $row[] = $value;
             }
             $data[] = $row;
         }
         return $data;
-
     }
 }
-
-?>

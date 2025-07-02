@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP SDK for QQ登录 OpenAPI
  *
@@ -11,7 +12,7 @@
  * @brief 本文件包含了OAuth认证过程中会用到的公用方法
  */
 
-require_once(PLUGINS_PATH .DIRECTORY_SEPARATOR. 'login'.DIRECTORY_SEPARATOR. 'qq' . DIRECTORY_SEPARATOR . 'comm' . DIRECTORY_SEPARATOR . "config.php");
+require_once(PLUGINS_PATH . DIRECTORY_SEPARATOR . 'login' . DIRECTORY_SEPARATOR . 'qq' . DIRECTORY_SEPARATOR . 'comm' . DIRECTORY_SEPARATOR . "config.php");
 
 function do_post($url, $data)
 {
@@ -39,6 +40,3 @@ function get_url_contents($url)
 
     return $result;
 }
-
-
-?>

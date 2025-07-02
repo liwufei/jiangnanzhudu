@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP SDK for QQ登录 OpenAPI
  *
@@ -20,7 +21,7 @@
  *    ) ENGINE=MyISAM;
  */
 
-class Session 
+class Session
 {
     //mysql的主机地址
     const db_host = "127.0.0.1"; //需要第三方指定ip地址 
@@ -43,7 +44,7 @@ class Session
     //session-lifetime
     private $lifeTime;
 
-    function open($savePath, $sessName) 
+    function open($savePath, $sessName)
     {
         // get session-lifetime
         $this->lifeTime = get_cfg_var("session.gc_maxlifetime");
@@ -54,60 +55,58 @@ class Session
         $dbSel = @mysql_select_db(self::db_name, $db_handle);
 
         // return success
-        if(!$db_handle || !$dbSel)
+        if (!$db_handle || !$dbSel)
             return false;
 
         $this->db_handle = $db_handle;
         return true;
     }
 
-    function close() 
+    function close()
     {
         $this->gc(ini_get('session.gc_maxlifetime'));
         // close database-connection
         return @mysql_close($this->db_handle);
     }
 
-    function read($sessID) 
+    function read($sessID)
     {
         // fetch session-data
-        $res = @mysql_query("SELECT session_data AS d FROM ".self::db_table." 
+        $res = @mysql_query("SELECT session_data AS d FROM " . self::db_table . " 
             WHERE session_id = '$sessID'
-            AND session_expires > ".time(), $this->db_handle);
+            AND session_expires > " . time(), $this->db_handle);
 
         // return data or an empty string at failure
-        if($row = @mysql_fetch_assoc($res))
+        if ($row = @mysql_fetch_assoc($res))
             return $row['d'];
 
         return "";
     }
 
-    function write($sessID, $sessData) 
+    function write($sessID, $sessData)
     {
         // new session-expire-time
         $newExp = time() + $this->lifeTime;
 
         // is a session with this id in the database?
-        $res = @mysql_query("SELECT * FROM ".self::db_table." 
+        $res = @mysql_query("SELECT * FROM " . self::db_table . " 
             WHERE session_id = '$sessID'", $this->db_handle);
 
         // if yes,
-        if(@mysql_num_rows($res)) 
-        {
+        if (@mysql_num_rows($res)) {
             // ...update session-data
-            @mysql_query("UPDATE ".self::db_table." 
+            @mysql_query("UPDATE " . self::db_table . " 
                 SET session_expires = '$newExp',
                 session_data = '$sessData'
                 WHERE session_id = '$sessID'", $this->db_handle);
 
             // if something happened, return true
-            if(@mysql_affected_rows($this->db_handle))
+            if (@mysql_affected_rows($this->db_handle))
                 return true;
-        }
-        else // if no session-data was found,
+        } else // if no session-data was found,
         {
             // create a new row
-            @mysql_query("INSERT INTO ".self::db_table." (
+            @mysql_query("INSERT INTO " . self::db_table . " (
                 session_id,
                 session_expires,
                 session_data)
@@ -116,7 +115,7 @@ class Session
                     '$newExp',
                     '$sessData')", $this->db_handle);
             // if row was created, return true
-            if(@mysql_affected_rows($this->db_handle))
+            if (@mysql_affected_rows($this->db_handle))
                 return true;
         }
 
@@ -124,23 +123,23 @@ class Session
         return false;
     }
 
-    function destroy($sessID) 
+    function destroy($sessID)
     {
         // delete session-data
-        @mysql_query("DELETE FROM ".self::db_table." WHERE session_id = '$sessID'", $this->db_handle);
+        @mysql_query("DELETE FROM " . self::db_table . " WHERE session_id = '$sessID'", $this->db_handle);
 
         // if session was deleted, return true,
-        if(@mysql_affected_rows($this->db_handle))
+        if (@mysql_affected_rows($this->db_handle))
             return true;
 
         // ...else return false
         return false;
     }
 
-    function gc($sessMaxLifeTime) 
+    function gc($sessMaxLifeTime)
     {
         // delete old sessions
-        @mysql_query("DELETE FROM ".self::db_table." WHERE session_expires < ".time(), $this->db_handle);
+        @mysql_query("DELETE FROM " . self::db_table . " WHERE session_expires < " . time(), $this->db_handle);
 
         // return affected rows
         return @mysql_affected_rows($this->db_handle);
@@ -161,9 +160,8 @@ define("MAIN_DOMAIN", "");   //设置主域名
  * 默认禁止
  * 开启前提需要定义MAIN_DOMAIN常量
  */
-define("COOKIE_DOMAIN", false); 
-if (defined("COOKIE_DOMAIN") && COOKIE_DOMAIN)
-{
+define("COOKIE_DOMAIN", false);
+if (defined("COOKIE_DOMAIN") && COOKIE_DOMAIN) {
     if (defined("MAIN_DOMAIN"))
         @ini_set("session.cookie_domain", MAIN_DOMAIN);
 }
@@ -176,8 +174,7 @@ if (defined("COOKIE_DOMAIN") && COOKIE_DOMAIN)
  * 开启前提需要建立mysql数据表
  */
 define("USER_SESSION", false);
-if (defined("USER_SESSION") && USER_SESSION)
-{
+if (defined("USER_SESSION") && USER_SESSION) {
     @ini_set("session.save_handler", "user");
     $session = new Session;
     @session_module_name("user");
@@ -187,8 +184,8 @@ if (defined("USER_SESSION") && USER_SESSION)
         array(&$session, "read"),
         array(&$session, "write"),
         array(&$session, "destroy"),
-        array(&$session, "gc"));
+        array(&$session, "gc")
+    );
 }
 
 session_start();
-?>

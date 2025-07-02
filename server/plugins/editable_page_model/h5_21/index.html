@@ -2,16 +2,18 @@
   <div class="marketing-wrap marketing-wrap-two" style="background-color:{$config_info.back_color|default='unset'};">
     <div class="marketing-box">
       <div>
-        <div class="title title-3" {if isset($config_info['if_show_title_icon']) && $config_info['if_show_title_icon']==0}style="display:none"{/if}>
+        <div class="title title-3" {if isset($config_info['if_show_title_icon']) &&
+          $config_info['if_show_title_icon']==0}style="display:none" {/if}>
           <div class="title-left">
-            <img src="{if isset($config_info['title_icon']) && $config_info['title_icon']}{$config_info['title_icon']}{else}{$Think.HOME_SITE_ROOT}/images/editable_page/presale_style3_title.png{/if}">
+            <img
+              src="{if isset($config_info['title_icon']) && $config_info['title_icon']}{$config_info['title_icon']}{else}{$Think.HOME_SITE_ROOT}/images/editable_page/presale_style3_title.png{/if}">
             <!---->
           </div>
         </div>
       </div>
       <div class="list-wrap">
-        {if isset($config_info['goods_list']) && !empty($config_info['goods_list'])} 
-		    {foreach name='config_info.goods_list' item='goods'} 
+        {if isset($config_info['goods_list']) && !empty($config_info['goods_list'])}
+        {foreach name='config_info.goods_list' item='goods'}
         <div class="item">
           <div class="img-wrap">
             <img src="{$goods.goods_image}">
@@ -23,8 +25,8 @@
             </div>
           </div>
         </div>
-        {/foreach} 
-		    {else}
+        {/foreach}
+        {else}
         <div class="item">
           <div class="img-wrap">
             <img src="{:goods_thumb()}">
@@ -63,4 +65,3 @@
     </div>
   </div>
 </div>
- 

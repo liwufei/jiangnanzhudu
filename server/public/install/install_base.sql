@@ -7576,7 +7576,7 @@ INSERT INTO `area` (`area_id`, `area_name`, `area_parent_id`, `area_sort`, `area
 (3795, '埃及', 3664, 0, 3, NULL);
 
 INSERT INTO `config` (`id`, `code`, `value`, `remark`) VALUES
-(1, 'site_name', '德尚商城', '商城名称'),
+(1, 'site_name', '江南铸都', '商城名称'),
 (2, 'site_phone', '3', '商城客服服务电话'),
 (3, 'site_state', '1', '商城状态'),
 (4, 'site_logo', 'site_logo.png', '商城logo图'),
@@ -7587,7 +7587,7 @@ INSERT INTO `config` (`id`, `code`, `value`, `remark`) VALUES
 (9, 'icp_number', '2', 'ICP备案号'),
 (10, 'site_tel400', '40002541852', '解释,备注'),
 (11, 'site_email', '858761000@qq.com', '电子邮件'),
-(12, 'flow_static_code', 'Copyright © 2013-2063 德尚网络开源系统 版权所有 保留一切权利', '底部版权信息'),
+(12, 'flow_static_code', 'Copyright © 2013-2063 江南铸都 版权所有 保留一切权利', '底部版权信息'),
 (13, 'closed_reason', '商城暂时关闭', '商城关闭原因'),
 (14, 'guest_comment', '1', '是否允许游客咨询'),
 (15, 'captcha_status_login', '1', '会员登录是否需要验证码'),
@@ -7658,11 +7658,9 @@ INSERT INTO `config` (`id`, `code`, `value`, `remark`) VALUES
 (131, 'weixin_app_appid', '', '移动应用appid'),
 (132, 'weixin_app_secret', '', '移动应用appserite'),
 
-
 (141, 'sms_register', '0', '是否手机注册'),
 (142, 'sms_login', '0', '是否手机登录'),
 (143, 'sms_password', '0', '是否手机找回密码'),
-
 
 (150, 'expresscf_kdn_id', '', '快递鸟-用户ID'),
 (151, 'expresscf_kdn_key', '', '快递鸟-API key'),
@@ -7777,7 +7775,6 @@ INSERT INTO `articleclass` (`ac_id`, `ac_code`, `ac_name`, `ac_parent_id`, `ac_s
   (6, 'service', '客服中心', 0, 255),
   (7, 'about', '关于我们', 0, 255);
 
-
 INSERT INTO `article` (`article_id`, `ac_id`, `article_url`, `article_show`, `article_sort`, `article_title`, `article_content`, `article_time`) VALUES (6, 2, '', 1, 255, '如何注册成为会员', '如何注册成为会员', 1435672310),
 (7, 2, '', 1, 255, '如何搜索', '如何搜索', 1435672310),
 (8, 2, '', 1, 255, '忘记密码', '忘记密码', 1435672310),
@@ -7880,7 +7877,6 @@ INSERT INTO `express` (`express_id`, `express_name`, `express_state`, `express_c
 (47, '中邮物流', '1', 'ZYWL', 'Z', '2', 'http://www.cnpl.com.cn');
 
 
-
 INSERT INTO `help` (`help_id`, `help_sort`, `help_title`, `help_info`, `help_url`, `help_updatetime`, `helptype_id`, `page_show`) VALUES
 (96, 1, '招商方向', '后台->店铺->开店首页->入驻指南->编辑内容', '', 1399284217, 1, 1),
 (97, 2, '招商标准', '后台->店铺->开店首页->入驻指南->编辑内容', '', 1399281053, 1, 1),
@@ -7913,7 +7909,6 @@ INSERT INTO `informsubject` (`informsubject_id`, `informsubject_content`, `infor
 
 INSERT INTO `informsubjecttype` (`informtype_id`, `informtype_name`, `informtype_desc`, `informtype_state`) VALUES (1, '出售禁售品', '销售商城禁止和限制交易规则下所规定的所有商品。', 1),
 (2, '产品质量问题', '产品质量差，与描述严重不相符。', 1);
-
 
 INSERT INTO `mailmsgtemlates` (`mailmt_name`, `mailmt_title`, `mailmt_code`, `mailmt_content`) VALUES
 ('<strong>[用户]</strong>账号注册通知', '账号注册通知 - ${site_name}', 'register', '您正在申请注册会员，动态码：${code}。'),

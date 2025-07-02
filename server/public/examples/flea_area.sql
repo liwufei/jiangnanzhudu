@@ -1,4 +1,4 @@
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1, '直辖市', 1, 0, 0, 0),
 (3, '河北', 1, 0, 0, 0),
 (4, '山西', 1, 0, 0, 0),
@@ -115,7 +115,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (118, '铁岭', 2, 6, 0, 0),
 (119, '朝阳', 2, 6, 0, 0),
 (120, '葫芦岛', 2, 6, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (121, '长春', 2, 7, 0, 0),
 (122, '吉林', 2, 7, 0, 0),
 (123, '四平', 2, 7, 0, 0),
@@ -211,7 +211,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (213, '景德镇', 2, 14, 0, 0),
 (214, '萍乡', 2, 14, 0, 0),
 (215, '九江', 2, 14, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (216, '新余', 2, 14, 0, 0),
 (217, '鹰潭', 2, 14, 0, 0),
 (218, '赣州', 2, 14, 0, 0),
@@ -285,7 +285,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (286, '怀化', 2, 18, 0, 0),
 (287, '娄底', 2, 18, 0, 0),
 (288, '湘西', 2, 18, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (289, '广州', 2, 19, 0, 0),
 (290, '韶关', 2, 19, 0, 0),
 (291, '深圳', 2, 19, 0, 0),
@@ -351,7 +351,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (351, '九龙坡区', 3, 45053, 0, 0),
 (352, '南岸区', 3, 45053, 0, 0),
 (353, '北碚区', 3, 45053, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (354, '双桥区', 3, 45053, 0, 0),
 (355, '万盛区', 3, 45053, 0, 0),
 (356, '渝北区', 3, 45053, 0, 0),
@@ -412,7 +412,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (412, '毕节地区', 2, 24, 0, 0),
 (415, '昆明', 2, 25, 0, 0),
 (416, '曲靖', 2, 25, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (417, '玉溪', 2, 25, 0, 0),
 (418, '保山', 2, 25, 0, 0),
 (419, '昭通', 2, 25, 0, 0),
@@ -468,7 +468,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (469, '海西', 2, 29, 0, 0),
 (470, '银川', 2, 30, 0, 0),
 (471, '石嘴山', 2, 30, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (472, '吴忠', 2, 30, 0, 0),
 (473, '固原', 2, 30, 0, 0),
 (474, '中卫', 2, 30, 0, 0),
@@ -533,7 +533,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (534, '澳门', 2, 34, 0, 0),
 (535, '美国', 3, 45055, 0, 0),
 (536, '加拿大', 3, 45055, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (537, '澳大利亚', 3, 45055, 0, 0),
 (538, '新西兰', 3, 45055, 0, 0),
 (539, '英国', 3, 45055, 0, 0),
@@ -589,7 +589,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1147, '高邑县', 3, 73, 0, 0),
 (1148, '鹿泉', 3, 73, 0, 0),
 (1149, '丰南区', 3, 74, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1150, '丰润区', 3, 74, 0, 0),
 (1151, '乐亭县', 3, 74, 0, 0),
 (1152, '古冶区', 3, 74, 0, 0),
@@ -637,7 +637,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1194, '南宫', 3, 77, 0, 0),
 (1195, '威县', 3, 77, 0, 0),
 (1196, '宁晋县', 3, 77, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1197, '巨鹿县', 3, 77, 0, 0),
 (1198, '平乡县', 3, 77, 0, 0),
 (1199, '广宗县', 3, 77, 0, 0),
@@ -698,7 +698,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1256, '平泉县', 3, 80, 0, 0),
 (1257, '承德县', 3, 80, 0, 0),
 (1258, '滦平县', 3, 80, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1259, '隆化县', 3, 80, 0, 0),
 (1261, '冀州', 3, 81, 0, 0),
 (1262, '安平县', 3, 81, 0, 0),
@@ -743,7 +743,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1302, '尖草坪区', 3, 84, 0, 0),
 (1303, '晋源区', 3, 84, 0, 0),
 (1304, '杏花岭区', 3, 84, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1305, '清徐县', 3, 84, 0, 0),
 (1306, '迎泽区', 3, 84, 0, 0),
 (1307, '阳曲县', 3, 84, 0, 0),
@@ -787,7 +787,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1345, '平鲁区', 3, 89, 0, 0),
 (1346, '应县', 3, 89, 0, 0),
 (1347, '怀仁县', 3, 89, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1348, '朔城区', 3, 89, 0, 0),
 (1349, '介休', 3, 90, 0, 0),
 (1350, '和顺县', 3, 90, 0, 0),
@@ -864,7 +864,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1423, '清水河县', 3, 95, 0, 0),
 (1424, '玉泉区', 3, 95, 0, 0),
 (1425, '赛罕区', 3, 95, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1426, '东河区', 3, 96, 0, 0),
 (1427, '九原区', 3, 96, 0, 0),
 (1428, '固阳县', 3, 96, 0, 0),
@@ -910,7 +910,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1485, '杭锦后旗', 3, 102, 0, 0),
 (1486, '磴口县', 3, 102, 0, 0),
 (1487, '丰镇', 3, 103, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1488, '兴和县', 3, 103, 0, 0),
 (1489, '凉城县', 3, 103, 0, 0),
 (1490, '化德县', 3, 103, 0, 0),
@@ -928,7 +928,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1524, '新民', 3, 107, 0, 0),
 (1525, '沈北新区', 3, 107, 0, 0),
 (1526, '沈河区', 3, 107, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1527, '法库县', 3, 107, 0, 0),
 (1528, '皇姑区', 3, 107, 0, 0),
 (1529, '苏家屯区', 3, 107, 0, 0),
@@ -966,7 +966,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1567, '振安区', 3, 112, 0, 0),
 (1568, '义县', 3, 113, 0, 0),
 (1569, '凌河区', 3, 113, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1570, '凌海', 3, 113, 0, 0),
 (1571, '北镇', 3, 113, 0, 0),
 (1572, '古塔区', 3, 113, 0, 0),
@@ -1024,7 +1024,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1626, '朝阳区', 3, 121, 0, 0),
 (1627, '榆树', 3, 121, 0, 0),
 (1628, '绿园区', 3, 121, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1629, '丰满区', 3, 122, 0, 0),
 (1630, '昌邑区', 3, 122, 0, 0),
 (1631, '桦甸', 3, 122, 0, 0),
@@ -1078,7 +1078,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1682, '双城', 3, 130, 0, 0),
 (1683, '呼兰区', 3, 130, 0, 0),
 (1684, '哈尔滨市道里区', 3, 130, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1685, '宾县', 3, 130, 0, 0),
 (1686, '尚志', 3, 130, 0, 0),
 (1687, '巴彦县', 3, 130, 0, 0),
@@ -1142,7 +1142,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1747, '上甘岭区', 3, 136, 0, 0),
 (1748, '乌伊岭区', 3, 136, 0, 0),
 (1749, '乌马河区', 3, 136, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1750, '五营区', 3, 136, 0, 0),
 (1751, '伊春区', 3, 136, 0, 0),
 (1752, '南岔区', 3, 136, 0, 0),
@@ -1194,7 +1194,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (1798, '明水县', 3, 141, 0, 0),
 (1799, '望奎县', 3, 141, 0, 0),
 (1800, '海伦', 3, 141, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (1802, '绥棱县', 3, 141, 0, 0),
 (1803, '肇东', 3, 141, 0, 0),
 (1804, '青冈县', 3, 141, 0, 0),
@@ -1252,7 +1252,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2075, '苏州工业园区', 3, 166, 0, 0),
 (2076, '虎丘区', 3, 166, 0, 0),
 (2077, '金阊区', 3, 166, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2078, '启东', 3, 167, 0, 0),
 (2079, '如东县', 3, 167, 0, 0),
 (2080, '如皋', 3, 167, 0, 0),
@@ -1307,7 +1307,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2129, '宿城区', 3, 174, 0, 0),
 (2130, '宿豫区', 3, 174, 0, 0),
 (2131, '沭阳县', 3, 174, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2132, '泗洪县', 3, 174, 0, 0),
 (2133, '泗阳县', 3, 174, 0, 0),
 (2134, '上城区', 3, 175, 0, 0),
@@ -1361,7 +1361,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2182, '嵊州', 3, 180, 0, 0),
 (2183, '新昌县', 3, 180, 0, 0),
 (2184, '绍兴县', 3, 180, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2185, '诸暨', 3, 180, 0, 0),
 (2186, '越城区', 3, 180, 0, 0),
 (2187, '定海区', 3, 181, 0, 0),
@@ -1417,7 +1417,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2237, '鸠江区', 3, 187, 0, 0),
 (2238, '五河县', 3, 188, 0, 0),
 (2239, '固镇县', 3, 188, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2240, '怀远县', 3, 188, 0, 0),
 (2241, '淮上区', 3, 188, 0, 0),
 (2242, '禹会区', 3, 188, 0, 0),
@@ -1479,7 +1479,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2298, '泗县辖', 3, 197, 0, 0),
 (2299, '灵璧县', 3, 197, 0, 0),
 (2300, '砀山县', 3, 197, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2301, '萧县', 3, 197, 0, 0),
 (2302, '含山县', 3, 198, 0, 0),
 (2303, '和县', 3, 198, 0, 0),
@@ -1527,7 +1527,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2345, '湖里区', 3, 204, 0, 0),
 (2346, '翔安区', 3, 204, 0, 0),
 (2347, '集美区', 3, 204, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2348, '仙游县', 3, 205, 0, 0),
 (2349, '城厢区', 3, 205, 0, 0),
 (2350, '涵江区', 3, 205, 0, 0),
@@ -1587,7 +1587,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2404, '长汀县', 3, 210, 0, 0),
 (2405, '古田县', 3, 211, 0, 0),
 (2406, '周宁县', 3, 211, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2407, '寿宁县', 3, 211, 0, 0),
 (2408, '屏南县', 3, 211, 0, 0),
 (2409, '柘荣县', 3, 211, 0, 0),
@@ -1605,7 +1605,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2421, '青云谱区', 3, 212, 0, 0),
 (2422, '青山湖区', 3, 212, 0, 0),
 (2423, '乐平', 3, 213, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2424, '昌江区', 3, 213, 0, 0),
 (2425, '浮梁县', 3, 213, 0, 0),
 (2426, '珠山区', 3, 213, 0, 0),
@@ -1641,7 +1641,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2456, '大余县', 3, 218, 0, 0),
 (2457, '宁都县', 3, 218, 0, 0),
 (2458, '安远县', 3, 218, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2459, '定南县', 3, 218, 0, 0),
 (2460, '寻乌县', 3, 218, 0, 0),
 (2461, '崇义县', 3, 218, 0, 0),
@@ -1691,7 +1691,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2505, '婺源县', 3, 222, 0, 0),
 (2506, '广丰县', 3, 222, 0, 0),
 (2507, '弋阳县', 3, 222, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2508, '德兴', 3, 222, 0, 0),
 (2509, '横峰县', 3, 222, 0, 0),
 (2510, '玉山县', 3, 222, 0, 0),
@@ -1738,7 +1738,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2551, '垦利县', 3, 227, 0, 0),
 (2552, '广饶县', 3, 227, 0, 0),
 (2553, '河口区', 3, 227, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2554, '招远', 3, 228, 0, 0),
 (2555, '栖霞', 3, 228, 0, 0),
 (2556, '海阳', 3, 228, 0, 0),
@@ -1788,7 +1788,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2600, '东港区', 3, 233, 0, 0),
 (2601, '五莲县', 3, 233, 0, 0),
 (2602, '岚山区', 3, 233, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2603, '莒县', 3, 233, 0, 0),
 (2604, '莱城区', 3, 234, 0, 0),
 (2605, '钢城区', 3, 234, 0, 0),
@@ -1862,7 +1862,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2673, '鼓楼区', 3, 241, 0, 0),
 (2674, '龙亭区', 3, 241, 0, 0),
 (2675, '伊川县', 3, 242, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2676, '偃师', 3, 242, 0, 0),
 (2677, '吉利区', 3, 242, 0, 0),
 (2678, '孟津县', 3, 242, 0, 0),
@@ -1933,7 +1933,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2743, '襄城县', 3, 249, 0, 0),
 (2744, '许昌县', 3, 249, 0, 0),
 (2745, '鄢陵县', 3, 249, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`,`fleaarea_hot`) VALUES
 (2746, '长葛', 3, 249, 0, 0),
 (2747, '魏都区', 3, 249, 0, 0),
 (2748, '临颍县', 3, 250, 0, 0),
@@ -1987,7 +1987,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2796, '淮阳县', 3, 255, 0, 0),
 (2797, '西华县', 3, 255, 0, 0),
 (2798, '郸城县', 3, 255, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (2799, '项城', 3, 255, 0, 0),
 (2800, '鹿邑县', 3, 255, 0, 0),
 (2801, '上蔡县', 3, 256, 0, 0),
@@ -2041,7 +2041,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2850, '远安县', 3, 261, 0, 0),
 (2852, '保康县', 3, 262, 0, 0),
 (2853, '南漳县', 3, 262, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (2854, '宜城', 3, 262, 0, 0),
 (2855, '枣阳', 3, 262, 0, 0),
 (2856, '樊城区', 3, 262, 0, 0),
@@ -2082,7 +2082,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2891, '麻城', 3, 267, 0, 0),
 (2892, '黄州区', 3, 267, 0, 0),
 (2893, '黄梅县', 3, 267, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (2894, '咸安区', 3, 268, 0, 0),
 (2895, '嘉鱼县', 3, 268, 0, 0),
 (2896, '崇阳县', 3, 268, 0, 0),
@@ -2129,7 +2129,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2938, '常宁', 3, 278, 0, 0),
 (2939, '珠晖区', 3, 278, 0, 0),
 (2940, '石鼓区', 3, 278, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (2941, '祁东县', 3, 278, 0, 0),
 (2942, '耒阳', 3, 278, 0, 0),
 (2943, '蒸湘区', 3, 278, 0, 0),
@@ -2190,7 +2190,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (2999, '资兴', 3, 284, 0, 0),
 (3000, '东安县', 3, 285, 0, 0),
 (3001, '冷水滩区', 3, 285, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (3002, '双牌县', 3, 285, 0, 0),
 (3003, '宁远县', 3, 285, 0, 0),
 (3004, '新田县', 3, 285, 0, 0),
@@ -2234,7 +2234,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (3051, '南雄', 3, 290, 0, 0),
 (3052, '始兴县', 3, 290, 0, 0),
 (3053, '新丰县', 3, 290, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (3054, '曲江区', 3, 290, 0, 0),
 (3055, '武江区', 3, 290, 0, 0),
 (3056, '浈江区', 3, 290, 0, 0),
@@ -2298,7 +2298,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (3114, '丰顺县', 3, 300, 0, 0),
 (3115, '五华县', 3, 300, 0, 0),
 (3116, '兴宁', 3, 300, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (3117, '大埔县', 3, 300, 0, 0),
 (3118, '平远县', 3, 300, 0, 0),
 (3119, '梅县', 3, 300, 0, 0),
@@ -2341,7 +2341,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (3158, '郁南县', 3, 309, 0, 0),
 (3159, '上林县', 3, 310, 0, 0),
 (3160, '兴宁区', 3, 310, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (3161, '宾阳县', 3, 310, 0, 0),
 (3162, '横县', 3, 310, 0, 0),
 (3163, '武鸣县', 3, 310, 0, 0),
@@ -2386,7 +2386,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (3202, '藤县', 3, 313, 0, 0),
 (3203, '蝶山区', 3, 313, 0, 0),
 (3204, '长洲区', 3, 313, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (3205, '合浦县', 3, 314, 0, 0),
 (3206, '海城区', 3, 314, 0, 0),
 (3207, '铁山港区', 3, 314, 0, 0),
@@ -2428,7 +2428,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (3245, '凤山县', 3, 321, 0, 0),
 (3246, '南丹县', 3, 321, 0, 0),
 (3248, '天峨县', 3, 321, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (3249, '宜州', 3, 321, 0, 0),
 (3254, '金城江区', 3, 321, 0, 0),
 (3255, '兴宾区', 3, 322, 0, 0),
@@ -2485,7 +2485,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4232, '荣县', 3, 386, 0, 0),
 (4233, '贡井区', 3, 386, 0, 0),
 (4234, '东区', 3, 387, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4235, '仁和区', 3, 387, 0, 0),
 (4236, '盐边县', 3, 387, 0, 0),
 (4237, '米易县', 3, 387, 0, 0),
@@ -2544,7 +2544,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4290, '嘉陵区', 3, 395, 0, 0),
 (4291, '南部县', 3, 395, 0, 0),
 (4292, '嘉陵区', 3, 395, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4293, '营山县', 3, 395, 0, 0),
 (4294, '蓬安县', 3, 395, 0, 0),
 (4295, '西充县', 3, 395, 0, 0),
@@ -2607,7 +2607,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4352, '金川县', 3, 403, 0, 0),
 (4353, '阿坝县', 3, 403, 0, 0),
 (4354, '马尔康县', 3, 403, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4355, '黑水县', 3, 403, 0, 0),
 (4356, '丹巴县', 3, 404, 0, 0),
 (4357, '乡城县', 3, 404, 0, 0),
@@ -2672,7 +2672,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4419, '平坝县', 3, 409, 0, 0),
 (4420, '普定县', 3, 409, 0, 0),
 (4422, '西秀区', 3, 409, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4424, '万山特区', 3, 410, 0, 0),
 (4426, '德江县', 3, 410, 0, 0),
 (4427, '思南县', 3, 410, 0, 0),
@@ -2730,7 +2730,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4486, '嵩明县', 3, 415, 0, 0),
 (4487, '晋宁县', 3, 415, 0, 0),
 (4488, '盘龙区', 3, 415, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4491, '西山区', 3, 415, 0, 0),
 (4492, '会泽县', 3, 416, 0, 0),
 (4493, '宣威', 3, 416, 0, 0),
@@ -2795,7 +2795,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4555, '河口', 3, 424, 0, 0),
 (4556, '泸西县', 3, 424, 0, 0),
 (4557, '石屏县', 3, 424, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4558, '红河县', 3, 424, 0, 0),
 (4559, '绿春县', 3, 424, 0, 0),
 (4560, '蒙自县', 3, 424, 0, 0),
@@ -2864,7 +2864,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4623, '隆子县', 3, 433, 0, 0),
 (4624, '亚东县', 3, 434, 0, 0),
 (4625, '仁布县', 3, 434, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4626, '仲巴县', 3, 434, 0, 0),
 (4627, '南木林县', 3, 434, 0, 0),
 (4628, '吉隆县', 3, 434, 0, 0),
@@ -2931,7 +2931,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4689, '渭滨区', 3, 440, 0, 0),
 (4690, '眉县', 3, 440, 0, 0),
 (4691, '金台区', 3, 440, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4692, '陇县', 3, 440, 0, 0),
 (4693, '陈仓区', 3, 440, 0, 0),
 (4694, '麟游县', 3, 440, 0, 0),
@@ -2999,7 +2999,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4756, '宁陕县', 3, 446, 0, 0),
 (4757, '岚皋县', 3, 446, 0, 0),
 (4758, '平利县', 3, 446, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4759, '旬阳县', 3, 446, 0, 0),
 (4760, '汉滨区', 3, 446, 0, 0),
 (4761, '汉阴县', 3, 446, 0, 0),
@@ -3069,7 +3069,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4828, '临洮县', 3, 458, 0, 0),
 (4829, '安定区', 3, 458, 0, 0),
 (4830, '岷县', 3, 458, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4831, '渭源县', 3, 458, 0, 0),
 (4832, '漳县', 3, 458, 0, 0),
 (4833, '通渭县', 3, 458, 0, 0),
@@ -3136,7 +3136,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4897, '称多县', 3, 468, 0, 0),
 (4898, '乌兰县', 3, 469, 0, 0),
 (4899, '冷湖行委', 3, 469, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4900, '大柴旦行委', 3, 469, 0, 0),
 (4901, '天峻县', 3, 469, 0, 0),
 (4902, '德令哈', 3, 469, 0, 0),
@@ -3200,7 +3200,7 @@ INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fle
 (4960, '库尔勒', 3, 481, 0, 0),
 (4961, '焉耆', 3, 481, 0, 0),
 (4962, '若羌县', 3, 481, 0, 0);
-INSERT INTO `#__fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
+INSERT INTO `fleaarea` (`fleaarea_id`, `fleaarea_name`, `fleaarea_deep`, `fleaarea_parent_id`, `fleaarea_sort`, `fleaarea_hot`) VALUES
 (4963, '轮台县', 3, 481, 0, 0),
 (4964, '乌什县', 3, 482, 0, 0),
 (4965, '库车县', 3, 482, 0, 0),

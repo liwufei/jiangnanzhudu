@@ -3,26 +3,26 @@ error_reporting(0);
 @set_time_limit(0);
 ob_start();
 header('content-type: text/html; charset=utf-8');
-define('PATH_ROOT', str_replace("\\",'/', dirname(dirname(__FILE__))));
-//print_r(PATH_ROOT);EXIT;
+define('PATH_ROOT', str_replace("\\", '/', dirname(dirname(__FILE__))));
+
 $actions = array('license', 'env', 'db', 'finish');
 $action = $_COOKIE['action'];
 $action = in_array($action, $actions) ? $action : 'license';
 $ispost = strtolower($_SERVER['REQUEST_METHOD']) == 'post';
-if(file_exists(PATH_ROOT . '/install/install.lock') && $action != 'finish') {
+if (file_exists(PATH_ROOT . '/install/install.lock') && $action != 'finish') {
     @header("Content-type: text/html; charset=UTF-8");
     echo "系统已经安装过了，如果要重新安装，那么请删除public/install目录下的install.lock文件";
     exit;
 }
 
-if($_GET['step']=='get_dblist'){
+if ($_GET['step'] == 'get_dblist') {
     $link = @mysqli_connect($_GET['db_host'], $_GET['db_user'], $_GET['db_pass']);
-    if(mysqli_connect_errno()) {
+    if (mysqli_connect_errno()) {
         $error = mysqli_connect_errno();
         if (strpos($error, '1045') !== false) {
-            $result = array('code'=> '100','msg'=>'您的数据库访问用户名或是密码错误');
+            $result = array('code' => '100', 'msg' => '您的数据库访问用户名或是密码错误');
         }
-    }else {
+    } else {
         $sql = "SELECT `SCHEMA_NAME` FROM `information_schema`.`SCHEMATA`";
         $result = mysqli_query($link, $sql);
         while ($rs = mysqli_fetch_array($result)) {
@@ -30,13 +30,15 @@ if($_GET['step']=='get_dblist'){
         }
         $result = array('code' => '200', 'data' => implode(',', $databases));
     }
-   echo json_encode($result);die;
+    echo json_encode($result);
+    die;
 }
+
 /**
  * 安装第一步，许可协议
  */
 if ($action == 'license') {
-    if($ispost) {
+    if ($ispost) {
         setcookie('action', 'env');
         header('location: ?refresh');
         exit;
@@ -45,29 +47,29 @@ if ($action == 'license') {
 }
 
 /**
-*检测安装环境
+ * 检测安装环境
  */
-if($action == 'env') {
-    if($ispost) {
+if ($action == 'env') {
+    if ($ispost) {
         setcookie('action', $_POST['do'] == 'continue' ? 'db' : 'license');
         header('location: ?refresh');
         exit;
     }
     $ret = array();
     $ret['server']['os']['value'] = php_uname();
-    if(PHP_SHLIB_SUFFIX == 'dll') {
+    if (PHP_SHLIB_SUFFIX == 'dll') {
         $ret['server']['os']['remark'] = '建议使用 Linux 系统以提升程序性能';
         $ret['server']['os']['class'] = 'warning';
     }
     $ret['server']['sapi']['value'] = $_SERVER['SERVER_SOFTWARE'];
-    if(PHP_SAPI == 'isapi') {
+    if (PHP_SAPI == 'isapi') {
         $ret['server']['sapi']['remark'] = '建议使用 Apache 或 Nginx 以提升程序性能';
         $ret['server']['sapi']['class'] = 'warning';
     }
     $ret['server']['php']['value'] = PHP_VERSION;
     $ret['server']['dir']['value'] = PATH_ROOT;
-    if(function_exists('disk_free_space')) {
-        $ret['server']['disk']['value'] = floor(disk_free_space(PATH_ROOT) / (1024*1024)).'M';
+    if (function_exists('disk_free_space')) {
+        $ret['server']['disk']['value'] = floor(disk_free_space(PATH_ROOT) / (1024 * 1024)) . 'M';
     } else {
         $ret['server']['disk']['value'] = 'unknow';
     }
@@ -75,14 +77,14 @@ if($action == 'env') {
 
     $ret['php']['version']['value'] = PHP_VERSION;
     $ret['php']['version']['class'] = 'success';
-    if(version_compare(PHP_VERSION, '7.2.5') == -1) {
+    if (version_compare(PHP_VERSION, '7.2.5') == -1) {
         $ret['php']['version']['class'] = 'danger';
         $ret['php']['version']['failed'] = true;
         $ret['php']['version']['remark'] = 'PHP版本必须为 7.2.5 以上.';
     }
 
     $ret['php']['mysql']['ok'] = function_exists('mysqli_connect');
-    if($ret['php']['mysql']['ok']) {
+    if ($ret['php']['mysql']['ok']) {
         $ret['php']['mysql']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
     } else {
         $ret['php']['pdo']['failed'] = true;
@@ -90,15 +92,15 @@ if($action == 'env') {
     }
 
     $ret['php']['pdo']['ok'] = extension_loaded('pdo') && extension_loaded('pdo_mysql');
-    if($ret['php']['pdo']['ok']) {
+    if ($ret['php']['pdo']['ok']) {
         $ret['php']['pdo']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['pdo']['class'] = 'success';
-        if(!$ret['php']['mysql']['ok']) {
+        if (!$ret['php']['mysql']['ok']) {
             $ret['php']['pdo']['remark'] = '您的PHP环境不支持 mysqli_connect，请开启此扩展. ';
         }
     } else {
         $ret['php']['pdo']['failed'] = true;
-        if($ret['php']['mysql']['ok']) {
+        if ($ret['php']['mysql']['ok']) {
             $ret['php']['pdo']['value'] = '<span class="glyphicon glyphicon-remove text-warning"></span>';
             $ret['php']['pdo']['class'] = 'warning';
             $ret['php']['pdo']['remark'] = '您的PHP环境不支持PDO, 请开启此扩展. ';
@@ -110,21 +112,21 @@ if($action == 'env') {
     }
 
     $ret['php']['fopen']['ok'] = @ini_get('allow_url_fopen') && function_exists('fsockopen');
-    if($ret['php']['fopen']['ok']) {
+    if ($ret['php']['fopen']['ok']) {
         $ret['php']['fopen']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
     } else {
         $ret['php']['fopen']['value'] = '<span class="glyphicon glyphicon-remove text-danger"></span>';
     }
 
     $ret['php']['curl']['ok'] = extension_loaded('curl') && function_exists('curl_init');
-    if($ret['php']['curl']['ok']) {
+    if ($ret['php']['curl']['ok']) {
         $ret['php']['curl']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['curl']['class'] = 'success';
-        if(!$ret['php']['fopen']['ok']) {
+        if (!$ret['php']['fopen']['ok']) {
             $ret['php']['curl']['remark'] = '您的PHP环境虽然不支持 allow_url_fopen, 但已经支持了cURL, 这样系统是可以正常高效运行的, 不需要额外处理. ';
         }
     } else {
-        if($ret['php']['fopen']['ok']) {
+        if ($ret['php']['fopen']['ok']) {
             $ret['php']['curl']['value'] = '<span class="glyphicon glyphicon-remove text-warning"></span>';
             $ret['php']['curl']['class'] = 'warning';
             $ret['php']['curl']['remark'] = '您的PHP环境不支持cURL, 但支持 allow_url_fopen, 这样系统虽然可以运行, 但还是建议你开启cURL以提升程序性能和系统稳定性. ';
@@ -136,7 +138,7 @@ if($action == 'env') {
         }
     }
     $ret['php']['gd']['ok'] = extension_loaded('gd');
-    if($ret['php']['gd']['ok']) {
+    if ($ret['php']['gd']['ok']) {
         $ret['php']['gd']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['gd']['class'] = 'success';
     } else {
@@ -145,9 +147,9 @@ if($action == 'env') {
         $ret['php']['gd']['failed'] = true;
         $ret['php']['gd']['remark'] = '没有启用GD, 将无法正常上传和压缩图片, 系统无法正常运行. ';
     }
-    
+
     $ret['php']['openssl']['ok'] = extension_loaded('openssl');
-    if($ret['php']['openssl']['ok']) {
+    if ($ret['php']['openssl']['ok']) {
         $ret['php']['openssl']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['openssl']['class'] = 'success';
     } else {
@@ -156,9 +158,9 @@ if($action == 'env') {
         $ret['php']['openssl']['failed'] = true;
         $ret['php']['openssl']['remark'] = '没有启用openssl扩展. ';
     }
-    
+
     $ret['php']['bcmath']['ok'] = extension_loaded('bcmath');
-    if($ret['php']['bcmath']['ok']) {
+    if ($ret['php']['bcmath']['ok']) {
         $ret['php']['bcmath']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['bcmath']['class'] = 'success';
     } else {
@@ -167,9 +169,9 @@ if($action == 'env') {
         $ret['php']['bcmath']['failed'] = true;
         $ret['php']['bcmath']['remark'] = '没有启用bcmath扩展. ';
     }
-    
+
     $ret['php']['dom']['ok'] = class_exists('DOMDocument');
-    if($ret['php']['dom']['ok']) {
+    if ($ret['php']['dom']['ok']) {
         $ret['php']['dom']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['dom']['class'] = 'success';
     } else {
@@ -180,7 +182,7 @@ if($action == 'env') {
     }
 
     $ret['php']['session']['ok'] = ini_get('session.auto_start');
-    if($ret['php']['session']['ok'] == 0 || strtolower($ret['php']['session']['ok']) == 'off') {
+    if ($ret['php']['session']['ok'] == 0 || strtolower($ret['php']['session']['ok']) == 'off') {
         $ret['php']['session']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['session']['class'] = 'success';
     } else {
@@ -191,7 +193,7 @@ if($action == 'env') {
     }
 
     $ret['php']['asp_tags']['ok'] = ini_get('asp_tags');
-    if(empty($ret['php']['asp_tags']['ok']) || strtolower($ret['php']['asp_tags']['ok']) == 'off') {
+    if (empty($ret['php']['asp_tags']['ok']) || strtolower($ret['php']['asp_tags']['ok']) == 'off') {
         $ret['php']['asp_tags']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['php']['asp_tags']['class'] = 'success';
     } else {
@@ -202,7 +204,7 @@ if($action == 'env') {
     }
 
     $ret['write']['root']['ok'] = local_writeable(PATH_ROOT . '/uploads');
-    if($ret['write']['root']['ok']) {
+    if ($ret['write']['root']['ok']) {
         $ret['write']['root']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['write']['root']['class'] = 'success';
     } else {
@@ -212,7 +214,7 @@ if($action == 'env') {
         $ret['write']['root']['remark'] = 'public/uploads无法写入, 将无法使用自动更新功能, 系统无法正常运行.  ';
     }
     $ret['write']['data']['ok'] = local_writeable(PATH_ROOT . '/../runtime');
-    if($ret['write']['data']['ok']) {
+    if ($ret['write']['data']['ok']) {
         $ret['write']['data']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['write']['data']['class'] = 'success';
     } else {
@@ -222,7 +224,7 @@ if($action == 'env') {
         $ret['write']['data']['remark'] = 'runtime目录无法写入, 将无法写入配置文件, 系统无法正常安装. ';
     }
     $ret['write']['install']['ok'] = local_writeable(PATH_ROOT . '/install');
-    if($ret['write']['install']['ok']) {
+    if ($ret['write']['install']['ok']) {
         $ret['write']['install']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['write']['install']['class'] = 'success';
     } else {
@@ -232,7 +234,7 @@ if($action == 'env') {
         $ret['write']['install']['remark'] = 'public/install目录无法写入, 将无法写入安装文件, 系统无法正常安装. ';
     }
     $ret['write']['database']['ok'] = is_writable(PATH_ROOT . '/../config/database.php');
-    if($ret['write']['database']['ok']) {
+    if ($ret['write']['database']['ok']) {
         $ret['write']['database']['value'] = '<span class="glyphicon glyphicon-ok text-success"></span>';
         $ret['write']['database']['class'] = 'success';
     } else {
@@ -243,14 +245,14 @@ if($action == 'env') {
     }
 
     $ret['continue'] = true;
-    foreach($ret['php'] as $opt) {
-        if($opt['failed']) {
+    foreach ($ret['php'] as $opt) {
+        if ($opt['failed']) {
             $ret['continue'] = false;
             break;
         }
     }
-    foreach($ret['write'] as $opt) {
-        if($opt['failed']) {
+    foreach ($ret['write'] as $opt) {
+        if ($opt['failed']) {
             $ret['continue'] = false;
             break;
         }
@@ -259,116 +261,121 @@ if($action == 'env') {
 }
 
 /**
- *配置数据库信息
+ * 配置数据库信息
  */
-
-if($action == 'db') {
-    if($ispost) {
-        if($_POST['do'] != 'continue') {
+if ($action == 'db') {
+    if ($ispost) {
+        if ($_POST['do'] != 'continue') {
             setcookie('action', 'env');
             header('location: ?refresh');
             exit();
         }
         $db = $_POST['db'];
         $user = $_POST['user'];
-        $store =$_POST['store'];
+        $store = $_POST['store'];
 
         $link = @mysqli_connect($db['server'], $db['username'], $db['password']);
-        if(mysqli_connect_errno()) {
-            $error =mysqli_connect_errno();
+        if (mysqli_connect_errno()) {
+            $error = mysqli_connect_errno();
             if (strpos($error, '1045') !== false) {
                 $error = '您的数据库访问用户名或是密码错误. <br />';
             }
         } else {
-            mysqli_query($link,"SET character_set_connection=utf8, character_set_results=utf8, character_set_client=binary");
-            mysqli_query($link,"SET sql_mode=''");
-            if(mysqli_errno($link)) {
+            mysqli_query($link, "SET character_set_connection=utf8, character_set_results=utf8, character_set_client=binary");
+            mysqli_query($link, "SET sql_mode=''");
+            if (mysqli_errno($link)) {
                 $error = mysqli_error($link);
             } else {
-                $query = mysqli_query($link,"SHOW DATABASES LIKE  '{$db['name']}';");
+                $query = mysqli_query($link, "SHOW DATABASES LIKE  '{$db['name']}';");
                 if (!mysqli_fetch_assoc($query)) {
-                    if(mysqli_get_server_info($link) > '4.1') {
-                        mysqli_query($link,"CREATE DATABASE IF NOT EXISTS `{$db['name']}` DEFAULT CHARACTER SET utf8");
+                    if (mysqli_get_server_info($link) > '4.1') {
+                        mysqli_query($link, "CREATE DATABASE IF NOT EXISTS `{$db['name']}` DEFAULT CHARACTER SET utf8");
                     } else {
-                        mysqli_query($link,"CREATE DATABASE IF NOT EXISTS `{$db['name']}`");
+                        mysqli_query($link, "CREATE DATABASE IF NOT EXISTS `{$db['name']}`");
                     }
                 }
-                $query = mysqli_query($link,"SHOW DATABASES LIKE  '{$db['name']}';");
+                $query = mysqli_query($link, "SHOW DATABASES LIKE  '{$db['name']}';");
                 if (!mysqli_fetch_assoc($query)) {
                     $error .= "数据库不存在且创建数据库失败. <br />";
                 }
-                if(mysqli_errno($link)) {
+                if (mysqli_errno($link)) {
                     $error .= mysqli_error($link);
                 }
             }
         }
 
-        if(empty($error)) {
+        if (empty($error)) {
             $pieces = explode(':', $db['server']);
             $db['port'] = !empty($pieces[1]) ? $pieces[1] : '3306';
             $config = db_config();
             $cookiepre = local_salt(4) . '_';
             $authkey = local_salt(8);
             $config = str_replace(array(
-                                      '{db-server}', '{db-username}', '{db-password}', '{db-port}','{db-name}','{db-prefix}'
-                                  ), array(
-                                      $db['server'], $db['username'], $db['password'], $db['port'], $db['name'],$db['prefix']
-                                  ), $config);
-
+                '{db-server}',
+                '{db-username}',
+                '{db-password}',
+                '{db-port}',
+                '{db-name}',
+                '{db-prefix}'
+            ), array(
+                $db['server'],
+                $db['username'],
+                $db['password'],
+                $db['port'],
+                $db['name'],
+                $db['prefix']
+            ), $config);
 
             mysqli_close($link);
 
-
             $link = mysqli_connect($db['server'], $db['username'], $db['password']);
-            mysqli_select_db($link,$db['name']);
-            mysqli_query($link,"SET character_set_connection=utf8, character_set_results=utf8, character_set_client=binary");
-            mysqli_query($link,"SET sql_mode=''");
-
+            mysqli_select_db($link, $db['name']);
+            mysqli_query($link, "SET character_set_connection=utf8, character_set_results=utf8, character_set_client=binary");
+            mysqli_query($link, "SET sql_mode=''");
 
 
             //循环添加数据
-            if(file_exists(PATH_ROOT . '/install/install_base.sql')){
+            if (file_exists(PATH_ROOT . '/install/install_base.sql')) {
                 $sql = file_get_contents(PATH_ROOT . '/install/install_base.sql');
 
                 //添加初始化数据
-                if($_POST['initdata']){
-                    $sql.=file_get_contents(PATH_ROOT.'/install/initdata.sql');
+                if ($_POST['initdata']) {
+                    $sql .= file_get_contents(PATH_ROOT . '/install/initdata.sql');
                 }
-                $sql =str_replace('#__',$db['prefix'],$sql);
+                $sql = str_replace('#__', $db['prefix'], $sql);
                 $sql = str_replace("\r", "\n", $sql);
                 $sql = explode(";\n", $sql);
 
                 foreach ($sql as $item) {
                     $item = trim($item);
-                    if(empty($item)) continue;
+                    if (empty($item)) continue;
                     preg_match('/CREATE TABLE `([^ ]*)`/', $item, $matches);
-                    if($matches) {
+                    if ($matches) {
                         $table_name = $matches[1];
-                        $result = mysqli_query($link,$item);
+                        $result = mysqli_query($link, $item);
                     } else {
-                        $result = mysqli_query($link,$item);
+                        $result = mysqli_query($link, $item);
                     }
-                    if(!$result){
+                    if (!$result) {
                         die('<script type="text/javascript">alert("安装数据库SQL语句错误");history.back();</script>');
                     }
-
                 }
-            }else{
+            } else {
                 die('<script type="text/javascript">alert("安装包不正确, 数据安装脚本缺失.");history.back();</script>');
             }
-            
+
             //更新安装时间
-            $setup_date = date("Y-m-d H:i:s",time());
-            mysqli_query($link,"update {$db['prefix']}config set value = '{$setup_date}' where code = 'setup_date'");
+            $setup_date = date("Y-m-d H:i:s", time());
+            mysqli_query($link, "update {$db['prefix']}config set value = '{$setup_date}' where code = 'setup_date'");
             //更新系统唯一标识 32位
             $site_uniqid = md5(bin2hex(random_bytes(64)));
-            mysqli_query($link,"update {$db['prefix']}config set value = '{$site_uniqid}' where code = 'site_uniqid'");
+            mysqli_query($link, "update {$db['prefix']}config set value = '{$site_uniqid}' where code = 'site_uniqid'");
 
             //添加用户管理员
             $password = md5($user['password']);
-            $insert_error = mysqli_query($link,"INSERT INTO {$db['prefix']}admin (admin_name, admin_password, admin_is_super, admin_gid) 
+            $insert_error = mysqli_query($link, "INSERT INTO {$db['prefix']}admin (admin_name, admin_password, admin_is_super, admin_gid) 
 			VALUES('{$user['username']}', '{$password}', '1', '0')");
-            if(!$insert_error){
+            if (!$insert_error) {
                 die('<script type="text/javascript">alert("管理员账户注册失败.");history.back();</script>');
             }
 
@@ -378,20 +385,20 @@ if($action == 'db') {
             $member_password = $store['password'];
 
             // 创建店铺
-            mysqli_query($link,"INSERT INTO {$db['prefix']}member (`member_id`,`member_name`,`member_password`,`member_nickname`,`member_email`,`member_addtime`,`member_logintime`,`member_old_logintime`) VALUES ('1', '{$member_name}','". md5($member_password) ."', '德尚网络_123456', '', '". time() ."', '". time() ."', '". time() ."')");
-            mysqli_query($link,"INSERT INTO {$db['prefix']}store (`store_id`,`store_name`,`grade_id`,`member_id`,`member_name`,`seller_name`,`store_state`,`store_addtime`) VALUES ('1','{$store_name}','1','1','{$member_name}','{$seller_name}','1', '". time() ."')");
-            mysqli_query($link,"INSERT INTO {$db['prefix']}storejoinin (`member_id`,`member_name`,`seller_name`,`store_name`,`joinin_state`) VALUES ('1', '{$member_name}', '{$seller_name}', '{$store_name}', '40')");
-            mysqli_query($link,"INSERT INTO {$db['prefix']}seller (`seller_id`,`seller_name`,`member_id`,`sellergroup_id`,`store_id`,`is_admin`) VALUES ('1', '{$seller_name}', '1', '0', '1', '1')");
-            mysqli_query($link,"INSERT INTO {$db['prefix']}storebindclass (`storebindclass_id`, `store_id`, `commis_rate`, `class_1`, `class_2`, `class_3`, `state`) VALUES ('1', '1', '0', '0', '0', '0', '1')");
+            mysqli_query($link, "INSERT INTO {$db['prefix']}member (`member_id`,`member_name`,`member_password`,`member_nickname`,`member_email`,`member_addtime`,`member_logintime`,`member_old_logintime`) VALUES ('1', '{$member_name}','" . md5($member_password) . "', '德尚网络_123456', '', '" . time() . "', '" . time() . "', '" . time() . "')");
+            mysqli_query($link, "INSERT INTO {$db['prefix']}store (`store_id`,`store_name`,`grade_id`,`member_id`,`member_name`,`seller_name`,`store_state`,`store_addtime`) VALUES ('1','{$store_name}','1','1','{$member_name}','{$seller_name}','1', '" . time() . "')");
+            mysqli_query($link, "INSERT INTO {$db['prefix']}storejoinin (`member_id`,`member_name`,`seller_name`,`store_name`,`joinin_state`) VALUES ('1', '{$member_name}', '{$seller_name}', '{$store_name}', '40')");
+            mysqli_query($link, "INSERT INTO {$db['prefix']}seller (`seller_id`,`seller_name`,`member_id`,`sellergroup_id`,`store_id`,`is_admin`) VALUES ('1', '{$seller_name}', '1', '0', '1', '1')");
+            mysqli_query($link, "INSERT INTO {$db['prefix']}storebindclass (`storebindclass_id`, `store_id`, `commis_rate`, `class_1`, `class_2`, `class_3`, `storebindclass_state`) VALUES ('1', '1', '0', '0', '0', '0', '1')");
 
-            mysqli_query($link,"update {$db['prefix']}goods set is_platform_store = 1 where store_id = 1");
-            mysqli_query($link,"update {$db['prefix']}goodscommon set is_platform_store = 1 where store_id = 1");
-            mysqli_query($link,"update {$db['prefix']}store set is_platform_store = 1 where store_id = 1");
-            mysqli_query($link,"update {$db['prefix']}store set bind_all_gc = 1 where store_id = 1");
+            mysqli_query($link, "update {$db['prefix']}goods set is_platform_store = 1 where store_id = 1");
+            mysqli_query($link, "update {$db['prefix']}goodscommon set is_platform_store = 1 where store_id = 1");
+            mysqli_query($link, "update {$db['prefix']}store set is_platform_store = 1 where store_id = 1");
+            mysqli_query($link, "update {$db['prefix']}store set bind_all_gc = 1 where store_id = 1");
 
-            if($_POST['initdata']){
-                mysqli_query($link,"update {$db['prefix']}goods set store_name = '{$store_name}'");
-                mysqli_query($link,"update {$db['prefix']}goodscommon set store_name = '{$store_name}'");
+            if ($_POST['initdata']) {
+                mysqli_query($link, "update {$db['prefix']}goods set store_name = '{$store_name}'");
+                mysqli_query($link, "update {$db['prefix']}goodscommon set store_name = '{$store_name}'");
             }
             //配置数据库
             file_put_contents(PATH_ROOT . '/../config/database.php', $config);
@@ -403,7 +410,6 @@ if($action == 'db') {
             setcookie('action', 'finish');
             header('location: ?refresh');
             exit();
-
         }
     }
     tpl_install_db($error);
@@ -412,16 +418,16 @@ if($action == 'db') {
 /**
  * 安装完成
  */
-
-if($action == 'finish') {
-    setcookie('action', '',time()-3600);
+if ($action == 'finish') {
+    setcookie('action', '', time() - 3600);
     $sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
-    $sitepath = str_replace('/install',"",$sitepath);
-    $url = strtolower('http://'.$_SERVER['HTTP_HOST'].$sitepath);
+    $sitepath = str_replace('/install', "", $sitepath);
+    $url = strtolower('http://' . $_SERVER['HTTP_HOST'] . $sitepath);
     tpl_install_finish($url);
 }
 
-function tpl_install_license() {
+function tpl_install_license()
+{
     echo <<<EOF
 		<div class="panel panel-default">
 			<div class="panel-heading">阅读许可协议</div>
@@ -479,13 +485,14 @@ EOF;
     tpl_frame();
 }
 
-function tpl_frame() {
+function tpl_frame()
+{
     global $action, $actions;
     $action = $_COOKIE['action'];
     $step = array_search($action, $actions);
     $steps = array();
-    for($i = 0; $i <= $step; $i++) {
-        if($i == $step) {
+    for ($i = 0; $i <= $step; $i++) {
+        if ($i == $step) {
             $steps[$i] = ' step-info';
         } else {
             $steps[$i] = ' step-success';
@@ -564,13 +571,15 @@ function tpl_frame() {
 EOF;
     echo trim($tpl);
 }
-function local_writeable($dir) {
+
+function local_writeable($dir)
+{
     $writeable = 0;
-    if(!is_dir($dir)) {
+    if (!is_dir($dir)) {
         @mkdir($dir, 0777);
     }
-    if(is_dir($dir)) {
-        if($fp = fopen("$dir/test.txt", 'w')) {
+    if (is_dir($dir)) {
+        if ($fp = fopen("$dir/test.txt", 'w')) {
             fclose($fp);
             unlink("$dir/test.txt");
             $writeable = 1;
@@ -581,8 +590,9 @@ function local_writeable($dir) {
     return $writeable;
 }
 
-function tpl_install_env($ret = array()) {
-    if(!$ret['continue']) {
+function tpl_install_env($ret = array())
+{
+    if (!$ret['continue']) {
         $continue = '<li class="previous disabled"><a href="javascript:;">请先解决环境问题后继续</a></li>';
     } else {
         $continue = '<li class="previous"><a href="javascript:;" onclick="$(\'#do\').val(\'continue\');$(\'form\')[0].submit();">继续 <span class="glyphicon glyphicon-chevron-right"></span></a></li>';
@@ -753,8 +763,9 @@ EOF;
     tpl_frame();
 }
 
-function tpl_install_db($error = '') {
-    if(!empty($error)) {
+function tpl_install_db($error = '')
+{
+    if (!empty($error)) {
         $message = '<div class="alert alert-danger">发生错误: ' . $error . '</div>';
     }
     $insTypes = array();
@@ -961,7 +972,8 @@ EOF;
     tpl_frame();
 }
 
-function db_config(){
+function db_config()
+{
     $cfg = <<<EOF
 <?php
 
@@ -1031,15 +1043,17 @@ EOF;
     return trim($cfg);
 }
 
-function local_salt($length = 8) {
+function local_salt($length = 8)
+{
     $result = '';
-    while(strlen($result) < $length) {
+    while (strlen($result) < $length) {
         $result .= sha1(uniqid('', true));
     }
     return substr($result, 0, $length);
 }
 
-function tpl_install_finish($url) {
+function tpl_install_finish($url)
+{
     echo <<<EOF
 	<div class="page-header"><h3 style="text-align:center">安装完成</h3></div>
 	<div class="alert alert-success">
@@ -1048,5 +1062,4 @@ function tpl_install_finish($url) {
 	</div>
 EOF;
     tpl_frame();
-
 }

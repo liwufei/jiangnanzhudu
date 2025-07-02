@@ -2,9 +2,14 @@
 
 namespace weixin;
 
-class WeixinLogin {
+class WeixinLogin
+{
+    public $wx_from;
+    public $appId;
+    public $appSecret;
 
-    public function __construct() {
+    public function __construct()
+    {
         $wx_from = input('param.wx_from');
         $this->wx_from = $wx_from;
         if ($wx_from == 'app') {
@@ -15,41 +20,42 @@ class WeixinLogin {
             $this->appSecret = config('ds_config.weixin_h5_secret');
         }
     }
-    
+
     //获取 微信浏览器 code_url
-    public function get_code_url() {
+    public function get_code_url()
+    {
         $ref = htmlspecialchars_decode(input('param.ref'));
         $type = input('param.type');
-        
-        if(!in_array($type, array('login','bind'))){
+
+        if (!in_array($type, array('login', 'bind'))) {
             ds_json_encode(10001, '参数错误');
         }
-        
-        if($type == 'login'){
+
+        if ($type == 'login') {
             $redirect_uri = config('ds_config.h5_site_url') . "/pages/home/memberlogin/Login?ref=" . urlencode($ref);
-        }else{
+        } else {
             $redirect_uri = config('ds_config.h5_site_url') . "/pages/member/setting/AccountSet?ref=" . urlencode($ref);
         }
-        
+
         //H5 前端获取授权Code
         $code_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$this->appId&redirect_uri=" . urlencode($redirect_uri) . "&response_type=code&scope=snsapi_userinfo&state=dsmall#wechat_redirect"; // 获取code
         return $code_url;
     }
-    
-    
+
     /**
      * 小程序登录：https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/login.html
      * 移动应用登录：https://developers.weixin.qq.com/doc/oplatform/Mobile_App/WeChat_Login/Development_Guide.html
      * 微信网页登陆:https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
      */
     //获取  unionid 以及 openid
-    public function getOpenid() {
+    public function getOpenid()
+    {
         $code = input('param.code');
-        if(!in_array($this->wx_from,array('pc','h5','miniprogram','app'))){
+        if (!in_array($this->wx_from, array('pc', 'h5', 'miniprogram', 'app'))) {
             ds_json_encode(10001, '微信登录参数错误');
         }
         if (!empty($code)) {
-            
+
             if ($this->wx_from == 'miniprogram') {
                 //小程序支付获取openid
                 $xcx_appid = config('ds_config.weixin_xcx_appid');
@@ -74,7 +80,7 @@ class WeixinLogin {
             if (isset($res['errcode'])) {
                 ds_json_encode(10001, lang('error_code') . $res['errcode'] . '，' . $res['errmsg']);
             }
-            
+
             //https://developers.weixin.qq.com/doc/offiaccount/User_Management/Get_users_basic_information_UnionID.html#UinonId
             if (empty($res['unionid']) ||  strlen($res['unionid']) != 28) {
                 ds_json_encode(10001, lang('unionid_not_get'));
@@ -84,10 +90,10 @@ class WeixinLogin {
             ds_json_encode(10001, lang('openid_not_get'));
         }
     }
-    
-    
-    public function getUserinfo($res){
-        if(!in_array($this->wx_from,array('pc','h5','miniprogram','app'))){
+
+    public function getUserinfo($res)
+    {
+        if (!in_array($this->wx_from, array('pc', 'h5', 'miniprogram', 'app'))) {
             ds_json_encode(10001, '微信登录参数错误');
         }
         //非小程序，单独拉取用户信息  https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html#3
@@ -101,13 +107,7 @@ class WeixinLogin {
         } else {
             $userinfo = $res;
         }
-        
+
         return $userinfo;
-        
     }
-    
-    
-    
-    
-    
 }

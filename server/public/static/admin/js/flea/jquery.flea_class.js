@@ -15,7 +15,7 @@ $(document).ready(function () {
                     var src = '';
                     for (var i = 0; i < data.length; i++) {
                         var tmp_vertline = "<img class='preimg' src='" + ADMINSITEROOT + "/images/treetable/vertline.gif'/>";
-                        src += "<tr id='ds_row_" +data[i].fleaclass_id+ "' class='" + pr.attr('class') + " row" + id + "'>";
+                        src += "<tr id='ds_row_" + data[i].fleaclass_id + "' class='" + pr.attr('class') + " row" + id + "'>";
                         src += "<td class='w36'><input type='checkbox' name='check_fleaclass_id[]' value='" + data[i].fleaclass_id + "' class='checkitem'>";
                         //图片
                         if (data[i].have_child == 1) {
@@ -62,7 +62,7 @@ $(document).ready(function () {
                         src += "</td>";
                         //操作
                         src += "<td class='w84'>";
-                        src += "<a href=\"javascript:dsLayerOpen('" + ADMINSITEURL + "/Fleaclass/goods_class_edit/fleaclass_id/" + data[i].fleaclass_id + "','编辑-"+data[i].fleaclass_name+"')\" class='dsui-btn-edit'><i class='iconfont'></i>编辑</a>";
+                        src += "<a href=\"javascript:dsLayerOpen('" + ADMINSITEURL + "/Fleaclass/goods_class_edit/fleaclass_id/" + data[i].fleaclass_id + "','编辑-" + data[i].fleaclass_name + "')\" class='dsui-btn-edit'><i class='iconfont'></i>编辑</a>";
                         src += " <a href=\"javascript:dsLayerConfirm('" + ADMINSITEURL + "/Fleaclass/goods_class_del/?fleaclass_id=" + data[i].fleaclass_id + "','删除该分类将会同时删除该分类的所有下级分类，您确定要删除吗'," + data[i].fleaclass_id + ");\" class='dsui-btn-del'><i class='iconfont'></i>删除</a>";
                         src += "</td>";
                         src += "</tr>";

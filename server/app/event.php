@@ -1,8 +1,7 @@
 <?php
 // 事件定义文件
 return [
-    'bind'      => [
-    ],
+    'bind'      => [],
 
     'listen'    => [
         'AppInit'  => [],
@@ -12,6 +11,5 @@ return [
         'LogWrite' => [],
     ],
 
-    'subscribe' => [
-    ],
+    'subscribe' => [],
 ];

@@ -1,1 +1,3 @@
-<?php $fontInfo = array('ygyxsziti'=>'行书');
+<?php
+
+$fontInfo = array('ygyxsziti' => '行书');

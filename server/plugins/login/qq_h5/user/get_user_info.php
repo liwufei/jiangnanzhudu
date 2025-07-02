@@ -1,6 +1,7 @@
 <?php
-require_once(PLUGINS_PATH.'/login/qq_h5/comm/config.php');
-require_once(PLUGINS_PATH.'/login/qq_h5/comm/utils.php');
+
+require_once(PLUGINS_PATH . '/login/qq_h5/comm/config.php');
+require_once(PLUGINS_PATH . '/login/qq_h5/comm/utils.php');
 
 function get_user_info()
 {
@@ -14,5 +15,3 @@ function get_user_info()
     $arr = json_decode($info, true);
     return $arr;
 }
-
-?>

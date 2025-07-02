@@ -1,19 +1,20 @@
 <?php
 
-/**
- * 邮件类
- * 邮件操作类
- */
-
 namespace sendmsg;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require root_path(). 'vendor/phpmailer/phpmailer/src/Exception.php';
-require root_path(). 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-require root_path(). 'vendor/phpmailer/phpmailer/src/SMTP.php';
-final class Email {
+require root_path() . 'vendor/phpmailer/phpmailer/src/Exception.php';
+require root_path() . 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require root_path() . 'vendor/phpmailer/phpmailer/src/SMTP.php';
+
+/**
+ * 邮件类
+ * 邮件操作类
+ */
+final class Email
+{
 
     /**
      * 邮件服务器
@@ -55,7 +56,8 @@ final class Email {
      */
     private $site_name;
 
-    public function get($key) {
+    public function get($key)
+    {
         if (!empty($this->$key)) {
             return $this->$key;
         } else {
@@ -63,7 +65,8 @@ final class Email {
         }
     }
 
-    public function set($key, $value) {
+    public function set($key, $value)
+    {
         if (!isset($this->$key)) {
             $this->$key = $value;
             return true;
@@ -81,7 +84,8 @@ final class Email {
      * @param string $from 页头来源内容
      * @return bool 布尔形式的返回结果
      */
-    public function send($email_to, $subject, $message, $from = '') {
+    public function send($email_to, $subject, $message, $from = '')
+    {
         if (empty($email_to))
             return false;
 
@@ -100,24 +104,25 @@ final class Email {
         //Recipients
         $mail->setFrom($this->email_from, $this->site_name);
         $mail->addAddress($email_to);     // Add a recipient
-//        $mail->addReplyTo('info@example.com', 'Information');
-//        $mail->addCC('cc@example.com');
-//        $mail->addBCC('bcc@example.com');
+        //        $mail->addReplyTo('info@example.com', 'Information');
+        //        $mail->addCC('cc@example.com');
+        //        $mail->addBCC('bcc@example.com');
         //Attachments
-//        $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-//        $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+        //        $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+        //        $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
         //Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->Subject = $subject;
         $mail->Body = $message;
-		$mail->CharSet ="UTF-8";
-//            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+        $mail->CharSet = "UTF-8";
+        //            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
         $result = $mail->send();
         return $result;
     }
 
-    public function send_sys_email($email_to, $subject, $message) {
-        if(empty(config('ds_config.email_addr'))||empty(config('ds_config.email_id'))||empty(config('ds_config.email_pass'))){
+    public function send_sys_email($email_to, $subject, $message)
+    {
+        if (empty(config('ds_config.email_addr')) || empty(config('ds_config.email_id')) || empty(config('ds_config.email_pass'))) {
             throw new  Exception('系统未配置邮箱发送');
         }
         $this->set('email_server', config('ds_config.email_host'));
@@ -138,7 +143,8 @@ final class Email {
      * @param string $message 邮件内容
      * @return string 字符串形式的返回结果
      */
-    private function html($subject, $message) {
+    private function html($subject, $message)
+    {
         $message = preg_replace("/href\=\"(?!http\:\/\/)(.+?)\"/i", 'href="\\1"', $message);
         $tmp = "<html><head>";
         $tmp .= '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
@@ -155,9 +161,9 @@ final class Email {
      * @param string $subject 邮件标题
      * @return string 字符串形式的返回结果
      */
-    private function subject($subject) {
+    private function subject($subject)
+    {
         $subject = '=?' . CHARSET . '?B?' . base64_encode(preg_replace("/[\r|\n]/", '', '[' . $this->site_name . '] ' . $subject)) . '?=';
         return $subject;
     }
-
 }

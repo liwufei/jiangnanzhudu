@@ -1,7 +1,7 @@
 /*
  * strength.js 
  */
-;(function ( $, window, document, undefined ) {
+; (function ($, window, document, undefined) {
 
     var pluginName = "tabulous",
         defaults = {
@@ -10,10 +10,10 @@
 
     // $('<style>body { background-color: red; color: white; }</style>').appendTo('head');
 
-    function Plugin( element, options ) {
+    function Plugin(element, options) {
         this.element = element;
         this.$elem = $(this.element);
-        this.options = $.extend( {}, defaults, options );
+        this.options = $.extend({}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
         this.init();
@@ -21,7 +21,7 @@
 
     Plugin.prototype = {
 
-        init: function() {
+        init: function () {
 
             var links = this.$elem.find('ul a');
             var firstchild = this.$elem.find('li:first-child').find('a');
@@ -42,13 +42,13 @@
 
             var alldivs = this.$elem.find('div:first').find('.tabs-content');
 
-            alldivs.css({'position': 'absolute','top':'0px'});
+            alldivs.css({ 'position': 'absolute', 'top': '0px' });
 
-            firstdiv.css('height',firstdivheight+'px');
+            firstdiv.css('height', firstdivheight + 'px');
 
             firstchild.addClass('tabulous_active');
 
-            links.bind('click', {myOptions: this.options}, function(e) {
+            links.bind('click', { myOptions: this.options }, function (e) {
                 e.preventDefault();
 
                 var $options = e.data.myOptions;
@@ -63,24 +63,24 @@
 
                 links.removeClass('tabulous_active');
                 mythis.addClass('tabulous_active');
-                thisdivwidth = thisform.find('div'+thislink).height();
+                thisdivwidth = thisform.find('div' + thislink).height();
 
                 if (effect == 'scale') {
                     alldivs.removeClass('showscale').addClass('make_transist').addClass('hidescale');
-                    thisform.find('.tabs-content'+thislink).addClass('make_transist').addClass('showscale');
+                    thisform.find('.tabs-content' + thislink).addClass('make_transist').addClass('showscale');
                 } else if (effect == 'slideLeft') {
                     alldivs.removeClass('showleft').addClass('make_transist').addClass('hideleft');
-                    thisform.find('.tabs-content'+thislink).addClass('make_transist').addClass('showleft');
+                    thisform.find('.tabs-content' + thislink).addClass('make_transist').addClass('showleft');
                 } else if (effect == 'scaleUp') {
                     alldivs.removeClass('showscaleup').addClass('make_transist').addClass('hidescaleup');
-                    thisform.find('.tabs-content'+thislink).addClass('make_transist').addClass('showscaleup');
+                    thisform.find('.tabs-content' + thislink).addClass('make_transist').addClass('showscaleup');
                 } else if (effect == 'flip') {
                     alldivs.removeClass('showflip').addClass('make_transist').addClass('hideflip');
-                    thisform.find('.tabs-content'+thislink).addClass('make_transist').addClass('showflip');
+                    thisform.find('.tabs-content' + thislink).addClass('make_transist').addClass('showflip');
                 }
 
 
-                firstdiv.css('height',thisdivwidth+'px');
+                firstdiv.css('height', thisdivwidth + 'px');
 
 
 
@@ -94,17 +94,17 @@
 
         },
 
-        yourOtherFunction: function(el, options) {
+        yourOtherFunction: function (el, options) {
             // some logic
         }
     };
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
-    $.fn[pluginName] = function ( options ) {
+    $.fn[pluginName] = function (options) {
         return this.each(function () {
-            new Plugin( this, options );
+            new Plugin(this, options);
         });
     };
 
-})( jQuery, window, document );
+})(jQuery, window, document);

@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace app;
 
@@ -9,6 +10,7 @@ use think\Validate;
 use think\facade\View;
 use think\exception\HttpResponseException;
 use think\Response;
+
 /**
  * 控制器基础类
  */
@@ -53,8 +55,7 @@ abstract class BaseController
     }
 
     // 初始化
-    protected function initialize()
-    {}
+    protected function initialize() {}
 
     /**
      * 验证数据
@@ -89,23 +90,23 @@ abstract class BaseController
         if ($batch || $this->batchValidate) {
             $v->batch(true);
         }
-        
-//        return $v->failException(true)->check($data);
-        if (!$v->check($data)){
+
+        // return $v->failException(true)->check($data);
+        if (!$v->check($data)) {
             $this->validateMsg($v->getError());
         }
-        
     }
-    
+
     //根据来源返回不同错误展示信息
-    protected function validateMsg($message){
+    protected function validateMsg($message)
+    {
         $module = app('http')->getName();
         $isAjax = request()->isAjax();
         if ($module == 'api' || $isAjax) {
             ds_json_encode(10001, $message);
-        }elseif ($module == 'admin' || $module == 'home') {
+        } elseif ($module == 'admin' || $module == 'home') {
             $this->error($message);
-        }else{
+        } else {
             ds_json_encode(10001, '控制器验证器返回错误');
         }
     }
@@ -125,7 +126,7 @@ abstract class BaseController
         if (is_null($url) && isset($_SERVER["HTTP_REFERER"])) {
             $url = $_SERVER["HTTP_REFERER"];
         } elseif ($url) {
-            $url=(string)$url;
+            $url = (string)$url;
             $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : (string)$this->app->route->buildUrl($url);
         }
 
@@ -159,12 +160,12 @@ abstract class BaseController
      * @param  array $header 发送的Header信息
      * @return void
      */
-    protected function error($msg = '', string $url = null, $data = '', int $wait = 3, array $header = [])
+    protected function error($msg = '', string $url = '', $data = '', int $wait = 3, array $header = [])
     {
         if (is_null($url)) {
             $url = $this->request->isAjax() ? '' : 'javascript:history.back(-1);';
         } elseif ($url) {
-            $url=(string)$url;
+            $url = (string)$url;
             $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : (string)$this->app->route->buildUrl($url);
         }
 
@@ -198,9 +199,9 @@ abstract class BaseController
      */
     protected function redirect($url, $params = [], $code = 302, $with = [])
     {
-        $url=(string)$url;
-        $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : (string)$this->app->route->buildUrl($url,$params);
-        
+        $url = (string)$url;
+        $url = (strpos($url, '://') || 0 === strpos($url, '/')) ? $url : (string)$this->app->route->buildUrl($url, $params);
+
         $response = Response::create($url, 'redirect');
 
         $response->code($code)->with($with);

@@ -15,7 +15,7 @@ $(document).ready(function () {
                     var src = '';
                     for (var i = 0; i < data.length; i++) {
                         var tmp_vertline = "<img class='preimg' src='templates/images/vertline.gif'/>";
-                        src += "<tr id='ds_row_"+ data[i].ac_id +"' class='" + pr.attr('class') + " row" + id + "'>";
+                        src += "<tr id='ds_row_" + data[i].ac_id + "' class='" + pr.attr('class') + " row" + id + "'>";
                         src += "<td class='w36'><input type='checkbox' name='check_ac_id[]' value='" + data[i].ac_id + "' class='checkitem'>";
                         if (data[i].have_child == 1) {
                             src += "<img fieldid='" + data[i].ac_id + "' status='open' ds_type='flex' src='" + ADMINSITEROOT + "/images/treetable/tv-expandable.gif' />";
@@ -45,7 +45,7 @@ $(document).ready(function () {
 
                         //操作
                         src += "<td class='w84'>";
-                        src += "<span><a href=\"javascript:dsLayerOpen('" + ADMINSITEURL + "/Articleclass/article_class_edit/ac_id/" + data[i].ac_id + "','编辑-"+data[i].ac_name+"')\" class='dsui-btn-edit'><i class='iconfont'></i>编辑</a>";
+                        src += "<span><a href=\"javascript:dsLayerOpen('" + ADMINSITEURL + "/Articleclass/article_class_edit/ac_id/" + data[i].ac_id + "','编辑-" + data[i].ac_name + "')\" class='dsui-btn-edit'><i class='iconfont'></i>编辑</a>";
                         src += "<a href=\"javascript:dsLayerConfirm('" + ADMINSITEURL + "/Articleclass/article_class_del/ac_id/" + data[i].ac_id + "','删除该分类将会同时删除该分类的所有下级分类，您确定要删除吗'," + data[i].ac_id + ");\" class='dsui-btn-del'><i class='iconfont'></i>删除</a>";
                         src += "</td>";
                         src += "</tr>";

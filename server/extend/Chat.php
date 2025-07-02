@@ -1,8 +1,10 @@
 <?php
 
-class Chat {
+class Chat
+{
 
-    public static function getChatHtml() {
+    public static function getChatHtml()
+    {
         $web_html = '';
 
         $avatar = get_member_avatar(session('avatar'));
@@ -17,12 +19,12 @@ class Chat {
         $member_name = session('member_name');
         $store_id = session('store_id');
         $store_name = session('store_name');
-        
+
         $seller_id = session('seller_id');
         $seller_name = session('seller_name');
         $seller_is_admin = session('seller_is_admin');
         $seller_smt_limits = session('seller_smt_limits');
-        
+
         $controller = request()->controller();
         $action = request()->action();
 
@@ -78,5 +80,4 @@ EOT;
 
         return $web_html;
     }
-
 }

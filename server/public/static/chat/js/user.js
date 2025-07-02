@@ -18,28 +18,28 @@ var user_show = 0;//当前选择的会员
 var msg_max = 20;//消息数
 var chat_audio = 1;//消息提醒声音开关
 var audio_info = '<object width="1" height="1" style="position: absolute; left: -1px;" id="msg_audio" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">' +
-        '<param value="' + CHAT_SITE_URL + '/audio.swf" name="movie"><param value="always" name="allowscriptaccess">' +
-        '<embed width="1" height="1" allowscriptaccess="always" src="' + CHAT_SITE_URL + '/audio.swf" name="msg_audio"></object>';
+    '<param value="' + CHAT_SITE_URL + '/audio.swf" name="movie"><param value="always" name="allowscriptaccess">' +
+    '<embed width="1" height="1" allowscriptaccess="always" src="' + CHAT_SITE_URL + '/audio.swf" name="msg_audio"></object>';
 $(function () {
     if (user['u_id'] != '') {
         web_info['chat_goods_html'] = '';
         web_info['html_title'] = $(document).attr('title');
         web_info['msg_dialog'] = '<div id="new_msg_dialog" class="msg-windows"><div class="user-tab-bar"><ul class="user-list" id="user_list"></ul></div>' +
-                '<div class="msg-dialog"><div class="dialog-body">' +
-                '<div id="msg_list" class="msg-contnet"><div id="user_msg_list"></div></div>' +
-                '<div class="msg-input-box"><div class="msg-input-title"><div class="chat_tools"><i id="chat_show_smilies" class="iconfont">&#xe669;</i></div>' +
-                '<span class="title">输入聊天信息</span><span class="chat-log-btn off" onclick="show_chat_log();">聊天记录<i></i></span></div>' +
-                '<form id="msg_form"><textarea name="send_message" id="send_message" class="textarea" onkeyup="send_keyup(event);" onfocus="send_focus();" ></textarea>' +
-                '<div class="msg-bottom"><div id="msg_count"></div><a href="JavaScript:void(0);" onclick="send_msg();" class="msg-button"><i></i>发送消息</a><div id="send_alert"></div></div></form></div></div>' +
-                '<div id="dialog_chat_right" class="dialog-chat-right"></div><div id="dialog_chat_log" class="dialog_chat_log"></div></div>' +
-                '<div id="dialog_clear" class="dialog_clear"></div></div>';
+            '<div class="msg-dialog"><div class="dialog-body">' +
+            '<div id="msg_list" class="msg-contnet"><div id="user_msg_list"></div></div>' +
+            '<div class="msg-input-box"><div class="msg-input-title"><div class="chat_tools"><i id="chat_show_smilies" class="iconfont">&#xe669;</i></div>' +
+            '<span class="title">输入聊天信息</span><span class="chat-log-btn off" onclick="show_chat_log();">聊天记录<i></i></span></div>' +
+            '<form id="msg_form"><textarea name="send_message" id="send_message" class="textarea" onkeyup="send_keyup(event);" onfocus="send_focus();" ></textarea>' +
+            '<div class="msg-bottom"><div id="msg_count"></div><a href="JavaScript:void(0);" onclick="send_msg();" class="msg-button"><i></i>发送消息</a><div id="send_alert"></div></div></form></div></div>' +
+            '<div id="dialog_chat_right" class="dialog-chat-right"></div><div id="dialog_chat_log" class="dialog_chat_log"></div></div>' +
+            '<div id="dialog_clear" class="dialog_clear"></div></div>';
         var chat_user_list = '<div class="chat-box"><div class="chat-list"><div class="chat-list-top"><img class="avatar" src="' + user['avatar'] + '?' + Math.floor(Math.random() * 100) + '" /><h1>' + user['u_name'] + '</h1><span class="minimize-chat-list iconfont" onclick="chat_show_list();">&#xe6e6;</span></div>' +
-                '<div id="chat_user_list" class="chat-list-content"><div><dl id="chat_user_friends"><dt onclick="chat_show_user_list(\'friends\');">' +
-                '<span class="show"></span>我的好友</dt><dd id="chat_friends" style="display: none;"></dd></dl>' +
-                '<dl id="chat_user_follow"><dt onclick="chat_show_user_list(\'follow\');"><span class="show"></span>我关注的人</dt><dd id="chat_follow" style="display: none;"></dd></dl>' +
-                '<dl id="chat_user_recent"><dt onclick="chat_show_user_list(\'recent\');"><span class="show"></span>最近联系人</dt><dd id="chat_recent" style="display: none;"></dd></dl></div></div>' +
-                '<div class="bottom-bar"><a href="' + HOMESITEURL + '/Membersnsfriend/index.html" target="_blank"><i class="iconfont">&#xe76d;</i></a></div>' +
-                '</div></div>';
+            '<div id="chat_user_list" class="chat-list-content"><div><dl id="chat_user_friends"><dt onclick="chat_show_user_list(\'friends\');">' +
+            '<span class="show"></span>我的好友</dt><dd id="chat_friends" style="display: none;"></dd></dl>' +
+            '<dl id="chat_user_follow"><dt onclick="chat_show_user_list(\'follow\');"><span class="show"></span>我关注的人</dt><dd id="chat_follow" style="display: none;"></dd></dl>' +
+            '<dl id="chat_user_recent"><dt onclick="chat_show_user_list(\'recent\');"><span class="show"></span>最近联系人</dt><dd id="chat_recent" style="display: none;"></dd></dl></div></div>' +
+            '<div class="bottom-bar"><a href="' + HOMESITEURL + '/Membersnsfriend/index.html" target="_blank"><i class="iconfont">&#xe76d;</i></a></div>' +
+            '</div></div>';
         var ajaxurl = HOMESITEURL + '/MemberInstantMessage/get_user_list?n=99&f_id=' + user['u_id'];
         $.ajax({
             type: "GET",
@@ -87,7 +87,7 @@ $("#web_chat_dialog").after(audio_info);
 
 function msg_dialog_close(id) {
     if (dialog_show == 1) {
-        $("#" + id).hide("slide", {direction: 'right'}, 300);
+        $("#" + id).hide("slide", { direction: 'right' }, 300);
     }
     dialog_show = 0;
     close_chat_log(user_show);
@@ -97,12 +97,12 @@ function msg_dialog_close(id) {
 }
 function msg_dialog_show(id) {
     if (dialog_show == 0) {
-        $("#" + id).show("slide", {direction: 'right'}, 600,
-                function () {
-                    $("#send_message").focus();
-                    var obj_msg = obj.find("div[select_user_msg='" + user_show + "']");
-                    obj.find("#msg_list").scrollTop(obj_msg.height());
-                });
+        $("#" + id).show("slide", { direction: 'right' }, 600,
+            function () {
+                $("#send_message").focus();
+                var obj_msg = obj.find("div[select_user_msg='" + user_show + "']");
+                obj.find("#msg_list").scrollTop(obj_msg.height());
+            });
     } else {
         $("#send_message").focus();
     }
@@ -116,7 +116,7 @@ function msg_dialog_show(id) {
             endCounterText: '字',
             errorCounterText: '已经超出'
         });
-        $("#chat_show_smilies").smilies({smilies_id: "send_message"});
+        $("#chat_show_smilies").smilies({ smilies_id: "send_message" });
     }
 }
 
@@ -235,14 +235,14 @@ function send_keyup(event) {//回车发消息
         send_msg();
     }
 }
-function send_msg(type=0,goods_id=0) {//发消息
+function send_msg(type = 0, goods_id = 0) {//发消息
     if (user_show < 1) {
         $("#send_alert").html('未选择聊天会员');
         return false;
     }
     var msg = {};
     msg['to_id'] = user_show;
-    if(type==0){
+    if (type == 0) {
         msg['message'] = $.trim($("#send_message").val());
         msg['message_type'] = 0
         if (msg['message'].length < 1) {
@@ -253,12 +253,12 @@ function send_msg(type=0,goods_id=0) {//发消息
             $("#send_alert").html('一次最多只能发送255字');
             return false;
         }
-    }else{
-		if(goods_id > 0){
-			msg['message'] = goods_id
-		}else{
-			msg['message'] = chat_goods_id
-		}
+    } else {
+        if (goods_id > 0) {
+            msg['message'] = goods_id
+        } else {
+            msg['message'] = chat_goods_id
+        }
         msg['message_type'] = 1
     }
     if (connect < 1) {
@@ -353,10 +353,10 @@ function get_chat_log(time_from) {
     var obj_chat_log = $("#dialog_chat_log");
     if (obj_chat_log.html() == '') {
         var chat_log_list = '<div class="chat-log-top"><h1><i class="iconfont">&#xe71b;</i>聊天记录</h1><span class="close-chat-log iconfont" onclick="show_chat_log();">&#xe696;</span></div>' +
-                '<div id="chat_log_list" class="chat_log_list"><div id="chat_log_msg" class="chat-log-msg"></div></div><div class="chat-log-bottom"><div id="chat_time_from" class="chat_time_from">' +
-                '<span time_id="7" onclick="get_chat_log(7);" class="current">7天</span><span time_id="15" onclick="get_chat_log(15);">15天</span><span time_id="30" onclick="get_chat_log(30);">30天</span></div>' +
-                '<div class="chat_log_first"><p>已到第一页</p></div><div class="chat_log_last"><p>已到最后一页</p></div>' +
-                '<div id="chat_log_page" class="chat_log_page"><span onclick="get_chat_previous();" class="previous iconfont" title="上一页">&#xe619;</span><span onclick="get_chat_next();" class="next iconfont" title="下一页">&#xe618;</span></div></div>';
+            '<div id="chat_log_list" class="chat_log_list"><div id="chat_log_msg" class="chat-log-msg"></div></div><div class="chat-log-bottom"><div id="chat_time_from" class="chat_time_from">' +
+            '<span time_id="7" onclick="get_chat_log(7);" class="current">7天</span><span time_id="15" onclick="get_chat_log(15);">15天</span><span time_id="30" onclick="get_chat_log(30);">30天</span></div>' +
+            '<div class="chat_log_first"><p>已到第一页</p></div><div class="chat_log_last"><p>已到最后一页</p></div>' +
+            '<div id="chat_log_page" class="chat_log_page"><span onclick="get_chat_previous();" class="previous iconfont" title="上一页">&#xe619;</span><span onclick="get_chat_next();" class="next iconfont" title="下一页">&#xe618;</span></div></div>';
         obj_chat_log.append(chat_log_list);
     }
     obj_chat_log.show();
@@ -451,7 +451,7 @@ function get_goods_list(s_id) {
                 text_goods += '<div class="goods-pic"><a href="' + goods['url'] + '" target="_blank">';
                 text_goods += '<img title="' + goods['goods_name'] + '" alt="' + goods['goods_name'] + '" src="' + goods['pic'] + '"/></a></div>';
                 text_goods += '<div class="goods-price">&yen;' + goods['goods_promotion_price'] + '</div>';
-				text_goods += '<div class="goods-id" onclick="send_msg(1,' + goods['goods_id'] + ');">发给客服</div>';
+                text_goods += '<div class="goods-id" onclick="send_msg(1,' + goods['goods_id'] + ');">发给客服</div>';
                 text_goods += '</li>';
                 text_append += text_goods;
             }
@@ -535,7 +535,7 @@ function show_chat_log() {
         return false;
     }
     if (typeof chat_log['u_id'] === "undefined" || chat_log['u_id'] != user_show) {
-//	$("#web_chat_dialog").hide();
+        //	$("#web_chat_dialog").hide();
         obj.find(".chat-log-btn").removeClass("off");
         obj.find(".chat-log-btn").addClass("on");
         get_chat_log(7);
@@ -589,9 +589,9 @@ function show_msg(u_id) {
                 max_id = m_id;
         }
     }
-    if(max_id){
+    if (max_id) {
         //将消息设置为已读
-        $.getJSON(HOMESITEURL + '/MemberInstantMessage/set_message',{max_id:max_id,f_id:u_id})
+        $.getJSON(HOMESITEURL + '/MemberInstantMessage/set_message', { max_id: max_id, f_id: u_id })
     }
     var obj_msg = obj.find("div[select_user_msg='" + u_id + "']");
     obj.find("#msg_list").scrollTop(obj_msg.height());
@@ -615,7 +615,7 @@ function show_f_msg(msg) {
     var n = obj_msg.find("div[m_id]").size();
     if (n >= msg_max && n % msg_max == 1) {
         obj_msg.append('<div clear_id="' + msg['instant_message_id'] + '" onclick="clear_msg(' + u_id + ',' + msg['instant_message_id'] +
-                ');" class="clear_msg"><a href="Javascript: void(0);">清除已上历史消息</a></div>');
+            ');" class="clear_msg"><a href="Javascript: void(0);">清除已上历史消息</a></div>');
     }
     obj.find("#msg_list").scrollTop(obj_msg.height());
 }
@@ -636,7 +636,7 @@ function show_t_msg(msg) {//显示发出的消息
     var n = obj_msg.find("div[m_id]").size();
     if (n >= msg_max && n % msg_max == 1) {
         obj_msg.append('<div clear_id="' + msg['instant_message_id'] + '" onclick="clear_msg(' + u_id + ',' + msg['instant_message_id'] +
-                ');" class="clear_msg"><a href="Javascript: void(0);">清除已上历史消息</a></div>');
+            ');" class="clear_msg"><a href="Javascript: void(0);">清除已上历史消息</a></div>');
     }
     obj.find("#msg_list").scrollTop(obj_msg.height());
 }
@@ -680,9 +680,9 @@ function chat_show_list() {
     }
     var obj_chat = $(".chat-list");
     if (new_msg > 0 || obj_chat.css("display") == 'none') {
-        obj_chat.show("slide", {direction: 'right'}, 300);
+        obj_chat.show("slide", { direction: 'right' }, 300);
     } else {
-        obj_chat.hide("slide", {direction: 'right'}, 300);
+        obj_chat.hide("slide", { direction: 'right' }, 300);
     }
 }
 function del_msg(msg) {//已读消息处理
@@ -812,7 +812,7 @@ function update_chat_msg(res) {
         var msg = '<div class="dstouch-chat-product"> <a href="' + HOMESITEURL + '/goods/index?goods_id=' + chat_goods.goods_id + '" target="_blank"><div class="goods-pic"><img src="' + chat_goods.goods_image_url + '" alt=""/></div><div class="goods-info"><div class="goods-name">' + chat_goods.goods_name + '</div><div class="goods-price">￥' + chat_goods.goods_price + "</div></div></a> </div>";
 
     } else {
-        var msg=res['instant_message']
+        var msg = res['instant_message']
         if (typeof smilies_array !== "undefined") {
             msg = '' + msg;
             for (var i in smilies_array[1]) {
@@ -833,10 +833,10 @@ function update_friends(u_list) {
         if (obj_friend.parent().find("dd[u_id='" + u_id + "']").size() == 0) {
             if (user_list[u_id]['online'] > 0) {
                 obj_friend.before('<dd u_id="' + u_id + '" onclick="chat(' + u_id + ');"><span class="user-avatar avatar-1"><img alt="' + user_list[u_id]['u_name']
-                        + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="online"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
+                    + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="online"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
             } else {
                 obj_friend.after('<dd u_id="' + u_id + '" onclick="chat(' + u_id + ');"><span class="user-avatar avatar-0"><img alt="' + user_list[u_id]['u_name']
-                        + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="offline"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
+                    + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="offline"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
             }
         }
     }
@@ -850,10 +850,10 @@ function update_follow(u_list) {
         if (obj_follow.parent().find("dd[u_id='" + u_id + "']").size() == 0) {
             if (user_list[u_id]['online'] > 0) {
                 obj_follow.before('<dd u_id="' + u_id + '" onclick="chat(' + u_id + ');"><span class="user-avatar avatar-1"><img alt="' + user_list[u_id]['u_name']
-                        + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="online"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
+                    + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="online"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
             } else {
                 obj_follow.after('<dd u_id="' + u_id + '" onclick="chat(' + u_id + ');"><span class="user-avatar avatar-0"><img alt="' + user_list[u_id]['u_name']
-                        + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="offline"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
+                    + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="offline"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
             }
         }
     }
@@ -867,10 +867,10 @@ function update_recent(u_list) {
         if (obj_recent.parent().find("dd[u_id='" + u_id + "']").size() == 0) {
             if (user_list[u_id]['online'] > 0) {
                 obj_recent.before('<dd u_id="' + u_id + '" title="最后对话:' + recent_list[u_id]['time'] + '" onclick="chat(' + u_id + ');"><span class="user-avatar avatar-1"><img alt="' + user_list[u_id]['u_name']
-                        + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="online"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
+                    + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="online"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
             } else {
                 obj_recent.after('<dd u_id="' + u_id + '" title="最后对话:' + recent_list[u_id]['time'] + '" onclick="chat(' + u_id + ');"><span class="user-avatar avatar-0"><img alt="' + user_list[u_id]['u_name']
-                        + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="offline"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
+                    + '" src="' + user_list[u_id]['avatar'] + '?' + Math.floor(Math.random() * 100) + '"><i class="offline"></i></span><h5>' + user_list[u_id]['u_name'] + '</h5><a class="iconfont" href="javascript:void(0)">&#xe71b;</a></dd>');
             }
         }
     }
@@ -904,7 +904,7 @@ function update_user(u_id) {
         text_append += '<a class="ac-ico iconfont">&#xe64b;</a>';
         text_append += '</li>';
         obj.find("#user_list").append(text_append);
-        obj.find("#user_list").sortable({items: 'li'});
+        obj.find("#user_list").sortable({ items: 'li' });
         obj.find("li[select_u_id='" + u_id + "'] .ac-ico").bind("click", function () {
             close_dialog(u_id);
             return false;
@@ -952,10 +952,9 @@ function wsOpen() {
         return false;//未登录时不取消息
 
     $("#web_chat_dialog").show();
-    if ($("#new_msg_dialog").size() == 0)
-    {
+    if ($("#new_msg_dialog").size() == 0) {
         $("#web_chat_dialog").after(web_info['msg_dialog']);
-        $("#new_msg_dialog").draggable({containment: "body"});
+        $("#new_msg_dialog").draggable({ containment: "body" });
     }
     obj = $("#new_msg_dialog");
     // 心跳检测重置
@@ -973,7 +972,7 @@ function wsMessage(res) {
         case 'init':
             var clientId = message.client_id
             //获取未读消息
-            $.getJSON(HOMESITEURL + '/MemberInstantMessage/join',{client_id:clientId})
+            $.getJSON(HOMESITEURL + '/MemberInstantMessage/join', { client_id: clientId })
             break
         case 'leave':
             break

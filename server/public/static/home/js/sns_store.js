@@ -1,8 +1,8 @@
-$(function(){
+$(function () {
     //展示和隐藏评论列表
-    $(document).on('click',"[ds_type='sd_commentbtn']", function() {
+    $(document).on('click', "[ds_type='sd_commentbtn']", function () {
         var $this = $(this);
-        $.get(HOMESITEURL + '/Index/login.html', function(result) {
+        $.get(HOMESITEURL + '/Index/login.html', function (result) {
             if (result == '0') {
                 login_dialog();
             } else {
@@ -21,8 +21,8 @@ $(function(){
             }
         });
     });
-	//评论提交
-    $(document).on('click',"[ds_type='scommentbtn']", function() {
+    //评论提交
+    $(document).on('click', "[ds_type='scommentbtn']", function () {
         var data = $(this).attr('data-param');
         eval("data = " + data);
         if ($("#commentform_" + data.txtid).valid()) {
@@ -42,7 +42,7 @@ $(function(){
                     data: _form.serialize(),
                     dataType: "json",
                     success: function (res) {
-                        layer.msg(res.message, {time: 1000}, function () {
+                        layer.msg(res.message, { time: 1000 }, function () {
                             if (res.code == 10000) {
                                 $('#content_comment' + res.result).html('');
                                 $('#tracereply_' + res.result).load(HOMESITEURL + '/Storesnshome/commentlist?id=' + res.result);
@@ -60,18 +60,18 @@ $(function(){
     });
 
     //删除评论
-    $(document).on('click',"[ds_type='scomment_del']", function() {
+    $(document).on('click', "[ds_type='scomment_del']", function () {
         var obj = $(this);
         var data_str = $(obj).attr('data-param');
         eval("data_str = " + data_str);
-        ds_ajaxget_confirm(HOMESITEURL + '/Storesnshome/delcomment.html?scid=' + data_str.scid + '&stid=' + data_str.stid,'您确定要删除该信息吗？');
+        ds_ajaxget_confirm(HOMESITEURL + '/Storesnshome/delcomment.html?scid=' + data_str.scid + '&stid=' + data_str.stid, '您确定要删除该信息吗？');
     });
-	
+
 
     //展示和隐藏转发表单
-    $(document).on('click',"[ds_type='sd_forwardbtn']", function() {
+    $(document).on('click', "[ds_type='sd_forwardbtn']", function () {
         var $this = $(this);
-        $.get(HOMESITEURL + '/Index/login.html', function(result) {
+        $.get(HOMESITEURL + '/Index/login.html', function (result) {
             if (result == '0') {
                 login_dialog();
             } else {
@@ -94,7 +94,7 @@ $(function(){
                     }
                     //绑定表单验证
                     $('#forwardform_' + data.txtid).validate({
-                        errorPlacement: function(error, element) {
+                        errorPlacement: function (error, element) {
                             element.next('.error').append(error);
                         },
                         rules: {
@@ -118,7 +118,7 @@ $(function(){
 
 
     //转发提交
-    $(document).on('click',"[ds_type='s_forwardbtn']", function() {
+    $(document).on('click', "[ds_type='s_forwardbtn']", function () {
         var data = $(this).attr('data-param');
         var form = $(this).parents('form:first');
         var seccode = $("#forwardseccode" + data.txtid);
@@ -147,20 +147,20 @@ $(function(){
     });
 
     //删除动态
-    $(document).on('click',"[ds_type='sd_del']", function() {
+    $(document).on('click', "[ds_type='sd_del']", function () {
         var data_str = $(this).attr('data-param');
         eval("data_str = " + data_str);
         var url = HOMESITEURL + "/Storesnshome/deltrace.html?id=" + data_str.txtid;
-        ds_ajaxget_confirm(url,'您确定要删除该信息吗？','remove',data_str)
+        ds_ajaxget_confirm(url, '您确定要删除该信息吗？', 'remove', data_str)
     });
 
     // 查看大图
-    $('[ds_type="thumb-image"]').on('click', function() {
+    $('[ds_type="thumb-image"]').on('click', function () {
         src = $(this).find('img').attr('src');
         max_src = src.replace('_240.', '_1280.');
         $(this).parent().hide().next().children('[ds_type="origin-image"]').append('<img src="' + max_src + '" />').end().show();
     });
-    $('[ds_type="origin-image"]').on('click', function() {
+    $('[ds_type="origin-image"]').on('click', function () {
         $(this).html('').parent().hide().prev().show();
     });
 });

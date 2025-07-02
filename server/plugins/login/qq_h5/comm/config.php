@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP SDK for QQ登录 OpenAPI
  *
@@ -41,7 +42,7 @@ $qq_appid = trim($data['qq_appid']);
 $qq_appkey = trim($data['qq_appkey']);
 
 //QQ登录成功后回调的地址
-$callback = HTTP_TYPE.$_SERVER['HTTP_HOST']. "/api/Api/oa_qq_callback.html";
+$callback = HTTP_TYPE . $_SERVER['HTTP_HOST'] . "/api/Api/oa_qq_callback.html";
 
 //调用的api接口(访问用户资料get_user_info)
 $scope = "get_user_info";
@@ -51,5 +52,3 @@ session('qq_appid', $qq_appid);
 session('qq_appkey', $qq_appkey);
 session('qq_callback', $callback);
 session('qq_scope', $scope);
-
-?>

@@ -1,30 +1,31 @@
 <?php
-/**
- * 手机短信类
- */
 
 namespace sendmsg;
+
 use AlibabaCloud\Client\AlibabaCloud;
 use Qcloud\Sms\SmsSingleSender;
 
+/**
+ * 手机短信类
+ */
 class Sms
 {
-    /*
+    /**
      * 发送手机短信
      * @param unknown $mobile 手机号
      * @param unknown $smslog_param 短信参数
-    */
+     */
     public function send($mobile, $smslog_param)
     {
-        if(config('ds_config.smscf_type')=='wj'){
-            $content=$smslog_param['message'];
+        if (config('ds_config.smscf_type') == 'wj') {
+            $content = $smslog_param['message'];
             return $this->mysend_sms($mobile, $content);
-        }elseif(config('ds_config.smscf_type')=='ali'){
+        } elseif (config('ds_config.smscf_type') == 'ali') {
             return $this->ali_send($mobile, $smslog_param);
-        }elseif(config('ds_config.smscf_type')=='ten'){
+        } elseif (config('ds_config.smscf_type') == 'ten') {
             return $this->ten_send($mobile, $smslog_param);
-        }else{
-            return ds_callback(false,lang('param_error'));
+        } else {
+            return ds_callback(false, lang('param_error'));
         }
     }
 
@@ -46,7 +47,6 @@ class Sms
     */
     public function mysend_sms($mobile, $content)
     {
-
         $user_id = urlencode(config('ds_config.smscf_wj_username')); // 这里填写用户名
         $key = urlencode(config('ds_config.smscf_wj_key')); // 这里填接口安全密钥
         if (!$mobile || !$content || !$user_id || !$key)
@@ -54,13 +54,12 @@ class Sms
         if (is_array($mobile)) {
             $mobile = implode(",", $mobile);
         }
-        $mobile=urlencode($mobile);
-        $content=urlencode($content);
+        $mobile = urlencode($mobile);
+        $content = urlencode($content);
         $url = "http://utf8.api.smschinese.cn/?Uid=" . $user_id . "&Key=" . $key . "&smsMob=" . $mobile . "&smsText=" . $content;
         if (function_exists('file_get_contents')) {
             $res = file_get_contents($url);
-        }
-        else {
+        } else {
             $ch = curl_init();
             $timeout = 5;
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -72,7 +71,7 @@ class Sms
 
         //短信发送后返回值 说明
         $message = '';
-        switch ($res){
+        switch ($res) {
             case "-1":
                 $message = '没有该用户账号';
                 break;
@@ -107,47 +106,48 @@ class Sms
                 $message = 'IP限制';
                 break;
         }
-        if($res>0){
+        if ($res > 0) {
             return ds_callback(true);
-        }else{
-            return ds_callback(false,$message);
+        } else {
+            return ds_callback(false, $message);
         }
     }
-    
-    public function ali_send($mobile, $smslog_param) {
-        if(!$smslog_param['ali_template_code'] || !config('ds_config.smscf_ali_id') || !config('ds_config.smscf_ali_secret') || !config('ds_config.smscf_sign')){
-            return ds_callback(false,'请绑定模板code');
+
+    public function ali_send($mobile, $smslog_param)
+    {
+        if (!$smslog_param['ali_template_code'] || !config('ds_config.smscf_ali_id') || !config('ds_config.smscf_ali_secret') || !config('ds_config.smscf_sign')) {
+            return ds_callback(false, '请绑定模板code');
         }
         AlibabaCloud::accessKeyClient(config('ds_config.smscf_ali_id'), config('ds_config.smscf_ali_secret'))
-                ->regionId('cn-hangzhou')
-                ->asDefaultClient();
+            ->regionId('cn-hangzhou')
+            ->asDefaultClient();
 
         try {
             $result = AlibabaCloud::rpc()
-                    ->product('Dysmsapi')
-                    // ->scheme('https') // https | http
-                    ->version('2017-05-25')
-                    ->action('SendSms')
-                    ->method('POST')
-                    ->host('dysmsapi.aliyuncs.com')
-                    ->options([
-                        'query' => [
-                            'RegionId' => "cn-hangzhou",
-                            'PhoneNumbers' => $mobile,
-                            'SignName' => config('ds_config.smscf_sign'),
-                            'TemplateCode' => $smslog_param['ali_template_code'],
-                            'TemplateParam' => json_encode($smslog_param['ali_template_param']),
-                        ],
-                    ])
-                    ->request();
+                ->product('Dysmsapi')
+                // ->scheme('https') // https | http
+                ->version('2017-05-25')
+                ->action('SendSms')
+                ->method('POST')
+                ->host('dysmsapi.aliyuncs.com')
+                ->options([
+                    'query' => [
+                        'RegionId' => "cn-hangzhou",
+                        'PhoneNumbers' => $mobile,
+                        'SignName' => config('ds_config.smscf_sign'),
+                        'TemplateCode' => $smslog_param['ali_template_code'],
+                        'TemplateParam' => json_encode($smslog_param['ali_template_param']),
+                    ],
+                ])
+                ->request();
         } catch (\Exception $e) {
-            return ds_callback(false,$e->getMessage());
+            return ds_callback(false, $e->getMessage());
         }
-        $result=$result->toArray();
-        
-        if($result['Code']!='OK'){
-            return ds_callback(false,$result['Message']);
-        }else{
+        $result = $result->toArray();
+
+        if ($result['Code'] != 'OK') {
+            return ds_callback(false, $result['Message']);
+        } else {
             return ds_callback(true);
         }
     }
@@ -158,9 +158,10 @@ class Sms
      * @param $smslog_param
      * @return \multitype
      */
-    public function ten_send($mobile, $smslog_param) {
-        if(!$smslog_param['ten_template_code'] || !config('ds_config.smscf_ten_id') || !config('ds_config.smscf_ten_secret') || !config('ds_config.smscf_sign')){
-            return ds_callback(false,'请绑定模板code');
+    public function ten_send($mobile, $smslog_param)
+    {
+        if (!$smslog_param['ten_template_code'] || !config('ds_config.smscf_ten_id') || !config('ds_config.smscf_ten_secret') || !config('ds_config.smscf_sign')) {
+            return ds_callback(false, '请绑定模板code');
         }
         // 短信应用 SDK AppID
         $appid = config('ds_config.smscf_ten_id'); // SDK AppID 以1400开头
@@ -174,18 +175,16 @@ class Sms
         try {
             $sender = new SmsSingleSender($appid, $appkey);
 
-            $params = $smslog_param['ten_template_param'];//生成随机数
+            $params = $smslog_param['ten_template_param']; //生成随机数
             $result = $sender->sendWithParam("86", $phoneNumbers, $templateId, $params, $smsSign, "", "");
             $rsp = json_decode($result);
-
-        } catch(\Exception $e) {
-            return ds_callback(false,$e->getMessage());
+        } catch (\Exception $e) {
+            return ds_callback(false, $e->getMessage());
         }
-        if($rsp->errmsg!='OK'){
-            return ds_callback(false,$rsp->errmsg);
-        }else{
+        if ($rsp->errmsg != 'OK') {
+            return ds_callback(false, $rsp->errmsg);
+        } else {
             return ds_callback(true);
         }
     }
-
 }

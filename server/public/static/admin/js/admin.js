@@ -1,18 +1,18 @@
-$(function() {
+$(function () {
     //自定义radio 模拟 switch样式
-    $(".cb-enable").click(function() {
+    $(".cb-enable").click(function () {
         var parent = $(this).parents('.onoff');
         $('.cb-disable', parent).removeClass('selected');
         $(this).addClass('selected');
         $('.checkbox', parent).prop('checked', true);
     });
-    $(".cb-disable").click(function() {
+    $(".cb-disable").click(function () {
         var parent = $(this).parents('.onoff');
         $('.cb-enable', parent).removeClass('selected');
         $(this).addClass('selected');
         $('.checkbox', parent).prop('checked', false);
     });
-    
+
     //公共复选框点击切换样式
     $(".checkbox-common").on("click", function () {
         //如果样式是选中设置input为不选中
@@ -37,25 +37,22 @@ $(function() {
             $(this).removeClass("selected");
         }
     });
-
-    
-    
 });
-$(function() {
+$(function () {
     // 显示隐藏预览图 start
     $('.show_image').hover(
-            function() {
-                $(this).next().css('display', 'block');
-            },
-            function() {
-                $(this).next().css('display', 'none');
-            }
+        function () {
+            $(this).next().css('display', 'block');
+        },
+        function () {
+            $(this).next().css('display', 'none');
+        }
     );
 
     // 全选 start
-    $('.checkall').click(function() {
+    $('.checkall').click(function () {
         var _self = this.checked;
-        $('.checkitem').each(function() {
+        $('.checkitem').each(function () {
             $(this).prop('checked', _self);
         });
         $('.checkall').prop('checked', _self);
@@ -63,74 +60,73 @@ $(function() {
 
     // 表格鼠标悬停变色 start
     $("tbody tr").hover(
-            function() {
-                $(this).css({background: "#FBFBFB"});
-            },
-            function() {
-                $(this).css({background: "#FFF"});
-            });
+        function () {
+            $(this).css({ background: "#FBFBFB" });
+        },
+        function () {
+            $(this).css({ background: "#FFF" });
+        });
 
     // 可编辑列（input）变色
     $('.editable').hover(
-            function() {
-                $(this).removeClass('editable').addClass('editable2');
-            },
-            function() {
-                $(this).removeClass('editable2').addClass('editable');
-            }
+        function () {
+            $(this).removeClass('editable').addClass('editable2');
+        },
+        function () {
+            $(this).removeClass('editable2').addClass('editable');
+        }
     );
 
     // 提示操作 展开与隐藏
-    $("#checkZoom").click(function() {
+    $("#checkZoom").click(function () {
         $(this).next("ul").toggle(800);
         $(this).find(".arrow").toggleClass("up");
     });
 
     // 可编辑列（area）变色
     $('.editable-tarea').hover(
-            function() {
-                $(this).removeClass('editable-tarea').addClass('editable-tarea2');
-            },
-            function() {
-                $(this).removeClass('editable-tarea2').addClass('editable-tarea');
-            }
+        function () {
+            $(this).removeClass('editable-tarea').addClass('editable-tarea2');
+        },
+        function () {
+            $(this).removeClass('editable-tarea2').addClass('editable-tarea');
+        }
     );
-
 });
 
 
 /* AJAX选择品牌 */
-(function($) {
-    $.fn.brandinit = function(options) {
-        
+(function ($) {
+    $.fn.brandinit = function (options) {
+
         var brand_container = $(this);
         //根据首字母查询
-        $(this).find('.letter[dstype="letter"]').find('a[data-letter]').click(function() {
+        $(this).find('.letter[dstype="letter"]').find('a[data-letter]').click(function () {
             var _url = $(this).parents('.brand-index:first').attr('data-url');
             var _letter = $(this).attr('data-letter');
             var _search = $(this).html();
-            $.getJSON(_url, {type: 'letter', letter: _letter}, function(data) {
-                $(brand_container).insertBrand({param: data, search: _search});
+            $.getJSON(_url, { type: 'letter', letter: _letter }, function (data) {
+                $(brand_container).insertBrand({ param: data, search: _search });
             });
         });
-        
+
         // 根据关键字查询
-        $(this).find('.search[dstype="search"]').find('a').click(function() {
+        $(this).find('.search[dstype="search"]').find('a').click(function () {
             var _url = $(this).parents('.brand-index:first').attr('data-url');
             var _keyword = $('#search_brand_keyword').val();
-            $.getJSON(_url, {type: 'keyword', keyword: _keyword}, function(data) {
-                $(brand_container).insertBrand({param: data, search: _keyword});
+            $.getJSON(_url, { type: 'keyword', keyword: _keyword }, function (data) {
+                $(brand_container).insertBrand({ param: data, search: _keyword });
             });
         });
         // 选择品牌
-        $(this).find('ul[dstype="brand_list"]').on('click', 'li', function() {
+        $(this).find('ul[dstype="brand_list"]').on('click', 'li', function () {
             $('#b_id').val($(this).attr('data-id'));
             $('#b_name').val($(this).attr('data-name'));
         });
         //搜索品牌列表滚条绑定
         $(this).find('div[dstype="brandList"]').perfectScrollbar();
     }
-    $.fn.insertBrand = function(options) {
+    $.fn.insertBrand = function (options) {
         //品牌搜索容器
         var dataContainer = $(this);
         $(dataContainer).find('div[dstype="brandList"]').show();
@@ -142,7 +138,7 @@ $(function() {
             $(dataContainer).find('div[dstype="noBrandList"]').show().find('strong').html(options.search);
             return false;
         }
-        $.each(options.param, function(i, n) {
+        $.each(options.param, function (i, n) {
             $('<li data-id="' + n.brand_id + '" data-name="' + n.brand_name + '"><em>' + n.brand_initial + '</em>' + n.brand_name + '</li>').appendTo(_ul);
         });
 
@@ -155,13 +151,13 @@ $(function() {
 /**
  * Layer 通用ifram弹出窗口
  */
-function dsLayerOpen(url, title,width,height) {
-    if (!width)	width = '900px';
+function dsLayerOpen(url, title, width, height) {
+    if (!width) width = '900px';
     if (!height) height = '500px';
     layer.open({
         type: 2,
         title: title,
-        area: [width,height],
+        area: [width, height],
         fixed: false, //不固定
         maxmin: true,
         content: url
@@ -175,7 +171,7 @@ function dsLayerOpen(url, title,width,height) {
  * @param {type} type 返回显示类型  默认未刷新当前页, Number类型为移除 id="ds_row_1" 中的内容  String类型为其他操作(reload\)
  * @returns {undefined}
  */
-function dsLayerConfirm(url, msg,type) {
+function dsLayerConfirm(url, msg, type) {
     layer.confirm(msg, {
         btn: ['确定', '取消'],
         title: false,
@@ -185,19 +181,19 @@ function dsLayerConfirm(url, msg,type) {
             type: "get",
             dataType: "json",
             success: function (data) {
-                layer.msg(data.message, {time: 1000}, function () {
+                layer.msg(data.message, { time: 1000 }, function () {
                     if (data.code == 10000) {
-                        if (typeof(type) == "undefined"){
+                        if (typeof (type) == "undefined") {
                             location.reload();
-                        }else if(typeof(type) == "number"){
-                            $("#ds_row_"+type).remove();
-                        }else if(typeof(type) == "string"){
-                            if(type=="reload"){
+                        } else if (typeof (type) == "number") {
+                            $("#ds_row_" + type).remove();
+                        } else if (typeof (type) == "string") {
+                            if (type == "reload") {
                                 location.reload();
-                            }else{
-                                
+                            } else {
+
                             }
-                        }else{
+                        } else {
                             alert("类型错误");
                         }
                     }
@@ -219,8 +215,8 @@ function submit_delete_batch() {
     if (items != '') {
         items = items.substr(0, (items.length - 1));
         submit_delete(items);
-    }else{
-        layer.alert('请勾选选项', {icon: 2})  
+    } else {
+        layer.alert('请勾选选项', { icon: 2 })
     }
 }
 
@@ -228,18 +224,15 @@ function submit_delete_batch() {
  * 导出XLS
  * @param {type} url
  */
-function export_xls(url)
-{
+function export_xls(url) {
     var inputs = $(".ds-search-form").find("input:text");
     var selects = $(".ds-search-form").find("select");
     var param = '';
-    for (i = 0; i < inputs.length; i++)
-    {
+    for (i = 0; i < inputs.length; i++) {
         if (inputs[i].name != 'controller' && inputs[i].name != 'action')
             param += "&" + inputs[i].name + "=" + $(inputs[i]).val();
     }
-    for (i = 0; i < selects.length; i++)
-    {
+    for (i = 0; i < selects.length; i++) {
         param += "&" + selects[i].name + "=" + $(selects[i]).val();
     }
     location.href = url + param.replace("&", "?");
