@@ -90,4 +90,3 @@ $lang['sns_upload_pic_fail'] = '图片上传失败';
 $lang['sns_upload_img_max_num_error']	= '已经超出允许上传图片数量，不能在上传图片！';
 
 return $lang;
-?>

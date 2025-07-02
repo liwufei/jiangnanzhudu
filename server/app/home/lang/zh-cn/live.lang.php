@@ -1,4 +1,5 @@
 <?php
+
 $lang['view_at_phone'] = '手机观看';
 $lang['chat_with_video_user'] = '快和主播聊聊天吧~';
 $lang['send'] = '发送';
@@ -57,5 +58,5 @@ $lang['minipro_live_time_error'] = '所选时间范围必须在72小时以内';
 $lang['minipro_live_author_error'] = '主播昵称必须为2-15个字';
 $lang['minipro_live_add_fail'] = '新增直播间出错，错误码：';
 $lang['minipro_live_import_goods_fail'] = '导入直播间商品出错，错误码：';
+
 return $lang;
-?>

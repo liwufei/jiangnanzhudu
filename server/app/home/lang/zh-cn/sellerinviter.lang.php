@@ -1,4 +1,5 @@
 <?php
+
 $lang['promotion_unavailable'] = '商品分销功能尚未开启';
 
 $lang['order_list'] = '订单列表';
@@ -50,7 +51,8 @@ $lang['sale_price'] = '销售价';
 $lang['already_distributed_goods'] = '已为分销商品';
 $lang['choose_distribute_goods'] = '选择为分销商品';
 
-$lang['orderinviter_valid_array'][0]='待结算';
-$lang['orderinviter_valid_array'][1]='有效';
-$lang['orderinviter_valid_array'][2]='无效';
+$lang['orderinviter_valid_array'][0] = '待结算';
+$lang['orderinviter_valid_array'][1] = '有效';
+$lang['orderinviter_valid_array'][2] = '无效';
+
 return $lang;

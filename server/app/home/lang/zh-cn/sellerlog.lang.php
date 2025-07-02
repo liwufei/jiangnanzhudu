@@ -1,4 +1,5 @@
 <?php
+
 //seller_log
 $lang['sellerlog_account'] = '账号';
 $lang['sellerlog_log_content'] = '日志内容';

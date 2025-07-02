@@ -25,4 +25,5 @@ $lang['please_check_the_option'] = '请勾选选项';
 $lang['instant_message_open'] = '开启聊天';
 $lang['instant_message_gateway_url'] = '聊天gateway地址';
 $lang['instant_message_register_url'] = '聊天register地址';
+
 return $lang;

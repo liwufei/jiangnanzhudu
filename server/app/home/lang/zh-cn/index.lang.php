@@ -1,4 +1,5 @@
 <?php
+
 $lang['operation'] = '操作';
 $lang['pending_payment'] = '待付款';
 $lang['pending_receipt'] = '待收货';
@@ -19,4 +20,3 @@ $lang['friendship_link'] = '友情链接';
 $lang['hot_recommended'] = '热门推荐';
 
 return $lang;
-?>

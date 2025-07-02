@@ -1,4 +1,5 @@
 <?php
+
 $lang['market_activity_not_exist'] = '活动不存在';
 
 $lang['market_activity_not_begin'] = '活动未开始';
@@ -18,7 +19,7 @@ $lang['marketmanage_add_pl_desc'] = '参加%s中奖得到积分';
 $lang['point_add_fail'] = '积分增加失败';
 $lang['bonus_send_over'] = '红包已发完';
 $lang['bonus'] = '红包';
-$lang['marketmanageaward_type_error']='活动奖品类型设置错误';
+$lang['marketmanageaward_type_error'] = '活动奖品类型设置错误';
 
 $lang['marketmanageaward_send_update_fail'] = '更新中奖总数失败';
 $lang['join'] = '参与';
@@ -27,5 +28,5 @@ $lang['prize'] = '等奖';
 $lang['not_draw'] = '未中奖';
 $lang['marketmanagelog_add_fail'] = '新增参与记录失败';
 $lang['marketmanage_totalcount_update_fail'] = '更新参与总数失败';
+
 return $lang;
-?>

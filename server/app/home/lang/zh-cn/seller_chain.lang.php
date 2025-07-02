@@ -1,6 +1,6 @@
 <?php
 
-$lang['seller_chain_list']= '门店列表';
+$lang['seller_chain_list'] = '门店列表';
 $lang['chain_name'] = '门店账号';
 $lang['chain_addressname'] = '门店名称';
 $lang['chain_truename'] = '联系人姓名';

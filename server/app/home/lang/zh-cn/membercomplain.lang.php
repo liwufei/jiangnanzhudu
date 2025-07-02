@@ -1,13 +1,14 @@
 <?php
-$lang['member_order_time']		= '下单时间';
-$lang['member_show_order_send_time']	= '发货时间';
+
+$lang['member_order_time']        = '下单时间';
+$lang['member_show_order_send_time']    = '发货时间';
 $lang['member_show_order_pay_time']     = '付款时间';
-$lang['member_show_order_finish_time']	= '完成时间';
+$lang['member_show_order_finish_time']    = '完成时间';
 $lang['member_address_location'] = '所在地区';
 
-$lang['member_order_time']		= '下单时间';
-$lang['member_show_order_send_time']	= '发货时间';
-$lang['member_show_order_finish_time']	= '完成时间';
+$lang['member_order_time']        = '下单时间';
+$lang['member_show_order_send_time']    = '发货时间';
+$lang['member_show_order_finish_time']    = '完成时间';
 
 $lang['complain_manage_title'] = '投诉管理';
 $lang['complain_submit'] = '投诉处理';

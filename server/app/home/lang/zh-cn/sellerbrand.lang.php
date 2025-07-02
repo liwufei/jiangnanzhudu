@@ -1,4 +1,5 @@
 <?php
+
 $lang['store_goods_brand_apply']				= '品牌申请';
 $lang['store_goods_brand_name']					= '品牌名称';
 $lang['store_goods_brand_my_applied']			= '我申请的';

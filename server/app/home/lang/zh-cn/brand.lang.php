@@ -13,7 +13,6 @@ $lang['brand_index_brand_list'] = '品牌列表';
 $lang['brand_index_other'] = '其他';
 $lang['goods_class_index_area'] = '不限地区';
 
-
 $lang['brand_index_sold'] = '销量';
 $lang['brand_index_sold_asc'] = '点击按销量从低到高排序';
 $lang['brand_index_sold_desc'] = '点击按销量从高到低排序';
@@ -95,4 +94,3 @@ $lang['sold'] = '已售';
 $lang['add_cart'] = '加入购物车';
 
 return $lang;
-?>

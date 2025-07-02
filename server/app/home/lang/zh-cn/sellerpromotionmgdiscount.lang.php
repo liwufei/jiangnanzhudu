@@ -2,7 +2,6 @@
 
 $lang['mgdiscount_unavailable'] = '商品会员等级折扣功能尚未开启';
 
-
 $lang['mgdiscount_store'] = '设置会员等级折扣';
 $lang['mgdiscount_goods'] = '设置商品会员等级折扣';
 $lang['goods_name'] = '商品名称';

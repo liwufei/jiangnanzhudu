@@ -110,7 +110,6 @@ $lang['new_classification'] = '新增分类';
 $lang['ds_index'] = "首页";
 
 
-
 /**
  * nav中的文字
  */
@@ -233,9 +232,6 @@ $lang['order_log_success'] = '签收了货物';
 $lang['order_log_eval'] = '评价了交易';
 
 
-
-
-
 /**
  *  登录-公共语言	
  */
@@ -244,7 +240,6 @@ $lang['order_log_eval'] = '评价了交易';
  */
 $lang['login_index_username_isnull'] = '用户名不能为空';
 $lang['login_index_password_isnull'] = '密码不能为空';
-
 $lang['login_index_login_success'] = '登录成功';
 $lang['login_index_login_again'] = '用户名或密码错误，请重新登录';
 $lang['login_index_input_username'] = '用户名不能为空';
@@ -274,12 +269,12 @@ $lang['login_index_account_stop'] = '账号被停用';
 $lang['login_index_exception'] = '系统出现异常';
 $lang['login_index_data_lack'] = '输入数据不完整';
 $lang['login_notlogged'] = '未登录';
+
 /**
  * 快速登录弹出框体
  */
 $lang['quick_login_register'] = '免费注册';
 $lang['quick_login_forget'] = '忘记密码';
-
 
 /**
  * 登录-登出
@@ -409,15 +404,13 @@ $lang['ds_store_payable_deposit_is_not_enough'] = '店铺应缴保证金不足';
 $lang['ds_store_deposit_adjust_fail'] = '店铺保证金变动失败';
 $lang['ds_store_deposit_log_insert_fail'] = '店铺保证金记录新增失败';
 
-
-$lang['pay_method_wechat']		= '微信';
-$lang['pay_method_alipay']		= '支付宝';
-$lang['pay_method_tenpay']		= 'QQ';
-$lang['pay_method_unionpay']		= '银联';
+$lang['pay_method_wechat']        = '微信';
+$lang['pay_method_alipay']        = '支付宝';
+$lang['pay_method_tenpay']        = 'QQ';
+$lang['pay_method_unionpay']        = '银联';
 
 $lang['order_goods_more_than_one'] = '等%d种商品';
 
 $lang['pointshop_unavailable'] = '积分中心暂未开启';
 
 return $lang;
-?>

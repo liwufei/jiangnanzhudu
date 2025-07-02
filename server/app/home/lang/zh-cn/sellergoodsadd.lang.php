@@ -139,12 +139,12 @@ $lang['store_goods_step2_description_one'] = '最多可发布5张商品图片。
 $lang['store_goods_step2_description_two'] = '上传商品默认主图，如多规格值时将默认使用该图或分规格上传各规格主图；支持jpg、gif、png格式上传或从图片空间中选择，建议使用<font color="red">尺寸800x800像素以上、大小不超过1M的正方形图片</font>，上传后的图片将会自动保存在图片空间的默认分类中。';
 $lang['store_goods_step2_description_three'] = '图片可以通过两侧的箭头调整显示顺序。';
 $lang['store_goods_album_climit'] = '您上传图片数达到上限，请升级您的店铺或跟管理员联系';
-
 $lang['store_goods_video'] = '商品视频';
 $lang['store_goods_video_desc'] = '只能发布一个商品视频，视频大小请控制在20M以内，仅支持MP4视频格式';
 $lang['store_goods_video_upload'] = '视频上传';
 $lang['store_goods_video_select'] = '从视频库中选择';
 $lang['store_goods_video_close'] = '关闭视频库';
+
 /**
  * 商品发布第一步
  */
@@ -202,6 +202,7 @@ $lang['store_goods_brand_name_null'] = '品牌名称不能为空';
 $lang['store_goods_brand_apply_success'] = '保存成功，请等待系统审核';
 $lang['store_goods_brand_choose_del_brand'] = '请选择要删除的内容!';
 $lang['store_goods_brand_browse'] = '浏览...';
+
 /**
  * 图片上传
  */
@@ -212,6 +213,7 @@ $lang['store_goods_upload_upload'] = '上传';
 $lang['store_goods_upload_normal'] = '普通上传';
 $lang['store_goods_upload_del_fail'] = '删除图片失败';
 $lang['store_goods_img_upload'] = '图片上传';
+
 /**
  * 相册
  */
@@ -220,11 +222,13 @@ $lang['store_goods_album_select_from_album'] = '从用户相册选择';
 $lang['store_goods_album_users'] = '用户相册';
 $lang['store_goods_album_all_photo'] = '全部图片';
 $lang['store_goods_album_insert_users_photo'] = '插入相册图片';
+
 /**
  * ajax
  */
 $lang['store_goods_ajax_find_none_spec'] = '未找到商品规格';
 $lang['store_goods_ajax_update_fail'] = '更新数据库失败';
+
 /**
  * 淘宝导入
  */

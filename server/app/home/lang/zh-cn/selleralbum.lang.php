@@ -195,6 +195,3 @@ $lang['store_letters_numbers_recommended'] = '建议用字母和数字';
 $lang['store_installed_chinese_font'] = '如果文字使用汉字则管理员要安装中文的字体';
 
 return $lang;
-
-
-?>

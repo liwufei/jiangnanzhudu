@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * store_sns_layout
  */
@@ -273,6 +272,3 @@ $lang['action_prompt'] = '操作提示';
 $lang['system_default_dynamic'] = '系统默认动态';
 
 return $lang;
-
-
-?>

@@ -1,4 +1,5 @@
 <?php
+
 $lang['ds_add'] = "添加";
 $lang['ds_goods_name'] = "商品名称";
 $lang['ds_goods_price'] = "商品价格";
@@ -14,7 +15,6 @@ $lang['preview'] = '预览';
 $lang['decorate'] = '装修';
 
 $lang['editable_page_path'] = '页面类型';
-
 
 $lang['editable_page_model_not_exist'] = '该模块信息不存在';
 $lang['editable_page_config_not_exist'] = '该配置信息不存在';
@@ -38,8 +38,8 @@ $lang['theme_name'] = '主题名称';
 $lang['editable_page_name'] = '页面名称';
 $lang['apply_to'] = '应用到路径';
 $lang['editable_page_path_list'] = array(
-    ''=>'',
-    'store/index'=>'首页',
+    '' => '',
+    'store/index' => '首页',
 );
 $lang['editable_page_path_tips'] = '';
 $lang['editable_page_item_id'] = '页面类型ID';
@@ -75,7 +75,7 @@ $lang['mobile_page_setting'] = '手机端设置';
 
 $lang['ds_move_up'] = '上移';
 $lang['ds_move_down'] = '下移';
-$lang['add_model_notice']='你还没有添加模块';
+$lang['add_model_notice'] = '你还没有添加模块';
 $lang['buy_now'] = '立刻购买';
 
 return $lang;

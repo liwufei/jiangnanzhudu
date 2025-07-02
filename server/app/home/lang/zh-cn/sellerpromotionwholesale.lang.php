@@ -1,16 +1,12 @@
 <?php
-$lang['promotion_unavailable'] = '商品促销功能尚未开启';
 
+$lang['promotion_unavailable'] = '商品促销功能尚未开启';
 $lang['promotion_wholesale'] = '批发';
 
-$lang['promotion_active_list'] 	= '批发列表';
-$lang['promotion_quota_list'] 	= '套餐列表';
-$lang['promotion_join_active'] 	= '添加批发';
-$lang['promotion_buy_product'] 	= '购买套餐';
-
-
-
-
+$lang['promotion_active_list']     = '批发列表';
+$lang['promotion_quota_list']     = '套餐列表';
+$lang['promotion_join_active']     = '添加批发';
+$lang['promotion_buy_product']     = '购买套餐';
 
 $lang['wholesale_quota_start_time'] = '开始时间';
 $lang['wholesale_quota_end_time'] = '结束时间';
@@ -29,9 +25,6 @@ $lang['wholesale_manage'] = '活动管理';
 $lang['wholesale_quota_add'] = '购买套餐';
 $lang['wholesale_quota_add_quantity'] = '套餐购买数量';
 $lang['wholesale_quota_add_confirm'] = '确认购买?您总共需要支付';
-
-
-
 $lang['wholesale_explain1'] = '1、点击购买套餐和套餐续费按钮可以购买或续费套餐';
 $lang['wholesale_explain2'] = '2、点击添加批发按钮可以添加批发活动';
 $lang['wholesale_explain3'] = '3、点击删除按钮可以删除批发活动';
@@ -56,8 +49,6 @@ $lang['wholesale_add_success'] = '批发活动添加成功';
 $lang['wholesale_active_status'] = '活动状态';
 $lang['wholesale_add_fail'] = '批发活动添加失败';
 
-
-
 $lang['text_month'] = '月';
 $lang['text_jian'] = '件';
 $lang['text_ci'] = '次';
@@ -67,14 +58,13 @@ $lang['text_invalidation'] = '失效';
 $lang['text_default'] = '默认';
 $lang['text_add'] = '添加';
 
-
 //goods_select
 $lang['sale_price'] = '销售价格';
 $lang['modified_discount_price'] = '选择商品';
-$lang['search_store_items']			= '第一步：搜索店内商品';
+$lang['search_store_items']            = '第一步：搜索店内商品';
 $lang['special_goods_not_allowed'] = '不输入名称直接搜索将显示店内所有普通商品，其他促销活动商品不能参加。';
 $lang['wholesale_goods_explain'] = '点击上方输入框从已发布商品中选择要参加批发的商品';
-$lang['implement_uniform_purchase_prices']			= '批发生效后该商品的不能参加其他促销活动';
+$lang['implement_uniform_purchase_prices']            = '批发生效后该商品的不能参加其他促销活动';
 
 //index
 $lang['set_renewal'] = '套餐续费';
@@ -83,9 +73,6 @@ $lang['information_discount_activities2'] = '2、点击删除按钮可以删除�
 $lang['overdue_set_meal'] = '套餐过期时间';
 $lang['please_buy_set_meal'] = '当前没有可用套餐，请先购买套餐';
 $lang['deduction_settlement_payment_days'] = '相关费用会在店铺的资金中扣除';
-
-
-
 
 //controller
 $lang['please_buy_package_first'] = '没有可用批发套餐,请先购买套餐';
@@ -103,14 +90,13 @@ $lang['limited_time_discount_price_modified'] = '批发价格修改为';
 $lang['delete_time_limited_discount_items'] = '删除批发商品，商品名称：';
 $lang['editing_activity'] = '编辑批发';
 
-
 $lang['wholesale_price_empty'] = '未设置批发价格';
 $lang['wholesale_set_error'] = '价格阶梯设置错误';
 $lang['wholesale_price_error'] = '批发价格不能大于原价';
 $lang['goods_not_exist'] = '商品不存在';
 
 $lang['wholesale_if_mix'] = '是否混批';
-$lang['wholesale_if_mix_notice']='开启混批后，商品可以和其他规格一起批发';
+$lang['wholesale_if_mix_notice'] = '开启混批后，商品可以和其他规格一起批发';
 $lang['wholesale_set'] = '批发设置';
 
 $lang['wholesale_enable'] = '启用';
@@ -123,4 +109,5 @@ $lang['wholesale_price_num'] = '数量';
 $lang['wholesale_price_price'] = '价格';
 
 $lang['wholesale_price_less'] = '阶梯价格至少要存在一个！';
+
 return $lang;

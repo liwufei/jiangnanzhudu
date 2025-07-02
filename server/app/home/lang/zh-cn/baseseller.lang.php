@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 语言公共项
  */
@@ -160,8 +161,6 @@ $lang['ds_share'] = '分享';
 $lang['ds_collection_popularity'] = '收藏人气';
 $lang['ds_dynamics'] = '动态';
 
-
-
 /**
  * 评价
  */
@@ -177,10 +176,8 @@ $lang['ds_credit_defaultcontent_normal'] = '中评!';
 $lang['ds_credit_defaultcontent_bad'] = '差评!';
 $lang['ds_credit_explain'] = '商家解释';
 $lang['ds_credit_buyer_credit'] = '买家信用：';
-
-
-
 $lang['store_storeinfo_error'] = '店铺信息错误';
+
 /**
  * 开店
  */
@@ -233,6 +230,7 @@ $lang['store_create_read_agreement2'] = '中的所有条款';
 $lang['store_create_store_editor_multimedia'] = '编辑器多媒体功能';
 $lang['store_create_store_groupbuy'] = '抢购活动';
 $lang['store_create_store_null'] = '无';
+
 /**
  * 保存店铺
  */
@@ -243,6 +241,7 @@ $lang['store_save_area_null'] = '地区不能为空';
 $lang['store_save_create_success'] = '恭喜您，您的店铺创建成功。';
 $lang['store_save_create_fail'] = '创建店铺失败';
 $lang['store_save_defaultalbumclass_name'] = '默认相册';
+
 /**
  * 卖家商品分类
  */
@@ -274,10 +273,10 @@ $lang['store_goods_class_wrong'] = '错误的操作，无此分类';
 $lang['store_goods_class_modify_fail'] = '店铺分类修改失败';
 $lang['store_goods_class_add_fail'] = '店铺分类添加失败';
 $lang['store_goods_class_no_csv'] = '请选择csv文件';
+
 /**
  * 订单
  */
-
 $lang['store_order_order_sn'] = '订单编号';
 $lang['store_order_order_sn_search'] = '输入您要查询的订单编号';
 $lang['store_order_comp_exp'] = '快递公司';
@@ -364,6 +363,7 @@ $lang['store_order_edit_ship_success'] = '成功修改了运费';
 $lang['store_order_none_exist'] = '该订单不存在';
 $lang['store_order_edit_amount_fail'] = '修改价格失败';
 $lang['store_order_edit_amount_success'] = '修改价格成功';
+
 /**
  * 支付
  */
@@ -382,10 +382,12 @@ $lang['store_payment_info'] = '提示信息';
 $lang['store_payment_display'] = '用户支付时的提示信息';
 $lang['store_payment_uninstall_fail'] = '卸载失败';
 $lang['store_payment_edit_not_null'] = '不能为空';
+
 /**
  * 广告管理
  */
 $lang['store_adv_buy'] = '购买广告';
+
 /**
  * 导航
  */
@@ -422,6 +424,7 @@ $lang['store_partner_href_null'] = '链接不能为空';
 $lang['store_partner_no_result'] = '没有符合条件的合作伙伴';
 $lang['store_partner_des_one'] = '填写链接地址，您可以在';
 $lang['store_partner_des_two'] = '中复制链接。';
+
 /**
  * 店铺设置
  */
@@ -463,6 +466,7 @@ $lang['store_setting_seo_keywords_help'] = '用于店铺搜索引擎的优化，
 $lang['store_setting_seo_description_help'] = '用于店铺搜索引擎的优化，建议255字以内';
 $lang['store_settine_browse'] = '浏览...';
 $lang['store_setting_store_url'] = '当前店铺首页连接：';
+
 /**
  * 升级店铺
  */
@@ -477,6 +481,7 @@ $lang['store_upgrade_gradesort_error'] = '等级错误,升级级别应高于当�
 $lang['store_upgrade_exist_error'] = '店铺等级升级申请已经提交，正在审核中，请耐心等待';
 $lang['store_upgrade_exist_tip_1'] = '店铺等级升级为';
 $lang['store_upgrade_exist_tip_2'] = '的申请，正在审核中...';
+
 /**
  * 主题
  */

@@ -1,4 +1,5 @@
 <?php
+
 $lang['memberbank_type'] = '账户类型';
 $lang['memberbank_truename'] = '开户名';
 $lang['memberbank_name'] = '开户行';

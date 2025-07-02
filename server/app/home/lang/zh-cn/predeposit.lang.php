@@ -145,7 +145,6 @@ $lang['predeposit_recharge_card_number']	= '平台充值卡号';
 $lang['predeposit_enter_card_number']	= '请输入平台充值卡号';
 $lang['predeposit_card_length_less']	= '平台充值卡号长度小于50';
 
-
 //controller
 $lang['platform_recharge_card_number_cannot_empty']	= '平台充值卡卡号不能为空且长度不能大于50';
 $lang['platform_recharge_card_successfully_used']	= '平台充值卡使用成功';
@@ -165,5 +164,5 @@ $lang['predeposit_last_withdraw_time_error']             = '不能频繁提现�
 
 $lang['pay_method_alipay'] ='支付宝';
 $lang['pay_method_wechat'] ='微信';
-return $lang;
 
+return $lang;

@@ -4,8 +4,6 @@ $lang['promotion_unavailable'] = '商品拼团功能尚未开启';
 
 $lang['pintuan_add_success'] = '新增拼团成功';
 $lang['pintuan_quota_add_success'] = '购买拼团套餐成功';
-
-
 $lang['pintuan_add'] = '新增拼团';
 $lang['pintuan_edit'] = '编辑拼团';
 $lang['pintuan_active_list'] = '拼团活动列表';
@@ -121,4 +119,3 @@ $lang['goods_are_syndicate'] = '此商品在拼团中';
 $lang['ds_ensure_end'] = '您确认提前结束吗？';
 
 return $lang;
-

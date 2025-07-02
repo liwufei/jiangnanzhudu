@@ -77,8 +77,8 @@ $lang['store_bind_class_repeat'] = '目前尚存在申请中的续签信息，�
 $lang['storereopen_pay_amount_notice'] = '，需付款金额%s元，请尽快完成付款，付款完成后请上传付款凭证';
 $lang['upload_success'] = '上传成功，请等待系统审核';
 
+$lang['identification_information']    = '证件信息';
+$lang['identification_number']    = '证件号码';
+$lang['identification_photo']    = '证件照片';
 
-$lang['identification_information']	= '证件信息'; 
-$lang['identification_number']	= '证件号码'; 
-$lang['identification_photo']	= '证件照片'; 
 return $lang;

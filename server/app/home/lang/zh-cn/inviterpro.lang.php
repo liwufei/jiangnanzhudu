@@ -10,4 +10,3 @@ $lang['category_filtering'] = '分类筛选';
 $lang['product_screening'] = '商品筛选';
 
 return $lang;
-?>

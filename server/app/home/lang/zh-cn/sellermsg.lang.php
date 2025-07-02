@@ -1,4 +1,5 @@
 <?php
+
 //index
 $lang['instructions'] = '说明';
 $lang['message_indicating1'] = '1、管理员可以看见全部消息。';

@@ -123,4 +123,3 @@ $lang['location_goods'] = '商品所在地';
 $lang['platform_proprietary'] = '平台自营';
 
 return $lang;
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 代金券功能公用
  */
@@ -62,7 +63,6 @@ $lang['points']			= '积分值';
 $lang['coupon_values']			= '优惠券面额';
 $lang['watch_exchange_them']			= '只看我能兑换';
 $lang['immediately_change']			= '立即兑换';
-
 
 //controller
 $lang['integral_center'] = '积分中心';

@@ -1,4 +1,5 @@
 <?php
+
 $lang['bundling_start_time']		= '开始时间';
 $lang['bundling_end_time']			= '结束时间';
 $lang['bundling_add']				= '添加活动';

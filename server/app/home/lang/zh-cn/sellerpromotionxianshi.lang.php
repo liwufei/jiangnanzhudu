@@ -1,14 +1,13 @@
 <?php
+
 $lang['promotion_unavailable'] = '商品促销功能尚未开启';
-
 $lang['promotion_xianshi'] = '秒杀';
-
-$lang['promotion_active_list'] 	= '活动列表';
-$lang['promotion_quota_list'] 	= '套餐列表';
-$lang['promotion_join_active'] 	= '添加活动';
-$lang['promotion_buy_product'] 	= '购买套餐';
+$lang['promotion_active_list']     = '活动列表';
+$lang['promotion_quota_list']     = '套餐列表';
+$lang['promotion_join_active']     = '添加活动';
+$lang['promotion_buy_product']     = '购买套餐';
 $lang['promotion_goods_manage'] = '商品管理';
-$lang['promotion_add_goods'] 	= '添加商品';
+$lang['promotion_add_goods']     = '添加商品';
 
 
 $lang['state_new'] = '新申请';

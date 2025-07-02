@@ -4,8 +4,6 @@ $lang['promotion_unavailable'] = '商品预售功能尚未开启';
 
 $lang['presell_add_success'] = '新增预售成功';
 $lang['presell_quota_add_success'] = '购买预售套餐成功';
-
-
 $lang['presell_add'] = '新增预售';
 $lang['presell_edit'] = '编辑预售';
 $lang['presell_active_list'] = '预售活动列表';
@@ -97,8 +95,6 @@ $lang['goods_are_syndicate'] = '此商品在预售中';
 
 $lang['ds_ensure_end'] = '您确认取消吗？';
 
-
-
-$lang['sellerpromotionpresell_goods_not_allow']='所选商品已被设置为预售商品';
+$lang['sellerpromotionpresell_goods_not_allow'] = '所选商品已被设置为预售商品';
 
 return $lang;

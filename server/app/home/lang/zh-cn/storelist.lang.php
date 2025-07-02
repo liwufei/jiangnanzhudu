@@ -41,5 +41,3 @@ $lang['store_close_order']	= '成交订单';
 $lang['store_piece']	= '件宝贝';
 
 return $lang;
-
-?>

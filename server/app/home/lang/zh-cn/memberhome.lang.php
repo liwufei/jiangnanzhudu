@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  公共语言
  */
@@ -106,4 +107,5 @@ $lang['month_9']					= '九月';
 $lang['month_10']					= '十月';
 $lang['month_11']					= '十一月';
 $lang['month_12']					= '十二月';
+
 return $lang;

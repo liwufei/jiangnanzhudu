@@ -1,62 +1,62 @@
 <?php
 
 $lang['code_invalid_refund'] = '兑换码过期自动退款时间';
-$lang['refund_add']	= '退款';
-$lang['refund_order_amount']	= '订单金额';
-$lang['refund_refund_amount']	= '已退金额';
-$lang['refund_order_refund']	= '退款金额';
-$lang['refund_pay_refund']	= '可退金额';
-$lang['refund_message']	= '备注信息';
-$lang['refund_message_null']	= '备注信息不能为空';
-$lang['refund_add_time']	= '添加时间';
-$lang['refund_handle_desc']	= '操作描述';
-$lang['refund_order_ordersn']		= '订单编号';
-$lang['refund_order_refundsn']		= '退款编号';
-$lang['refund_order_add_time']		= '申请时间';
-$lang['refund_order_buyer']			= '买家会员名';
-$lang['refund_pay_min']	= '最小金额';
+$lang['refund_add']    = '退款';
+$lang['refund_order_amount']    = '订单金额';
+$lang['refund_refund_amount']    = '已退金额';
+$lang['refund_order_refund']    = '退款金额';
+$lang['refund_pay_refund']    = '可退金额';
+$lang['refund_message']    = '备注信息';
+$lang['refund_message_null']    = '备注信息不能为空';
+$lang['refund_add_time']    = '添加时间';
+$lang['refund_handle_desc']    = '操作描述';
+$lang['refund_order_ordersn']        = '订单编号';
+$lang['refund_order_refundsn']        = '退款编号';
+$lang['refund_order_add_time']        = '申请时间';
+$lang['refund_order_buyer']            = '买家会员名';
+$lang['refund_pay_min']    = '最小金额';
 
-$lang['refund_seller_message']	= '商家备注';
-$lang['refund_state']	= '审核状态';
-$lang['refund_state_confirm']	= '待审核';
-$lang['refund_state_yes']	= '同意';
-$lang['refund_state_no']	= '不同意';
-$lang['refund_buyer_desc']	= '每种商品只能退款或退货一次，建议与商家沟通后认真填写。如果同意退货，请及时发货并联系商家收货，平台确认后会将金额以预存款的形式返还给你。';
+$lang['refund_seller_message']    = '商家备注';
+$lang['refund_state']    = '审核状态';
+$lang['refund_state_confirm']    = '待审核';
+$lang['refund_state_yes']    = '同意';
+$lang['refund_state_no']    = '不同意';
+$lang['refund_buyer_desc']    = '每种商品只能退款或退货一次，建议与商家沟通后认真填写。如果同意退货，请及时发货并联系商家收货，平台确认后会将金额以预存款的形式返还给你。';
 
-$lang['refund_seller_confirm']	= '是否同意';
-$lang['refund_seller_confirm_null']	= '请选择是否同意';
-$lang['refund_seller_desc']	= '只能提交一次，请认真选择。';
+$lang['refund_seller_confirm']    = '是否同意';
+$lang['refund_seller_confirm_null']    = '请选择是否同意';
+$lang['refund_seller_desc']    = '只能提交一次，请认真选择。';
 
-$lang['refund_buyer_message']	= '退款原因';
-$lang['refund_buyer_add_time']	= '申请时间';
-$lang['refund_buyer_message_null']	= '退款原因不能为空';
-$lang['refund_store_name']			= '店铺名';
+$lang['refund_buyer_message']    = '退款原因';
+$lang['refund_buyer_add_time']    = '申请时间';
+$lang['refund_buyer_message_null']    = '退款原因不能为空';
+$lang['refund_store_name']            = '店铺名';
 
-$lang['return_order_return']	= '退货数量';
-$lang['return_add_return']	= '可退数量';
-$lang['return_number']	= '本次退货';
-$lang['return_message']	= '备注信息';
-$lang['return_message_null']	= '备注信息不能为空';
-$lang['return_add_time']	= '添加时间';
-$lang['return_order_ordersn']		= '订单编号';
-$lang['return_order_returnsn']		= '退货编号';
-$lang['return_order_add_time']		= '申请时间';
-$lang['return_order_buyer']			= '买家会员名';
-$lang['return_goods_name']	= '商品名称';
-$lang['return_number_min']	= '最小数量';
-$lang['return_number_max']	= '最大数量';
+$lang['return_order_return']    = '退货数量';
+$lang['return_add_return']    = '可退数量';
+$lang['return_number']    = '本次退货';
+$lang['return_message']    = '备注信息';
+$lang['return_message_null']    = '备注信息不能为空';
+$lang['return_add_time']    = '添加时间';
+$lang['return_order_ordersn']        = '订单编号';
+$lang['return_order_returnsn']        = '退货编号';
+$lang['return_order_add_time']        = '申请时间';
+$lang['return_order_buyer']            = '买家会员名';
+$lang['return_goods_name']    = '商品名称';
+$lang['return_number_min']    = '最小数量';
+$lang['return_number_max']    = '最大数量';
 
-$lang['return_seller_message']	= '商家备注';
-$lang['return_state']	= '审核状态';
-$lang['return_seller_confirm']	= '是否同意';
-$lang['return_seller_confirm_null']	= '请选择是否同意';
-$lang['return_state_confirm']	= '待审核';
-$lang['return_state_yes']	= '同意';
-$lang['return_state_no']	= '不同意';
-$lang['return_store_name']			= '店铺名';
-$lang['return_buyer_message']	= '退货原因';
+$lang['return_seller_message']    = '商家备注';
+$lang['return_state']    = '审核状态';
+$lang['return_seller_confirm']    = '是否同意';
+$lang['return_seller_confirm_null']    = '请选择是否同意';
+$lang['return_state_confirm']    = '待审核';
+$lang['return_state_yes']    = '同意';
+$lang['return_state_no']    = '不同意';
+$lang['return_store_name']            = '店铺名';
+$lang['return_buyer_message']    = '退货原因';
 
-$lang['order_sn']		= '订单';
+$lang['order_sn']        = '订单';
 $lang['order_max_day'] = '超过';
 $lang['order_max_day_cancel'] = '天未付款，系统自动取消订单。';
 $lang['order_max_day_confirm'] = '天未收货，系统自动完成订单。';
@@ -137,7 +137,7 @@ $lang['returns_list'] = '返回列表';
 //member_vr_refund_add
 $lang['refund_declaration1'] = '有效期内的未使用兑换码都可申请退款，同意退款后，会将退款金额以<em>“预存款”</em>的形式返还到您的余额账户中（充值卡部分只能退回到充值卡余额）。';
 $lang['refund_declaration2'] = '已过期兑换码如果“支持过期退款”，请在到期后<em>“';
-$lang['refund_declaration3'] = '天内”</em>申请退款，'.$lang['code_invalid_refund'].'天后则不能申请。';
+$lang['refund_declaration3'] = '天内”</em>申请退款，' . $lang['code_invalid_refund'] . '天后则不能申请。';
 $lang['refund_declaration4'] = '如果平台不同意退款，自动解除兑换码的锁定状态，在有效期内可以继续兑换使用。';
 $lang['locked_exchange_code'] = '锁定兑换码';
 $lang['refund_saved_successfully'] = '如果提交退款保存成功，选择的对应兑换码将被锁定即不能进行兑换。';
@@ -165,4 +165,3 @@ $lang['file_empty'] = '没选择图片';
 $lang['file_upload_error'] = '图片上传失败';
 
 return $lang;
-?>

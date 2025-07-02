@@ -1,6 +1,5 @@
 <?php
 
-
 $lang['store_order_order_sn']		= '订单编号';
 $lang['store_order_order_sn_search']= '输入您要查询的订单编号';
 $lang['store_order_comp_exp']		= '快递公司';
@@ -149,5 +148,4 @@ $lang['payment_been'] = '已付款';
 $lang['exchange_code'] = '兑换码兑换';
 $lang['error'] = '出错';
 
-return $lang
-?>
+return $lang;

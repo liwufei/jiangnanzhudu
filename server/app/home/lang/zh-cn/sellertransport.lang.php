@@ -1,4 +1,5 @@
 <?php
+
 $lang['transport_first_step_jian'] = '首件';
 $lang['transport_first_step_zhong'] = '首重';
 $lang['transport_second_step_jian'] = '续件';
@@ -62,7 +63,7 @@ $lang['transport_is_limited'] = '限制配送';
 $lang['transport_is_limited_note'] = '如果限制配送那么不在配送地区的收货地址将不支持下单';
 
 $lang['transport_type'] = '计费类型';
-$lang['transport_type_list'] = array('0'=>'按数量','1'=>'按重量');
+$lang['transport_type_list'] = array('0' => '按数量', '1' => '按重量');
 $lang['transport_type_note'] = '';
 $lang['transportext_empty'] = '请设置城市运费';
 $lang['transportext_default_error'] = '默认运费设置错误';

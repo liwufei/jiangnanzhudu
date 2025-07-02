@@ -1,4 +1,5 @@
 <?php
+
 /**
  * chat_log
  */

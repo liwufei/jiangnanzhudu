@@ -167,4 +167,5 @@ $lang['member_state_0']='该用户禁止登录';
 
 $lang['find_the_password_help']	= '如果账号还没有绑定手机号，请联系平台管理员找回密码';
 $lang['frequent_operation']='操作太频繁，请24小时候再尝试';
+
 return $lang;

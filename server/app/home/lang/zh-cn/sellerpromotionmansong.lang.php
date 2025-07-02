@@ -1,13 +1,14 @@
 <?php
+
 $lang['promotion_unavailable'] = '商品促销功能尚未开启';
 $lang['promotion_mansong'] = '满即送';
 
-$lang['promotion_active_list'] 	= '活动列表';
-$lang['promotion_quota_list'] 	= '套餐列表';
-$lang['promotion_join_active'] 	= '添加活动';
-$lang['promotion_buy_product'] 	= '购买套餐';
+$lang['promotion_active_list']     = '活动列表';
+$lang['promotion_quota_list']     = '套餐列表';
+$lang['promotion_join_active']     = '添加活动';
+$lang['promotion_buy_product']     = '购买套餐';
 $lang['promotion_goods_manage'] = '商品管理';
-$lang['promotion_add_goods'] 	= '添加商品';
+$lang['promotion_add_goods']     = '添加商品';
 
 $lang['state_new'] = '新申请';
 $lang['state_verify'] = '已审核';
@@ -133,32 +134,32 @@ $lang['text_not_join'] = '未参加';
 $lang['mansong_apply_verify_success_glog_desc'] = '购买满即送活动%s个月，单价%s元，总共花费%s元';
 
 //index
-$lang['set_renewal']				= '套餐续费';
-$lang['set_expiration_time']				= '套餐过期时间';
-$lang['no_packages_currently_available']				= '当前没有可用套餐，请先购买套餐';
-$lang['notice_package_renewal6']				= '相关费用会在店铺的资金中扣除';
+$lang['set_renewal']                = '套餐续费';
+$lang['set_expiration_time']                = '套餐过期时间';
+$lang['no_packages_currently_available']                = '当前没有可用套餐，请先购买套餐';
+$lang['notice_package_renewal6']                = '相关费用会在店铺的资金中扣除';
 
 //mansong_add
-$lang['delete_selected_gifts']				= '删除已选择的礼品';
-$lang['full_feed_rule']				= '满即送规则';
-$lang['search_store_items']				= '第一步：搜索店内商品';
-$lang['add_rules']				= '添加规则';
-$lang['rule_amount_cannot_empty']				= '规则金额不能为空且必须为数字';
-$lang['choose_gifts']				= '选择礼品';
-$lang['full_minus_mustless_rule']				= '满减金额必须小于规则金额';
-$lang['show_all_goods_sold']				= '不输入名称直接搜索将显示店内所有出售中的商品';
-$lang['choose_least_one_promotion']				= '请至少选择一种促销方式';
-$lang['determine_rule_settings']				= '确定规则设置';
-$lang['add_rule_determine']				= '请至少添加一条规则并确定';
-$lang['single_order_meets_amount']				= '设置当单笔订单满足金额时（必填选项），减免金额（选填）或赠送的礼品（选填）；留空为不做减免金额或赠送礼品处理。';
-$lang['system_supports_rank_rules']				= '系统最多支持设置三组等级规则。';
+$lang['delete_selected_gifts']                = '删除已选择的礼品';
+$lang['full_feed_rule']                = '满即送规则';
+$lang['search_store_items']                = '第一步：搜索店内商品';
+$lang['add_rules']                = '添加规则';
+$lang['rule_amount_cannot_empty']                = '规则金额不能为空且必须为数字';
+$lang['choose_gifts']                = '选择礼品';
+$lang['full_minus_mustless_rule']                = '满减金额必须小于规则金额';
+$lang['show_all_goods_sold']                = '不输入名称直接搜索将显示店内所有出售中的商品';
+$lang['choose_least_one_promotion']                = '请至少选择一种促销方式';
+$lang['determine_rule_settings']                = '确定规则设置';
+$lang['add_rule_determine']                = '请至少添加一条规则并确定';
+$lang['single_order_meets_amount']                = '设置当单笔订单满足金额时（必填选项），减免金额（选填）或赠送的礼品（选填）；留空为不做减免金额或赠送礼品处理。';
+$lang['system_supports_rank_rules']                = '系统最多支持设置三组等级规则。';
 
 //mansong_detail
-$lang['to']				= '至';
+$lang['to']                = '至';
 
 //mansong_goods
-$lang['sale_price']				= '销售价';
-$lang['select_gift']				= '选择为礼品';
-$lang['mansong_rule_empty']				= '满即送规则不能为空';
+$lang['sale_price']                = '销售价';
+$lang['select_gift']                = '选择为礼品';
+$lang['mansong_rule_empty']                = '满即送规则不能为空';
 
 return $lang;

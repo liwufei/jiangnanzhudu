@@ -1,4 +1,5 @@
 <?php
+
 $lang['favorite_no_my_store']				= '不能收藏自己的店铺';
 $lang['favorite_no_my_product']				= '不能收藏自己的商品';
 $lang['favorite_collect_fail']				= '收藏失败';

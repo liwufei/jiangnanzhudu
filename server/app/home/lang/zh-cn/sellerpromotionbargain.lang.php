@@ -5,7 +5,6 @@ $lang['promotion_unavailable'] = '商品砍价功能尚未开启';
 $lang['bargain_add_success'] = '新增砍价成功';
 $lang['bargain_quota_add_success'] = '购买砍价套餐成功';
 
-
 $lang['bargain_add'] = '新增砍价';
 $lang['bargain_edit'] = '编辑砍价';
 $lang['bargain_active_list'] = '砍价活动列表';
@@ -113,21 +112,21 @@ $lang['goods_are_syndicate'] = '此商品在砍价中';
 $lang['ds_ensure_end'] = '您确认取消吗？';
 
 
-$lang['sellerpromotionbargain_remark']='分享描述';
-$lang['sellerpromotionbargain_floorprice']='商品底价';
-$lang['sellerpromotionbargain_floorprice_explain']='砍价商品的最低价格';
-$lang['sellerpromotionbargain_limit']='限购数量';
-$lang['sellerpromotionbargain_limit_explain']='砍价成功后用户最多可购买的商品数量';
-$lang['sellerpromotionbargain_time']='砍价有效期';
-$lang['sellerpromotionbargain_time_explain']='用户发起砍价活动的有效时间';
-$lang['sellerpromotionbargain_total']='共多少刀砍至底价';
-$lang['sellerpromotionbargain_total_explain']='砍价商品达到底价需要的砍价次数';
-$lang['sellerpromotionbargain_max']='每刀最多可砍金额';
-$lang['sellerpromotionbargain_max_explain']='帮砍用户每次砍价最多可砍的金额';
+$lang['sellerpromotionbargain_remark'] = '分享描述';
+$lang['sellerpromotionbargain_floorprice'] = '商品底价';
+$lang['sellerpromotionbargain_floorprice_explain'] = '砍价商品的最低价格';
+$lang['sellerpromotionbargain_limit'] = '限购数量';
+$lang['sellerpromotionbargain_limit_explain'] = '砍价成功后用户最多可购买的商品数量';
+$lang['sellerpromotionbargain_time'] = '砍价有效期';
+$lang['sellerpromotionbargain_time_explain'] = '用户发起砍价活动的有效时间';
+$lang['sellerpromotionbargain_total'] = '共多少刀砍至底价';
+$lang['sellerpromotionbargain_total_explain'] = '砍价商品达到底价需要的砍价次数';
+$lang['sellerpromotionbargain_max'] = '每刀最多可砍金额';
+$lang['sellerpromotionbargain_max_explain'] = '帮砍用户每次砍价最多可砍的金额';
 
-$lang['sellerpromotionbargain_bargain_endtime_error']='结束时间必须大于现在时间';
-$lang['sellerpromotionbargain_bargain_total_error']='砍价次数必须小于商品差价的100倍';
-$lang['sellerpromotionbargain_goods_not_allow']='所选商品已被设置为砍价商品';
-$lang['sellerpromotionbargain_bargain_limit_error']='砍价次数乘以最大砍价金额必须大于商品差价';
+$lang['sellerpromotionbargain_bargain_endtime_error'] = '结束时间必须大于现在时间';
+$lang['sellerpromotionbargain_bargain_total_error'] = '砍价次数必须小于商品差价的100倍';
+$lang['sellerpromotionbargain_goods_not_allow'] = '所选商品已被设置为砍价商品';
+$lang['sellerpromotionbargain_bargain_limit_error'] = '砍价次数乘以最大砍价金额必须大于商品差价';
 
 return $lang;

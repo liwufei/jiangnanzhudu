@@ -40,7 +40,7 @@ $lang['date_payment'] = "付款日期";
 /**
  * show_cost_list
  */
-$lang['ob_seller_content']="商家备注";
+$lang['ob_seller_content'] = "商家备注";
 $lang['sellerbill_to'] = "至";
 $lang['current_settlement'] = "本期结算";
 $lang['confirmation_will_restored'] = "一旦确认将无法恢复，系统将自动进入结算环节,";

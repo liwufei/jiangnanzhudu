@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 订单
  */
@@ -223,5 +224,5 @@ $lang['other_reason']			= '其它原因';
 $lang['receive_goods']			= '签收了货物';
 $lang['deliver_search_fail']			= '物流信息查询失败';
 $lang['deliver_not_support']			= '不支持该物流';
+
 return $lang;
-?>

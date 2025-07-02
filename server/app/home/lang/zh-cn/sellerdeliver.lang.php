@@ -1,8 +1,8 @@
 <?php
-$lang['member_order_time']		= '下单时间';
-$lang['member_show_order_send_time']	= '发货时间';
-$lang['member_show_order_finish_time']	= '完成时间';
 
+$lang['member_order_time']        = '下单时间';
+$lang['member_show_order_send_time']    = '发货时间';
+$lang['member_show_order_finish_time']    = '完成时间';
 
 $lang['store_order_order_sn'] = '订单编号';
 $lang['store_order_order_sn_search'] = '输入您要查询的订单编号';
@@ -90,9 +90,7 @@ $lang['store_order_edit_ship_success'] = '成功修改了运费';
 $lang['store_order_none_exist'] = '该订单不存在';
 $lang['store_order_edit_amount_fail'] = '修改价格失败';
 $lang['store_order_edit_amount_success'] = '修改价格成功';
-$lang['order_send_message']	= '只有付款且未发货的订单可以设置发货';
-
-
+$lang['order_send_message']    = '只有付款且未发货的订单可以设置发货';
 
 /**
  * 收货人信息
@@ -216,16 +214,16 @@ $lang['member_show_expre_company'] = '物流公司';
 $lang['member_show_receive_info'] = '收货信息';
 $lang['member_show_deliver_info'] = '发货信息';
 
-$lang['member_show_express_ship_code']		= '物流单号';
-$lang['member_show_express_ship_dstatus']	= '物流动态';
-$lang['member_show_express_ship_tips']		= '以上部分信息来自于第三方，仅供参考，如需准确信息可联系卖家或物流公司';
-$lang['member_show_express_detail']			= '物流详情';
-$lang['member_show_seller_has_send']		= '卖家已发货';
-$lang['member_show_expre_my_fdback']		= '我的留言';
-$lang['member_show_expre_type']				= '发货方式：自行联系';
-$lang['member_show_expre_company']			= '物流公司';
-$lang['member_show_receive_info']			= '收货信息';
-$lang['member_show_deliver_info']			= '发货信息';
+$lang['member_show_express_ship_code']        = '物流单号';
+$lang['member_show_express_ship_dstatus']    = '物流动态';
+$lang['member_show_express_ship_tips']        = '以上部分信息来自于第三方，仅供参考，如需准确信息可联系卖家或物流公司';
+$lang['member_show_express_detail']            = '物流详情';
+$lang['member_show_seller_has_send']        = '卖家已发货';
+$lang['member_show_expre_my_fdback']        = '我的留言';
+$lang['member_show_expre_type']                = '发货方式：自行联系';
+$lang['member_show_expre_company']            = '物流公司';
+$lang['member_show_receive_info']            = '收货信息';
+$lang['member_show_deliver_info']            = '发货信息';
 
 //buyer_address_edit
 $lang['store_deliver_area'] = '地区';
@@ -284,7 +282,6 @@ $lang['eorder'] = '电子面单';
 //index
 $lang['whether_default'] = '是否默认';
 
-
 $lang['no_information_found'] = '未找到信息';
 $lang['successful_delivery_deadline'] = '成功将最晚收货期限延迟到了';
 $lang['delayed_failure'] = '延迟失败';
@@ -302,4 +299,5 @@ $lang['expresscf_kdn_config_pay_type'][1] = '现付';
 $lang['expresscf_kdn_config_pay_type'][2] = '到付';
 $lang['expresscf_kdn_config_pay_type'][3] = '月结';
 $lang['expresscf_kdn_config_pay_type'][4] = '第三方付';
+
 return $lang;

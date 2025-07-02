@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * 开店页
  */
@@ -119,7 +118,5 @@ $lang['store_open']				= '已开通';
 $lang['store_not_open']				= '未开通';
 $lang['store_renew_charge']				= '续费至';
 $lang['store_recommended_booth']				= '推荐展位';
-
-
 
 return $lang;

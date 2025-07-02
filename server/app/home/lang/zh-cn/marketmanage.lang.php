@@ -1,4 +1,5 @@
 <?php
+
 $lang['bargain_not_exist'] = '砍价活动不存在';
 $lang['market_activity_not_exist'] = '活动不存在';
 
@@ -16,5 +17,5 @@ $lang['market_1'] = '刮刮卡';
 $lang['market_2'] = '幸运大抽奖';
 $lang['market_3'] = '幸运砸金蛋';
 $lang['market_4'] = '生肖翻翻看';
+
 return $lang;
-?>

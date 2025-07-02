@@ -1,4 +1,5 @@
 <?php
+
 /**
  * header中的文字
  */
@@ -11,6 +12,7 @@ $lang['ds_current_position'] = '当前位置';
 $lang['ds_member_path_goods_class'] = '商品分类';
 $lang['ds_iwantbuy'] = '我要买';
 $lang['ds_iwantsell'] = '我要卖';
+
 /**
  * 左侧导航中的固定文字
  */
@@ -61,6 +63,7 @@ $lang['ds_become_member'] = '成为分销员';
 $lang['ds_modify_profile'] = '修改头像';
 $lang['ds_modify_data'] = '修改资料';
 $lang['ds_exit_safely'] = '安全退出';
+
 /**
  * 左侧导航与右侧小导航中的路径文字
  */
@@ -221,18 +224,14 @@ $lang['ds_member_path_store_flow'] = '店铺总流量';
 $lang['ds_member_path_goods_flow'] = '商品流量排名';
 $lang['ds_member_path_store_sale'] = '店铺总销量';
 $lang['ds_member_path_goods_sale'] = '商品销量排名';
-
 $lang['ds_member_path_seller_refund'] = '退款审核';
 $lang['ds_member_path_buyer_refund'] = '退款申请';
 $lang['ds_member_path_buyer_return'] = '退货申请';
-
-
 $lang['ds_member_path_deliver'] = '发货';
 $lang['ds_member_path_deliverno'] = '等待发货的订单';
 $lang['ds_member_path_delivering'] = '发货中的订单';
 $lang['ds_member_path_delivered'] = '已收到货的订单';
 $lang['ds_member_path_deliver_info'] = '物流详情';
-
 $lang['ds_member_path_store_sns'] = '店铺动态';
 $lang['ds_member_path_store_sns_browse'] = '浏览店铺动态';
 $lang['ds_member_path_store_sns_add'] = '发布动态';
@@ -247,6 +246,7 @@ $lang['ds_store_apply_open'] = '点击申请开通店铺';
 $lang['ds_period'] = '。';
 $lang['ds_store_apply_open_confirm'] = '确定按管理员要求改正了吗？';
 $lang['ds_store_administrator_is_audit'] = '店铺开启申请审核中。';
+
 /**
  * 预存款菜单
  */
@@ -261,11 +261,13 @@ $lang['ds_member_path_predepositcash'] = '预存款提现';
 $lang['ds_member_path_predeposit_cashadd'] = '提现申请';
 $lang['ds_member_path_predeposit_cashlist'] = '提现列表';
 $lang['ds_member_path_predeposit_cashinfo'] = '提现详细';
+
 /**
  * 订单评价
  */
 $lang['ds_member_path_evaluateadd'] = '订单商品评价';
 $lang['ds_member_path_evaluatemanage'] = '评价管理';
+
 /**
  * 组合销售
  */
@@ -275,10 +277,12 @@ $lang['ds_member_path_bundling_quota_add'] = '购买套餐';
 $lang['ds_member_path_bundling_add'] = '添加活动';
 $lang['ds_member_path_bundling_edit'] = '编辑套餐';
 $lang['ds_member_path_bundling_purchase_history'] = '购买套餐记录';
+
 /**
  * 提示文字
  **/
 $lang['store_auditing_tip'] = '您的店铺正在审核过程中，审核通过商品管理功能才能使用！';
+
 /**
  * 左侧菜单
  */
@@ -291,7 +295,6 @@ $lang['ds_tradeinfo'] = '交易信息';
 $lang['ds_order_waitpay'] = '待付款订单';
 $lang['ds_order_receiving'] = '待确认收货';
 $lang['ds_order_waitevaluate'] = '待评价交易';
-
 $lang['ds_member_path_sharemanage'] = '分享绑定';
 
 /**
@@ -303,25 +306,21 @@ $lang['ds_store_auto_share_new2'] = '亲，为您推荐一款本店新上宝贝�
 $lang['ds_store_auto_share_new3'] = '亲，我家又上新宝贝了！快来逛逛看更多吧。';
 $lang['ds_store_auto_share_new4'] = '亲，我家又上新宝贝了。';
 $lang['ds_store_auto_share_new5'] = '亲，为您推荐一款本店新上宝贝。';
-
 $lang['ds_store_auto_share_xianshi1'] = '秒杀，玩得就是心跳。';
 $lang['ds_store_auto_share_xianshi2'] = '省心又省钱，活动促销中。';
 $lang['ds_store_auto_share_xianshi3'] = '只买对的，不买贵的，宝贝秒杀中。';
 $lang['ds_store_auto_share_xianshi4'] = '宝贝秒杀中，性价比超高哟。';
 $lang['ds_store_auto_share_xianshi5'] = '折扣秒杀，不买不死心哇~';
-
 $lang['ds_store_auto_share_mansong1'] = '满即送，快行动！';
 $lang['ds_store_auto_share_mansong2'] = '不满不送，不送不买~';
 $lang['ds_store_auto_share_mansong3'] = '满啦就送啦，快快行动吧~';
 $lang['ds_store_auto_share_mansong4'] = '我家有满就送活动啦，亲快去查看下详情吧';
 $lang['ds_store_auto_share_mansong5'] = '我家有满就送活动啦，亲快去查看下详情吧';
-
 $lang['ds_store_auto_share_bundling1'] = '搭配购买更省钱';
 $lang['ds_store_auto_share_bundling2'] = '搭配的是品质，捡到的是实惠！';
 $lang['ds_store_auto_share_bundling3'] = '搭配不错，省心省钱更不会错';
 $lang['ds_store_auto_share_bundling4'] = '省心又省钱，找套餐就对了！';
 $lang['ds_store_auto_share_bundling5'] = '省心又省钱，套餐促销中～';
-
 $lang['ds_store_auto_share_groupbuy1'] = '打折的是价格，不打折的是品格！';
 $lang['ds_store_auto_share_groupbuy2'] = '抢购进万家，实惠你我他。';
 $lang['ds_store_auto_share_groupbuy3'] = '今天您团了吗？还没有？快来参加吧！';
@@ -329,4 +328,3 @@ $lang['ds_store_auto_share_groupbuy4'] = '让您足不出户，便宜到家，�
 $lang['ds_store_auto_share_groupbuy5'] = '品质与价格的双优选择，快来看看吧。';
 
 return $lang;
-?>

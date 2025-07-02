@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  index
  */
@@ -14,4 +15,3 @@ $lang['yesterday']		= '昨天';
 $lang['my_footprint']		= '我的足迹';
 
 return $lang;
-?>

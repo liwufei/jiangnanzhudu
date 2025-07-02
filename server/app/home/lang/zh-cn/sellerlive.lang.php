@@ -1,4 +1,5 @@
 <?php
+
 //index
 $lang['activity_guidelines1'] = '1. 如您需要使用“虚拟抢购”活动功能，并具有线下实体商铺请根据下列表单内容进行认真填写。';
 $lang['activity_guidelines2'] = '2. 设置后的线下商铺信息将显示于“虚拟抢购”活动详情页面右侧店铺介绍处，但不会影响原有线上店铺信息。';
@@ -19,6 +20,3 @@ $lang['store_address'] = '商铺地址:';
 $lang['store_empty'] = '该商家不存在';
 
 return $lang;
-
-
-

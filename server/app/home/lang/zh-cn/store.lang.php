@@ -71,7 +71,6 @@ $lang['official_store'] = '官方店铺';
 $lang['store_credit_text'] = '描述: %0.1f, 服务: %0.1f, 物流: %0.1f';
 $lang['no_promotion_recent'] = '商铺最近没有促销活动';
 
-
 $lang['second_ago'] = '秒前';
 $lang['minute_ago'] = '分钟前';
 $lang['hour_ago'] = '小时前';
@@ -80,4 +79,3 @@ $lang['month_ago'] = '个月前';
 $lang['year_ago'] = '年';
 
 return $lang;
-?>

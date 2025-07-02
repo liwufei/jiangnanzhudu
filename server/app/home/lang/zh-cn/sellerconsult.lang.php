@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 列表
  */
@@ -31,4 +32,5 @@ $lang['store_consulting_type']	= '咨询类型';
 $lang['store_consult_all_consulting']	= '全部咨询';
 $lang['store_consult_no_reply']	= '未回复咨询';
 $lang['store_consult_consultation']	= '已回复咨询';
+
 return $lang;

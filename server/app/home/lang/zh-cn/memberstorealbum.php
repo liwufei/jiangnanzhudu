@@ -119,4 +119,3 @@ $lang['store_goods_album_users']				= '用户相册';
 $lang['store_goods_album_all_photo']			= '全部图片';
 
 return $lang;
-?>

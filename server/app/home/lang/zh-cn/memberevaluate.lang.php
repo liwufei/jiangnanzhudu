@@ -1,4 +1,5 @@
 <?php
+
 $lang['member_evaluation_order_notexists']			= '订单信息错误';
 $lang['member_evaluation_member_notexists']			= '会员信息错误';
 $lang['member_evaluation_store_notexists']			= '店铺信息错误';

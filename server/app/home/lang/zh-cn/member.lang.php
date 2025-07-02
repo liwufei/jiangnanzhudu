@@ -1,13 +1,14 @@
 <?php
+
 //goods_info
-$lang['view_all_collections'] 	= '查看收藏的所有商品';
-$lang['have_no_collections_yet'] 	= '您还没有收藏商品';
-$lang['new_promotions_price_cuts'] 	= '收藏的商品将显示最新的促销活动和降价情况';
-$lang['store_collections'] 	= '店铺收藏';
-$lang['new_products'] 	= '新品';
-$lang['check_all_stores_collection'] 	= '查看收藏的所有店铺';
-$lang['no_collection_shop'] 	= '您还没有收藏店铺';
-$lang['stores_latest_merchandise_promotions'] 	= '收藏店铺可获知店铺最新商品和促销活动';
+$lang['view_all_collections']     = '查看收藏的所有商品';
+$lang['have_no_collections_yet']     = '您还没有收藏商品';
+$lang['new_promotions_price_cuts']     = '收藏的商品将显示最新的促销活动和降价情况';
+$lang['store_collections']     = '店铺收藏';
+$lang['new_products']     = '新品';
+$lang['check_all_stores_collection']     = '查看收藏的所有店铺';
+$lang['no_collection_shop']     = '您还没有收藏店铺';
+$lang['stores_latest_merchandise_promotions']     = '收藏店铺可获知店铺最新商品和促销活动';
 
 $lang['order_nopay'] = '待付款';
 $lang['order_noreceipt'] = '待收货';
@@ -67,4 +68,3 @@ $lang['mall_look_promotion'] = '赶紧去商城看看促销活动吧';
 $lang['browse_products'] = '浏览商品';
 
 return $lang;
-?>
