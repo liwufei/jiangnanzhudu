@@ -1,4 +1,5 @@
 {include file='default/base/mall_top'/}
+
 <link rel="stylesheet" href="{$Think.HOME_SITE_ROOT}/css/home.css">
 <div class="header-login clearfix">
     <div class="w1200">
@@ -86,14 +87,14 @@
                             <div class="iconfont ico">&#xe67b;</div>
                             <input type="password" id="member_password" name="member_password"
                                 autocomplete="new-password" class="text" placeholder="{$Think.lang.login_password}"
-                                tabindex="2" />
+                                tabindex="2">
                         </div>
                     </div>
                     <div class="item">
                         <div class="text-area">
                             <div class="iconfont ico">&#xe67b;</div>
                             <input type="password" id="member_password_confirm" name="member_password_confirm"
-                                class="text" placeholder="{$Think.lang.login_register_ensure_password}" tabindex="2" />
+                                class="text" placeholder="{$Think.lang.login_register_ensure_password}" tabindex="2">
                         </div>
                     </div>
                     <div class="item">
@@ -103,11 +104,10 @@
                     <div class="item">
                         <input type="hidden" value="{$Request.param.ref_url}" name="ref_url">
                         <input type="hidden" value="0" id="register_type" name="register_type">
-                        <input type="submit" class="btn login-btn" value="{$Think.lang.login_register_login_now_2}" />
+                        <input type="submit" class="btn login-btn" value="{$Think.lang.login_register_login_now_2}">
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>

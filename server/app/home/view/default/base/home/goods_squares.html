@@ -20,16 +20,16 @@
   }
 </style>
 <div class="squares" ds_type="current_display_mode">
-  <input type="hidden" id="lockcompare" value="unlock" />
+  <input type="hidden" id="lockcompare" value="unlock">
   {notempty name="goods_list"}
   <ul class="list_pic">
     {foreach name="goods_list" item="value"}
     <li class="item">
-      <div class="goods-content" dstype_goods=" {$value.goods_id}" dstype_store="{$value.store_id}">
+      <div class="goods-content" dstype_goods="{$value.goods_id}" dstype_store="{$value.store_id}">
         <div class="goods-pic"><a href="{:url('Goods/index',['goods_id'=>$value.goods_id])}" target="_blank"
             title="{$value.goods_name}"><img class="lazyload" data-original="{:goods_thumb($value, 240)}"
               title="{$value.goods_name}" src="{$Think.HOME_SITE_ROOT}/images/loading.gif"
-              alt="{$value.goods_name}" /></a></div>
+              alt="{$value.goods_name}"></a></div>
         {if (config('ds_config.groupbuy_allow') && $value['goods_promotion_type'] == 1)}
         <div class="goods-promotion"><span>{$Think.lang.goods_class_index_groupbuy}</span></div>
         {elseif (config('ds_config.promotion_allow') && $value['goods_promotion_type'] == 2)/}
@@ -40,13 +40,12 @@
             <ul>
               {notempty name="$value.image"}
               {php}$i=1;{/php}
-              {foreach name="$value.image" item="val" }
-              <li {if $i==1}class="selected" {/if}><a href="javascript:void(0);"><img class="lazyload"
+              {foreach name="$value.image" item="val"}
+              <li {if $i==1} class="selected" {/if}><a href="javascript:void(0);"><img class="lazyload"
                     data-original="{:goods_cthumb($val.goodsimage_url, 240)}"
                     src="{$Think.HOME_SITE_ROOT}/images/loading.gif" /></a></li>
               {php}$i++;{/php}
               {/foreach}
-              {else /}
               <li class="selected"><a href="javascript:void(0);"><img class="lazyload"
                     data-original="{:goods_thumb($value, 240)}" src="{$Think.HOME_SITE_ROOT}/images/loading.gif" /></a>
               </li>
@@ -94,11 +93,11 @@
             {if $value.goods_storage == 0}
             {if $value.is_appoint == 1}
             <a href="javascript:void(0);"
-              onclick="{if (session('is_login') !== '1')}login_dialog();{else/}ajax_form('arrival_notice', '{$Think.lang.immediately_appointment}', '{:url('Goods/arrival_notice',['goods_id'=>$value.goods_id,'type'=>'2'])}', 350);{/if}"><i
+              onclick="{if (session('is_login') !== '1')}login_dialog();{else /}ajax_form('arrival_notice', '{$Think.lang.immediately_appointment}', '{:url('Goods/arrival_notice',['goods_id'=>$value.goods_id,'type'=>'2'])}', 350);{/if}"><i
                 class="iconfont" title={$Think.lang.immediately_appointment}>&#xe70f;</i></a>
             {else /}
             <a href="javascript:void(0);"
-              onclick="{if (session('is_login') !== '1')}login_dialog();{else/}ajax_form('arrival_notice', '{$Think.lang.receiving_notification}', '{:url('Goods/arrival_notice',['goods_id'=>$value.goods_id,'type'=>'2'])}', 350);{/if}"><i
+              onclick="{if (session('is_login') !== '1')}login_dialog();{else /}ajax_form('arrival_notice', '{$Think.lang.receiving_notification}', '{:url('Goods/arrival_notice',['goods_id'=>$value.goods_id,'type'=>'2'])}', 350);{/if}"><i
                 class="iconfont" title={$Think.lang.receiving_notification}>&#xe70f;</i></a>
             {/if}
             {else /}

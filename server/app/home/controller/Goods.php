@@ -81,8 +81,11 @@ class Goods extends BaseGoods
                 $goods_info['inviter_money'] = $inviter_money;
             }
         }
-        $goods_info['goodsvideo_url'] = goods_video($goods_info['goodsvideo_name']);
-        // halt($goods_info);
+
+        // 商品视频
+        if ($goods_info['goodsvideo_name']) {
+            $goods_info['goodsvideo_url'] = goods_video($goods_info['goodsvideo_name']);
+        }
 
         //抢购商品是否开始
         $IsHaveBuy = 0;
@@ -121,9 +124,9 @@ class Goods extends BaseGoods
         }
         View::assign('goods', $goods_info);
         View::assign('IsHaveBuy', $IsHaveBuy);
-        //end
 
         $storeplate_model = model('storeplate');
+
         // 顶部关联版式
         if ($goods_info['plateid_top'] > 0) {
             $plate_top = $storeplate_model->getStoreplateInfoByID($goods_info['plateid_top']);

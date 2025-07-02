@@ -3,27 +3,27 @@
 /**
  * 共有语言
  */
-$lang['cart_add_must_login']            = '您必须登录后才可以购买该商品';
-$lang['cart_add_cannot_buy']            = '不能购买自己店铺的商品';
-$lang['cart_add_stock_shortage']        = '商品库存不足，暂时无法购买';
-$lang['cart_index_not_exists_store']    = '店铺信息异常';
-$lang['cart_index_group_not_exists']    = '抢购活动不存在';
-$lang['cart_index_stock_contact']        = '商品库存不足, 请联系卖家';
-$lang['cart_index_ensure_order']        = '我的购物车';
-$lang['cart_index_ensure_info']            = '填写核对购物信息';
-$lang['cart_index_payment']                = '支付提交';
-$lang['cart_index_submit_order']        = '提交订单';
-$lang['cart_index_buy_finish']            = '订单完成';
-$lang['cart_i_want_to_be_here']            = '我也要出现在这里';
-$lang['cart_record_error']                = '购物车信息错误';
-$lang['cart_record_online_empty']        = '您购物车中的商品已经下架或库存不足，暂时无法购买，建议您更换其它商品';
-$lang['cart_buy_noallow']                 = '您没有商品购买的权限,如有疑问请联系客服人员';
-$lang['cart_buy_noauth']                 = '您需要先实名认证才能购买商品';
-$lang['cart_step1_store']                = '店铺';
-$lang['cart_step1_youhui']                = '优惠信息';
-$lang['cart_step1_address_fail']        = '该地区不可购买，请更换收货地区';
-$lang['cart_step1_goods_fail']          = '该商品不支持配送到此收货地址';
-$lang['cart_step1_city_fail']           = '门店已失效，请重新编辑收货地址';
+$lang['cart_add_must_login'] = '您必须登录后才可以购买该商品';
+$lang['cart_add_cannot_buy'] = '不能购买自己店铺的商品';
+$lang['cart_add_stock_shortage'] = '商品库存不足，暂时无法购买';
+$lang['cart_index_not_exists_store'] = '店铺信息异常';
+$lang['cart_index_group_not_exists'] = '抢购活动不存在';
+$lang['cart_index_stock_contact'] = '商品库存不足, 请联系卖家';
+$lang['cart_index_ensure_order'] = '我的购物车';
+$lang['cart_index_ensure_info'] = '填写核对购物信息';
+$lang['cart_index_payment'] = '支付提交';
+$lang['cart_index_submit_order'] = '提交订单';
+$lang['cart_index_buy_finish'] = '订单完成';
+$lang['cart_i_want_to_be_here'] = '我也要出现在这里';
+$lang['cart_record_error'] = '购物车信息错误';
+$lang['cart_record_online_empty'] = '您购物车中的商品已经下架或库存不足，暂时无法购买，建议您更换其它商品';
+$lang['cart_buy_noallow'] = '您没有商品购买的权限,如有疑问请联系客服人员';
+$lang['cart_buy_noauth'] = '您需要先实名认证才能购买商品';
+$lang['cart_step1_store'] = '店铺';
+$lang['cart_step1_youhui'] = '优惠信息';
+$lang['cart_step1_address_fail'] = '该地区不可购买，请更换收货地区';
+$lang['cart_step1_goods_fail'] = '该商品不支持配送到此收货地址';
+$lang['cart_step1_city_fail'] = '门店已失效，请重新编辑收货地址';
 
 /**
  * index

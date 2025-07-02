@@ -1,7 +1,6 @@
 {extend name="default/base/base_home" /}
 {block name="mall_main"}
 
-
 <link rel="stylesheet" href="{$Think.BASE_SITE_ROOT}/static/home/default/store/styles/{$store_theme}/css/shop.css">
 <link rel="stylesheet" href="{$Think.BASE_SITE_ROOT}/static/home/default/store/styles/{$store_theme}/css/goods.css">
 <!--放大镜BEGIN-->
@@ -16,12 +15,13 @@
         {if $goods.goodsvideo_url}
         <div onclick="$('#video_content').show()"
           style="position: absolute;z-index: 100;bottom:100px;left:20px;font-size:16px;cursor: pointer;background-color:#ff4040;color:#fff;line-height: 30px;border-radius: 30px;padding:0 10px;">
-          <span class="iconfont">&#xe711;</span>{$Think.lang.goods_index_video}</div>
+          <span class="iconfont">&#xe711;</span>{$Think.lang.goods_index_video}
+        </div>
         <div id="video_content" class="product-img" style="position: absolute;z-index: 200;background: #000">
           <div class="iconfont" onclick="$('#video_content').hide()"
             style="position: absolute;z-index: 300;top:20px;right:20px;cursor: pointer">&#xe696;</div>
           <video style="width:100%;height:100%" muted="muted" autoplay="autoplay" controls="controls"
-            controlslist="nodownload" src="{$goods.goodsvideo_url}" />
+            controlslist="nodownload" src="{$goods.goodsvideo_url}">
         </div>
         {/if}
         <!-- 商品大图介绍 start [[-->
@@ -54,7 +54,7 @@
         <a href="javascript:collect_goods('{$goods.goods_id}','count','goods_collect');" class="favorite"><i
             class="iconfont">&#xe6a9;</i>{$Think.lang.goods_index_favorite_goods}</a>
         <!-- S 对比 -->
-        <input type="hidden" id="lockcompare" value="unlock" />
+        <input type="hidden" id="lockcompare" value="unlock">
         <a href="javascript:void(0);" class="compare" ds_type="compare_{$goods.goods_id}"
           data-param='{"gid":"{$goods.goods_id}"}'><i
             class="iconfont">&#xe74a;</i>{$Think.lang.add_contrast}</a><!-- S 举报 -->
@@ -199,7 +199,6 @@
             </div>
             {/if}
             <!--E 满就送 -->
-
           </dd>
         </dl>
         <?php }?>
@@ -236,7 +235,6 @@
         </dl>
         {/if}
         <!-- E 赠品 -->
-
       </div>
       <?php }?>
       <!-- E 促销 -->
@@ -502,7 +500,6 @@
     <!-- E 购买数量及库存 -->
   </div>
 
-
   <div class="intro_r">
     <div class="mt">
       <h2>看了又看</h2>
@@ -531,7 +528,6 @@
       <a class="prev" href="javascript:void(0)"><i class="iconfont">&#xe689;</i></a>
     </div>
   </div>
-
 
 </div>
 <!-- S 优惠套装 -->
@@ -674,8 +670,6 @@
   </div>
   <div class="dss-sidebar">
 
-
-
     {include file="default/store/default/store/store_info"}
     <div class="dss-message-bar">
       <div class="common_title">
@@ -743,10 +737,6 @@
       {/if}
     </div>
 
-
-
-
-
     <div class="common_module">
       <div class="common_title">
         <h2>{$Think.lang.ds_hot_goods_rankings}</h2>
@@ -800,10 +790,6 @@
       </div>
     </div>
     <!--侧边推荐 END-->
-
-
-
-
 
     {if isset($viewed_goods)}
     <!-- 最近浏览 -->
@@ -900,7 +886,6 @@
   };
   $(function () {
 
-
     { if condition = "$goods.goods_state eq '1' && $goods.goods_storage gt 0"}
     // 加入购物车
     $('a[dstype="addcart_submit"]').click(function () {
@@ -926,7 +911,6 @@
         <? php }?>
       {/if}
 
-
     // 到货通知
     { if condition = "$goods.goods_storage eq '0' || $goods.goods_state eq '0'" }
     $('a[dstype="arrival_notice"]').click(function () {
@@ -946,7 +930,6 @@
     {/if }
   });
   {/if }
-
 
   // 规格选择
   $('dl[dstype="ds-spec"]').find('a').each(function () {
@@ -987,7 +970,6 @@
         }).join('|'))
       })
     }
-
 
     $.each(spec_param, function (i, n) {
       var i = spec3.indexOf(n.sign)
@@ -1394,8 +1376,6 @@ var $cur_area_list, $cur_tab, next_tab_id = 0, cur_select_area = [], calc_area_i
 });
 <? php }?>
 
-
-
     //缩略图切换
     $('.small-pic-li').each(function (i, o) {
       var lilength = $('.small-pic-li').length;
@@ -1469,12 +1449,6 @@ var $cur_area_list, $cur_tab, next_tab_id = 0, cur_select_area = [], calc_area_i
     $('#store_count').text(maxnum - num); //更新库存数量
     $('#quantity').val(num)
   }
-
 </script>
-
-
-
-
-
 
 {/block}

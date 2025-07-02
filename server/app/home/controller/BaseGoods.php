@@ -27,11 +27,13 @@ class BaseGoods extends BaseStore
         if (cookie('dregion')) {
             $store_info['deliver_region'] = cookie('dregion');
         }
-        if (strpos($store_info['deliver_region'], '|')) {
+
+        if ($store_info['deliver_region'] && strpos($store_info['deliver_region'], '|')) {
             $store_info['deliver_region'] = explode('|', $store_info['deliver_region']);
             $store_info['deliver_region_ids'] = explode(' ', $store_info['deliver_region'][0]);
             $store_info['deliver_region_names'] = explode(' ', $store_info['deliver_region'][1]);
         }
+
         $storejoinin_model = model('storejoinin');
         $storejoinin_info = $storejoinin_model->getOneStorejoinin(array('member_id' => $store_info['member_id']));
         //营业执照
