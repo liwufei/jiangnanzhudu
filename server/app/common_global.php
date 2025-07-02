@@ -5,7 +5,7 @@ define('PLUGINS_SITE_ROOT', BASE_SITE_ROOT . '/static/plugins');
 define('ADMIN_SITE_ROOT', BASE_SITE_ROOT . '/static/admin');
 define('HOME_SITE_ROOT', BASE_SITE_ROOT . '/static/home');
 
-define("REWRITE_MODEL", FALSE); // 设置伪静态
+define("REWRITE_MODEL", TRUE); // 设置伪静态
 if (!REWRITE_MODEL) {
     define('BASE_SITE_URL', \think\facade\Request::instance()->domain() . \think\facade\Request::instance()->baseFile());
 } else {
@@ -22,8 +22,6 @@ if (file_exists("install/") && !file_exists("install/install.lock")) {
     header('Location: ' . BASE_SITE_ROOT . '/install/install.php');
     exit();
 }
-//error_reporting(E_ALL ^ E_NOTICE);//显示除去 E_NOTICE 之外的所有错误信息
-
 
 //define('BASE_SITE_URL', BASE_SITE_URL);
 define('HOME_SITE_URL', BASE_SITE_URL . '/home');

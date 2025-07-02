@@ -46,7 +46,7 @@ $lang['admin_voucher_price_tip1'] = '管理员设置代金券面额，店铺发�
 /**
  * 代金券套餐
  */
-$lang['admin_voucher_quota_tip1']        = '取消操作后不可恢复，请慎重操作';
+$lang['admin_voucher_quota_tip1'] = '取消操作后不可恢复，请慎重操作';
 
 /**
  * 代金券

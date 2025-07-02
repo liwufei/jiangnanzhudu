@@ -28,14 +28,14 @@
                     <td class="required"><label class="validation"
                             for="activity_startdate">{$Think.lang.ds_start_time}:</label></td>
                     <td class="vatop rowform"><input type="text" id="activity_startdate" class="txt date"
-                            name="activity_startdate" value="{$activity.activity_startdate|date='Y-m-d'}" /></td>
+                            name="activity_startdate" value="{$activity.activity_startdate|date='Y-m-d'}"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
                     <td class="required"><label class="validation"
                             for="activity_enddate">{$Think.lang.ds_end_time}:</label></td>
                     <td class="vatop rowform"><input type="text" id="activity_enddate" class="txt date"
-                            name="activity_enddate" value="{$activity.activity_enddate|date='Y-m-d'}" /></td>
+                            name="activity_enddate" value="{$activity.activity_enddate|date='Y-m-d'}"></td>
                     <td class="vatop tips"></td>
                 </tr>
                 <tr class="noborder">
@@ -44,7 +44,7 @@
                     <td class="vatop rowform">
                         {notempty name="$activity.activity_banner"}
                         <span class="type-file-show">
-                            <img class="show_image" src="{$Think.ADMIN_SITE_ROOT}/images/preview.png" />
+                            <img class="show_image" src="{$Think.ADMIN_SITE_ROOT}/images/preview.png">
                             <div class="type-file-preview"><img
                                     src="{:ds_get_pic(ATTACH_ACTIVITY,$activity.activity_banner)}"
                                     onload="javascript:ResizeImage(this,500,500);"></div>
@@ -53,8 +53,8 @@
                         <span class="type-file-box">
                             <input name="activity_banner" type="file" class="type-file-file" id="activity_banner"
                                 size="30" hidefocus="true">
-                            <input type='text' name='textfield' id='textfield1' class='type-file-text' />
-                            <input type='button' name='button' id='button1' value='上传' class='type-file-button' />
+                            <input type='text' name='textfield' id='textfield1' class='type-file-text'>
+                            <input type='button' name='button' id='button1' value='上传' class='type-file-button'>
                         </span>
                     </td>
                     <td class="vatop tips">{$Think.lang.activity_new_banner_tip}</td>
@@ -65,7 +65,7 @@
                     <td class="vatop rowform">
                         {notempty name="$activity.activity_banner_mobile"}
                         <span class="type-file-show">
-                            <img class="show_image" src="{$Think.ADMIN_SITE_ROOT}/images/preview.png" />
+                            <img class="show_image" src="{$Think.ADMIN_SITE_ROOT}/images/preview.png">
                             <div class="type-file-preview"><img
                                     src="{:ds_get_pic(ATTACH_ACTIVITY,$activity.activity_banner_mobile)}"
                                     onload="javascript:ResizeImage(this,500,500);"></div>
@@ -74,8 +74,8 @@
                         <span class="type-file-box">
                             <input name="activity_banner_mobile" type="file" class="type-file-file"
                                 id="activity_banner_mobile" size="30" hidefocus="true">
-                            <input type='text' name='textfield' id='textfield2' class='type-file-text' />
-                            <input type='button' name='button' id='button1' value='上传' class='type-file-button' />
+                            <input type='text' name='textfield' id='textfield2' class='type-file-text'>
+                            <input type='button' name='button' id='button1' value='上传' class='type-file-button'>
                         </span>
                     </td>
                     <td class="vatop tips">{$Think.lang.activity_new_banner_mobile_tip}</td>
@@ -110,7 +110,7 @@
             </tbody>
             <tfoot>
                 <tr class="tfoot">
-                    <td colspan="2"><input class="btn" type="submit" value="{$Think.lang.ds_submit}" /></td>
+                    <td colspan="2"><input class="btn" type="submit" value="{$Think.lang.ds_submit}"></td>
                 </tr>
             </tfoot>
         </table>

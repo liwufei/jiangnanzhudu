@@ -23,6 +23,7 @@ class Config extends AdminControl
         if (!request()->isPost()) {
             $list_config = rkcache('config', true);
             View::assign('list_config', $list_config);
+
             //设置卖家当前栏目
             $this->setAdminCurItem('base');
             return View::fetch();

@@ -59,7 +59,6 @@ class AdminControl extends BaseController
     public function setMenuList()
     {
         $menu_list = $this->menuList();
-
         $menu_list = $this->parseMenu($menu_list);
         View::assign('menu_list', $menu_list);
     }

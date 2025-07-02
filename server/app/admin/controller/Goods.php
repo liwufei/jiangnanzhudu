@@ -32,7 +32,7 @@ class Goods extends AdminControl
 
         // 查询条件
         $where = array();
-        $search_goods_name = trim(input('param.search_goods_name'));
+        $search_goods_name = input('param.search_goods_name');
         if ($search_goods_name != '') {
             $where[] = array('goods_name', 'like', '%' . $search_goods_name . '%');
         }
@@ -40,7 +40,7 @@ class Goods extends AdminControl
         if ($search_commonid > 0) {
             $where[] = array('goods_commonid', '=', $search_commonid);
         }
-        $search_store_name = trim(input('param.search_store_name'));
+        $search_store_name = input('param.search_store_name');
         if ($search_store_name != '') {
             $where[] = array('store_name', 'like', '%' . $search_store_name . '%');
         }

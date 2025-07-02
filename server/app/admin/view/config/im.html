@@ -18,14 +18,13 @@
                     <td class="required w120">{$Think.lang.is_useim}</td>
                     <td class="vatop rowform">
                         <div class="onoff">
-                            <label for="note_site_show1" class="cb-enable {if condition=" $list_config.node_site_use eq
-                                1"}selected{/if}">{$Think.lang.ds_yes}</label>
-                            <label for="note_site_show0" class="cb-disable {if condition=" $list_config.node_site_use eq
-                                0"}selected{/if}">{$Think.lang.ds_no}</label>
-                            <input id="note_site_show1" name="node_site_use" value="1" type="radio" {if
-                                condition="$list_config.node_site_use eq 1" } checked="checked" {/if}>
-                            <input id="note_site_show0" name="node_site_use" value="0" type="radio" {if
-                                condition="$list_config.node_site_use eq 0" } checked="checked" {/if}>
+                            {if $list_config.node_site_use == 1}
+                            <label for="note_site_show1" class="cb-enable selected">{$Think.lang.ds_yes}</label>
+                            <input id="note_site_show1" name="node_site_use" value="1" type="radio" checked="checked">
+                            {else /}
+                            <label for="note_site_show0" class="cb-disable selected">{$Think.lang.ds_no}</label>
+                            <input id="note_site_show0" name="node_site_use" value="0" type="radio" checked="checked">
+                            {/if}
                         </div>
                     </td>
                 </tr>
@@ -42,7 +41,7 @@
             <tfoot>
                 <tr class="tfoot">
                     <td></td>
-                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_confirm_submit}" /></td>
+                    <td colspan="15"><input class="btn" type="submit" value="{$Think.lang.ds_confirm_submit}"></td>
                 </tr>
             </tfoot>
         </table>

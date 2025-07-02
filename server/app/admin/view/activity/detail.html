@@ -26,17 +26,17 @@
                 <dd>
                     <select name="searchstate">
                         <option value="0">{$Think.lang.activity_detail_index_auditstate}</option>
-                        <option value="1" {eq name="Request.get.searchstate" value="1" }selected=selected{/eq}>
+                        <option value="1" {eq name="Request.get.searchstate" value="1"}selected{/eq}>
                             {$Think.lang.activity_detail_index_to_audit}</option>
-                        <option value="2" {eq name="Request.get.searchstate" value="2" }selected=selected{/eq}>
+                        <option value="2" {eq name="Request.get.searchstate" value="2"}selected{/eq}>
                             {$Think.lang.activity_detail_index_passed}</option>
-                        <option value="3" {eq name="Request.get.searchstate" value="3" }selected=selected{/eq}>
+                        <option value="3" {eq name="Request.get.searchstate" value="3"}selected{/eq}>
                             {$Think.lang.activity_detail_index_unpassed}</option>
                     </select>
                 </dd>
             </dl>
             <div class="btn_group">
-                <input class="btn" type="submit" value="{$Think.lang.ds_query}" />
+                <input class="btn" type="submit" value="{$Think.lang.ds_query}">
             </div>
         </div>
     </form>

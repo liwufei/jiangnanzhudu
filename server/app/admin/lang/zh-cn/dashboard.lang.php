@@ -36,7 +36,7 @@ $lang['dashboard_wel_goods_waitverify'] = '商品审核';
 $lang['dashboard_wel_chain'] = '门店';
 $lang['dashboard_wel_version_info'] = '版本信息';
 $lang['dashboard_wel_program_development'] = '程序开发:';
-$lang['dashboard_wel_deshangwangluo'] = '德尚网络科技有限公司';
+$lang['dashboard_wel_deshangwangluo'] = '江南铸都科技有限公司';
 $lang['dashboard_wel_all_right_reserved'] = '版权所有:';
 $lang['dashboard_wel_piracy_must_be_studied'] = '盗版必究';
 $lang['dashboard_wel_communication_bbs'] = '交流论坛';
@@ -75,6 +75,6 @@ $lang['new_order_count'] = '新增订单数';
  */
 $lang['dashboard_aboutus_bbs'] = '官方论坛';
 $lang['dashboard_aboutus_website'] = '官方网站';
-$lang['company_info'] = '长沙德尚网络科技有限公司，成立于2014年，公司秉承着让互联网无处不在的理念，专注于电子商务软件的研发及相关解决方案与服务的提供，以先进的商业理念、优秀的软件产品和专业的配套服务。<br>主营业务为电子商务软件、APP、企业网站的开发。';
+$lang['company_info'] = '湖南江南铸都科技有限公司，成立于2025年，公司秉承着让互联网无处不在的理念，专注于电子商务软件的研发及相关解决方案与服务的提供，以先进的商业理念、优秀的软件产品和专业的配套服务。<br>主营业务为电子商务软件、APP、企业网站的开发。';
 
 return $lang;

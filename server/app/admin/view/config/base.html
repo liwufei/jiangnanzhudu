@@ -26,14 +26,15 @@
                 <dt>{$Think.lang.fixed_suspension_state}</dt>
                 <dd>
                     <div class="onoff">
-                        <label for="fixed_suspension_state1" class="cb-enable {if condition="
-                            $list_config.fixed_suspension_state eq 1"}selected{/if}">{$Think.lang.ds_open}</label>
-                        <label for="fixed_suspension_state0" class="cb-disable {if condition="
-                            $list_config.fixed_suspension_state eq 0"}selected{/if}">{$Think.lang.ds_close}</label>
-                        <input id="fixed_suspension_state1" name="fixed_suspension_state" value="1" type="radio" {if
-                            condition="$list_config.fixed_suspension_state eq 1" } checked="checked" {/if}>
-                        <input id="fixed_suspension_state0" name="fixed_suspension_state" value="0" type="radio" {if
-                            condition="$list_config.fixed_suspension_state eq 0" } checked="checked" {/if}>
+                        {if $list_config.fixed_suspension_state == 1}
+                        <label for="fixed_suspension_state1" class="cb-enable selected">{$Think.lang.ds_open}</label>
+                        <input id="fixed_suspension_state1" name="fixed_suspension_state" value="1" type="radio"
+                            checked="checked">
+                        {else /}
+                        <label for="fixed_suspension_state0" class="cb-disable selected">{$Think.lang.ds_close}</label>
+                        <input id="fixed_suspension_state0" name="fixed_suspension_state" value="0" type="radio"
+                            checked="checked">
+                        {/if}
                     </div>
                 </dd>
             </dl>
@@ -50,8 +51,8 @@
                     </span>
                     {/notempty}
                     <span class="type-file-box">
-                        <input type='text' name='textfield' id='textfield6' class='type-file-text' />
-                        <input type='button' name='button' id='button1' value='上传' class='type-file-button' />
+                        <input type='text' name='textfield' id='textfield6' class='type-file-text'>
+                        <input type='button' name='button' id='button1' value='上传' class='type-file-button'>
                         <input name="fixed_suspension_img" id="file_fixed_suspension_img" type="file"
                             class="type-file-file" id="site_logo" size="30" hidefocus="true">
                     </span>
@@ -106,14 +107,15 @@
                 <dt>{$Think.lang.h5_force_redirect}</dt>
                 <dd>
                     <div class="onoff">
-                        <label for="h5_force_redirect1" class="cb-enable {if condition=" $list_config.h5_force_redirect
-                            eq 1"}selected{/if}">{$Think.lang.ds_open}</label>
-                        <label for="h5_force_redirect0" class="cb-disable {if condition=" $list_config.h5_force_redirect
-                            eq 0"}selected{/if}">{$Think.lang.ds_close}</label>
-                        <input id="h5_force_redirect1" name="h5_force_redirect" value="1" type="radio" {if
-                            condition="$list_config.h5_force_redirect eq 1" } checked="checked" {/if}>
-                        <input id="h5_force_redirect0" name="h5_force_redirect" value="0" type="radio" {if
-                            condition="$list_config.h5_force_redirect eq 0" } checked="checked" {/if}>
+                        {if $list_config.h5_force_redirect == 1}
+                        <label for="h5_force_redirect1" class="cb-enable selected">{$Think.lang.ds_open}</label>
+                        <input id="h5_force_redirect1" name="h5_force_redirect" value="1" type="radio"
+                            checked="checked">
+                        {else /}
+                        <label for="h5_force_redirect0" class="cb-disable selected">{$Think.lang.ds_close}</label>
+                        <input id="h5_force_redirect0" name="h5_force_redirect" value="0" type="radio"
+                            checked="checked">
+                        {/if}
                     </div>
                     <p class="notic">{$Think.lang.h5_force_redirect_tips}</p>
                 </dd>
@@ -123,48 +125,34 @@
                 <dt>{$Think.lang.is_goods_verify}</dt>
                 <dd>
                     <div class="onoff">
-                        <label for="goods_verify_1"
-                            class="cb-enable {eq name='list_config.goods_verify' value='1'}selected{/eq}"
+                        {if $list_config.goods_verify == 1}
+                        <label for="goods_verify_1" class="cb-enable selected"
                             title="{$Think.lang.ds_open}"><span>{$Think.lang.ds_open}</span></label>
-                        <label for="goods_verify_0"
-                            class="cb-disable {eq name='list_config.goods_verify' value='0'}selected{/eq}"
+                        <input type="radio" id="goods_verify_1" name="goods_verify" value="1" checked=checked>
+                        {else /}
+                        <label for="goods_verify_0" class="cb-disable selected"
                             title="{$Think.lang.ds_close}"><span>{$Think.lang.ds_close}</span></label>
-                        <input type="radio" id="goods_verify_1" name="goods_verify" value="1" {if
-                            $list_config.goods_verify=='1' }checked=checked{/if}>
-                        <input type="radio" id="goods_verify_0" name="goods_verify" value="0" {if
-                            $list_config.goods_verify=='0' }checked=checked{/if}>
+                        <input type="radio" id="goods_verify_0" name="goods_verify" value="0" checked=checked>
+                        {/if}
                     </div>
                     <p class="notic">{$Think.lang.goods_verify_notice}</p>
                 </dd>
             </dl>
             <!-- 商品全部审核通过 -->
-            <dl dstype="goods_all_verify" style="display: none">
-                <dt>{$Think.lang.is_goods_all_verify}</dt>
-                <dd>
-                    <div class="onoff">
-                        <label for="goods_all_verify_1" class="cb-enable"
-                            title="{$Think.lang.ds_yes}"><span>{$Think.lang.ds_yes}</span></label>
-                        <label for="goods_all_verify_0" class="cb-disable selected"
-                            title="{$Think.lang.ds_no}"><span>{$Think.lang.ds_no}</span></label>
-                        <input type="radio" id="goods_all_verify_1" name="goods_all_verify" value="1">
-                        <input type="radio" id="goods_all_verify_0" name="goods_all_verify" value="0" checked=checked>
-                    </div>
-                    <p class="notic">{$Think.lang.goods_all_verify_notice}</p>
-                </dd>
-            </dl>
             <!-- 开启实名认证 -->
             <dl>
                 <dt>{$Think.lang.member_auth}</dt>
                 <dd>
                     <div class="onoff">
-                        <label for="member_auth_1" class="cb-enable {if $list_config.member_auth == '1'}selected{/if}"
+                        {if $list_config.member_auth == 1}
+                        <label for="member_auth_1" class="cb-enable selected"
                             title="{$Think.lang.ds_open}"><span>{$Think.lang.ds_open}</span></label>
-                        <label for="member_auth_0" class="cb-disable {if $list_config.member_auth == '0'}selected{/if}"
+                        <input id="member_auth_1" name="member_auth" checked=checked value="1" type="radio">
+                        {else /}
+                        <label for="member_auth_0" class="cb-disable selected"
                             title="{$Think.lang.ds_close}"><span>{$Think.lang.ds_close}</span></label>
-                        <input id="member_auth_1" name="member_auth" {if $list_config.member_auth=='1' } checked=checked
-                            {/if} value="1" type="radio">
-                        <input id="member_auth_0" name="member_auth" {if $list_config.member_auth=='0' } checked=checked
-                            {/if} value="0" type="radio">
+                        <input id="member_auth_0" name="member_auth" checked=checked value="0" type="radio">
+                        {/if}
                     </div>
                     <p class="notic">{$Think.lang.member_auth_notice}</p>
                 </dd>
@@ -173,24 +161,27 @@
                 <dt>{$Think.lang.mapak_type}</dt>
                 <dd>
                     <label class="radio-label">
-                        <i class="radio-common {if $list_config.mapak_type =='1'}selected{/if}">
-                            <input type="radio" value="1" name="mapak_type" class='gaoderadio' {if
-                                $list_config.mapak_type=='1' } checked="checked" {/if}>
+                        {if $list_config.mapak_type == 1}
+                        <i class="radio-common selected">
+                            <input type="radio" value="1" name="mapak_type" class='gaoderadio' checked="checked">
                         </i>
+                        {/if}
                         <span>{$Think.lang.gaode_map}</span>
                     </label>
                     <label class="radio-label">
-                        <i class="radio-common {if $list_config.mapak_type =='2'}selected{/if}">
-                            <input type="radio" value="2" name="mapak_type" class='baiduradio' {if
-                                $list_config.mapak_type=='2' } checked="checked" {/if}>
+                        {if $list_config.mapak_type == 2}
+                        <i class="radio-common selected">
+                            <input type="radio" value="2" name="mapak_type" class='baiduradio' checked="checked">
                         </i>
+                        {/if}
                         <span>{$Think.lang.baidu_map}</span>
                     </label>
                     <label class="radio-label">
-                        <i class="radio-common {if $list_config.mapak_type =='0'}selected{/if}">
-                            <input type="radio" value="0" name="mapak_type" class='mapakradio' {if
-                                $list_config.mapak_type=='0' } checked="checked" {/if}>
+                        {if $list_config.mapak_type == 0}
+                        <i class="radio-common selected">
+                            <input type="radio" value="0" name="mapak_type" class='mapakradio' checked="checked">
                         </i>
+                        {/if}
                         <span>不使用地图</span>
                     </label>
                     <span class="tips"></span>
@@ -287,14 +278,13 @@
                 <dt>{$Think.lang.cache_open}</dt>
                 <dd>
                     <div class="onoff">
-                        <label for="cache_open1" class="cb-enable {if condition=" $list_config.cache_open eq
-                            1"}selected{/if}">{$Think.lang.ds_open}</label>
-                        <label for="cache_open0" class="cb-disable {if condition=" $list_config.cache_open eq
-                            0"}selected{/if}">{$Think.lang.ds_close}</label>
-                        <input id="cache_open1" name="cache_open" value="1" type="radio" {if
-                            condition="$list_config.cache_open eq 1" } checked="checked" {/if}>
-                        <input id="cache_open0" name="cache_open" value="0" type="radio" {if
-                            condition="$list_config.cache_open eq 0" } checked="checked" {/if}>
+                        {if $list_config.cache_open == 1}
+                        <label for="cache_open1" class="cb-enable selected">{$Think.lang.ds_open}</label>
+                        <input id="cache_open1" name="cache_open" value="1" type="radio" checked="checked">
+                        {else /}
+                        <label for="cache_open0" class="cb-disable selected">{$Think.lang.ds_close}</label>
+                        <input id="cache_open0" name="cache_open" value="0" type="radio" checked="checked">
+                        {/if}
                     </div>
                 </dd>
             </dl>
@@ -302,14 +292,13 @@
                 <dt>{$Think.lang.site_state}</dt>
                 <dd>
                     <div class="onoff">
-                        <label for="site_state1" class="cb-enable {if condition=" $list_config.site_state eq
-                            1"}selected{/if}">{$Think.lang.ds_open}</label>
-                        <label for="site_state0" class="cb-disable {if condition=" $list_config.site_state eq
-                            0"}selected{/if}">{$Think.lang.ds_close}</label>
-                        <input id="site_state1" name="site_state" value="1" type="radio" {if
-                            condition="$list_config.site_state eq 1" } checked="checked" {/if}>
-                        <input id="site_state0" name="site_state" value="0" type="radio" {if
-                            condition="$list_config.site_state eq 0" } checked="checked" {/if}>
+                        {if $list_config.site_state == 1}
+                        <label for="site_state1" class="cb-enable selected">{$Think.lang.ds_open}</label>
+                        <input id="site_state1" name="site_state" value="1" type="radio" checked="checked">
+                        {else /}
+                        <label for="site_state0" class="cb-disable selected">{$Think.lang.ds_close}</label>
+                        <input id="site_state0" name="site_state" value="0" type="radio" checked="checked">
+                        {/if}
                     </div>
                 </dd>
             </dl>
