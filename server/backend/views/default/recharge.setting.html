@@ -1,0 +1,47 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <h2 class="bold layui-font-16">充值设置</h2>
+        <form method="post">
+          <table class="infoTable infoTable2">
+            <!--{foreach from=$list item=item}-->
+            <tr>
+              <th class="paddingT15"><label>充值金额</label></th>
+              <td class="paddingT15">
+                <input type="text" name="money[]" value="{$item.money|default:0}" class="w130 mr10" />送<input
+                  type="text" name="reward[]" value="{$item.reward|default:0}" class="w130 ml10" /><span class="blue ml10 J_Del pointer">删除</span>
+              </td>
+            </tr>
+            <!--{/foreach}-->
+
+            <tr>
+              <th></th>
+              <td class="paddingT15"><span class="red J_Add pointer">新增</span></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    $('.J_Add').click(function () {
+      $(this).parents('tr').before('<tr><th class="paddingT15"><label>充值金额</label></th><td class="paddingT15"><input type="text" name="money[]" value="100" class="w130 mr10" />送<input type="text" name="reward[]" value="0" class="w130 ml10" /><span class="blue ml10 J_Del pointer">删除</span></td></tr>');
+    })
+    $('body').on('click', '.J_Del', function () {
+      $(this).parents('tr').remove();
+    })
+  })
+</script>
+{include file="footer.html"}

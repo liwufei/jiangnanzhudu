@@ -1,0 +1,150 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="f-18">浮层背景</strong></h3>
+    <div class="content">
+        <div class="item uni-flex uni-row">
+            <label class="f-gray">填充颜色</label>
+            <p class="width-surplus ml10 color">{$options.bgcolor|default:'#fc2b34'}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:'#fc2b34'}" />
+            <span class="f-c60 pointer J_Reset" data-id="picker1" data-value="#fc2b34">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item uni-flex uni-row">
+            <label class="f-gray">渐变颜色</label>
+            <p class="width-surplus ml10 color">{$options.endcolor|default:''}</p>
+            <input type="hidden" name="endcolor" value="{$options.endcolor|default:''}" />
+            <span class="f-c60 pointer J_Reset" data-id="picker2" data-value="">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+
+        <div class="item uni-flex uni-row">
+            <label class="f-gray">渐变角度</label>
+            <p class="width-surplus"></p>
+            <input type="hidden" name="angle" value="{$options.angle|default:'top right'}" />
+            <div class="pointer dropdown">
+                <span>{if $options.angle eq 'top'}向上渐变{else if $options.angle eq 'top left'}左上渐变{else}右上渐变{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+
+        <div class="extra">
+            <p class="mt10 pb10 mt20 pt20">背景图片<span class="f-gray">（优先级高）</span></p>
+        </div>
+        <div class="list">
+            <div class="item">
+                <div class="relative">
+                    <input type="hidden" name="bgimage" value="{$options.bgimage|default:''}" />
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="file" />
+
+                    <!--{if $options.bgimage}-->
+                    <p class="image center"><img src="{$options.bgimage|url_format}" class="w-full" /></p>
+                    <!--{else}-->
+                    <p class="image center"><i class="layui-icon layui-icon-addition" style="font-size: 28px;"></i></p>
+                    <!--{/if}-->
+                </div>
+            </div>
+        </div>
+
+        <div class="item uni-flex uni-row">
+            <label class="f-gray">模块高度</label>
+            <input type="hidden" name="height" value="{$options.height|default:200}" />
+            <div class="width-surplus ml20 slider" style="margin-top:15px"></div>
+        </div>
+        <div class="item uni-flex uni-row">
+            <label class="f-gray">底部模糊</label>
+            <p class="width-surplus"></p>
+            <input type="hidden" name="blur" value="{$options.blur|default:1}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.blur neq '0' }checked{/if} lay-skin="switch">
+            </span>
+        </div>
+    </div>
+</div>
+<style>
+    .widget-box .list .item {
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, .05);
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 14px;
+    }
+
+    .widget-box .list .image {
+        border-radius: 8px;
+        width: 100%;
+        background-color: #f9f9f9;
+        line-height: 100px;
+        max-height: 100px;
+        overflow: hidden;
+    }
+
+    .widget-box .list .file {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .widget-box .list .delete {
+        right: -16px;
+        top: -22px;
+    }
+</style>
+<script>
+    $(function () {
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown
+            dropdown.render({
+                elem: '.dropdown',
+                data: [{
+                    title: '右上渐变',
+                    id: 'top right'
+                }, {
+                    title: '左上渐变',
+                    id: 'top left'
+                }, {
+                    title: '向上渐变',
+                    id: 'top'
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+        })
+
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        })
+        colorRender('.picker2', function (dom, value) {
+            save_widget();
+        })
+
+        slideRender('.slider', function (dom, value) {
+            save_widget(false);
+        }, { min: 100, max: 9999 });
+
+    });
+
+    function fileRender(obj) {
+        save_widget();
+    }
+</script>

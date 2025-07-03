@@ -1,0 +1,80 @@
+<div class="storelist" id="storelist-{$widget_data.uniqueid}">
+  <div class="content pl10 pr10">
+    <ul class="clearfix {if !$widget_data.list.0.store_id}empty{/if}">
+      <!--{foreach from=$widget_data.list item=store name=fe_store}-->
+      <li class="item bgf {if $smarty.foreach.fe_store.iteration gt 1}mt10{/if}">
+        <div class="uni-flex uni-row store">
+          <p class="logo"><img src="{$store.store_logo|default:$app->params['default_store_logo']|url_format}"
+              class="block" /></p>
+          <div class="width-surplus ml10">
+            <div class="uni-flex uni-row width-between mb5">
+              <h3 class="line-clamp-1 f-13 bold">{$store.store_name|default:'店铺名称'}</h3><span
+                class="f-12 delivery f-red pl5 pr5">达达快送</span>
+            </div>
+            <div class="uni-flex uni-row width-between f-12 f-gray">
+              <span>起送 29元</span><span>30分钟 900米</span>
+            </div>
+            <div class="uni-flex uni-row width-between f-12 f-gray">
+              <span>月销 300+</span><span class="f-red">近30日回头客100+</span>
+            </div>
+          </div>
+        </div>
+        <div class="uni-flex uni-row items">
+          <!--{foreach from=$store.items item=goods name=fe_goods}-->
+          <div class="goods mt10">
+            <img src="{$goods.default_image|url_format}" /></p>
+            <p class="f-12 desc mt5">{$goods.goods_name}</p>
+            <p class="price f-red f-13">{$goods.price|price_format}</p>
+          </div>
+          <!--{/foreach}-->
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+    <!--{if $widget_data.paging eq 1}-->
+    <div class="center f-gray f-14 pd10">加载更多</div>
+    <!--{/if}-->
+  </div>
+</div>
+
+<style>
+  .storelist img {
+    width: 100%;
+  }
+
+  .storelist .item {
+    padding: 10px 10px 10px 0px;
+    border-radius: 10px;
+  }
+
+  .storelist .store .logo,
+  .storelist .items .goods {
+    width: calc(25% - 10px);
+    margin-left: 10px;
+  }
+
+  .storelist .item .delivery {
+    border-radius: 3px;
+    border: 1px #ffebf0 solid;
+    overflow: hidden;
+    line-height: 20px;
+  }
+
+  .storelist .item .desc {
+    height: 34px;
+    line-height: 17px;
+    margin-right: 10px;
+    overflow: hidden;
+    word-break: break-all;
+  }
+
+  .storelist .item img {
+    border-radius: 10px;
+  }
+</style>
+<script>
+  $(function () {
+    $('#storelist-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor|default:""}');
+    $('#storelist-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:0}px 0');
+  });
+</script>

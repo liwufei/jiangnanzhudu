@@ -1,0 +1,53 @@
+<div class="nearstore" id="nearstore-{$widget_data.uniqueid}">
+  <div class="content round-edge bgf ml10 mr10 {if !$widget_data.list.0.store_id}empty{/if}">
+    <div class="hd pd10 uni-flex width-between">
+      <img class="block center" src="{res file='images/shoplabel.png' baseUrl=$mobileUrl}" height="20">
+      <span class="f-13 f-gray">更多门店</span>
+    </div>
+    <ul class="bd pd5 uni-flex flex-wrap clearfix">
+      <!--{foreach from=$widget_data.list item=store name=fe_store}-->
+      <li class="item uni-flex uni-row">
+        <p class="logo"><img class="round-edge"
+            src="{$store.store_logo|default:$app->params['default_store_logo']|url_format}" class="block" /></p>
+        <div class="width-surplus ml10">
+          <div class="uni-flex uni-row width-between mb5">
+            <h3 class="line-clamp-1 f-13 bold">{$store.store_name|default:'店铺名称'}</h3>
+          </div>
+          <div class="f-12 f-gray">
+            <span class="mr10 f-red">起送 29元</span><span>2公里</span>
+          </div>
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+
+  </div>
+</div>
+
+<style>
+  .nearstore .content {
+    border:1px #fff solid;
+  }
+  .nearstore .hd {
+    border-radius: 10px 10px 0 0;
+		background-image: linear-gradient(to bottom, #f8efec, #ffffff);
+  }
+  .nearstore .bd img {
+    width: 100%;
+  }
+
+  .nearstore .bd .item {
+    width: calc(50% - 10px);
+    padding: 5px;
+  }
+
+  .nearstore .bd .logo {
+    width: 40px;
+  }
+</style>
+<script>
+  $(function () {
+    $('#nearstore-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor|default:""}');
+    $('#nearstore-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:0}px 0');
+  });
+</script>
