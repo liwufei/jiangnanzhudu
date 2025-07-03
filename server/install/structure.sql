@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `swd_acategory` (
   `sort_order` tinyint(3) unsigned DEFAULT '255',
   `if_show` int(1) DEFAULT '1',
   PRIMARY KEY (`cate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `swd_address` (
   PRIMARY KEY (`addr_id`),
   KEY `userid` (`userid`),
   KEY `region_id` (`region_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `swd_appbuylog` (
   PRIMARY KEY (`bid`),
   KEY `bid` (`bid`),
   KEY `orderId` (`orderId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `swd_appmarket` (
   `status` tinyint(1) DEFAULT '0',
   `add_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`aid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `swd_apprenewal` (
   `add_time` int(11) unsigned DEFAULT NULL,
   `expired` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `swd_article` (
   `add_time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cate_id` (`cate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `swd_bank` (
   `account` varchar(50) NOT NULL,
   `area` varchar(100) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `swd_bind` (
   `nickname` varchar(60) DEFAULT '',
   `enabled` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `swd_brand` (
   `letter` varchar(10) DEFAULT '',
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS `swd_cart` (
   `invalid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `swd_cashcard` (
   `active_time` int(11) DEFAULT NULL,
   `expire_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `swd_category_goods` (
   PRIMARY KEY (`id`),
   KEY `cate_id` (`cate_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `swd_category_store` (
   PRIMARY KEY (`id`),
   KEY `cate_id` (`cate_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `swd_cate_pvs` (
   `cate_id` int(11) NOT NULL,
   `pvs` text DEFAULT '',
   PRIMARY KEY (`cate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `swd_channel` (
   `status` int(11) DEFAULT '1',
   `add_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -310,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `swd_cod` (
   `regions` text,
   `status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -329,7 +329,7 @@ CREATE TABLE IF NOT EXISTS `swd_collect` (
   KEY `userid` (`userid`),
   KEY `item_id` (`item_id`),
   KEY `type` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `swd_coupon` (
   `items` text DEFAULT '' COMMENT '指定商品可用',
   PRIMARY KEY (`id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -370,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `swd_coupon_sn` (
   `created` int(11) DEFAULT NULL,
   PRIMARY KEY (`coupon_sn`),
   KEY `coupon_id` (`coupon_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -390,7 +390,7 @@ CREATE TABLE IF NOT EXISTS `swd_delivery_template` (
   `created` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -406,7 +406,7 @@ CREATE TABLE IF NOT EXISTS `swd_delivery_timer` (
   `created` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -430,7 +430,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_account` (
   PRIMARY KEY (`account_id`),
   KEY `userid` (`userid`),
   KEY `account` (`account`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_bond` (
   PRIMARY KEY (`bond_id`),
   KEY `tradeNo` (`tradeNo`),
   KEY `userid` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -468,7 +468,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_recharge` (
   PRIMARY KEY (`recharge_id`),
   KEY `orderId` (`orderId`),
   KEY `userid` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -491,7 +491,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_record` (
   PRIMARY KEY (`record_id`),
   KEY `tradeNo` (`tradeNo`),
   KEY `userid` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -507,7 +507,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_setting` (
   `transfer_rate` decimal(10,3) DEFAULT '0' COMMENT '转账手续费',
   `regive_rate` decimal(10,3) DEFAULT '0' COMMENT '充值赠送金额比率，即将废弃，调整为送具体金额',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -544,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_trade` (
   KEY `buyer_id` (`buyer_id`),
   KEY `seller_id` (`seller_id`),
   KEY `payTradeNo` (`payTradeNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -566,7 +566,7 @@ CREATE TABLE IF NOT EXISTS `swd_deposit_withdraw` (
   PRIMARY KEY (`draw_id`),
   KEY `orderId` (`orderId`),
   KEY `userid` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -584,7 +584,7 @@ CREATE TABLE IF NOT EXISTS `swd_distribute` (
   `goods` decimal(10,2) DEFAULT '0',
   `store` decimal(10,2) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -601,7 +601,7 @@ CREATE TABLE IF NOT EXISTS `swd_distribute_items` (
   PRIMARY KEY (`diid`),
   KEY `userid` (`userid`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -621,7 +621,7 @@ CREATE TABLE IF NOT EXISTS `swd_distribute_merchant` (
   `remark` varchar(100) DEFAULT NULL,
   `created` int(11) DEFAULT NULL,
   PRIMARY KEY (`dmid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -644,7 +644,7 @@ CREATE TABLE IF NOT EXISTS `swd_distribute_order` (
   KEY `rid` (`rid`),
   KEY `userid` (`userid`),
   KEY `order_sn` (`order_sn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -661,7 +661,7 @@ CREATE TABLE IF NOT EXISTS `swd_distribute_setting` (
   `ratio3` decimal(10,2) DEFAULT '0',
   `enabled` int(1) DEFAULT '1',
   PRIMARY KEY (`dsid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -677,7 +677,7 @@ CREATE TABLE IF NOT EXISTS `swd_friend` (
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`),
   KEY `friend_id` (`friend_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -695,7 +695,7 @@ CREATE TABLE IF NOT EXISTS `swd_gcategory` (
   `image` varchar(255) DEFAULT NULL,
   `ad` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`cate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -731,7 +731,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods` (
   `tags` varchar(102) DEFAULT '',
   PRIMARY KEY (`goods_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -748,7 +748,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_image` (
   `file_id` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`image_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -760,7 +760,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_integral` (
   `goods_id` int(10) NOT NULL,
   `max_exchange` int(11) DEFAULT '0',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -776,7 +776,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_prop` (
   `status` int(1) DEFAULT '1',
   `sort_order` int(11) DEFAULT '255',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -792,7 +792,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_prop_value` (
   `status` int(1) DEFAULT '1',
   `sort_order` int(11) DEFAULT '255',
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -804,7 +804,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_pvs` (
   `goods_id` int(10) NOT NULL,
   `pvs` text DEFAULT '',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -829,7 +829,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_qa` (
   KEY `userid` (`userid`),
   KEY `goods_id` (`item_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -851,7 +851,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_spec` (
   `sort_order` int(10) unsigned DEFAULT '255',
   PRIMARY KEY (`spec_id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -867,7 +867,7 @@ CREATE TABLE IF NOT EXISTS `swd_goods_statistics` (
   `sales` int(10) unsigned DEFAULT '0',
   `comments` int(11) unsigned DEFAULT '0',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -879,7 +879,7 @@ CREATE TABLE IF NOT EXISTS `swd_integral` (
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `amount` decimal(10,2) DEFAULT '0',
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -900,7 +900,7 @@ CREATE TABLE IF NOT EXISTS `swd_integral_log` (
   `flag` varchar(255) DEFAULT '',
   `add_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -917,7 +917,7 @@ CREATE TABLE IF NOT EXISTS `swd_integral_setting` (
   `buygoods` text DEFAULT NULL,
   `enabled` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -936,7 +936,7 @@ CREATE TABLE IF NOT EXISTS `swd_limitbuy` (
   `rules` text DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -958,7 +958,7 @@ CREATE TABLE IF NOT EXISTS `swd_mailbox` (
   PRIMARY KEY (`id`),
   KEY `from_id` (`from_id`),
   KEY `to_id` (`to_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -976,7 +976,7 @@ CREATE TABLE IF NOT EXISTS `swd_meal` (
   `status` int(1) DEFAULT '1',
   `created` int(11) DEFAULT NULL,
   PRIMARY KEY (`meal_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -989,7 +989,7 @@ CREATE TABLE IF NOT EXISTS `swd_meal_goods` (
   `meal_id` int(11) NOT NULL DEFAULT '0',
   `goods_id` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mg_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1030,7 +1030,7 @@ CREATE TABLE IF NOT EXISTS `swd_order` (
   `shipwx` tinyint(1) unsigned DEFAULT '0' COMMENT '发货信息推送至微信0=未推1=已推2=二推',
   PRIMARY KEY (`order_id`),
   KEY `order_sn` (`order_sn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1045,7 +1045,7 @@ CREATE TABLE IF NOT EXISTS `swd_order_express` (
   `company` varchar(50) DEFAULT '',
   `number` varchar(20) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1070,7 +1070,7 @@ CREATE TABLE IF NOT EXISTS `swd_order_extm` (
   `deliveryName` varchar(100) DEFAULT '' COMMENT '配送名称',
   `deliveryCode` varchar(20) DEFAULT '' COMMENT '配送插件代码',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1100,7 +1100,7 @@ CREATE TABLE IF NOT EXISTS `swd_order_goods` (
   `status` varchar(50) DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`,`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1117,7 +1117,7 @@ CREATE TABLE IF NOT EXISTS `swd_order_log` (
   `created` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1135,7 +1135,7 @@ CREATE TABLE IF NOT EXISTS `swd_plugin` (
   `config` text NOT NULL,
   `enabled` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1152,7 +1152,7 @@ CREATE TABLE IF NOT EXISTS `swd_promote_item` (
   `status` int(1) DEFAULT '1',
   `add_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`piid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1168,7 +1168,7 @@ CREATE TABLE IF NOT EXISTS `swd_promote_setting` (
   `status` tinyint(1) DEFAULT '0',
   `add_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`psid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1182,7 +1182,7 @@ CREATE TABLE IF NOT EXISTS `swd_recommend` (
   `store_id` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1196,7 +1196,7 @@ CREATE TABLE IF NOT EXISTS `swd_recommend_goods` (
   `recid` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1225,7 +1225,7 @@ CREATE TABLE IF NOT EXISTS `swd_refund` (
   `created` int(11) DEFAULT NULL,
   `finished` int(11) DEFAULT NULL,
   PRIMARY KEY (`refund_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1242,7 +1242,7 @@ CREATE TABLE IF NOT EXISTS `swd_refund_message` (
   `image` varchar(255) DEFAULT NULL,
   `created` int(11) DEFAULT NULL,
   PRIMARY KEY (`rm_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1259,7 +1259,7 @@ CREATE TABLE IF NOT EXISTS `swd_region` (
   `if_show` int(1) DEFAULT '1',
   PRIMARY KEY (`region_id`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1272,7 +1272,7 @@ CREATE TABLE IF NOT EXISTS `swd_recharge_setting` (
   `money` decimal(10,2) unsigned NOT NULL COMMENT '充值金额',
   `reward` decimal(10,2) DEFAULT '0' COMMENT '赠送金额',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1292,7 +1292,7 @@ CREATE TABLE IF NOT EXISTS `swd_report` (
   `examine` varchar(20) DEFAULT NULL COMMENT '审核员',
   `verify` varchar(255) DEFAULT NULL COMMENT '审核说明',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1308,7 +1308,7 @@ CREATE TABLE IF NOT EXISTS `swd_scategory` (
   `if_show` int(1) DEFAULT '1',
   PRIMARY KEY (`cate_id`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1326,7 +1326,7 @@ CREATE TABLE IF NOT EXISTS `swd_sgrade` (
   `description` varchar(255) DEFAULT '',
   `sort_order` tinyint(4) unsigned DEFAULT '255',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1341,7 +1341,7 @@ CREATE TABLE IF NOT EXISTS `swd_sms` (
   `functions` varchar(255) DEFAULT NULL,
   `state` tinyint(3) unsigned DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1363,7 +1363,7 @@ CREATE TABLE IF NOT EXISTS `swd_sms_log` (
   `message` varchar(100) DEFAULT NULL,
   `add_time` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1380,7 +1380,7 @@ CREATE TABLE IF NOT EXISTS `swd_sms_template` (
   `content` varchar(255) NOT NULL DEFAULT '',
   `add_time` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1428,7 +1428,7 @@ CREATE TABLE IF NOT EXISTS `swd_store` (
   `radius` int(11) unsigned DEFAULT '0',
   PRIMARY KEY (`store_id`),
   KEY `store_name` (`store_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1445,7 +1445,7 @@ CREATE TABLE IF NOT EXISTS `swd_teambuy` (
   `people` int(10) unsigned NOT NULL DEFAULT '2',
   `specs` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1467,7 +1467,7 @@ CREATE TABLE IF NOT EXISTS `swd_teambuy_log` (
   `expired` int(11) unsigned NOT NULL DEFAULT '0',
   `pay_time` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`logid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1487,7 +1487,7 @@ CREATE TABLE IF NOT EXISTS `swd_uploaded_file` (
   `item_id` int(10) unsigned DEFAULT '0',
   PRIMARY KEY (`file_id`),
   KEY `store_id` (`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1523,7 +1523,7 @@ CREATE TABLE IF NOT EXISTS `swd_user` (
   PRIMARY KEY (`userid`),
   KEY `username` (`username`),
   KEY `phone_mob` (`phone_mob`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1540,7 +1540,7 @@ CREATE TABLE IF NOT EXISTS `swd_user_enter` (
   `address` varchar(255) DEFAULT NULL,
   `add_time` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1553,7 +1553,7 @@ CREATE TABLE IF NOT EXISTS `swd_user_priv` (
   `store_id` int(10) unsigned DEFAULT '0',
   `privs` text DEFAULT '',
   PRIMARY KEY (`userid`,`store_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1567,7 +1567,7 @@ CREATE TABLE IF NOT EXISTS `swd_user_token` (
   `token` varchar(100) NOT NULL DEFAULT '',
   `expire_time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1586,7 +1586,7 @@ CREATE TABLE IF NOT EXISTS `swd_webim` (
   `unread` int(11) NOT NULL DEFAULT '0',
   `created` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1605,7 +1605,7 @@ CREATE TABLE IF NOT EXISTS `swd_weixin_menu` (
   `url` varchar(255) DEFAULT NULL,
   `reply_id` int(10) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1625,7 +1625,7 @@ CREATE TABLE IF NOT EXISTS `swd_weixin_reply` (
   `description` text DEFAULT NULL,
   `add_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`reply_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1643,7 +1643,7 @@ CREATE TABLE IF NOT EXISTS `swd_weixin_setting` (
   `codeurl` varchar(255) DEFAULT NULL,
   `autoreg` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
